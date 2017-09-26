@@ -61,19 +61,19 @@ int relayTimeOutSleep =0;
           
           if (potV > 340) {
               ledOn (Green,potToggle);
-               freezeLevel=0;
+               freezeLevel=-1;
           }else { ledOn (Green,false); 
               freezeLevel = 999; // off freezer mode
           }
 
           if (potV > 682) {
              ledOn (Yellow,potToggle);
-             freezeLevel=-1;
+             freezeLevel=-2;
           }else  ledOn (Yellow,false);
 
           if (potV > 980) {
              ledOn (Red,potToggle);
-             freezeLevel=-2;
+             freezeLevel=-4;
           }else  ledOn (Red,false);
 
           
