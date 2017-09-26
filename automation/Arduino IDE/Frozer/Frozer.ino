@@ -1,12 +1,17 @@
 
 #include "ThermoSencor.h"
 #include <Arduino.h>
-const static int  Red = 3; 
-const static int  Yellow = 6;
-const static int  Green =5;
-const static int  thermo = A4;
-const static int  pot = A0;
-const static int  relay = 4;
+const static int8_t  Red = 3; 
+const static int8_t  Yellow = 6;
+const static int8_t  Green =5;
+
+const static int8_t RedFreeze = -4; 
+const static int8_t  YellowFreeze = -2;
+const static int8_t GreenFreeze =-1;
+
+const static int8_t  thermo = A4;
+const static int8_t  pot = A0;
+const static int8_t  relay = 4;
   
 
 void ledOn ( int8_t addr , bool enable = true) {
@@ -61,19 +66,19 @@ int relayTimeOutSleep =0;
           
           if (potV > 340) {
               ledOn (Green,potToggle);
-               freezeLevel=-1;
+               freezeLevel=GreenFreeze;
           }else { ledOn (Green,false); 
               freezeLevel = 999; // off freezer mode
           }
 
           if (potV > 682) {
              ledOn (Yellow,potToggle);
-             freezeLevel=-2;
+             freezeLevel=YellowFreeze;
           }else  ledOn (Yellow,false);
 
           if (potV > 980) {
              ledOn (Red,potToggle);
-             freezeLevel=-4;
+             freezeLevel=RedFreeze;
           }else  ledOn (Red,false);
 
           
@@ -108,9 +113,9 @@ int relayTimeOutSleep =0;
 // Freezing stage inditation
  freezeToggle = !freezeToggle;
  
-     if (sensor.Temperature > freezeLevel && sensor.Temperature >= 0 && freezeLevel <=0 ) ledOn (Green,freezeToggle); else if (freezeLevel <= 0)ledOn(Green); else ledOn(Green,false); 
-     if (sensor.Temperature > freezeLevel && sensor.Temperature >= -1 && freezeLevel <=-1 ) ledOn (Yellow,freezeToggle); else if (freezeLevel <= -1)ledOn(Yellow); else ledOn(Yellow,false); 
-     if (sensor.Temperature > freezeLevel && sensor.Temperature >= -2 && freezeLevel <=-2) ledOn (Red,freezeToggle); else if (freezeLevel <= -2)ledOn(Red); else ledOn(Red,false); 
+     if (sensor.Temperature > freezeLevel && sensor.Temperature >= GreenFreeze && freezeLevel <=GreenFreeze ) ledOn (Green,freezeToggle); else if (freezeLevel <= GreenFreeze)ledOn(Green); else ledOn(Green,false); 
+     if (sensor.Temperature > freezeLevel && sensor.Temperature >= YellowFreeze && freezeLevel <=YellowFreeze ) ledOn (Yellow,freezeToggle); else if (freezeLevel <= YellowFreeze)ledOn(Yellow); else ledOn(Yellow,false); 
+     if (sensor.Temperature > freezeLevel && sensor.Temperature >= RedFreeze && freezeLevel <=RedFreeze) ledOn (Red,freezeToggle); else if (freezeLevel <= RedFreeze)ledOn(Red); else ledOn(Red,false); 
  delay (4000);
 
  
