@@ -1,0 +1,7 @@
+1-Water in (solenoid 220v)
+2-suck pump (motor 220v)
+3-Dish Pumo (motor from 220v up --> 292v)
+4-Pill drop (solenoid 220v)
+5-Thermo sensor (bottom water temperature sensor with 78kΩ neutral mode)
+6-Heater (resistor 220v , 2048w)
+7-Power ( 220v)
