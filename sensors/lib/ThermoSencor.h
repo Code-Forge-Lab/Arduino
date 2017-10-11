@@ -1,4 +1,4 @@
-// +5 -> TermoSensor .._(Microcontroler Read)_.. -> GND
+// +5 > +TermoSensor- .._+(Microcontroler Read)-_.. > +R100k- >+GND
 
 class ThermoSencor {
 	int ThermistorPin;
