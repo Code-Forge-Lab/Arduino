@@ -5,7 +5,7 @@ const static int8_t  Red = 3;
 const static int8_t  Yellow = 6;
 const static int8_t  Green =5;
 
-const static int8_t RedFreeze = -4; 
+const static int8_t RedFreeze = -3; 
 const static int8_t  YellowFreeze = -2;
 const static int8_t GreenFreeze =-1;
 
