@@ -1,13 +1,34 @@
 #include <stdlib.h>
 #include <stddef.h>
-
+#include "ManageReadWrite8bitEEPROM.h"
+#include "MenuDisplays.h"
 
 #include <LiquidCrystal_I2C.h>
+LiquidCrystal_I2C lcd(0x3F, 2, 1, 0, 4, 5, 6,7,3, POSITIVE );
 
-#include "ManageReadWrite8bitEEPROM.h"
+void fun0 (){lcd.clear();  lcd.print("Page1:");};
+void fun1 (){lcd.clear();  lcd.print("Page2:" );};
+void fun2 (){lcd.clear();  lcd.print("Page3:" );};
+void fun3 (){lcd.clear();  lcd.print("Page4:" );};
+
+
+ void myFnc (){};
+ menuLiquidCrystal(7) menu[7];
+
+
+
+void initiate_functions () {
+  
+   menu[0].IncludeFunction(&fun0); 
+   menu[1].IncludeFunction(&fun1); 
+   menu[2].IncludeFunction(&fun2); 
+   menu[3].IncludeFunction(&fun3); 
+
+  }
+
 
 //0x3F need to find out with :LINK:http://playground.arduino.cc/Main/I2cScanner
-LiquidCrystal_I2C lcd(0x3F, 2, 1, 0, 4, 5, 6,7,3, POSITIVE );
+
 
 const static  int pusher = 10;
 const static  int wind = 11;
@@ -28,8 +49,8 @@ controls PELLETPUSHER(3); //(1)address
 
 
 void setup() {
-  
   lcd.begin(16,2);
+  initiate_functions ();
   lcd.blink();
   
   // put your setup code here, to run once:
@@ -41,8 +62,8 @@ void setup() {
    Serial.begin(9600);
    Serial.println ("Load Complete");
    delay(500);
-   
 
+  
 
 }
 
@@ -84,7 +105,8 @@ int CLK_TIME=0;
 
 
 void loop() {
-  if (CLK_TIME < 10) CLK_TIME++; else CLK_TIME=0; // program one second timer
+  
+  if (CLK_TIME >= 10) CLK_TIME=0;CLK_TIME++; // program one second timer
   int8_t __set = digitalRead(BUTTON_SET) ;
   int8_t __up = digitalRead(BUTTON_UP);
   int8_t __down = digitalRead(BUTTON_DOWN);
@@ -103,16 +125,16 @@ void loop() {
 //  buttonRelease (BUTTON_DOWN );
      
   if (__up) {
-        FANSPEED.addValue();
+      //  FANSPEED.addValue();
     }
 
     if (__down) {
-        FANSPEED.subValue();
+       // FANSPEED.subValue();
     }
   
 
           if (__set) {
-              FANSPEED.setValue();                      
+             // FANSPEED.setValue();                      
             }
 
 
