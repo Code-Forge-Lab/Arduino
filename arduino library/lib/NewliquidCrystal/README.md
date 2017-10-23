@@ -2,7 +2,6 @@
 
 ## Introduction ##
 
-Function can be found :: https://github.com/fdebrabander/Arduino-LiquidCrystal-I2C-library/blob/master/LiquidCrystal_I2C.h
 
 Scanner for Liquid Crystal : http://playground.arduino.cc/Main/I2cScanner
 
