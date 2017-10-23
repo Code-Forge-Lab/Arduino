@@ -20,10 +20,10 @@ const static  int8_t BUTTON_UP = A0;
 ////////////////////
 //Program Variables
 
-
 controls MAXTEMP;
 controls FANSPEED;
 controls PELLETPUSHER;
+
 
 void init_memory () 
   {
@@ -39,17 +39,6 @@ void init_memory ()
   
   };
 
-//MAXTEMP.address = 0;
-//MAXTEMP.address = 5;
- 
-//int8_t ADDRESS_MAXTEMP = 0;
-//int8_t MAXTEMP  = readMemory(ADDRESS_MAXTEMP);
-//
-//int8_t ADDRESS_FANSPEED = 1;
-//int8_t FANSPEED  = readMemory(ADDRESS_FANSPEED); 
-//
-//int8_t ADDRESS_PELLETPUSHER = 2;
-//int8_t PELLETPUSHER = readMemory(ADDRESS_PELLETPUSHER);
 
 void setup() {
   //MAXTEMP.address = 0;
@@ -128,10 +117,18 @@ void loop() {
 //  buttonRelease (BUTTON_UP );
 //  buttonRelease (BUTTON_DOWN );
      
+  if (__up) {
+        FANSPEED.addValue();
+    }
 
-//          if (__set) {
-//                writeMemory(
-//            }
+    if (__down) {
+        FANSPEED.subValue();
+    }
+  
+
+          if (__set) {
+              FANSPEED.setValue();
+            }
 
  delay (100);
    

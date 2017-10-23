@@ -28,16 +28,48 @@ int writeMemory (int address , int setdata , bool write = true) {
 
 struct  controls
 {
+private:
+   int8_t old_value; // it's for changed value 
 public:
    int8_t address;
    int8_t value;  
+ 
+      // contructor 
+      controls () {
+        value = readMemory (address); // initiliaze value from EEPROM
+      }
+   
 
         int8_t getValue () {
                  value = readMemory (address);
                    return value;
             }
-        int8_t setValue (int8_t setdata , bool write=true) {
-            writeMemory (address,setdata, write);
+        
+           // set with argument 
+        void setValue (int8_t setdata  , bool write=true) {
+                 writeMemory (address,setdata, write);
+                 value = setdata;
         }    
-
+         // aut set value
+         void setValue ( bool write = true) {
+               
+                writeMemory (address,value,write);
+         }
+   
+        // Add by one 
+        void addValue () {
+             if (value < 254) {
+                    ++value;                
+             }
+        }
+     // substract value by one 
+        void subValue () {
+            if (value > 1) {
+                   --value;                
+            }
+       }
 };
+
+
+
+
