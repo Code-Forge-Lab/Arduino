@@ -20,31 +20,16 @@ const static  int8_t BUTTON_UP = A0;
 ////////////////////
 //Program Variables
 
-controls MAXTEMP;
-controls FANSPEED;
-controls PELLETPUSHER;
+controls MAXTEMP(1); // (1)address
+controls FANSPEED(2); //(1)address
+controls PELLETPUSHER(3); //(1)address
 
 
-void init_memory () 
-  {
-      
-        MAXTEMP.address = 0;
-        
-        //
-        FANSPEED.address = 1;
-     
-        //
-        PELLETPUSHER.address = 3;
-        
-  
-  };
 
 
 void setup() {
-  //MAXTEMP.address = 0;
   
   lcd.begin(16,2);
-  init_memory (); // initiliaze objective arguments from the local scope 
   lcd.blink();
   
   // put your setup code here, to run once:
@@ -58,7 +43,7 @@ void setup() {
    delay(500);
    
   Serial.print ("EEPROM:" + String (readMemory(0) ) + ", ");
-  delay (2000);
+
 }
 
 bool buttonRelease (int btn ) {
@@ -127,8 +112,10 @@ void loop() {
   
 
           if (__set) {
-              FANSPEED.setValue();
+              FANSPEED.setValue();                      
             }
+
+  FANSPEED.setValue();
 
  delay (100);
    

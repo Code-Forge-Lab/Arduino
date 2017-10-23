@@ -1,4 +1,7 @@
 
+#include <Wire.h>
+#include <LiquidCrystal_I2C.h>
+#include <EEPROM.h>
 
  
 
@@ -7,7 +10,7 @@
 
 int readMemory (int address ) {
     int getdata = EEPROM.read(address);    
-    if (getdata == 255) {
+    if (getdata == 255) { // in memory all bits are on == (255) / else i use 254 to separate this false
         getdata = 0;
             EEPROM.write(address,getdata);
         }
@@ -20,42 +23,50 @@ int writeMemory (int address , int setdata , bool write = true) {
      
           if (write) // boolean control
             EEPROM.write(address,setdata);
-        
+        delay (20); // 5ml seconds it takes to write in memory
          return setdata;
 }
 
 
 
-struct  controls
+class  controls
 {
 private:
-     int8_t old_value; // it's for changed value 
+     int old_value; // it's for changed value 
     
 public:
-     int8_t address;
-     int16_t value;   
+     int address;
+     int value;   
  
       // contructor 
-      controls () {
-        value = readMemory (address); // initiliaze value from EEPROM
+      controls (int address) {
+          this->address = address;
+        getValue (); // initiliaze value from EEPROM
       }
    
 
-        int8_t getValue () {
+        int getValue () {
                  value = readMemory (address);
                    return value;
             }
        
 
            // set with argument 
-        void setValue (int8_t setdata  , bool write=true) {
-                 writeMemory (address,setdata, write);
-                 value = setdata;
+        void setValue (int setdata  , bool write=true) {
+            if (old_value != value) { // to protect from always write
+                    writeMemory (address,setdata);
+                    value = setdata;
+                    old_value = value; // cach new value
+                    Serial.print("setValue (int setdata  , bool write=true)");
+                }     
         }    
          // aut set value
          void setValue ( bool write = true) {
-               
-                writeMemory (address,value,write);
+             if (old_value != value) { // to protect from always write
+                      writeMemory (address,value,write);
+                      old_value = value;  // cach new value
+                      Serial.print("setValue ( bool write = true)");
+             }
          }
    
         // Add by one 
@@ -67,9 +78,9 @@ public:
         }
      // substract value by one 
         void subValue () {
-            if (value > 1) {
+            if (value > 0) {
                    --value;                
-                   Serial.print ("add: "+ String (value));
+                   Serial.print ("substract: "+ String (value));
             }
        }
 };
