@@ -4,7 +4,7 @@
 #include <Wire.h>
 #include <LiquidCrystal_I2C.h>
 #include <EEPROM.h>
-
+#include "functions.h"
 
 //0x3F need to find out with :LINK:http://playground.arduino.cc/Main/I2cScanner
 LiquidCrystal_I2C lcd(0x3F, 2, 1, 0, 4, 5, 6,7,3, POSITIVE );
@@ -17,12 +17,47 @@ const static  int wind = 11;
 const static  int8_t BUTTON_SET = 12;
 const static  int8_t BUTTON_DOWN = 13;
 const static  int8_t BUTTON_UP = A0;
+////////////////////
+//Program Variables
+
+
+controls MAXTEMP;
+controls FANSPEED;
+controls PELLETPUSHER;
+
+void init_memory () 
+  {
+      
+        MAXTEMP.address = 0;
+        MAXTEMP.getValue();
+        //
+        FANSPEED.address = 1;
+        FANSPEED.getValue();
+        //
+        PELLETPUSHER.address = 3;
+        PELLETPUSHER.getValue();
+  
+  };
+
+//MAXTEMP.address = 0;
+//MAXTEMP.address = 5;
+ 
+//int8_t ADDRESS_MAXTEMP = 0;
+//int8_t MAXTEMP  = readMemory(ADDRESS_MAXTEMP);
+//
+//int8_t ADDRESS_FANSPEED = 1;
+//int8_t FANSPEED  = readMemory(ADDRESS_FANSPEED); 
+//
+//int8_t ADDRESS_PELLETPUSHER = 2;
+//int8_t PELLETPUSHER = readMemory(ADDRESS_PELLETPUSHER);
 
 void setup() {
+  //MAXTEMP.address = 0;
+  
   lcd.begin(16,2);
-  lcd.clear();
-  lcd.print("Hello World");
+  init_memory (); // initiliaze objective arguments from the local scope 
   lcd.blink();
+  
   // put your setup code here, to run once:
   pinMode(pusher,OUTPUT);
   pinMode(wind,OUTPUT);
@@ -33,7 +68,8 @@ void setup() {
    Serial.println ("Load Complete");
    delay(500);
    
-  Serial.print ("EEPROM:" + String (EEPROM.read(0) ));
+  Serial.print ("EEPROM:" + String (readMemory(0) ) + ", ");
+  delay (2000);
 }
 
 bool buttonRelease (int btn ) {
@@ -70,21 +106,34 @@ void bln (int times=1) {
   }
 
 
+int CLK_TIME=0;
+
+
 void loop() {
+  if (CLK_TIME < 10) CLK_TIME++; else CLK_TIME=0; // program one second timer
   int8_t __set = digitalRead(BUTTON_SET) ;
   int8_t __up = digitalRead(BUTTON_UP);
   int8_t __down = digitalRead(BUTTON_DOWN);
 
 
      Serial.println("__set:"+ String(__set) + ",__up:"+ String(__up) + ",__down:" + String(__down)  );
-  
-  buttonRelease (BUTTON_SET );
-  buttonRelease (BUTTON_UP );
-  buttonRelease (BUTTON_DOWN );
-     
-          
 
- delay (1000);
+  if (CLK_TIME ==10) {} // slow components
+  {
+         lcd.clear();
+         lcd.print("MEMORY:" + String ());
+    }
+  
+//  buttonRelease (BUTTON_SET );
+//  buttonRelease (BUTTON_UP );
+//  buttonRelease (BUTTON_DOWN );
+     
+
+//          if (__set) {
+//                writeMemory(
+//            }
+
+ delay (100);
    
   
   // put your main code here, to run repeatedly:
