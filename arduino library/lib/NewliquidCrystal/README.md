@@ -7,6 +7,7 @@ Scanner for Liquid Crystal : http://playground.arduino.cc/Main/I2cScanner
 
 Liquid Crystal Functions: https://github.com/fdebrabander/Arduino-LiquidCrystal-I2C-library/blob/master/LiquidCrystal_I2C.h
 
+## WIki: ## https://bitbucket.org/fmalpartida/new-liquidcrystal/wiki/Home 
 
 ![LCD library](https://bitbucket.org/fmalpartida/new-liquidcrystal/downloads/I2CLCDextraIO_assemblyProject_small.jpg)
 
