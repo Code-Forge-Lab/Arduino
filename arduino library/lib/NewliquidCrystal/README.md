@@ -88,7 +88,7 @@ void loop()
    delay (200);
 
 }
-```cpp
+```
 ## Examlple 2 Scroll ##
 ```cpp
 
@@ -142,7 +142,7 @@ void loop() {
 
 }
 
-```cpp
+```
 
 -----------------------------------------------------------------------------------------------
 Welcome to the *LCD Library* for **Arduino** and **Chipkit**. It is a derivate of the original LiquidCrystal Library as sourced in the Arduino SDK. It has been developed to be compatible with the current LiquidCrystal library, 
