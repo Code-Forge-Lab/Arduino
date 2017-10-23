@@ -29,10 +29,11 @@ int writeMemory (int address , int setdata , bool write = true) {
 struct  controls
 {
 private:
-   int8_t old_value; // it's for changed value 
+     int8_t old_value; // it's for changed value 
+    
 public:
-   int8_t address;
-   int8_t value;  
+     int8_t address;
+     int16_t value;   
  
       // contructor 
       controls () {
@@ -44,7 +45,8 @@ public:
                  value = readMemory (address);
                    return value;
             }
-        
+       
+
            // set with argument 
         void setValue (int8_t setdata  , bool write=true) {
                  writeMemory (address,setdata, write);
@@ -59,13 +61,15 @@ public:
         // Add by one 
         void addValue () {
              if (value < 254) {
-                    ++value;                
+                    ++value;    
+                    Serial.print ("add: "+ String (value));            
              }
         }
      // substract value by one 
         void subValue () {
             if (value > 1) {
                    --value;                
+                   Serial.print ("add: "+ String (value));
             }
        }
 };

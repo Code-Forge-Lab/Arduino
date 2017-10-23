@@ -29,13 +29,13 @@ void init_memory ()
   {
       
         MAXTEMP.address = 0;
-        MAXTEMP.getValue();
+        
         //
         FANSPEED.address = 1;
-        FANSPEED.getValue();
+     
         //
         PELLETPUSHER.address = 3;
-        PELLETPUSHER.getValue();
+        
   
   };
 
@@ -110,7 +110,7 @@ void loop() {
   if (CLK_TIME ==10) {} // slow components
   {
          lcd.clear();
-         lcd.print("MEMORY:" + String ());
+         lcd.print("MEMORY:" + String (FANSPEED.value));
     }
   
 //  buttonRelease (BUTTON_SET );
