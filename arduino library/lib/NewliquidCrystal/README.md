@@ -21,7 +21,7 @@ Connection:
   SCL->A5
 
 :::::::::::::::::::::::::::::Example:::::::::::::::::::::::::::::
-
+```cpp
 #include <Wire.h> 
 #include <LiquidCrystal_I2C.h>
 
@@ -58,6 +58,7 @@ const uint8_t charBitmap[][8] = {
 
 void setup()
 {
+    
    int charBitmapSize = (sizeof(charBitmap ) / sizeof (charBitmap[0]));
 
   // Switch on the backlight
@@ -106,6 +107,7 @@ void loop()
    delay (200);
 
 }
+```cpp
 -----------------------------------------------------------------------------------------------
 Welcome to the *LCD Library* for **Arduino** and **Chipkit**. It is a derivate of the original LiquidCrystal Library as sourced in the Arduino SDK. It has been developed to be compatible with the current LiquidCrystal library, 
 its performance is almost 5 times faster and fully extendable if need be. 
