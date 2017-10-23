@@ -5,28 +5,9 @@ const static int8_t LED_ACTIVE = 3;// Led inditation of runnung program and cond
 const static int8_t WATERIN = 4; // Solenoid allowing to get water 
 const static int8_t DISHPUNP =5; // Pump and push water throw dish washing spinners
 const static int8_t WATERHEATER = 6; // Heat a water in dish wather.  2048Watt of power.
-const static int8_t THERMOSENSOR = A1;  // Temperature in washing mashine 
-const static int8_t  VREZPRG = A2; // Potentiometer that each selected value equal to separate program
-const static int8_t TRIGGERBUTTON = A3; // Beggin or stop program, soft swith button connected to microcontroler .
-
-void setup() {
-    // put your setup code here, to run once:
-    pinMode(3,OUTPUT); //LED +
-    pinMode(4,OUTPUT); //relay +
-    pinMode(5,OUTPUT); //relay + 
-    pinMode(6,OUTPUT); //relay -
-    pinMode(7,OUTPUT); //relay Heater 2048w  -
-    
-
-    pinMode (13,OUTPUT);
-
-    pinMode(A3,INPUT); // Activation swith
-    pinMode(A2,INPUT); // potentiometer 
-    pinMode(A1,INPUT); // termo sensor
-    Serial.begin(9600);
-}
-
-ThermoSencor Water(THERMOSENSOR);
+const static int8_t THERMOSENSOR = A0;  // Temperature in washing mashine 
+const static int8_t  VREZPRG = A1; // Potentiometer that each selected value equal to separate program
+const static int8_t TRIGGERBUTTON = A2; // Beggin or stop program, soft swith button connected to microcontroler .
 
 
 void TestActiveComponent () {
@@ -49,6 +30,27 @@ void TestActiveComponent () {
         Serial.print ("RELAY:"+String (c)+"\n");
     }
 }
+
+
+void setup() {
+    // put your setup code here, to run once:
+    pinMode(3,OUTPUT); //LED +
+    pinMode(4,OUTPUT); //relay +
+    pinMode(5,OUTPUT); //relay + 
+    pinMode(6,OUTPUT); //relay -
+    pinMode(7,OUTPUT); //relay Heater 2048w  -
+    
+
+    pinMode (13,OUTPUT);
+
+    pinMode(A3,INPUT); // Activation swith
+    pinMode(A2,INPUT); // potentiometer 
+    pinMode(A1,INPUT); // termo sensor
+    Serial.begin(9600);
+}
+
+ThermoSencor Water(THERMOSENSOR);
+
 
 
 class __VRezPrg { // Variable potentiometer/Variable resistor Program Select Per Turn
