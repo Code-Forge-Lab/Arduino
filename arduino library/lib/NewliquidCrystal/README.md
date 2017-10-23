@@ -20,7 +20,7 @@ Liquid Crystal Functions: https://github.com/fdebrabander/Arduino-LiquidCrystal-
 
   SCL->A5
 
-## Example print ## 
+## Example 'Print' ## 
 ```cpp
 #include <Wire.h> 
 #include <LiquidCrystal_I2C.h>
@@ -89,7 +89,7 @@ void loop()
 
 }
 ```
-## Examlple 2 Scroll ##
+## Examlple 2 'Scroll' ##
 ```cpp
 
 #include <Wire.h>
