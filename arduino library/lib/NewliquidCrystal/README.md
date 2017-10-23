@@ -28,7 +28,7 @@ Connection:
 
 
 #define BACKLIGHT_PIN     13
-
+//0x3F need to find out with :LINK:http://playground.arduino.cc/Main/I2cScanner
 LiquidCrystal_I2C lcd(0x3F, 2, 1, 0, 4, 5, 6,7,3, POSITIVE );
 
 //LiquidCrystal_I2C lcd(0x38, BACKLIGHT_PIN, POSITIVE);  // Set the LCD I2C address
@@ -37,11 +37,8 @@ LiquidCrystal_I2C lcd(0x3F, 2, 1, 0, 4, 5, 6,7,3, POSITIVE );
 // Creat a set of new characters
 
 const uint8_t charBitmap[][8] = {
-
    { 0xc, 0x12, 0x12, 0xc, 0, 0, 0, 0 },
-
    { 0x6, 0x9, 0x9, 0x6, 0, 0, 0, 0 },
-
    { 0x0, 0x6, 0x9, 0x9, 0x6, 0, 0, 0x0 },
 
    { 0x0, 0xc, 0x12, 0x12, 0xc, 0, 0, 0x0 },
