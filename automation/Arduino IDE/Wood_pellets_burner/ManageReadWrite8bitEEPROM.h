@@ -1,6 +1,5 @@
 
 #include <Wire.h>
-#include <LiquidCrystal_I2C.h>
 #include <EEPROM.h>
 
  
@@ -28,6 +27,7 @@ int writeMemory (int address , int setdata , bool write = true) {
 }
 
 
+// Manage read write 8 bit memory 
 
 class  controls
 {
@@ -44,14 +44,14 @@ public:
         getValue (); // initiliaze value from EEPROM
       }
    
-
+ // read data 
         int getValue () {
                  value = readMemory (address);
                    return value;
             }
        
 
-           // set with argument 
+           // write data  manualy
         void setValue (int setdata  , bool write=true) {
             if (old_value != value) { // to protect from always write
                     writeMemory (address,setdata);
@@ -60,7 +60,7 @@ public:
                     Serial.print("setValue (int setdata  , bool write=true)");
                 }     
         }    
-         // aut set value
+         // auto write data
          void setValue ( bool write = true) {
              if (old_value != value) { // to protect from always write
                       writeMemory (address,value,write);
@@ -69,14 +69,14 @@ public:
              }
          }
    
-        // Add by one 
+        // Increment value/data
         void addValue () {
              if (value < 254) {
                     ++value;    
                     Serial.print ("add: "+ String (value));            
              }
         }
-     // substract value by one 
+        // Decrement value/data 
         void subValue () {
             if (value > 0) {
                    --value;                

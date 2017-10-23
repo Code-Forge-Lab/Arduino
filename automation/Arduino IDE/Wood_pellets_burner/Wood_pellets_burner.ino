@@ -1,10 +1,10 @@
 #include <stdlib.h>
 #include <stddef.h>
 
-#include <Wire.h>
+
 #include <LiquidCrystal_I2C.h>
-#include <EEPROM.h>
-#include "functions.h"
+
+#include "ManageReadWrite8bitEEPROM.h"
 
 //0x3F need to find out with :LINK:http://playground.arduino.cc/Main/I2cScanner
 LiquidCrystal_I2C lcd(0x3F, 2, 1, 0, 4, 5, 6,7,3, POSITIVE );
@@ -42,7 +42,7 @@ void setup() {
    Serial.println ("Load Complete");
    delay(500);
    
-  Serial.print ("EEPROM:" + String (readMemory(0) ) + ", ");
+
 
 }
 
@@ -115,7 +115,7 @@ void loop() {
               FANSPEED.setValue();                      
             }
 
-  FANSPEED.setValue();
+
 
  delay (100);
    
