@@ -20,7 +20,7 @@ Connection:
 
   SCL->A5
 
-Example: 
+:::::::::::::::::::::::::::::Example:::::::::::::::::::::::::::::
 
 #include <Wire.h> 
 #include <LiquidCrystal_I2C.h>
@@ -102,7 +102,7 @@ void loop()
       lcd.setCursor ( 0, 1 );
 
    }
-   
+
    delay (200);
 
 }
