@@ -10,7 +10,7 @@ Liquid Crystal Functions: https://github.com/fdebrabander/Arduino-LiquidCrystal-
 
 ![LCD library](https://bitbucket.org/fmalpartida/new-liquidcrystal/downloads/I2CLCDextraIO_assemblyProject_small.jpg)
 
-Connection:
+#Connection#:
 
   GND->GND
 
@@ -20,7 +20,7 @@ Connection:
 
   SCL->A5
 
-:::::::::::::::::::::::::::::Example:::::::::::::::::::::::::::::
+:::::::::::::::::::::::::::::#Example#:::::::::::::::::::::::::::::
 ```cpp
 #include <Wire.h> 
 #include <LiquidCrystal_I2C.h>
@@ -84,7 +84,7 @@ void loop()
 
       }
       lcd.setCursor ( 0, 1 );
-   }
+   }    
    delay (200);
 
 }
