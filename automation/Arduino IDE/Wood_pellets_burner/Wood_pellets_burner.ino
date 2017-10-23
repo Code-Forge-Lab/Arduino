@@ -3,6 +3,8 @@
 
 #include <Wire.h>
 #include <LiquidCrystal_I2C.h>
+#include <EEPROM.h>
+
 
 //0x3F need to find out with :LINK:http://playground.arduino.cc/Main/I2cScanner
 LiquidCrystal_I2C lcd(0x3F, 2, 1, 0, 4, 5, 6,7,3, POSITIVE );
@@ -30,6 +32,8 @@ void setup() {
    Serial.begin(9600);
    Serial.println ("Load Complete");
    delay(500);
+   
+  Serial.print ("EEPROM:" + String (EEPROM.read(0) ));
 }
 
 bool buttonRelease (int btn ) {
@@ -131,8 +135,4 @@ void loop() {
 
 
 }
-<<<<<<< HEAD
 
-=======
-
->>>>>>> e94a25f37f4eab6b404a6d8d2976ba3b90f671f8
