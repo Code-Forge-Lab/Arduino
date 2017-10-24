@@ -106,6 +106,13 @@ int CLK_TIME=0;
 bool menu1 = false;
 int16_t menu1Timeout = 0;
 
+void printmenu () {
+            lcd.clear();
+            lcd.print ( menu[navmenu.getMenuSelected()].functionName);
+            lcd.setCursor(0,1);
+            lcd.print (menu[navmenu.getMenuSelected()].functionValue);
+  };
+
 void loop() {
   
   // counters
@@ -120,27 +127,31 @@ void loop() {
 
 //  if (CLK_TIME ==10) {} // slow components
 //  {
-         lcd.clear();
+         
 //         lcd.print("MEMORY:" + String (FANSPEED.value));
 //            lcd.print("MEMORY:" + String (FANSPEED.value));
             
-            
-            lcd.print ( menu[navmenu.getMenuSelected()].functionName);
-            lcd.setCursor(0,1);
-            lcd.print (menu[navmenu.getMenuSelected()].functionValue);
+            printmenu ();
+           
     
-              // No blink  , just for visual
-         if (  (navmenu.getMenuLenght() != navmenu.getMenuSelected ()+1) && buttonRelease (BUTTON_UP  )) {  Serial.print ( "getMenuSelected:" + String (navmenu.getMenuSelected ()) + ",getMenuLenght:" + String (navmenu.getMenuLenght()) );
+
+             
+         if (   __up) {//  Serial.print ( "getMenuSelected:" + String (navmenu.getMenuSelected ()) + ",getMenuLenght:" + String (navmenu.getMenuLenght()) );
      //        FANSPEED.addValue();
-           navmenu.menuUp();
-          
-          
+               navmenu.menuUp();
+               printmenu ();
+                // Wait button realess
+               buttonRelease (BUTTON_UP );
          }
-          // No blink  , just for visual
-         if (  (0 != navmenu.getMenuSelected ()) && buttonRelease (BUTTON_DOWN ) ) {
+
+         
+
+         if (  __down ) {
      //        FANSPEED.subValue();
                navmenu.menuDown();
-          
+               printmenu ();
+          // Wait button realess
+              buttonRelease (BUTTON_DOWN );
          }
       
        
