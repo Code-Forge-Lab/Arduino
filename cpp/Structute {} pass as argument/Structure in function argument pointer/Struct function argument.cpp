@@ -39,9 +39,10 @@ void Testobject ( myStrut* abc) {
 	abc->x = 5;
 	
 	};
-	
-   myStrut testObj	
-	Testobject ( &testObj);
+
+	// use
+        myStrut testObj	 //Create object
+	Testobject ( &testObj); // use argument object 
 	
 //Exsample4
 //Only Working with single struct using ponters or references
