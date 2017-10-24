@@ -37,9 +37,9 @@ menuLiquidCrystalNavigate navmenu;
 
 void initiate_functions () {
    
-   menu[0].IncludeFunction(&fun0,"MAXTEMP"); 
-   menu[1].IncludeFunction(&fun1,"FANSPEED"); 
-   menu[2].IncludeFunction(&fun2,"PELLETBURNER"); 
+   menu[0].IncludeFunction(&fun0,"MAXTEMP" , MAXTEMP.getValue()); 
+   menu[1].IncludeFunction(&fun1,"FANSPEED",FANSPEED.getValue()); 
+   menu[2].IncludeFunction(&fun2,"PELLETPUSHER",PELLETPUSHER.getValue()); 
    navmenu.setmenuLenght (sizeof(menu)/sizeof(menu[0])) ; // find out about size 
   }
 

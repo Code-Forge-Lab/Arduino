@@ -8,6 +8,7 @@ struct menuLiquidCrystal {
     public:	 // Only works in public , private throw error 
     void (*fnc_)(); // whiout bracket not working , looks like try to use casting method
     String functionName;
+    int functionValue;
     // Execute Selected menu option and point to responsive function
     
    
@@ -19,9 +20,10 @@ struct menuLiquidCrystal {
         };
     
         
-    void IncludeFunction (void (*functionPointer)(),String functionName = "Uknown" ) { // where magic on
+    void IncludeFunction (void (*functionPointer)(),String functionName = "Uknown" , int functionValue = -1 ) { // where magic on
             fnc_ = functionPointer;
             this->functionName = functionName;
+            this->functionValue = functionValue;
         };	
         
        
