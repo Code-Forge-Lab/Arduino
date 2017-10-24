@@ -45,7 +45,9 @@ void fun0 (){lcd.clear();  lcd.print("Page1:");}; //function where caling
     menuLiquidCrystal menu(&fun0); // declarate
     menu.DrawFunction();
  }
- ///
+ 
+ 
+ /////////////////////////////////////
  struct MyStruct PassedStruct[]
 is mostly an alternative syntax for:
 
@@ -58,7 +60,7 @@ myFunction(StructArray[]);
 but:
 
 myFunction(StructArray);
-///
+
  header: void myFunction(struct MyStruct * PassedStruct)
 caller: myFunction(StructArray)
 status: works, you work with a pointer in PassedStruct
@@ -77,7 +79,9 @@ status: works, PassedStruct is a pointer, size provided is ignored
 header: void myFunction(struct MyStruct PassedStruct[11])
 caller: myFunction(StructArray)
 status: works, PassedStruct is a pointer, size provided is ignored
-///
+
+
+//////
 void foo (char arr[])
 into this:
 
