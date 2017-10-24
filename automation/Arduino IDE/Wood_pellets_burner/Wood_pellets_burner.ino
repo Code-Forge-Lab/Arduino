@@ -6,6 +6,13 @@
 #include <LiquidCrystal_I2C.h>
 LiquidCrystal_I2C lcd(0x3F, 2, 1, 0, 4, 5, 6,7,3, POSITIVE );
 
+
+controls MAXTEMP(1); // (1)address
+controls FANSPEED(2); //(1)address
+controls PELLETPUSHER(3); //(1)address
+
+
+
 void fun0 (){lcd.clear();  lcd.print("Page1:");};
 void fun1 (){lcd.clear();  lcd.print("Page2:" );};
 void fun2 (){lcd.clear();  lcd.print("Page3:" );};
@@ -44,10 +51,6 @@ const static  int8_t BUTTON_DOWN = 13;
 const static  int8_t BUTTON_UP = A0;
 ////////////////////
 //Program Variables
-
-controls MAXTEMP(1); // (1)address
-controls FANSPEED(2); //(1)address
-controls PELLETPUSHER(3); //(1)address
 
 
 
@@ -129,16 +132,20 @@ void loop() {
 //  buttonRelease (BUTTON_DOWN );
      
   if (__up) {
-        FANSPEED.addValue();
+//        FANSPEED.addValue();
+      navmenu.menuUp();
+      menu[navmenu.getMenuSelected()].DrawFunction();
     }
 
     if (__down) {
-        FANSPEED.subValue();
+//        FANSPEED.subValue();
+      navmenu.menuDown();
+      menu[navmenu.getMenuSelected()].DrawFunction();
     }
   
 
           if (__set) {
-              FANSPEED.setValue();                      
+//              FANSPEED.setValue();                      
             }
 
 

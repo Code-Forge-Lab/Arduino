@@ -46,7 +46,7 @@ public:
                
 
                 void menuUp () {
-                        if (menuSelected < menuLenght)
+                        if (menuSelected < menuLenght -1)
                               ++menuSelected;
                  }; 
                 void menuDown () {
@@ -54,6 +54,8 @@ public:
                     --menuSelected;
                 };
                 
+                int getMenuSelected () {return menuSelected ;};
+
                 void setmenuLenght (int16_t len) {
                     menuLenght = len;
                     // Serial.print ("SIZE: " + String (menuLenght));
@@ -61,3 +63,41 @@ public:
                 };
 
 };
+
+// //How to use it 
+// 1.Create functions 
+
+// void fun0 (){lcd.clear();  lcd.print("Page1:");};
+// void fun1 (){lcd.clear();  lcd.print("Page2:" );};
+// void fun2 (){lcd.clear();  lcd.print("Page3:" );};
+// void fun3 (){lcd.clear();  lcd.print("Page4:" );};
+
+// 2.Create objects
+// menuLiquidCrystal menu[4];
+// menuLiquidCrystalNavigate navmenu;
+
+// 3.Initiate all  and then use in  void setup() {}
+
+// void initiate_functions () {
+    
+//     menu[0].IncludeFunction(&fun0); 
+//     menu[1].IncludeFunction(&fun1); 
+//     menu[2].IncludeFunction(&fun2); 
+//     menu[3].IncludeFunction(&fun3); 
+ 
+ 
+//     navmenu.setmenuLenght (sizeof(menu)/2) ; // give dinamic size
+//    }
+
+//  4.Use with events and print execude function
+//  if (__up) {
+//     //        FANSPEED.addValue();
+//           navmenu.menuUp();
+//           menu[navmenu.getMenuSelected()].DrawFunction();
+//         }
+    
+//         if (__down) {
+//     //        FANSPEED.subValue();
+//           navmenu.menuDown();
+//           menu[navmenu.getMenuSelected()].DrawFunction();
+//         }
