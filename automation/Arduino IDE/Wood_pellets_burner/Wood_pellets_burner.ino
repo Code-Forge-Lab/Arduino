@@ -13,15 +13,15 @@ controls PELLETPUSHERSPEED(3); //(1)address
 
 
 
-void fun0 (){
+void funTEMP (){
   lcd.clear();  lcd.print("Page1:"); delay (3000);
 };
 
-void fun1 (){
+void funFAN (){
   lcd.clear();  lcd.print("Page2:" );delay (3000);
   };
   
-void fun2 (){
+void funPELLETPUSHERSPEED (){
   lcd.clear();  lcd.print("Page3:" );delay (3000);
 };
 
@@ -37,9 +37,9 @@ menuLiquidCrystalNavigate navmenu;
 
 void initiate_functions () {
    
-   menu[0].IncludeFunction(&fun0,"Temperature" , MAXTEMP.getValue()); 
-   menu[1].IncludeFunction(&fun1,"Fan",FANSPEED.getValue()); 
-   menu[2].IncludeFunction(&fun2,"Pellet Pusher",PELLETPUSHERSPEED.getValue()); 
+   menu[0].IncludeFunction(&funTEMP,"Temperature" , MAXTEMP.getValue()); 
+   menu[1].IncludeFunction(&funFAN,"Fan",FANSPEED.getValue()); 
+   menu[2].IncludeFunction(&funPELLETPUSHERSPEED,"Pellet Pusher",PELLETPUSHERSPEED.getValue()); 
    navmenu.setmenuLenght (sizeof(menu)/sizeof(menu[0])) ; // find out about size 
   }
 
