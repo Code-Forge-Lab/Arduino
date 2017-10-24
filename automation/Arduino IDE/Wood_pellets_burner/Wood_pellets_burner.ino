@@ -18,26 +18,27 @@ void funTEMP (){
   printMenuFunc("Max temperature",&MAXTEMP);
 
 };
-
+//////////////////
 void funFAN (){
    printMenuFunc("Max. Fan RPM",&FANSPEED);
   };
-  
+//////////////////  
 void funPELLETPUSHER (){
   printMenuFunc("Gran. Greitis",&PELLETPUSHERSPEED);
   printMenuFunc("Gran.Laiko Truk.",&PELLETPUSHERTIME);
 };
 
-void BESTFUNCTION () {
-      Serial.print ("WORKIN!!!!G");
-      delay (5000);
+
+/////////////////
+void __funLCDLIGHT () {    
+      if (LCDLIGHT.getValue() > 0)lcd.setBacklight(HIGH); else lcd.setBacklight(LOW); 
   };
 
 void funLCDLIGHT (){
   
-  printMenuFunc("LCD Sviesa",&LCDLIGHT ,BESTFUNCTION );
+  printMenuFunc("LCD Sviesa",&LCDLIGHT ,__funLCDLIGHT );
 
-  if (LCDLIGHT.getValue() > 0)lcd.setBacklight(HIGH); else lcd.setBacklight(LOW); 
+  
 };
 
 
