@@ -18,11 +18,12 @@ void funTEMP (){
 };
 
 void funFAN (){
-  lcd.clear();  lcd.print("Page2:" );delay (3000);
+   printMenuFunc("Max. Fan RPM",&FANSPEED);
   };
   
 void funPELLETPUSHERSPEED (){
-  lcd.clear();  lcd.print("Page3:" );delay (3000);
+  printMenuFunc("Gran. Greitis",&PELLETPUSHERSPEED);
+  printMenuFunc("Gran. Laiko Truk.",&PELLETPUSHERSPEED);
 };
 
 void fun3 (){

@@ -41,7 +41,7 @@ public:
       // contructor 
       controls (int address) {
           this->address = address;
-        getValue (); // initiliaze value from EEPROM
+          readValue (); // initiliaze value from EEPROM
       }
    
  // read data 
