@@ -29,8 +29,8 @@ bool buttonRelease (int btn ) {
 
 //int *optional = 0
 //
-
-  void printMenuFunc (String text , controls* EEPROM  , void (*functionPointer)() = 0 ) {
+void myF () {};
+  void printMenuFunc (String text , controls* EEPROM  , void (*functionPointer)() = myF ) {
       
       int8_t __set; 
       int8_t __up;
