@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <stddef.h>
 #include "ManageReadWrite8bitEEPROM.h"
-#include "MenuDisplays.h"
+#include "menuLiquidCrystal.h"
 
 #include <LiquidCrystal_I2C.h>
 LiquidCrystal_I2C lcd(0x3F, 2, 1, 0, 4, 5, 6,7,3, POSITIVE );
@@ -40,7 +40,7 @@ void initiate_functions () {
    menu[0].IncludeFunction(&fun0,"MAXTEMP"); 
    menu[1].IncludeFunction(&fun1,"FANSPEED"); 
    menu[2].IncludeFunction(&fun2,"PELLETBURNER"); 
-   navmenu.setmenuLenght (sizeof(menu)/sizeof(menu[0])) ; // find out about speed
+   navmenu.setmenuLenght (sizeof(menu)/sizeof(menu[0])) ; // find out about size 
   }
 
 
@@ -141,24 +141,7 @@ void loop() {
             lcd.print ( menu[navmenu.getMenuSelected()].functionName);
 
 
-     
-  if (__up) {
-//        FANSPEED.addValue();
-      navmenu.menuUp();
-      
-    }
-
-    if (__down) {
-//        FANSPEED.subValue();
-      navmenu.menuDown();
-      
-    }
-  
-   
-          if (__set) {
-//              FANSPEED.setValue();
-                menu[navmenu.getMenuSelected()].DrawFunction();                      
-            }
+ 
 
 
 
