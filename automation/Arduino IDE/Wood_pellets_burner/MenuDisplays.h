@@ -36,33 +36,28 @@ struct menuLiquidCrystalNavigate {
     
 private:
     int16_t menuLenght;
-   struct  menuLiquidCrystal *tmenu;
+    int16_t menuSelected;
+   
 public:
-    // menuLiquidCrystalNavigate ( struct menuLiquidCrystal *menuload ) {
-    //      tmenu = menuload;
-    // }
+     menuLiquidCrystalNavigate (  ) {
+        menuSelected=0;
+     }
 
-                void loadMenuLiquidCrystal (struct menuLiquidCrystal  *menuload) {
-                    tmenu =   menuload;
-                    
-                    Serial.print ("SIZE:: " +String (sizeof (tmenu) ));
-                    tmenu[2].DrawFunction();
-                    delay (4000);
-
-                    
-                }
-
-                void size () {
-                    
-                };
+               
 
                 void menuUp () {
-        
+                        if (menuSelected < menuLenght)
+                              ++menuSelected;
                  }; 
-                void menuDown () {};
+                void menuDown () {
+                    if (menuSelected > 0 )
+                    --menuSelected;
+                };
                 
                 void setmenuLenght (int16_t len) {
                     menuLenght = len;
+                    // Serial.print ("SIZE: " + String (menuLenght));
+                    // delay (2000);
                 };
 
 };

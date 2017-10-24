@@ -24,8 +24,8 @@ void initiate_functions () {
    menu[2].IncludeFunction(&fun2); 
    menu[3].IncludeFunction(&fun3); 
 
-//   navmenu.loadMenuLiquidCrystal (&menu[4]);
-   
+
+   navmenu.setmenuLenght (sizeof(menu)/2) ; 
 
 
   }
@@ -68,7 +68,7 @@ void setup() {
    delay(500);
 
 initiate_functions ();  
-navmenu.size ();
+
 }
 
 bool buttonRelease (int btn ) {
