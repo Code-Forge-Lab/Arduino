@@ -12,17 +12,20 @@ void fun2 (){lcd.clear();  lcd.print("Page3:" );};
 void fun3 (){lcd.clear();  lcd.print("Page4:" );};
 
 
- void myFnc (){};
+ 
  menuLiquidCrystal menu[4];
-
+menuLiquidCrystalNavigate navmenu;
 
 
 void initiate_functions () {
-  
-//   menu[0].IncludeFunction(&fun0); 
-//   menu[1].IncludeFunction(&fun1); 
-//   menu[2].IncludeFunction(&fun2); 
-//   menu[3].IncludeFunction(&fun3); 
+   
+   menu[0].IncludeFunction(&fun0); 
+   menu[1].IncludeFunction(&fun1); 
+   menu[2].IncludeFunction(&fun2); 
+   menu[3].IncludeFunction(&fun3); 
+
+//   navmenu.loadMenuLiquidCrystal (&menu[4]);
+   
 
 
   }
@@ -51,7 +54,7 @@ controls PELLETPUSHER(3); //(1)address
 
 void setup() {
   lcd.begin(16,2);
-  initiate_functions ();
+
   lcd.blink();
   
   // put your setup code here, to run once:
@@ -64,8 +67,8 @@ void setup() {
    Serial.println ("Load Complete");
    delay(500);
 
-  
-
+initiate_functions ();  
+navmenu.size ();
 }
 
 bool buttonRelease (int btn ) {
