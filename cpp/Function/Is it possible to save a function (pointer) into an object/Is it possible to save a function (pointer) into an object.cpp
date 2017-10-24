@@ -25,3 +25,15 @@
 			// Only Works in function,objects or in main loop
 			arrayTest[0].IncludeFunction(&myFnc) // also is working arrayTest[0].IncludeFunction( 	myFnc) giving address 
 	}
+
+
+//////////////////////////////////////////////
+// Passive Function FunctionVariable Argument 
+void testfunc () {Serial.print ("WORKIN!!!!G"); delay (5000);}
+
+void myFunc (void (*functionPointer)() = 0) {
+	delay (3000);	
+	functionPointer();	 //Works
+}
+
+myFunc (testfunc); // That Works
