@@ -8,7 +8,7 @@
 
 controls MAXTEMP(1); // (1)address
 controls FANSPEED(2); //(1)address
-controls PELLETPUSHERSPEED(3); //(1)address
+controls PELLETPUSHER(3); //(1)address
 
 
 
@@ -21,9 +21,9 @@ void funFAN (){
    printMenuFunc("Max. Fan RPM",&FANSPEED);
   };
   
-void funPELLETPUSHERSPEED (){
-  printMenuFunc("Gran. Greitis",&PELLETPUSHERSPEED);
-  printMenuFunc("Gran. Laiko Truk.",&PELLETPUSHERSPEED);
+void funPELLETPUSHER (){
+  printMenuFunc("Gran. Greitis",&PELLETPUSHER);
+  printMenuFunc("Gran.Laiko Truk.",&PELLETPUSHER);
 };
 
 void fun3 (){
@@ -40,7 +40,7 @@ void initiate_functions () {
    
    menu[0].IncludeFunction(&funTEMP,"Vanens Temp." , MAXTEMP.getValue()); 
    menu[1].IncludeFunction(&funFAN,"Oro Put. Fenas",FANSPEED.getValue()); 
-   menu[2].IncludeFunction(&funPELLETPUSHERSPEED,"Gran.stumiklis",PELLETPUSHERSPEED.getValue()); 
+   menu[2].IncludeFunction(&funPELLETPUSHER,"Gran.stumiklis",PELLETPUSHER.getValue()); 
    navmenu.setmenuLenght (sizeof(menu)/sizeof(menu[0])) ; // find out about size 
   }
 
