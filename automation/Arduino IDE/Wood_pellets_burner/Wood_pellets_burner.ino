@@ -101,19 +101,6 @@ bool buttonRelease (int btn ) {
   }
 
 
-
-void bln (int times=1) {
-      
-      for (int i=0; i <= times; i++){
-      digitalWrite(13,HIGH);
-      delay(500);
-      digitalWrite(13,LOW);
-      delay(500);
-     
-   }   
-  }
-
-
 int CLK_TIME=0;
 
 bool menu1 = false;
@@ -139,61 +126,32 @@ void loop() {
             
             
             lcd.print ( menu[navmenu.getMenuSelected()].functionName);
-
+            lcd.setCursor(0,1);
+            lcd.print (menu[navmenu.getMenuSelected()].functionValue);
 
  
-
+         if (__up) {
+     //        FANSPEED.addValue();
+           navmenu.menuUp();
+          
+         }
+    
+         if (__down) {
+     //        FANSPEED.subValue();
+               navmenu.menuDown();
+          
+         }
+      
+       
+               if (__set) {
+     //              FANSPEED.setValue();
+                     menu[navmenu.getMenuSelected()].DrawFunction();                      
+                 }
 
 
  delay (100);
    
   
-  // put your main code here, to run repeatedly:
-//delay (500);
-//analogWrite(wind, 0);
-//analogWrite(pusher, 0);
-//bln ();
-//
-//  for (int i=0; i <= 255; i++){
-//      
-//      analogWrite(pusher,i);
-//      delay(50);
-//   } 
-//
-//  delay (5000); 
-//digitalWrite (13,HIGH);
-//analogWrite(wind, 0);
-//analogWrite(pusher, 0);
-//delay (5000);
-//
-//digitalWrite (13,LOW);
-// bln(2);  
-// for (int i=0; i <= 255; i++){
-//      analogWrite(wind, i);
-//      
-//      delay(50);
-//   }   
-//
-//delay (5000);
-//digitalWrite (13,HIGH);
-//analogWrite(wind, 0);
-//analogWrite(pusher, 0);
-//delay (5000);
-
-// bln(3);  
-// for (int i=0; i <= 255; i++){
-//      analogWrite(wind, i);
-//       delay(50);
-//      analogWrite(pusher, i);
-//      delay(50);
-//   }   
-//delay (5000);
-//digitalWrite (13,HIGH);
-//analogWrite(wind, 0);
-//analogWrite(pusher, 0);
-//delay (5000);
-
-
 
 }
 
