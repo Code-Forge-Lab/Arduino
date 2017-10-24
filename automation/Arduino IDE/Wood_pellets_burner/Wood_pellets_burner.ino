@@ -9,7 +9,7 @@ LiquidCrystal_I2C lcd(0x3F, 2, 1, 0, 4, 5, 6,7,3, POSITIVE );
 
 controls MAXTEMP(1); // (1)address
 controls FANSPEED(2); //(1)address
-controls PELLETPUSHER(3); //(1)address
+controls PELLETPUSHERSPEED(3); //(1)address
 
 
 
@@ -37,9 +37,9 @@ menuLiquidCrystalNavigate navmenu;
 
 void initiate_functions () {
    
-   menu[0].IncludeFunction(&fun0,"MAXTEMP" , MAXTEMP.getValue()); 
-   menu[1].IncludeFunction(&fun1,"FANSPEED",FANSPEED.getValue()); 
-   menu[2].IncludeFunction(&fun2,"PELLETPUSHER",PELLETPUSHER.getValue()); 
+   menu[0].IncludeFunction(&fun0,"Temperature" , MAXTEMP.getValue()); 
+   menu[1].IncludeFunction(&fun1,"Fan",FANSPEED.getValue()); 
+   menu[2].IncludeFunction(&fun2,"Pellet Pusher",PELLETPUSHERSPEED.getValue()); 
    navmenu.setmenuLenght (sizeof(menu)/sizeof(menu[0])) ; // find out about size 
   }
 
@@ -64,7 +64,7 @@ const static  int8_t BUTTON_UP = A0;
 void setup() {
   lcd.begin(16,2);
 
-  lcd.blink();
+  
   
   // put your setup code here, to run once:
   pinMode(pusher,OUTPUT);
@@ -107,10 +107,11 @@ bool menu1 = false;
 int16_t menu1Timeout = 0;
 
 void printmenu () {
+            int8_t menuselected = navmenu.getMenuSelected();
             lcd.clear();
-            lcd.print ( menu[navmenu.getMenuSelected()].functionName);
+            lcd.print (String (menuselected+1)+String (")") + menu[menuselected].functionName);
             lcd.setCursor(0,1);
-            lcd.print (menu[navmenu.getMenuSelected()].functionValue);
+//            lcd.print (menu[navmenu.getMenuSelected()].functionValue);
   };
 
 void loop() {
@@ -156,9 +157,10 @@ void loop() {
       
        
                if (__set) {
-     //              FANSPEED.setValue();
+                     lcd.blink();
                      menu[navmenu.getMenuSelected()].DrawFunction();                      
-                 }
+                     lcd.noBlink();
+                 }  
 
 
  delay (100);
