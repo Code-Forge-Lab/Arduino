@@ -45,11 +45,14 @@ public:
       }
    
  // read data 
-        int getValue () {
+        int readValue () {
                  value = readMemory (address);
                    return value;
             }
        
+            int getValue () {               
+                  return value;
+           }     
 
            // write data  manualy
         void setValue (int setdata  , bool write=true) {
