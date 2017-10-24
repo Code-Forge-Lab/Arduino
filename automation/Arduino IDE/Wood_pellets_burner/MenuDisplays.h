@@ -1,4 +1,7 @@
 //Structure
+#include <stdio.h>
+#include <stdarg.h> 
+using namespace std;
 struct menuLiquidCrystal {
     public:
         int16_t menuLenght;
@@ -6,8 +9,15 @@ struct menuLiquidCrystal {
     void (*fnc_)(); // whiout bracket not working , looks like try to use casting method
     // Execute Selected menu option and point to responsive function
     
-    menuLiquidCrystal  (int16_t menuLenght)  {
-        this->menuLenght = menuLenght; // lenght of array 
+    menuLiquidCrystal  ( void (*functionPointer)() , ...  )  {
+        va_list argptr;
+          va_start(argptr, format);
+         vfprintf(stderr, format, argptr);
+         va_end(argptr);
+
+        fnc_ = functionPointer;
+        
+        // this->menuLenght = menuLenght; // lenght of array 
     }
 
     void  DrawFunction () { //Expect Selected menu function
