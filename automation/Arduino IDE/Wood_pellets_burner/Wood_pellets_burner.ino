@@ -129,14 +129,15 @@ void loop() {
             lcd.setCursor(0,1);
             lcd.print (menu[navmenu.getMenuSelected()].functionValue);
     
-              // No blink 
-         if (navmenu.getMenuLenght() != navmenu.getMenuSelected () && buttonRelease (BUTTON_UP  )) {
+              // No blink  , just for visual
+         if (  (navmenu.getMenuLenght() != navmenu.getMenuSelected ()+1) && buttonRelease (BUTTON_UP  )) {  Serial.print ( "getMenuSelected:" + String (navmenu.getMenuSelected ()) + ",getMenuLenght:" + String (navmenu.getMenuLenght()) );
      //        FANSPEED.addValue();
            navmenu.menuUp();
           
+          
          }
-          // No blink 
-         if ( 0 != navmenu.getMenuSelected () && buttonRelease (BUTTON_DOWN ) ) {
+          // No blink  , just for visual
+         if (  (0 != navmenu.getMenuSelected ()) && buttonRelease (BUTTON_DOWN ) ) {
      //        FANSPEED.subValue();
                navmenu.menuDown();
           
