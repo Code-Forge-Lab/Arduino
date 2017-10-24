@@ -45,7 +45,20 @@ void fun0 (){lcd.clear();  lcd.print("Page1:");}; //function where caling
     menuLiquidCrystal menu(&fun0); // declarate
     menu.DrawFunction();
  }
- 
+ ///
+ struct MyStruct PassedStruct[]
+is mostly an alternative syntax for:
+
+struct MyStruct * PassedStruct
+So yes, you will access and modify the original structure.
+
+Just one detail to change, the correct call to to the function is not
+
+myFunction(StructArray[]);
+but:
+
+myFunction(StructArray);
+///
  header: void myFunction(struct MyStruct * PassedStruct)
 caller: myFunction(StructArray)
 status: works, you work with a pointer in PassedStruct
