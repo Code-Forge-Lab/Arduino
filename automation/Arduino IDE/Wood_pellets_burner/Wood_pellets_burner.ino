@@ -4,8 +4,6 @@
 #include "menuLiquidCrystal.h"
 #include "functions.h"
 
-#include <LiquidCrystal_I2C.h>
-LiquidCrystal_I2C lcd(0x3F, 2, 1, 0, 4, 5, 6,7,3, POSITIVE );
 
 
 controls MAXTEMP(1); // (1)address
@@ -15,7 +13,8 @@ controls PELLETPUSHERSPEED(3); //(1)address
 
 
 void funTEMP (){
-  lcd.clear();  lcd.print("Page1:"); delay (3000);
+  printMenuFunc("MAX TEMP",&MAXTEMP);
+
 };
 
 void funFAN (){
@@ -38,9 +37,9 @@ menuLiquidCrystalNavigate navmenu;
 
 void initiate_functions () {
    
-   menu[0].IncludeFunction(&funTEMP,"Temperature" , MAXTEMP.getValue()); 
-   menu[1].IncludeFunction(&funFAN,"Fan",FANSPEED.getValue()); 
-   menu[2].IncludeFunction(&funPELLETPUSHERSPEED,"Pellet Pusher",PELLETPUSHERSPEED.getValue()); 
+   menu[0].IncludeFunction(&funTEMP,"Vanens Temp." , MAXTEMP.getValue()); 
+   menu[1].IncludeFunction(&funFAN,"Oro Put. Fenas",FANSPEED.getValue()); 
+   menu[2].IncludeFunction(&funPELLETPUSHERSPEED,"Gran.stumiklis",PELLETPUSHERSPEED.getValue()); 
    navmenu.setmenuLenght (sizeof(menu)/sizeof(menu[0])) ; // find out about size 
   }
 
@@ -53,9 +52,6 @@ const static  int wind = 11;
 
 //b1(12) set, b2(13) down; b3(A0) up
 //buttons
-const static  int8_t BUTTON_SET = 12;
-const static  int8_t BUTTON_DOWN = 13;
-const static  int8_t BUTTON_UP = A0;
 ////////////////////
 //Program Variables
 
