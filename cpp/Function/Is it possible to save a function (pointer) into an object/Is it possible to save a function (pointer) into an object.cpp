@@ -28,7 +28,7 @@
 
 
 //////////////////////////////////////////////
-// Passive Function FunctionVariable Argument 
+// Passive Function FunctionVariable Argument  (CRASHING WHEN CALLING 0 [emty not function])
 void testfunc () {Serial.print ("WORKIN!!!!G"); delay (5000);}
 
 void myFunc (void (*functionPointer)() = 0) {
@@ -37,3 +37,16 @@ void myFunc (void (*functionPointer)() = 0) {
 }
 
 myFunc (testfunc); // That Works
+myFunc (); // CRASH AT THIS 
+
+// Better use 
+void testfunc () {Serial.print ("WORKIN!!!!G"); delay (5000);}
+
+void cloneFunc () {}; // dummy load 
+void myFunc (void (*functionPointer)() = cloneFunc) {
+	delay (3000);	
+	functionPointer();	 //Works
+}
+
+myFunc (testfunc); // That Works
+myFunc (); // That also works
