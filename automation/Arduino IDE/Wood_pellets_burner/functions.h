@@ -63,9 +63,16 @@ void myF () {};
                 lcd.print (EEPROM->getValue());
                 
           functionPointer();
-     delay (150);         
+     delay (100);         
      if (__set >=1) break; //end loop life then set button is pressed            
   }
         EEPROM->setValue ();
         lcd.noBlink();
+        
+        pinMode (13,OUTPUT);
+        delay(30);
+        digitalWrite(13,HIGH);
+        delay(30);
+        digitalWrite(13,LOW);
+        pinMode (13,INPUT);
     }
