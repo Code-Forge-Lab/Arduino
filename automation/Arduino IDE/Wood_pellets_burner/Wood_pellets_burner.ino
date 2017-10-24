@@ -126,16 +126,16 @@ void loop() {
 //  buttonRelease (BUTTON_DOWN );
      
   if (__up) {
-      //  FANSPEED.addValue();
+        FANSPEED.addValue();
     }
 
     if (__down) {
-       // FANSPEED.subValue();
+        FANSPEED.subValue();
     }
   
 
           if (__set) {
-             // FANSPEED.setValue();                      
+              FANSPEED.setValue();                      
             }
 
 
