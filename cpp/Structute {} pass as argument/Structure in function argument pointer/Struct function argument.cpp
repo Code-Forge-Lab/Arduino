@@ -40,7 +40,8 @@ void Testobject ( myStrut* abc) {
 	
 	};
 	
-	
+   myStrut testObj	
+	Testobject ( &testObj);
 	
 //Exsample4
 //Only Working with single struct using ponters or references
