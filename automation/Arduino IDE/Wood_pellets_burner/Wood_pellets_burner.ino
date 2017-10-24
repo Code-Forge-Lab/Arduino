@@ -6,10 +6,11 @@
 
 
 
-controls MAXTEMP(1); // (1)address
-controls FANSPEED(2); //(1)address
-controls PELLETPUSHER(3); //(1)address
+controls MAXTEMP(1); //address
+controls FANSPEED(2); //address
 
+controls PELLETPUSHERTIME(3); //address
+controls PELLETPUSHERSPEED(4); //address
 
 
 void funTEMP (){
@@ -22,8 +23,8 @@ void funFAN (){
   };
   
 void funPELLETPUSHER (){
-  printMenuFunc("Gran. Greitis",&PELLETPUSHER);
-  printMenuFunc("Gran.Laiko Truk.",&PELLETPUSHER);
+  printMenuFunc("Gran. Greitis",&PELLETPUSHERSPEED);
+  printMenuFunc("Gran.Laiko Truk.",&PELLETPUSHERTIME);
 };
 
 void fun3 (){
@@ -37,15 +38,15 @@ menuLiquidCrystalNavigate navmenu;
 
 
 void initiate_functions () {
-   
+
+   // include menu objects
    menu[0].IncludeFunction(&funTEMP,"Vanens Temp." , MAXTEMP.getValue()); 
    menu[1].IncludeFunction(&funFAN,"Oro Put. Fenas",FANSPEED.getValue()); 
-   menu[2].IncludeFunction(&funPELLETPUSHER,"Gran.stumiklis",PELLETPUSHER.getValue()); 
+   menu[2].IncludeFunction(&funPELLETPUSHER,"Gran.stumiklis",PELLETPUSHERSPEED.getValue()); 
+   //total menu available
    navmenu.setmenuLenght (sizeof(menu)/sizeof(menu[0])) ; // find out about size 
   }
 
-
-//0x3F need to find out with :LINK:http://playground.arduino.cc/Main/I2cScanner
 
 
 const static  int pusher = 10;
