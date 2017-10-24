@@ -85,15 +85,15 @@ bool buttonRelease (int btn ) {
          while (digitalRead(btn) > 0)
          {
               pressed = true;
-              delay(100);
+              delay(50);
               Serial.println("Button Pressed: "+ String(btn));
           }
              if (pressed) {
                  Serial.println("Button Released");
                  pinMode (13,OUTPUT);
-                  delay(100);
+                  delay(30);
                   digitalWrite(13,HIGH);
-                  delay(100);
+                  delay(30);
                   digitalWrite(13,LOW);
                  pinMode (13,INPUT);
              }
@@ -114,7 +114,7 @@ void loop() {
   int8_t __set = digitalRead(BUTTON_SET) ;
   int8_t __up = digitalRead(BUTTON_UP);
   int8_t __down = digitalRead(BUTTON_DOWN);
-   
+
 
      Serial.println("__set:"+ String(__set) + ",__up:"+ String(__up) + ",__down:" + String(__down)  );
 
@@ -128,15 +128,15 @@ void loop() {
             lcd.print ( menu[navmenu.getMenuSelected()].functionName);
             lcd.setCursor(0,1);
             lcd.print (menu[navmenu.getMenuSelected()].functionValue);
-
- 
-         if (__up) {
+    
+              // No blink 
+         if (navmenu.getMenuLenght() != navmenu.getMenuSelected () && buttonRelease (BUTTON_UP  )) {
      //        FANSPEED.addValue();
            navmenu.menuUp();
           
          }
-    
-         if (__down) {
+          // No blink 
+         if ( 0 != navmenu.getMenuSelected () && buttonRelease (BUTTON_DOWN ) ) {
      //        FANSPEED.subValue();
                navmenu.menuDown();
           
@@ -154,4 +154,3 @@ void loop() {
   
 
 }
-

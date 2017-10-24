@@ -59,7 +59,7 @@ public:
                 };
                 
                 int getMenuSelected () {return menuSelected ;};
-
+                int getMenuLenght () {return menuLenght;};
                 void setmenuLenght (int16_t len) {
                     menuLenght = len;
                     // Serial.print ("SIZE: " + String (menuLenght));
@@ -87,18 +87,24 @@ public:
 // menuLiquidCrystalNavigate navmenu;
 
 
+
 // void initiate_functions () {
-   
-//    menu[0].IncludeFunction(&fun0,"MAXTEMP"); 
-//    menu[1].IncludeFunction(&fun1,"FANSPEED"); 
-//    menu[2].IncludeFunction(&fun2,"PELLETBURNER"); 
-//    navmenu.setmenuLenght (sizeof(menu)/sizeof(menu[0])) ; // find out about size 
-//   }
+    
+//     menu[0].IncludeFunction(&fun0,"MAXTEMP" , MAXTEMP.getValue()); 
+//     menu[1].IncludeFunction(&fun1,"FANSPEED",FANSPEED.getValue()); 
+//     menu[2].IncludeFunction(&fun2,"PELLETPUSHER",PELLETPUSHER.getValue()); 
+//     navmenu.setmenuLenght (sizeof(menu)/sizeof(menu[0])) ; // find out about size 
+//    }
 
 
 //  4.Use with events and print execude function
-// lcd.clear(); // Always Draw names 
-// lcd.print ( menu[navmenu.getMenuSelected()].functionName);   // Always Draw names  
+
+        //   // print block
+        //   lcd.clear();
+        //   lcd.print ( menu[navmenu.getMenuSelected()].functionName);
+        //   lcd.setCursor(0,1);
+        //   lcd.print (menu[navmenu.getMenuSelected()].functionValue);
+
 // if (__up) {
 //     //        FANSPEED.addValue();
 //           navmenu.menuUp();
