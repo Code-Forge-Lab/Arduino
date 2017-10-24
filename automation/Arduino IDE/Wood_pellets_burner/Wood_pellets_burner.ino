@@ -74,7 +74,7 @@ void initiate_updatePins () {
       Serial.println ("FANSPEED:" + String (FANSPEED.getValue()));
       Serial.println ("PELLETPUSHERSPEED:" + String (PELLETPUSHERSPEED.getValue()));
       Serial.println ("PELLETPUSHERTIME:" + String (PELLETPUSHERTIME.getValue()));
-      Serial.println ("MAXTEMP:" + String (PELLETPUSHERTIME.getValue()));
+      Serial.println ("MAXTEMP:" + String (MAXTEMP.getValue()));
   }
 
 const static  int pusher = 10;
