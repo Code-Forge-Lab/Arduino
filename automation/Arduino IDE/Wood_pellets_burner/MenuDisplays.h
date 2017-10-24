@@ -9,16 +9,7 @@ struct menuLiquidCrystal {
     void (*fnc_)(); // whiout bracket not working , looks like try to use casting method
     // Execute Selected menu option and point to responsive function
     
-    menuLiquidCrystal  ( void (*functionPointer)() , ...  )  {
-        va_list argptr;
-          va_start(argptr, format);
-         vfprintf(stderr, format, argptr);
-         va_end(argptr);
-
-        fnc_ = functionPointer;
-        
-        // this->menuLenght = menuLenght; // lenght of array 
-    }
+   
 
     void  DrawFunction () { //Expect Selected menu function
             

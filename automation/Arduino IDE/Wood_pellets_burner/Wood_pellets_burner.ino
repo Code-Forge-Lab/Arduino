@@ -13,7 +13,7 @@ void fun3 (){lcd.clear();  lcd.print("Page4:" );};
 
 
  void myFnc (){};
- menuLiquidCrystal menu(&fun0);
+ menuLiquidCrystal menu[4];
 
 
 
@@ -24,7 +24,7 @@ void initiate_functions () {
 //   menu[2].IncludeFunction(&fun2); 
 //   menu[3].IncludeFunction(&fun3); 
 
-  menu.DrawFunction();
+
   }
 
 
