@@ -78,3 +78,13 @@ void Testobject ( Card* abc) {
 	//abc->functionMy () {return 3;};
 	};
 
+/////////////////////////////////////////////
+// Passive Function FunctionVariable Argument 
+void testfunc () {Serial.print ("WORKIN!!!!G"); delay (5000);}
+
+void myFunc (void (*functionPointer)() = 0) {
+	delay (3000);	
+	functionPointer();	 //Works
+}
+
+myFunc (testfunc); // That Works
