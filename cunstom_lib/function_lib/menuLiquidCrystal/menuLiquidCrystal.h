@@ -59,7 +59,7 @@ public:
                 };
                 
                 int getMenuSelected () {return menuSelected ;};
-
+                int getMenuLenght () {return menuLenght;};
                 void setmenuLenght (int16_t len) {
                     menuLenght = len;
                     // Serial.print ("SIZE: " + String (menuLenght));
