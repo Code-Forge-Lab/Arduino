@@ -7,12 +7,12 @@
 int8_t FANPIN = 10; // ~
 int8_t PELLETPUSHERPIN = 11; // ~
 
-controls LCDLIGHT(0);//address
-controls MAXTEMP(1); //address
-controls FANSPEED(2); //address
+controls LCDLIGHT(1);//address
+controls MAXTEMP(2); //address
+controls FANSPEED(3); //address
 
-controls PELLETPUSHERTIME(3); //address
-controls PELLETPUSHERSPEED(4); //address
+controls PELLETPUSHERTIME(4); //address
+controls PELLETPUSHERSPEED(5); //address
 
 
 
@@ -70,6 +70,11 @@ void initiate_updatePins () {
       if (LCDLIGHT.getValue() > 0)lcd.setBacklight(HIGH); else lcd.setBacklight(LOW); 
       analogWrite (FANPIN, FANSPEED.getValue()); 
       analogWrite (PELLETPUSHERPIN, PELLETPUSHERSPEED.getValue());
+      
+      Serial.println ("FANSPEED:" + String (FANSPEED.getValue()));
+      Serial.println ("PELLETPUSHERSPEED:" + String (PELLETPUSHERSPEED.getValue()));
+      Serial.println ("PELLETPUSHERTIME:" + String (PELLETPUSHERTIME.getValue()));
+      Serial.println ("MAXTEMP:" + String (PELLETPUSHERTIME.getValue()));
   }
 
 const static  int pusher = 10;
@@ -132,7 +137,7 @@ void loop() {
   int8_t __down = digitalRead(BUTTON_DOWN);
 
 
-     Serial.println("__set:"+ String(__set) + ",__up:"+ String(__up) + ",__down:" + String(__down)  );
+//     Serial.println("__set:"+ String(__set) + ",__up:"+ String(__up) + ",__down:" + String(__down)  );
 
 //  if (CLK_TIME ==10) {} // slow components
 //  {
@@ -168,6 +173,7 @@ void loop() {
                      lcd.blink();
                      menu[navmenu.getMenuSelected()].DrawFunction();                      
                      lcd.noBlink();
+            
                  }  
 
 

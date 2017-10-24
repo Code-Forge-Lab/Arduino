@@ -22,7 +22,7 @@ int writeMemory (int address , int setdata , bool write = true) {
      
           if (write) // boolean control
             EEPROM.write(address,setdata);
-        delay (20); // 5ml seconds it takes to write in memory
+           delay (70); // 5ml seconds it takes to write in memory
          return setdata;
 }
 
@@ -32,16 +32,17 @@ int writeMemory (int address , int setdata , bool write = true) {
 class  controls
 {
 private:
-     int old_value; // it's for changed value 
-    
+     unsigned  int old_value; // it's for changed value 
+     unsigned  int address;
+     unsigned  int value;  
 public:
-     int address;
-     int value;   
+     
  
       // contructor 
       controls (int address) {
-          this->address = address;
+          this->address =address;
           readValue (); // initiliaze value from EEPROM
+          old_value = 65000; // FIX When 
       }
    
  // read data 
@@ -55,35 +56,38 @@ public:
            }     
 
            // write data  manualy
-        void setValue (int setdata  , bool write=true) {
+        void setValue (int setdata  ) {
             if (old_value != value) { // to protect from always write
-                    writeMemory (address,setdata);
+                    writeMemory (address,setdata,true);                
                     value = setdata;
+//                   
+                    Serial.println("setValue (int setdata) old_value: "+String(old_value) + ", value:"+value);
                     old_value = value; // cach new value
-                    Serial.print("setValue (int setdata  , bool write=true)");
                 }     
         }    
          // auto write data
-         void setValue ( bool write = true) {
-             if (old_value != value) { // to protect from always write
-                      writeMemory (address,value,write);
+         void setValue () {
+             if (old_value != value || value   ) { // to protect from always write                                       
+                      writeMemory (address,this->value,true);
+  
+                      Serial.println("setValue () old_value: "+String(old_value) + ", value:"+value);
                       old_value = value;  // cach new value
-                      Serial.print("setValue ( bool write = true)");
-             }
-         }
+             } else 
+                      Serial.println("ERROR:setValue () old_value: "+String(old_value) + ", value:"+value);
+         }  
    
         // Increment value/data
         void addValue () {
              if (value < 254) {
                     ++value;    
-                    Serial.print ("add: "+ String (value));            
+                    Serial.println ("add: "+ String (value));            
              }
         }
         // Decrement value/data 
         void subValue () {
             if (value > 0) {
                    --value;                
-                   Serial.print ("substract: "+ String (value));
+                   Serial.println ("substract: "+ String (value));
             }
        }
 };
