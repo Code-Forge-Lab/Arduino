@@ -13,28 +13,34 @@ controls PELLETPUSHER(3); //(1)address
 
 
 
-void fun0 (){lcd.clear();  lcd.print("Page1:");};
-void fun1 (){lcd.clear();  lcd.print("Page2:" );};
-void fun2 (){lcd.clear();  lcd.print("Page3:" );};
-void fun3 (){lcd.clear();  lcd.print("Page4:" );};
+void fun0 (){
+  lcd.clear();  lcd.print("Page1:"); delay (3000);
+};
+
+void fun1 (){
+  lcd.clear();  lcd.print("Page2:" );delay (3000);
+  };
+  
+void fun2 (){
+  lcd.clear();  lcd.print("Page3:" );delay (3000);
+};
+
+void fun3 (){
+  lcd.clear();  lcd.print("Page4:" );delay (3000);
+};
 
 
- 
- menuLiquidCrystal menu[4];
+
+menuLiquidCrystal menu[3];
 menuLiquidCrystalNavigate navmenu;
 
 
 void initiate_functions () {
    
-   menu[0].IncludeFunction(&fun0); 
-   menu[1].IncludeFunction(&fun1); 
-   menu[2].IncludeFunction(&fun2); 
-   menu[3].IncludeFunction(&fun3); 
-
-
-   navmenu.setmenuLenght (sizeof(menu)/2) ; 
-
-
+   menu[0].IncludeFunction(&fun0,"MAXTEMP"); 
+   menu[1].IncludeFunction(&fun1,"FANSPEED"); 
+   menu[2].IncludeFunction(&fun2,"PELLETBURNER"); 
+   navmenu.setmenuLenght (sizeof(menu)/sizeof(menu[0])) ; // find out about speed
   }
 
 
@@ -67,7 +73,7 @@ void setup() {
   pinMode (BUTTON_DOWN,INPUT);
   pinMode (BUTTON_UP,INPUT);
    Serial.begin(9600);
-   Serial.println ("Load Complete");
+   Serial.println ("Load Complete: " + String  ("Structs array") + sizeof (menu) + String (",Menu [0] Size") + sizeof (menu[0]));
    delay(500);
 
 initiate_functions ();  
@@ -110,42 +116,48 @@ void bln (int times=1) {
 
 int CLK_TIME=0;
 
+bool menu1 = false;
+int16_t menu1Timeout = 0;
 
 void loop() {
   
+  // counters
+  if (menu1Timeout > 0) --menu1Timeout; 
   if (CLK_TIME >= 10) CLK_TIME=0;CLK_TIME++; // program one second timer
   int8_t __set = digitalRead(BUTTON_SET) ;
   int8_t __up = digitalRead(BUTTON_UP);
   int8_t __down = digitalRead(BUTTON_DOWN);
-
+   
 
      Serial.println("__set:"+ String(__set) + ",__up:"+ String(__up) + ",__down:" + String(__down)  );
 
-  if (CLK_TIME ==10) {} // slow components
-  {
+//  if (CLK_TIME ==10) {} // slow components
+//  {
          lcd.clear();
-         lcd.print("MEMORY:" + String (FANSPEED.value));
-    }
-  
-//  buttonRelease (BUTTON_SET );
-//  buttonRelease (BUTTON_UP );
-//  buttonRelease (BUTTON_DOWN );
+//         lcd.print("MEMORY:" + String (FANSPEED.value));
+//            lcd.print("MEMORY:" + String (FANSPEED.value));
+            
+            
+            lcd.print ( menu[navmenu.getMenuSelected()].functionName);
+
+
      
   if (__up) {
 //        FANSPEED.addValue();
       navmenu.menuUp();
-      menu[navmenu.getMenuSelected()].DrawFunction();
+      
     }
 
     if (__down) {
 //        FANSPEED.subValue();
       navmenu.menuDown();
-      menu[navmenu.getMenuSelected()].DrawFunction();
+      
     }
   
-
+   
           if (__set) {
-//              FANSPEED.setValue();                      
+//              FANSPEED.setValue();
+                menu[navmenu.getMenuSelected()].DrawFunction();                      
             }
 
 

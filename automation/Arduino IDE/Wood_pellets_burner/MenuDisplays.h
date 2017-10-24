@@ -7,6 +7,7 @@ struct menuLiquidCrystal {
    
     public:	 // Only works in public , private throw error 
     void (*fnc_)(); // whiout bracket not working , looks like try to use casting method
+    String functionName;
     // Execute Selected menu option and point to responsive function
     
    
@@ -14,12 +15,13 @@ struct menuLiquidCrystal {
     void  DrawFunction () { //Expect Selected menu function
             
                     fnc_(); // How Call Pointed Function ;
-                delay (3000);
+               
         };
     
         
-    void IncludeFunction (void (*functionPointer)() ) { // where magic on
+    void IncludeFunction (void (*functionPointer)(),String functionName = "Uknown" ) { // where magic on
             fnc_ = functionPointer;
+            this->functionName = functionName;
         };	
         
        
@@ -78,26 +80,37 @@ public:
 
 // 3.Initiate all  and then use in  void setup() {}
 
+
+// menuLiquidCrystal menu[3];
+// menuLiquidCrystalNavigate navmenu;
+
+
 // void initiate_functions () {
-    
-//     menu[0].IncludeFunction(&fun0); 
-//     menu[1].IncludeFunction(&fun1); 
-//     menu[2].IncludeFunction(&fun2); 
-//     menu[3].IncludeFunction(&fun3); 
- 
- 
-//     navmenu.setmenuLenght (sizeof(menu)/2) ; // give dinamic size
-//    }
+   
+//    menu[0].IncludeFunction(&fun0,"MAXTEMP"); 
+//    menu[1].IncludeFunction(&fun1,"FANSPEED"); 
+//    menu[2].IncludeFunction(&fun2,"PELLETBURNER"); 
+//    navmenu.setmenuLenght (sizeof(menu)/sizeof(menu[0])) ; // find out about size 
+//   }
+
 
 //  4.Use with events and print execude function
-//  if (__up) {
+// lcd.clear(); // Always Draw names 
+// lcd.print ( menu[navmenu.getMenuSelected()].functionName);   // Always Draw names  
+// if (__up) {
 //     //        FANSPEED.addValue();
 //           navmenu.menuUp();
-//           menu[navmenu.getMenuSelected()].DrawFunction();
+          
 //         }
     
 //         if (__down) {
 //     //        FANSPEED.subValue();
-//           navmenu.menuDown();
-//           menu[navmenu.getMenuSelected()].DrawFunction();
+//               navmenu.menuDown();
+          
 //         }
+      
+       
+//               if (__set) {
+//     //              FANSPEED.setValue();
+//                     menu[navmenu.getMenuSelected()].DrawFunction();                      
+//                 }
