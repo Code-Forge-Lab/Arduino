@@ -45,4 +45,29 @@ void fun0 (){lcd.clear();  lcd.print("Page1:");}; //function where caling
     menuLiquidCrystal menu(&fun0); // declarate
     menu.DrawFunction();
  }
+ 
+ header: void myFunction(struct MyStruct * PassedStruct)
+caller: myFunction(StructArray)
+status: works, you work with a pointer in PassedStruct
+header: void myFunction(struct MyStruct PassedStruct[])
+caller: myFunction(StructArray)
+status: works, you work with a pointer in PassedStruct
+header: void myFunction(struct MyStruct (& PassedStruct)[10])
+caller: myFunction(StructArray)
+status: works, you work with a reference to an array of size 10
+header: void myFunction(struct MyStruct (& PassedStruct)[11])
+caller: myFunction(StructArray)
+status: does not compile, type of array mismatch between prototype and actual parameter
+header: void myFunction(struct MyStruct PassedStruct[10])
+caller: myFunction(StructArray)
+status: works, PassedStruct is a pointer, size provided is ignored
+header: void myFunction(struct MyStruct PassedStruct[11])
+caller: myFunction(StructArray)
+status: works, PassedStruct is a pointer, size provided is ignored
+///
+void foo (char arr[])
+into this:
+
+void foo (char *arr)
+ 
  ```
