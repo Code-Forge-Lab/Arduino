@@ -4,6 +4,8 @@
 #include "menuLiquidCrystal.h"
 #include "functions.h"
 
+int8_t FANPIN = 10; // ~
+int8_t PELLETPUSHERPIN = 11; // ~
 
 controls LCDLIGHT(0);//address
 controls MAXTEMP(1); //address
@@ -14,17 +16,22 @@ controls PELLETPUSHERSPEED(4); //address
 
 
 
+
+// START menu functions
 void funTEMP (){
   printMenuFunc("Max temperature",&MAXTEMP);
 
 };
 //////////////////
+
+void __FANSPEED () {analogWrite (FANPIN, FANSPEED.getValue());};
 void funFAN (){
-   printMenuFunc("Max. Fan RPM",&FANSPEED);
+   printMenuFunc("Max. Fan RPM",&FANSPEED,__FANSPEED);
   };
-//////////////////  
+//////////////////
+void __PELLETPUSH () {analogWrite (PELLETPUSHERPIN, PELLETPUSHERSPEED.getValue());};  
 void funPELLETPUSHER (){
-  printMenuFunc("Gran. Greitis",&PELLETPUSHERSPEED);
+  printMenuFunc("Gran. Greitis",&PELLETPUSHERSPEED,__PELLETPUSH);
   printMenuFunc("Gran.Laiko Truk.",&PELLETPUSHERTIME);
 };
 
@@ -40,13 +47,13 @@ void funLCDLIGHT (){
 
   
 };
-
+// END menu functions
 
 
 menuLiquidCrystal menu[4];
 menuLiquidCrystalNavigate navmenu;
 
-
+// load into menu external functions
 void initiate_functions () {
 
    // include menu objects
@@ -58,9 +65,11 @@ void initiate_functions () {
    navmenu.setmenuLenght (sizeof(menu)/sizeof(menu[0])) ; // find out about size 
   }
 
+// when program loaded newly .
 void initiate_updatePins () {
       if (LCDLIGHT.getValue() > 0)lcd.setBacklight(HIGH); else lcd.setBacklight(LOW); 
-     
+      analogWrite (FANPIN, FANSPEED.getValue()); 
+      analogWrite (PELLETPUSHERPIN, PELLETPUSHERSPEED.getValue());
   }
 
 const static  int pusher = 10;
@@ -85,12 +94,16 @@ void setup() {
   pinMode (BUTTON_SET,INPUT);
   pinMode (BUTTON_DOWN,INPUT);
   pinMode (BUTTON_UP,INPUT);
+  // Motors
+  pinMode (FANPIN,OUTPUT);
+  pinMode (PELLETPUSHERPIN,OUTPUT);
+  
    Serial.begin(9600);
    Serial.println ("Load Complete: " + String  ("Structs array") + sizeof (menu) + String (",Menu [0] Size") + sizeof (menu[0]));
    delay(500);
 
 initiate_functions ();  
-
+initiate_updatePins ();
 }
 
 
