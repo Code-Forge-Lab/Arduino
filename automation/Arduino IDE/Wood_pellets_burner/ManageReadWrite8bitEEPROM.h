@@ -61,13 +61,13 @@ public:
                     writeMemory (address,setdata,true);                
                     value = setdata;
 //                   
-                    Serial.println("setValue (int setdata) old_value: "+String(old_value) + ", value:"+value);
+                    Serial.println("setValue (int setdata) old_value: "+String(old_value) + ", value:"+value + String(", condition: ") + (old_value != value) );
                     old_value = value; // cach new value
                 }     
         }    
          // auto write data
          void setValue () {
-             if (old_value != value || value   ) { // to protect from always write                                       
+             if (old_value != value   ) { // to protect from always write                                       
                       writeMemory (address,this->value,true);
   
                       Serial.println("setValue () old_value: "+String(old_value) + ", value:"+value);
