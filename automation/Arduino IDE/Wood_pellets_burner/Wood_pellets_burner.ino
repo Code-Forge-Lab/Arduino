@@ -12,8 +12,8 @@ controls MAXTEMP(1); //address
 controls FANSPEED(2); //address
 
 // Pellets 
-unsigned int PELLETON_TIMEOUT=0;
-unsigned int PELLETOFF_TIMEOUT=0;
+ int PELLETON_TIMEOUT=0;
+ int PELLETOFF_TIMEOUT=0;
 controls PELLETPUSHERTIMEON(3); //address // push time until sleep time
 controls PELLETPUSHERTIMEOFF(4); //address  // sleep time until pushing
 controls PELLETPUSHERENABLE(5); // turn on or off a motor

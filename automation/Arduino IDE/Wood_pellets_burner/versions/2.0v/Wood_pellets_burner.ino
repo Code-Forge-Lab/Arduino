@@ -12,8 +12,8 @@ controls MAXTEMP(1); //address
 controls FANSPEED(2); //address
 
 // Pellets 
-int PELLETON_TIMEOUT=0;
-int PELLETOFF_TIMEOUT=0;
+ int PELLETON_TIMEOUT=0;
+ int PELLETOFF_TIMEOUT=0;
 controls PELLETPUSHERTIMEON(3); //address // push time until sleep time
 controls PELLETPUSHERTIMEOFF(4); //address  // sleep time until pushing
 controls PELLETPUSHERENABLE(5); // turn on or off a motor
@@ -214,10 +214,10 @@ void loop() {
                     
 
                     if (PELLETON_TIMEOUT == -1 && PELLETOFF_TIMEOUT == -1) // give beggining and turn on pellet pusher
-                        PELLETON_TIMEOUT = PELLETPUSHERTIMEON.getValue() * OneSec; 
+                        PELLETON_TIMEOUT = PELLETPUSHERTIMEON.getValue() * OneSec ; // 60 seconds
 
                     if (PELLETON_TIMEOUT == 0 && PELLETOFF_TIMEOUT == -1) // before ON_TIMEOUT become -1 , zero give window to step up a turn of mode enable
-                        PELLETOFF_TIMEOUT = PELLETPUSHERTIMEOFF.getValue() * OneSec;     
+                        PELLETOFF_TIMEOUT = PELLETPUSHERTIMEOFF.getValue() * OneSec ; // 60 seconds     
 
                     if (PELLETON_TIMEOUT > -1) // execute rutine   
                            //ON
@@ -275,12 +275,15 @@ void loop() {
 
 //                       if (  menu[navmenu.getMenuSelected()].isEmptyFunctionValue() ) // ignore unknown value
 //                          menu[navmenu.getMenuSelected()].functionValue  = 
+
                     
                        if ( ! ScreenStatusDisplay ) navmenu.menuReset(); // When user exit from menu , give ScreenStatusDisplay = false
-                      Serial.println ("After ScreenStatusDisplay:"+String (ScreenStatusDisplay)  );
+//                      Serial.println ("After ScreenStatusDisplay:"+String (ScreenStatusDisplay)  );
                    
-  
-                    
+                        // fast swith status output
+                        if ( ! ScreenStatusDisplay)
+                         printstatus ();
+                        
                  }  
 
 
