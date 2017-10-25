@@ -11,10 +11,12 @@ controls LCDLIGHT(0);//address
 controls MAXTEMP(1); //address
 controls FANSPEED(2); //address
 
+// Pellets 
+int PELLETON_TIMEOUT=0;
+int PELLETOFF_TIMEOUT=0;
 controls PELLETPUSHERTIMEON(3); //address // push time until sleep time
 controls PELLETPUSHERTIMEOFF(4); //address  // sleep time until pushing
 controls PELLETPUSHERENABLE(5); // turn on or off a motor
-
 controls PELLETPUSHERSPEED(6); //address
 
 bool ScreenStatusDisplay = false;
@@ -39,6 +41,8 @@ void funPELLETPUSHER (){
   printMenuFunc("Gran.Veik.Truk.",&PELLETPUSHERTIMEON,"min:");
   printMenuFunc("Gran.Neveik.Truk",&PELLETPUSHERTIMEOFF,"min:");
   printMenuFunc("Gran.Activuoti",&PELLETPUSHERENABLE,"OFF/ON:");
+
+   
 };
 
 
@@ -139,17 +143,15 @@ void printmenu () {
 //                 lcd.print (menu[navmenu.getMenuSelected()].functionValue);
   };
 
-int CLK_TIME=0;
-bool menu1 = false;
 
-int16_t menu1Timeout = 0;
+
 
 
 void loop() {
-  
-  // counters
-  if (menu1Timeout > 0) --menu1Timeout; 
-  if (CLK_TIME >= 10) CLK_TIME=0;CLK_TIME++; // program one second timer
+
+  if (PELLETON_TIMEOUT > -1)PELLETON_TIMEOUT--;
+  if (PELLETOFF_TIMEOUT > -1)PELLETOFF_TIMEOUT --;
+
   int8_t __set = digitalRead(BUTTON_SET) ;
   int8_t __up = digitalRead(BUTTON_UP);
   int8_t __down = digitalRead(BUTTON_DOWN);
@@ -157,15 +159,41 @@ void loop() {
 
 //     Serial.println("__set:"+ String(__set) + ",__up:"+ String(__up) + ",__down:" + String(__down)  );
 
- initiate_updatePins (false);
-            
+// initiate_updatePins (false);
 
+     //PELLETPUSHER
+         
+//           PELLETPUSHERTIMEON.getVaule();
+//           PELLETPUSHERTIMEOFF.getVaule();
+//           PELLETPUSHERENABLE.getVaule(); 
+//           PELLETPUSHERSPEED.getVaule();
+      
+//          if (PELLETPUSHERENABLE.getVaule() > 0) { // Checnk if pellet burner flag is on
+                
+                    
+
+                    if (PELLETON_TIMEOUT == -1 && PELLETOFF_TIMEOUT == -1) // give beggining and turn on pellet pusher
+                        PELLETON_TIMEOUT = PELLETPUSHERTIMEON.getValue(); 
+
+                    if (PELLETON_TIMEOUT == 0 && PELLETOFF_TIMEOUT == -1) // before ON_TIMEOUT become -1 , zero give window to step up a turn of mode enable
+                        PELLETOFF_TIMEOUT = PELLETPUSHERTIMEOFF.getValue();     
+
+                    if (PELLETON_TIMEOUT > -1) // execute rutine   
+                           //ON
+                        analogWrite(PELLETPUSHERPIN, PELLETPUSHERSPEED.getValue()); //Give speed/power to motor
+                     else // OFF
+                        analogWrite(PELLETPUSHERPIN,0); //Give speed/power to motor    
+                        
+//          }
+           
+     // END //PELLETPUSHER
       // to Those What to print 
            if (ScreenStatusDisplay)
                 printmenu ();
                  else {
                       lcd.clear();
-                      lcd.print("STATUS DISPLAY");
+                      lcd.print("ON_TIMEOUT:"+ String (PELLETPUSHERTIMEON.getValue()));
+                      lcd.print("OFF_TIMEOUT:"+ String (PELLETPUSHERTIMEOFF.getValue()));
                   }
            
       

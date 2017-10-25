@@ -46,12 +46,12 @@ public:
       }
    
  // read data 
-         unsigned  int readValue () {
+         unsigned  int readValue () { // read directly from memory
                  value = readMemory (address);
                    return value;
             }
        
-           unsigned int getValue () {               
+           unsigned int getValue () { // read from RAM 
                   return value;
            }     
 
