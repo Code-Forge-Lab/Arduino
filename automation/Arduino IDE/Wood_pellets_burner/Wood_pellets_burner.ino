@@ -11,13 +11,15 @@ controls LCDLIGHT(0);//address
 controls MAXTEMP(1); //address
 controls FANSPEED(2); //address
 
-// Pellets 
+// Pellets            
 long int PELLETON_TIMEOUT=0;
 long int PELLETOFF_TIMEOUT=0;
-controls PELLETPUSHERTIMEON(3); //address // push time until sleep time
-controls PELLETPUSHERTIMEOFF(4); //address  // sleep time until pushing
-controls PELLETPUSHERENABLE(5); // turn on or off a motor
-controls PELLETPUSHERSPEED(6); //address
+//                       address
+controls PELLETPUSHERMINUTESON(3); //address // push time until sleep time
+controls PELLETPUSHERSECONDSON(4); //address //  push time until sleep time + seconds
+controls PELLETPUSHERTIMEOFF(5); //address  // sleep time until pushing
+controls PELLETPUSHERENABLE(6); // turn on or off a motor
+controls PELLETPUSHERSPEED(7); 
 
 bool ScreenStatusDisplay = false;
 
@@ -38,7 +40,8 @@ void funFAN (){
 void __PELLETPUSH () {analogWrite (PELLETPUSHERPIN, PELLETPUSHERSPEED.getValue());};  
 void funPELLETPUSHER (){
   printMenuFunc("Gran. Greitis",&PELLETPUSHERSPEED,"RPM:",__PELLETPUSH);
-  printMenuFunc("Gran.Veik.Truk.",&PELLETPUSHERTIMEON,"min:");
+  printMenuFunc("Gran.Veik.Min.",&PELLETPUSHERMINUTESON,"minutes:"); //PELLETPUSHERSECONDSON
+   printMenuFunc("Gran.Veik.Sec.",&PELLETPUSHERSECONDSON,"secundes:"); 
   printMenuFunc("Gran.Neveik.Truk",&PELLETPUSHERTIMEOFF,"min:");
   printMenuFunc("Gran.Activuoti",&PELLETPUSHERENABLE,"OFF/ON:");
 
@@ -56,6 +59,11 @@ void funLCDLIGHT (){
   printMenuFunc("LCD Sviesa",&LCDLIGHT ,"on/off:",__funLCDLIGHT );
 };
 
+void funTestingComponents () { // temporery loaded value that not changed can be tested with commands
+         printMenuFunc("Gran. Greitis",&PELLETPUSHERSPEED,"TEST-RPM:",__PELLETPUSH , true);
+         printMenuFunc("Max. Fan RPM",&FANSPEED,"TEST-RPM:",__FANSPEED,true);
+  }
+
 void funExit () {
       ScreenStatusDisplay = false;
   };
@@ -63,7 +71,7 @@ void funExit () {
 // END menu functions
 
 
-menuLiquidCrystal menu[5];
+menuLiquidCrystal menu[6];
 menuLiquidCrystalNavigate navmenu;
 
 // load into menu external functions
@@ -74,8 +82,9 @@ void initiate_menu_functions () {
    menu[1].IncludeFunction(&funFAN,"Oro Put. Fenas",String(FANSPEED.getValue())); 
    menu[2].IncludeFunction(&funPELLETPUSHER,"Gran.stumiklis"); 
    menu[3].IncludeFunction(&funLCDLIGHT,"LCD BG Sviesa");
+   menu[4].IncludeFunction(&funTestingComponents,"Testavimas");
    
-   menu[4].IncludeFunction(&funExit,"Exit"); 
+   menu[5].IncludeFunction(&funExit,"Exit"); 
    
    //total menu available
    navmenu.setmenuLenght (sizeof(menu)/sizeof(menu[0])) ; // find out about size 
@@ -91,7 +100,7 @@ void initiate_updatePins ( bool print = true) {
       {
       Serial.println ("FANSPEED:" + String (FANSPEED.getValue()));
       Serial.println ("PELLETPUSHERSPEED:" + String (PELLETPUSHERSPEED.getValue()));
-      Serial.println ("PELLETPUSHERTIMEON:" + String (PELLETPUSHERTIMEON.getValue()));
+      Serial.println ("PELLETPUSHERMINUTESON:" + String (PELLETPUSHERMINUTESON.getValue()));
       Serial.println ("MAXTEMP:" + String (MAXTEMP.getValue()));
       }
   }
@@ -191,8 +200,8 @@ int8_t OneSec = 10; // times in loop until reach one secunde
 
 void loop() {
 
-  if (PELLETON_TIMEOUT > -1)PELLETON_TIMEOUT--;
-  if (PELLETOFF_TIMEOUT > -1)PELLETOFF_TIMEOUT --;
+  if (PELLETON_TIMEOUT > -1)PELLETON_TIMEOUT--; // Important to leave -1
+  if (PELLETOFF_TIMEOUT > -1)PELLETOFF_TIMEOUT --;// Important to leave -1
   //
   if (printstatustimer > -1) printstatustimer--;
   
@@ -207,7 +216,7 @@ void loop() {
 
      //PELLETPUSHER
          
-//           PELLETPUSHERTIMEON.getVaule();
+//           PELLETPUSHERMINUTESON.getVaule();
 //           PELLETPUSHERTIMEOFF.getVaule();
 //           PELLETPUSHERENABLE.getVaule(); 
 //           PELLETPUSHERSPEED.getVaule();
@@ -217,10 +226,10 @@ void loop() {
                     
 
                     if (PELLETON_TIMEOUT == -1 && PELLETOFF_TIMEOUT == -1) // give beggining and turn on pellet pusher
-                        PELLETON_TIMEOUT = PELLETPUSHERTIMEON.getValue() * OneSec * 60 ; // 60 seconds
+                        PELLETON_TIMEOUT = PELLETPUSHERMINUTESON.getValue() * OneSec * 60 + PELLETPUSHERSECONDSON.getValue() * OneSec; // min = 60 seconds + custom seconds
 
                     if (PELLETON_TIMEOUT == 0 && PELLETOFF_TIMEOUT == -1) // before ON_TIMEOUT become -1 , zero give window to step up a turn of mode enable
-                        PELLETOFF_TIMEOUT = PELLETPUSHERTIMEOFF.getValue() * OneSec * 60 ; // 60 seconds     
+                        PELLETOFF_TIMEOUT = PELLETPUSHERTIMEOFF.getValue() * OneSec * 60 + PELLETPUSHERSECONDSON.getValue() * OneSec; // min = 60 seconds  + cunstom seconds    
 
                     if (PELLETON_TIMEOUT > -1) // execute rutine   
                            //ON

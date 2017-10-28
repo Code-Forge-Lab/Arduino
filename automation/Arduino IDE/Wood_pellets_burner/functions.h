@@ -31,13 +31,16 @@ bool buttonRelease (int btn ) {
 //int *optional = 0
 //
 void myF () {};
-  void printMenuFunc (String text , controls* EEPROM  ,String n="", void (*functionPointer)() = myF  ) {
+  void printMenuFunc (String text , controls* EEPROM  ,String n="", void (*functionPointer)() = myF  , bool testmode = false ) {
       
       int8_t __set; 
       int8_t __up;
-      int8_t __down;  
+      int8_t __down;
+      int  testmode_value;  
 //  lcd.noBlink();      
-      
+          if ( testmode ) // not save value in EEPROM that was changed here 
+              testmode_value = EEPROM->getValue() ; 
+               
   delay(500);
   while ( true ) 
   {
@@ -66,7 +69,14 @@ void myF () {};
           functionPointer();
      delay (100);         
      if (__set >=1) break; //end loop life then set button is pressed            
-  }
+  } /////// END
+        
+        if ( testmode ) { // not save value in EEPROM that was changed here 
+             EEPROM->setValue(testmode_value  );  // return original state
+             functionPointer();
+        } 
+   /////////////////////////////////////////  
+            
         EEPROM->setValue ();
         lcd.noBlink();
         
@@ -77,3 +87,5 @@ void myF () {};
         digitalWrite(13,LOW);
         pinMode (13,INPUT);
     }
+
+    
