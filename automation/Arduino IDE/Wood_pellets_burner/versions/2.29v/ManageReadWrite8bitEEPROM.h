@@ -34,18 +34,19 @@ class  controls
 private:
      unsigned  int old_value; // it's for changed value 
      unsigned  int address;
-     unsigned  int value; 
-     unsigned  int defaultdata;  
+     unsigned  int value;  
 public:
      
  
       // contructor 
-      controls (unsigned int address , unsigned int __defaultdata = 0 ) {  // unsigned int data = 999
+      controls (unsigned int address , unsigned int data = 255 ) {  // unsigned int data = 999
           this->address =address;
           readValue (); // initiliaze value from EEPROM
           old_value = 65535; // FIX BUG when selected value equal 0 and default created old_value also equal 0 , ignore to write 
 
-          defaultdata = __defaultdata; // default datata for the future
+            if (data < 255) {
+                  setValue (data  );
+              }
       }
    
  // read data 
@@ -93,11 +94,6 @@ public:
                    Serial.println ("substract: "+ String (value));
             }
        }
-
-       void setDataDefault () {
-                    writeMemory (address,defaultdata,true);                
-                    value = defaultdata;
-        }
 };
 
 

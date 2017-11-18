@@ -95,8 +95,7 @@ public:
        }
 
        void setDataDefault () {
-                    writeMemory (address,defaultdata,true);                
-                    value = defaultdata;
+           setValue (defaultdata  );
         }
 };
 

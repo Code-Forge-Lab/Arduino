@@ -9,14 +9,13 @@ int8_t PELLETPUSHERPIN = 11; // ~
 
 controls DefaultTrigger (0); // default flagg
 controls LCDLIGHT(1);//address
-controls MAXTEMP(2,60); //address
-controls FANSPEED(3,127); //address
+controls MAXTEMP(2); //address
+controls FANSPEED(3); //address
 
 // Pellets            
 long int PELLETON_TIMEOUT=0;
 long int PELLETOFF_TIMEOUT=0;
 //                       address
-
 controls PELLETPUSHERMINUTESON(4,0); //address // push time until sleep time
 controls PELLETPUSHERSECONDSON(5,5); //address //  push time until sleep time + seconds
 controls PELLETPUSHERMINUTESOFF(6,0); //address  // sleep time until pushing
@@ -27,9 +26,8 @@ controls SYSTEMONOFF(10,1);
 
 
 void init_memory_defaults (bool conditiondefault = false) {
-//      if (DefaultTrigger.readValue () > 0  || conditiondefault)  // trigger one time default
-//      { 
-        MAXTEMP.setDataDefault();
+      if (DefaultTrigger.readValue () > 0  || conditiondefault)  // trigger one time default
+      { 
         PELLETPUSHERMINUTESON.setDataDefault ();
         PELLETPUSHERSECONDSON.setDataDefault ();
         PELLETPUSHERMINUTESOFF.setDataDefault ();
@@ -37,8 +35,8 @@ void init_memory_defaults (bool conditiondefault = false) {
         PELLETPUSHERENABLE.setDataDefault ();
         PELLETPUSHERSPEED.setDataDefault ();
         SYSTEMONOFF.setDataDefault ();
-//      }  
-//    DefaultTrigger.setValue(1);
+      }  
+    DefaultTrigger.setValue(1);
   }
 
 bool ScreenStatusDisplay = false;
@@ -105,20 +103,18 @@ void funTestingComponents () { // temporery loaded value that not changed can be
                 
                 lcd.clear();
                 lcd.setCursor(0,1);
-                lcd.print ("Default was");
-                  lcd.setCursor(0,0);
+                lcd.print ("Default was set");
+               
                 for (int x = 0; x <16; x++) //animation arrow
                  {
-                     
-                     delay(100);                
-                      lcd.print (">");
-//                      
+                     lcd.setCursor(0,0);
+                     delay(100);
+                      lcd.print ("->");
                   }
-                lcd.setCursor(0,1);
-                lcd.print ("Default was set");
+                
                 delay(200);
                 init_memory_defaults (true);
-                delay(2000);
+                delay(3000);
                 
       }; 
 
@@ -199,7 +195,7 @@ void setup() {
 
 initiate_menu_functions ();  
 initiate_updatePins ();
-//init_memory_defaults ();
+init_memory_defaults ();
 }
 
 
@@ -259,7 +255,7 @@ void printstatus (bool print =false) {
                            lcd.print(":Ijungtas");      
                       }else
                        {
-                          lcd.print(":Isjungtas."); 
+                          lcd.print(":Isjungta."); 
                        }
                   break;    
                }
