@@ -170,7 +170,9 @@ void initiate_updatePins ( bool print = true) {
 
 void initControlPins () {
   analogWrite (FANPIN, FANSPEED.getValue()); 
-  analogWrite (PELLETPUSHERPIN, PELLETPUSHERSPEED.getValue());
+  //////////analogWrite (PELLETPUSHERPIN, PELLETPUSHERSPEED.getValue()); Negali buti naudojamas be logikos isikisimo
+  __funLCDLIGHT (); // Update Background Light
+  
 }
 
 const static  int pusher = 10;
