@@ -8,8 +8,8 @@ int8_t FANPIN = 10; // ~
 int8_t PELLETPUSHERPIN = 11; // ~
 
 controls DefaultTrigger (0); // default flagg
-controls LCDLIGHT(1);//address
-controls MAXTEMP(2,60); //address
+controls LCDLIGHT(1,1);//address
+controls MAXTEMP(2,30); //address
 controls FANSPEED(3,140); //address
 
 // Pellets            
@@ -29,6 +29,7 @@ controls SYSTEMONOFF(10,1);
 void init_memory_defaults (bool conditiondefault = false) {
 //      if (DefaultTrigger.readValue () > 0  || conditiondefault)  // trigger one time default
 //      { 
+        LCDLIGHT.setDataDefault();
         MAXTEMP.setDataDefault();
         FANSPEED.setDataDefault();
         PELLETPUSHERSECONDSON.setDataDefault ();
