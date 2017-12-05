@@ -143,7 +143,7 @@ void initiate_menu_functions () {
    menu[5].IncludeFunction(&funSystemOnOff,"On Off System");
    menu[6].IncludeFunction(&funSettoDefault,"Reset to Default");
    
-   menu[7].IncludeFunction(&funExit,"Exit"); 
+   menu[7].IncludeFunction(&funExit,"Iseiti"); 
    
    //total menu available
    navmenu.setmenuLenght (sizeof(menu)/sizeof(menu[0])) ; // find out about size 
@@ -258,7 +258,7 @@ void printstatus (bool print =false) {
                       lcd.print("Systema yra");
                       lcd.setCursor(0,1);
                       if ( SYSTEMONOFF.getValue() > 0) {
-                           lcd.print(":Ijungtas");      
+                           lcd.print(":Ijungta");      
                       }else
                        {
                           lcd.print(":Isjungtas."); 
