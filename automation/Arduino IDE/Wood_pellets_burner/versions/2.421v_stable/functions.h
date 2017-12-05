@@ -14,10 +14,10 @@ bool buttonRelease (int btn ) {
          {
               pressed = true;
               delay(50);
-              Serial.println("Button Pressed: "+ String(btn));
+//              Serial.println("Button Pressed: "+ String(btn));
           }
              if (pressed) {
-                 Serial.println("Button Released");
+//                 Serial.println("Button Released");
                  pinMode (13,OUTPUT);
                   delay(30);
                   digitalWrite(13,HIGH);
