@@ -62,7 +62,7 @@ void funFAN (){
 //////////////////
 void __PELLETPUSH () {analogWrite (PELLETPUSHERPIN, PELLETPUSHERSPEED.getValue());};  
 void funPELLETPUSHER (){
-  analogWrite (PELLETPUSHERPIN,0);
+  analogWrite (PELLETPUSHERPIN,0); // disable pellet pusher 
   printMenuFunc("Gran. Greitis",&PELLETPUSHERSPEED,"RPM:");
    printMenuFunc("Gran.Veik.Sec.",&PELLETPUSHERSECONDSON,"secundes:"); 
   printMenuFunc("Gran.Neveik.Min",&PELLETPUSHERMINUTESOFF,"min:");
@@ -104,7 +104,7 @@ void funTestingComponents () { // temporery loaded value that not changed can be
       };
 
      void funSettoDefault () {
-                
+                analogWrite (PELLETPUSHERPIN,0); // disable pellet pusher 
                 lcd.clear();
                 lcd.setCursor(0,1);
                 lcd.print ("Default was");
