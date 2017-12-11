@@ -1,7 +1,8 @@
 #include <stdlib.h>
 #include <stddef.h>
+#include <Arduino.h>
 #include "ManageReadWrite8bitEEPROM.h"
-#include "menuLiquidCrystal.h"
+//#include "menuLiquidCrystal.h"
 #include "functions.h"
 
 int8_t FANPIN = 10; // ~
@@ -340,13 +341,11 @@ if ( SYSTEMONOFF.getValue() > 0 ) { // reset alway if flag is on
           if (PELLETPUSHERENABLE.getValue()  > 0 ) { // Checnk if pellet burner flag is on
                 
                     
-                    
-                    if (PELLETON_TIMEOUT == -1 && PELLETOFF_TIMEOUT == -1) // before ON_TIMEOUT become -1 , zero give window to step up a turn of mode enable
+                    if (PELLETON_TIMEOUT == -1 && PELLETOFF_TIMEOUT == -1) // give beggining and turn on pellet pusher
                        PELLETOFF_TIMEOUT = PELLETPUSHERMINUTESOFF.getValue() * OneSec * 60 + PELLETPUSHERSECONDSOFF.getValue() * OneSec; // min = 60 seconds  + cunstom seconds    
 
-                    if (PELLETON_TIMEOUT == -1 && PELLETOFF_TIMEOUT == 0) // give beggining and turn on pellet pusher
+                    if (PELLETON_TIMEOUT == 0 && PELLETOFF_TIMEOUT == -1) // before ON_TIMEOUT become -1 , zero give window to step up a turn of mode enable
                        PELLETON_TIMEOUT =  PELLETPUSHERSECONDSON.getValue() * OneSec; // min = 60 seconds + custom seconds
-
                    
                     if (PELLETON_TIMEOUT > -1 && SYSTEMONOFF.getValue() > 0) // execute rutine   
                            //ON
