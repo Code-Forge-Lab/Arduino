@@ -7,20 +7,40 @@
 int8_t FANPIN = 10; // ~
 int8_t PELLETPUSHERPIN = 11; // ~
 
-controls LCDLIGHT(0);//address
-controls MAXTEMP(1); //address
-controls FANSPEED(2); //address
+controls DefaultTrigger (0); // default flagg
+controls LCDLIGHT(1,1);//address
+controls MAXTEMP(2,30); //address
+controls FANSPEED(3,100); //address
 
 // Pellets            
 long int PELLETON_TIMEOUT=0;
 long int PELLETOFF_TIMEOUT=0;
 //                       address
-controls PELLETPUSHERMINUTESON(3); //address // push time until sleep time
-controls PELLETPUSHERSECONDSON(4); //address //  push time until sleep time + seconds
-controls PELLETPUSHERTIMEOFF(5); //address  // sleep time until pushing
-controls PELLETPUSHERENABLE(6); // turn on or off a motor
-controls PELLETPUSHERSPEED(7); 
-controls SYSTEMONOFF(8); 
+
+
+controls PELLETPUSHERSECONDSON(5,1); //address //  push time until sleep time + seconds
+controls PELLETPUSHERMINUTESOFF(6,0); //address  // sleep time until pushing
+controls PELLETPUSHERSECONDSOFF(7,100); //address  // sleep time until pushing
+controls PELLETPUSHERENABLE(8,1); // turn on or off a motor
+controls PELLETPUSHERSPEED(9,50); 
+controls SYSTEMONOFF(10,1); 
+
+
+void init_memory_defaults (bool conditiondefault = false) {
+//      if (DefaultTrigger.readValue () > 0  || conditiondefault)  // trigger one time default
+//      { 
+        LCDLIGHT.setDataDefault();
+        MAXTEMP.setDataDefault();
+        FANSPEED.setDataDefault();
+        PELLETPUSHERSECONDSON.setDataDefault ();
+        PELLETPUSHERMINUTESOFF.setDataDefault ();
+        PELLETPUSHERSECONDSOFF.setDataDefault ();
+        PELLETPUSHERENABLE.setDataDefault ();
+        PELLETPUSHERSPEED.setDataDefault ();
+        SYSTEMONOFF.setDataDefault ();
+//      }  
+//    DefaultTrigger.setValue(1);
+  }
 
 bool ScreenStatusDisplay = false;
 
@@ -35,21 +55,33 @@ void funTEMP (){
 
 void __FANSPEED () {analogWrite (FANPIN, FANSPEED.getValue());};
 void funFAN (){
+   analogWrite (PELLETPUSHERPIN, 0); //Disable Pellet Pusher 
+    analogWrite (PELLETPUSHERPIN, 0); // Disable Pellet Pusher
    printMenuFunc("Max. Fan RPM",&FANSPEED,"RPM:",__FANSPEED);
   };
-//////////////////
+//////////////////////////////PELLET
 void __PELLETPUSH () {analogWrite (PELLETPUSHERPIN, PELLETPUSHERSPEED.getValue());};  
+
+ bool BoolPelletModeEnable = false;
+ 
+ void __PelletModeOnlyTimer (){};
+ void __PelletModeTempMinOrMax (){};
+ void __PelletModeTempBetweenMinMaxProcentage (){};
+ void __PelletModeExit (){BoolPelletModeEnable =false};
+ 
 void funPELLETPUSHER (){
-  analogWrite (PELLETPUSHERPIN,0);
-  printMenuFunc("Gran. Greitis",&PELLETPUSHERSPEED,"RPM:");
-  printMenuFunc("Gran.Veik.Min.",&PELLETPUSHERMINUTESON,"minutes:"); //PELLETPUSHERSECONDSON
-   printMenuFunc("Gran.Veik.Sec.",&PELLETPUSHERSECONDSON,"secundes:"); 
-  printMenuFunc("Gran.Neveik.Truk",&PELLETPUSHERTIMEOFF,"min:");
-  printMenuFunc("Gran.Activuoti",&PELLETPUSHERENABLE,"OFF/ON:");
+  BoolPelletModeEnable = true; // if was enetered in here
+  
+//  analogWrite (PELLETPUSHERPIN,0); // disable pellet pusher 
+//  printMenuFunc("Gran. Greitis",&PELLETPUSHERSPEED,"RPM:");
+//   printMenuFunc("Gran.Veik.Sec.",&PELLETPUSHERSECONDSON,"secundes:"); 
+//  printMenuFunc("Gran.Neveik.Min",&PELLETPUSHERMINUTESOFF,"min:");
+//  printMenuFunc("Gran.Neveik.Sec",&PELLETPUSHERSECONDSOFF,"sec:");
+//  printMenuFunc("Gran.Activuoti",&PELLETPUSHERENABLE,"OFF/ON:");
 
    
 };
-
+///////////////////////////// PELLET
 
 /////////////////
 void __funLCDLIGHT () {    // Sub Function 
@@ -63,7 +95,7 @@ void funLCDLIGHT (){
 
 void funTestingComponents () { // temporery loaded value that not changed can be tested with commands
          printMenuFunc("Gran. Greitis",&PELLETPUSHERSPEED,"TEST-RPM:",__PELLETPUSH , true);
-         printMenuFunc("Max. Fan RPM",&FANSPEED,"TEST-RPM:",__FANSPEED,true);
+//         printMenuFunc("Max. Fan RPM",&FANSPEED,"TEST-RPM:",__FANSPEED,true);
   }
 
       
@@ -81,6 +113,27 @@ void funTestingComponents () { // temporery loaded value that not changed can be
          printMenuFunc("Gran.Activuoti",&SYSTEMONOFF,"OFF=0/ON:",__funSystemOnOff   );
       };
 
+     void funSettoDefault () {
+                analogWrite (PELLETPUSHERPIN,0); // disable pellet pusher 
+                lcd.clear();
+                lcd.setCursor(0,1);
+                lcd.print ("Default was");
+                  lcd.setCursor(0,0);
+                for (int x = 0; x <16; x++) //animation arrow
+                 {
+                     
+                     delay(100);                
+                      lcd.print (">");
+//                      
+                  }
+                lcd.setCursor(0,1);
+                lcd.print ("Default was set");
+                delay(200);
+                init_memory_defaults (true);
+                delay(2000);
+                
+      }; 
+
 void funExit () {
       ScreenStatusDisplay = false;
   };
@@ -88,24 +141,43 @@ void funExit () {
 // END menu functions
 
 
-menuLiquidCrystal menu[7]; // alway give exact size of menu
+menuLiquidCrystal menu[8]; // alway give exact size of menu
 menuLiquidCrystalNavigate navmenu;
+
+menuLiquidCrystal menuPelletMode[4];
+menuLiquidCrystalNavigate navmenuPelletMode;
 
 // load into menu external functions
 void initiate_menu_functions () {
 
    // include menu objects
-   menu[0].IncludeFunction(&funTEMP,"Vanens Temp." , String(MAXTEMP.getValue())); 
+   menu[0].IncludeFunction(&funTEMP,"Temperatura" , String(MAXTEMP.getValue())); 
    menu[1].IncludeFunction(&funFAN,"Oro Put. Fenas",String(FANSPEED.getValue())); 
    menu[2].IncludeFunction(&funPELLETPUSHER,"Gran.stumiklis"); 
    menu[3].IncludeFunction(&funLCDLIGHT,"LCD BG Sviesa");
    menu[4].IncludeFunction(&funTestingComponents,"Testavimas");
    menu[5].IncludeFunction(&funSystemOnOff,"On Off System");
+   menu[6].IncludeFunction(&funSettoDefault,"Set to Default");
    
-   menu[6].IncludeFunction(&funExit,"Exit"); 
+   menu[7].IncludeFunction(&funExit,"Iseiti"); 
    
    //total menu available
    navmenu.setmenuLenght (sizeof(menu)/sizeof(menu[0])) ; // find out about size 
+/////////////////////////////////////////////////////////////////////////////////
+
+
+////////// Pellet Mode Menu
+
+ 
+ 
+ menuPelletMode[0].IncludeFunction(&__PelletModeOnlyTimer,"Pagal Laika");
+ menuPelletMode[1].IncludeFunction(&__PelletModeTempMinOrMax,"Temp.Min ar Max");
+ menuPelletMode[2].IncludeFunction(&__PelletModeTempBetweenMinMaxProcentage,"Temp.Min % Max") ;
+ 
+ menuPelletMode[3].IncludeFunction(&__PelletModeExit,"Iseiti Granul.");
+ navmenuPelletMode.setmenuLenght (sizeof(menu)/sizeof(menu[0])) ; // find out about size 
+
+   //
   }
 
 // when program loaded newly .
@@ -120,10 +192,18 @@ void initiate_updatePins ( bool print = true) {
       {
       Serial.println ("FANSPEED:" + String (FANSPEED.getValue()));
       Serial.println ("PELLETPUSHERSPEED:" + String (PELLETPUSHERSPEED.getValue()));
-      Serial.println ("PELLETPUSHERMINUTESON:" + String (PELLETPUSHERMINUTESON.getValue()));
       Serial.println ("MAXTEMP:" + String (MAXTEMP.getValue()));
       }
   }
+
+// Update Pins 
+
+void initControlPins () {
+  analogWrite (FANPIN, FANSPEED.getValue()); 
+  //////////analogWrite (PELLETPUSHERPIN, PELLETPUSHERSPEED.getValue()); Negali buti naudojamas be logikos isikisimo
+  __funLCDLIGHT (); // Update Background Light
+  
+}
 
 const static  int pusher = 10;
 const static  int wind = 11;
@@ -157,6 +237,11 @@ void setup() {
 
 initiate_menu_functions ();  
 initiate_updatePins ();
+
+ if (EEPROM.read(SYSTEMONOFF.getAddress ()) >=255 ) { // if fist time are loded to chip when set sum defaults 
+    init_memory_defaults ();
+    SYSTEMONOFF.setValue (0);
+ } 
 }
 
 
@@ -184,15 +269,24 @@ void printstatus (bool print =false) {
                case 1 :
                       lcd.print("Gran.stumiklis");
                       lcd.setCursor(0,1);                 
-                        if (PELLETON_TIMEOUT != -1)
-                             lcd.print("on:"+ String (PELLETON_TIMEOUT));
-                        else   
-                             lcd.print("off:" +String (PELLETOFF_TIMEOUT));  
+                       
+                      if ( SYSTEMONOFF.getValue() > 0) 
+                        {
+                              if (PELLETON_TIMEOUT != -1 && SYSTEMONOFF.getValue() > 0)
+                                   lcd.print("on:"+ String (PELLETON_TIMEOUT));
+                              else   
+                                   lcd.print("off:" +String (PELLETOFF_TIMEOUT)); 
+                                      //////////////////////////////////// Print isjungta/ijungta in bottom
+                        }else       
+                                   lcd.print("Isjungta.");                       
                   break; 
                case 2 :
                       lcd.print("Oro Put. Fenas");
                       lcd.setCursor(0,1);
+                     if ( SYSTEMONOFF.getValue()> 0)  { 
                       lcd.print("RPM:"+ String (FANSPEED.getValue()));
+                     }else
+                             lcd.print("Isjungtas.");       
                   break; 
                case 3 :
                       lcd.print("Vanens Temp.");
@@ -207,7 +301,7 @@ void printstatus (bool print =false) {
                            lcd.print(":Ijungta");      
                       }else
                        {
-                          lcd.print(":Isjungta."); 
+                          lcd.print(":Isjungtas."); 
                        }
                   break;    
                }
@@ -220,7 +314,7 @@ void printstatus (bool print =false) {
 
             // Timer on
             if (printstatustimer == -1 || print) {
-                 printstatustimer = 50; // 5 sec
+                 printstatustimer = 70; // 7 sec
                   printstatuscounter++;
             }
                  
@@ -233,17 +327,27 @@ void printstatus (bool print =false) {
 
 int8_t OneSec = 10; // times in loop until reach one secunde
 
-void loop() {
-//if (SYSTEMONOFF.getValue() > 0 ) { // on off flag 
-  if (PELLETON_TIMEOUT > -1)PELLETON_TIMEOUT--; // Important to leave -1
-  if (PELLETOFF_TIMEOUT > -1)PELLETOFF_TIMEOUT --;// Important to leave -1
-//}else {
-//    PELLETON_TIMEOUT = -1;
-    
-//  } 
+int exitmenutime = 30*10;//ms
+int exitmenutimer = exitmenutime;
 
+void loop() {
+initControlPins (); // update output pins
+
+if ( SYSTEMONOFF.getValue() > 0 ) { // reset alway if flag is on
+    if (PELLETON_TIMEOUT > -1)PELLETON_TIMEOUT--;
+    if (PELLETOFF_TIMEOUT > -1)PELLETOFF_TIMEOUT --;
+}else 
+{
+    PELLETON_TIMEOUT = 0;
+    PELLETOFF_TIMEOUT = 0;
+  }
   //
   if (printstatustimer > -1) printstatustimer--;
+
+  
+    
+
+
   
   int8_t __set = digitalRead(BUTTON_SET) ;
   int8_t __up = digitalRead(BUTTON_UP);
@@ -256,37 +360,48 @@ void loop() {
 
      //PELLETPUSHER
          
-//           PELLETPUSHERMINUTESON.getVaule();
-//           PELLETPUSHERTIMEOFF.getVaule();
+//           PELLETPUSHERTIMEON.getVaule();
+//           PELLETPUSHERMINUTESOFF.getVaule();
 //           PELLETPUSHERENABLE.getVaule(); 
 //           PELLETPUSHERSPEED.getVaule();
-
       
           if (PELLETPUSHERENABLE.getValue()  > 0 ) { // Checnk if pellet burner flag is on
                 
                     
+                    
+                    if (PELLETON_TIMEOUT == -1 && PELLETOFF_TIMEOUT == -1) // before ON_TIMEOUT become -1 , zero give window to step up a turn of mode enable
+                       PELLETOFF_TIMEOUT = PELLETPUSHERMINUTESOFF.getValue() * OneSec * 60 + PELLETPUSHERSECONDSOFF.getValue() * OneSec; // min = 60 seconds  + cunstom seconds    
 
-                    if (PELLETON_TIMEOUT == -1 && PELLETOFF_TIMEOUT == -1 ) // give beggining and turn on pellet pusher
-                        PELLETON_TIMEOUT = PELLETPUSHERMINUTESON.getValue() * OneSec * 60 + PELLETPUSHERSECONDSON.getValue() * OneSec; // min = 60 seconds + custom seconds
+                    if (PELLETON_TIMEOUT == -1 && PELLETOFF_TIMEOUT == 0) // give beggining and turn on pellet pusher
+                       PELLETON_TIMEOUT =  PELLETPUSHERSECONDSON.getValue() * OneSec; // min = 60 seconds + custom seconds
 
-                    if (PELLETON_TIMEOUT == 0 && PELLETOFF_TIMEOUT == -1 ) // before ON_TIMEOUT become -1 , zero give window to step up a turn of mode enable
-                        PELLETOFF_TIMEOUT = PELLETPUSHERTIMEOFF.getValue() * OneSec * 60 + PELLETPUSHERSECONDSON.getValue() * OneSec; // min = 60 seconds  + cunstom seconds    
-
-                           if (PELLETON_TIMEOUT > -1 && SYSTEMONOFF.getValue() > 0 ) // execute rutine  if system allowed that 
+                   
+                    if (PELLETON_TIMEOUT > -1 && SYSTEMONOFF.getValue() > 0) // execute rutine   
                            //ON
-                        analogWrite(PELLETPUSHERPIN, PELLETPUSHERSPEED.getValue()  ); //Give speed/power to motor
+                        analogWrite(PELLETPUSHERPIN, PELLETPUSHERSPEED.getValue()); //Give speed/power to motor
                      else // OFF
                         analogWrite(PELLETPUSHERPIN,0); //Give speed/power to motor    
                         
           }
 
-   
-// if (SYSTEMONOFF.getValue() > 0 ) { // if systemn flag set to On // analogWrite (FANPIN, FANSPEED.getValue()); // analogWrite (PELLETPUSHERPIN, PELLETPUSHERSPEED.getValue()); // }else { // analogWrite (FANPIN, 0); // analogWrite (PELLETPUSHERPIN, 0); // } if(true ) {return true;}
+
            
      // END //PELLETPUSHER
+
+
+     // Automatiskai iseinti pagal laika is option menu
+     
       // to Those What to print 
-           if (ScreenStatusDisplay)
+           if (ScreenStatusDisplay){
                 printmenu ();
+                    
+                      // exit timer 
+                      if (exitmenutimer > 0)
+                          exitmenutimer--;
+                      else
+                          funExit (); // automaticly exit after sum time from manual seletion menu
+                      
+                    }    
                  else {
                       printstatus ();
                   }
@@ -295,13 +410,18 @@ void loop() {
 
              
          if (   __up ) {//  Serial.print ( "getMenuSelected:" + String (navmenu.getMenuSelected ()) + ",getMenuLenght:" + String (navmenu.getMenuLenght()) );
-     //        FANSPEED.addValue();
+   
                navmenu.menuUp();
                printmenu ();
                 // Wait button realess
                buttonRelease (BUTTON_UP );
+               exitmenutimer = exitmenutime; // update each time auto menu exit timer after pressed a button
                
                ScreenStatusDisplay=true;
+              
+              // PELLET MENU
+              if (!ScreenStatusDisplay && BoolPelletModeEnable)
+                  navmenuPelletMode.menuUp();
          }
 
          
@@ -312,8 +432,14 @@ void loop() {
                printmenu ();
           // Wait button realess
               buttonRelease (BUTTON_DOWN );
+              exitmenutimer = exitmenutime; // update each time auto menu exit timer after pressed a button
+              
+              ScreenStatusDisplay=true; 
+              
 
-              ScreenStatusDisplay=true;
+               // PELLET MENU
+              if (!ScreenStatusDisplay && BoolPelletModeEnable)
+                  navmenuPelletMode.menuDown();
          }
       
        
@@ -331,7 +457,9 @@ void loop() {
 //                          menu[navmenu.getMenuSelected()].functionValue  = 
 
                     
-                       if ( ! ScreenStatusDisplay ) navmenu.menuReset(); // When user exit from menu , give ScreenStatusDisplay = false
+                       if ( ! ScreenStatusDisplay ) {
+                        navmenu.menuReset(); // When user exit from menu , give ScreenStatusDisplay = false
+                       }
 //                      Serial.println ("After ScreenStatusDisplay:"+String (ScreenStatusDisplay)  );
                    
                         // fast swith status output
@@ -347,3 +475,4 @@ void loop() {
   
 
 }
+
