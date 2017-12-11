@@ -279,7 +279,7 @@ void printstatus (bool print =false) {
                           if (PELLETPUSHERMODE.getValue () == 1) // by Timer
                           {
                             if (PELLETON_TIMEOUT != -1 && SYSTEMONOFF.getValue() > 0)
-                                   lcd.print("Clock>on:"+ String (PELLETON_TIMEOUT)) );
+                                   lcd.print("Clock>on:"+ String (PELLETON_TIMEOUT) );
                               else   
                                    lcd.print("Clock>off:"+ String (PELLETOFF_TIMEOUT) );; 
                           }
