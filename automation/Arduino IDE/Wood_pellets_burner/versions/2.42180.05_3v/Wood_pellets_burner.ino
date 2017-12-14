@@ -14,7 +14,7 @@ int8_t TEMPSENSORPIN = A3;
 
 controls LCDLIGHT(0,1);//address
 // Celcius
-controls TEMPMIN (1,19); // default 
+controls TEMPMIN (1,19); // default flagg
 controls TEMPMAX(2,23); //address
 // Fan
 controls FANMINSPEED(3,90); //address
@@ -33,13 +33,9 @@ controls PELLETPUSHERMILLISECONDSON(8,10); //address //  push time until sleep t
 controls PELLETPUSHERMINSPEED(9,20);
 //
 
-// Componets regulation
-long int COMPONENTSTIMEOUT_ON=0; //time counters
-long int COMPONENTSTIMEOUT_OFF=0; //time counters
 
-// By Desision Stored Values 
-long int COMPONENTSTDESISION_ON=0; //time counters
-long int COMPONENTSTDESISION_OFF=0; //time counters
+long int COMPONENTSTIMEOUT_ON=0;
+long int COMPONENTSTIMEOUT_OFF=0;
 
 
 controls COMPONENTSMINSECONDS(10,100); // Responsible for Pellet Pusher and Fan Working Time   
@@ -341,7 +337,7 @@ void printstatus (bool print =false) {
                           }
                           else if (PELLETPUSHERMODE.getValue () == 3 )// Bitween  Hight or Low using Sum of Procentage Distage , Controled by Temperature
                           {
-                                  lcd.print("Temp.L%H:"  );; 
+                                  lcd.print("T.L%H:"  );; 
                           } else
                           {
                               lcd.print("Isjungta.");  
@@ -440,31 +436,23 @@ initControlPins (); // update output pins
          switch(PELLETPUSHERMODE.getValue()) 
          {
             case 1 : 
-                  
-                    COMPONENTSTDESISION_ON =  PELLETPUSHERMILLISECONDSON.getValue(); // min = 60 seconds + custom seconds 
-                    COMPONENTSTDESISION_OFF =  COMPONENTSMINSECONDS.getValue() * OneSec; // min = 60 seconds  + cunstom seconds           
+                  if (COMPONENTSTIMEOUT_ON == -1 && COMPONENTSTIMEOUT_OFF == -1) // before ON_TIMEOUT become -1 , zero give window to step up a turn of mode enable
+                             COMPONENTSTIMEOUT_OFF =  COMPONENTSMINSECONDS.getValue() * OneSec; // min = 60 seconds  + cunstom seconds    
+      
+                  if (COMPONENTSTIMEOUT_ON == -1 && COMPONENTSTIMEOUT_OFF == 0) // give beggining and turn on pellet pusher
+                             COMPONENTSTIMEOUT_ON =  PELLETPUSHERMILLISECONDSON.getValue(); // min = 60 seconds + custom seconds
+      
+                         
+                          
             break;
-            case 2 : // Temp.Low-Hight" // use temperature to shift bitween low or hight power condition
-                 if (Temperature.Temperature < TEMPMAX.getValue() ) {
-                      
-                  }
+            case 2 :
             break;
-            case 3 : //Temp.Low%Hight // control in low hight range with sum of procenatge from min max temperature range
-            
+            case 3 :
             break;
             default:
             break;
          }
 
-
-       // Time Counter
-          if (COMPONENTSTIMEOUT_ON == -1 && COMPONENTSTIMEOUT_OFF == -1) // before ON_TIMEOUT become -1 , zero give window to step up a turn of mode enable
-                             COMPONENTSTIMEOUT_OFF =  COMPONENTSTDESISION_OFF;
-      
-          if (COMPONENTSTIMEOUT_ON == -1 && COMPONENTSTIMEOUT_OFF == 0) // give beggining and turn on pellet pusher
-                             COMPONENTSTIMEOUT_ON =  COMPONENTSTDESISION_ON;
-                    
-        
 
           if (COMPONENTSTIMEOUT_ON > -1 ) // execute rutine   
                            //ON
