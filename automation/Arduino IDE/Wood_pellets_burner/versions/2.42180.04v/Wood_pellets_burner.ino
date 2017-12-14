@@ -20,7 +20,8 @@ controls TEMPMAX(2,23); //address
 controls FANMINSPEED(3,90); //address
 controls FANMAXSPEED(4,150); //address
 
-controls FANSECONDSHOLD(5,70); //Hold time after fast shift , that make to burn last cycle dropet pellets
+controls FANMINSECONDSHOLD(5,70); //address
+controls FANMAXSECONDSHOLD(6,140); //address
                
 
 // Pellets  
@@ -30,9 +31,12 @@ long int PELLETOFF_TIMEOUT=0;
 
 controls PELLETPUSHERMODE(7,1); // Select Mode 1)Only Timer, 2)By Temp. Regulating Min or Max Power, 3)Power Regulating By Temp. Bitween Min or Max in Procentage Range
 
-controls PELLETPUSHERMILLISECONDSON(8,10); //address //  push time until sleep time + seconds
+controls PELLETPUSHERMILLISECONDSON(8,1); //address //  push time until sleep time + seconds
 controls PELLETPUSHERMINSPEED(9,20);
 controls PELLETPUSHERSECONDSOFF(10,100); //address  // sleep time until pushing
+
+ 
+          
 
 //   
 
@@ -40,6 +44,19 @@ controls PELLETPUSHERSECONDSOFF(10,100); //address  // sleep time until pushing
 
 
 void init_memory_defaults (bool conditiondefault = false) {
+
+
+        LCDLIGHT.setDataDefault();
+        TEMPMIN.setDataDefault();
+        TEMPMAX.setDataDefault();
+        FANMINSPEED.setDataDefault();
+        FANMAXSPEED.setDataDefault();
+        FANMINSECONDSHOLD.setDataDefault();
+        PELLETPUSHERMILLISECONDSON.setDataDefault ();
+        
+        PELLETPUSHERSECONDSOFF.setDataDefault ();
+        PELLETPUSHERMINSPEED.setDataDefault ();
+
 
        LCDLIGHT.setDataDefault();
       
@@ -49,8 +66,8 @@ void init_memory_defaults (bool conditiondefault = false) {
        FANMINSPEED.setDataDefault();
        FANMAXSPEED.setDataDefault();
       
-       FANSECONDSHOLD.setDataDefault();
-       
+       FANMINSECONDSHOLD.setDataDefault();
+       FANMAXSECONDSHOLD.setDataDefault();
                      
        PELLETPUSHERMODE.setDataDefault();
        PELLETPUSHERMILLISECONDSON.setDataDefault();
@@ -99,7 +116,7 @@ void __PELLETPUSH () {analogWrite (PELLETPUSHERPIN, PELLETPUSHERMINSPEED.getValu
   printMenuFunc("Gran. Greitis",&PELLETPUSHERMINSPEED,"RPM:"); 
   
 //  printMenuFunc("Gran.Greitis Max",&PELLETPUSHERSECONDSOFF,"secundes:");
-  printMenuFunc("Fan.Hold.Time",&FANSECONDSHOLD,"sec:"); // Delay of Keep  Turn On Fan sum While
+  printMenuFunc("Fan.Hold.Time",&FANMINSECONDSHOLD,"sec:"); // Delay of Keep  Turn On Fan sum While
   sey ("Gran. Min or Max");
   PELLETPUSHERMODE.writeValue(2);
   sey ();
@@ -112,7 +129,7 @@ void __PELLETPUSH () {analogWrite (PELLETPUSHERPIN, PELLETPUSHERMINSPEED.getValu
   printMenuFunc("Gran. Greitis",&PELLETPUSHERMINSPEED,"RPM:");
   
   printMenuFunc("Gran.Greitis Max",&PELLETPUSHERSECONDSOFF,"secundes:");
-  printMenuFunc("Fan.Hold.Time",&FANSECONDSHOLD,"sec:"); // Delay of Keep  Turn On Fan sum While
+  printMenuFunc("Fan.Hold.Time",&FANMINSECONDSHOLD,"sec:"); // Delay of Keep  Turn On Fan sum While
   PELLETPUSHERMODE.writeValue(3);
    sey ("Gran. Procentage");
   };
@@ -191,9 +208,9 @@ void initiate_menu_functions () {
    // include menu objects
    menu[0].IncludeFunction(&funTEMP,"Temperatura"); 
    menu[1].IncludeFunction(&funFAN,"Oro Put. Fenas"); 
-   menu[2].IncludeFunction(&funPelletModeOnlyTimer,"1-Veikimo Budas","Pagal Laika");
-   menu[3].IncludeFunction(&funPelletModeTempMinOrMax,"2-Veikimo Budas","Temp.Min - Max");
-   menu[4].IncludeFunction(&funPelletModeTempBetweenMinMaxProcentage,"3-Veikimo Budas","Temp.Min % Max") ;
+   menu[2].IncludeFunction(&funPelletModeOnlyTimer,"1-Gran. Stumiklis","Pagal Laika");
+   menu[3].IncludeFunction(&funPelletModeTempMinOrMax,"2-Gran. Stumiklis","Temp.Min - Max");
+   menu[4].IncludeFunction(&funPelletModeTempBetweenMinMaxProcentage,"3-Gran. Stumiklis","Temp.Min % Max") ;
    menu[5].IncludeFunction(&funLCDLIGHT,"Sviesa","On or Off");
    menu[6].IncludeFunction(&funTestingComponents,"Testavimas");
    
@@ -327,7 +344,16 @@ void printstatus (bool print =false) {
                               lcd.print("Isjungta.");  
                           }
                        
-
+//                      if ( SYSTEMONOFF.getValue() > 0) 
+//                        {
+//                              if (PELLETON_TIMEOUT != -1 && SYSTEMONOFF.getValue() > 0)
+//                                   lcd.print("on:"+ String (PELLETON_TIMEOUT)+ " mode-" + String(PELLETPUSHERMODE.getValue ()) );
+//                              else   
+//                                   lcd.print("off:"+ String (PELLETOFF_TIMEOUT)+ " mode-" + String(PELLETPUSHERMODE.getValue ()) );; 
+//                                      //////////////////////////////////// Print isjungta/ijungta in bottom
+//                        }else       
+//                                   lcd.print("Isjungta.");    
+//                       
                           
                                                       
                   break; 
@@ -351,7 +377,7 @@ void printstatus (bool print =false) {
                }
 
 
-                           
+                           printstatuscounter=3;
                 
             if (printstatuscounter > 4 ) //how much status blocks in switch case 
                  printstatuscounter = 1;
@@ -421,9 +447,9 @@ initControlPins (); // update output pins
          {
             case 1 : 
                   if (PELLETON_TIMEOUT == -1 && PELLETOFF_TIMEOUT == -1) // before ON_TIMEOUT become -1 , zero give window to step up a turn of mode enable
-                             PELLETOFF_TIMEOUT =  PELLETPUSHERSECONDSOFF.getValue() * OneSec; // min = 60 seconds  + cunstom seconds    
+                             PELLETOFF_TIMEOUT = OneSec * 60 + PELLETPUSHERSECONDSOFF.getValue() * OneSec; // min = 60 seconds  + cunstom seconds    
       
-                  if (PELLETON_TIMEOUT == -1 && PELLETOFF_TIMEOUT == 0) // give beggining and turn on pellet pusher
+                          if (PELLETON_TIMEOUT == -1 && PELLETOFF_TIMEOUT == 0) // give beggining and turn on pellet pusher
                              PELLETON_TIMEOUT =  PELLETPUSHERMILLISECONDSON.getValue(); // min = 60 seconds + custom seconds
       
                          
@@ -437,12 +463,7 @@ initControlPins (); // update output pins
             break;
          }
 
-
-          if (PELLETON_TIMEOUT > -1 ) // execute rutine   
-                           //ON
-                        analogWrite(PELLETPUSHERPIN, PELLETPUSHERMINSPEED.getValue()); //Give speed/power to motor
-                     else // OFF
-                        analogWrite(PELLETPUSHERPIN,0); //Give speed/power to motor  
+         
 
 
      // Automatiskai iseinti pagal laika is option menu

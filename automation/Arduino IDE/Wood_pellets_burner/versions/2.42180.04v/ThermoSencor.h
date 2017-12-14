@@ -52,7 +52,7 @@ class ThermoSencor {
          return Temperature;
       };
                                               
-      void InCustomTimeAverageUpdate (int updateAverageTimes = 10, float temperatureRatio = 24 ) { // 
+      void InCustomTimeAverageUpdate (int updateAverageTimes = 10, float temperatureRatio = 23.64) { // 
          AverageTimesRezult = analogRead(ThermistorPin) + AverageTimesRezult;
          
          
