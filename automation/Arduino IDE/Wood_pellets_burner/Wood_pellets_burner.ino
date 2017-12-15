@@ -14,14 +14,16 @@ int8_t TEMPSENSORPIN = A3;
 
 controls LCDLIGHT(0,1);//address
 // Celcius
-controls TEMPMIN (1,19); // default 
+controls TEMPMIN (1,17); // default 
 controls TEMPMAX(2,23); //address
 // Fan
 controls FANMINSPEED(3,90); //address
 controls FANMAXSPEED(4,150); //address
 
-controls FANSECONDSHOLD(5,70); //Hold time after fast shift , that make to burn last cycle dropet pellets
-               
+controls FANSECONDSHOLD(5,40); //Hold time after fast shift , that make to burn last cycle dropet pellets
+int FANHOLDTIMEOUT_ON = 0;  
+int FANSPEEDRUN = 0; 
+float FANHOLDENABLE_ON=false;           
 
 // Pellets  
 
@@ -34,12 +36,12 @@ controls PELLETPUSHERMINSPEED(9,20);
 //
 
 // Componets regulation
-long int COMPONENTSTIMEOUT_ON=0; //time counters
-long int COMPONENTSTIMEOUT_OFF=0; //time counters
+     int COMPONENTSTIMEOUT_ON=0; //time counters
+     int COMPONENTSTIMEOUT_OFF=0; //time counters
 
 // By Desision Stored Values 
-long int COMPONENTSTDESISION_ON=0; //time counters
-long int COMPONENTSTDESISION_OFF=0; //time counters
+     int COMPONENTSTDESISION_ON=0; //time counters
+     int COMPONENTSTDESISION_OFF=0; //time counters
 
 
 controls COMPONENTSMINSECONDS(10,100); // Responsible for Pellet Pusher and Fan Working Time   
@@ -355,7 +357,8 @@ void printstatus (bool print =false) {
                       lcd.print("Oro Put. Fenas");
                       lcd.setCursor(0,1);
                       lcd.print("RPM:"+ String (FANMINSPEED.getValue()*10));
-                           
+                       if (FANHOLDTIMEOUT_ON > 0)
+                       lcd.print(",hold:"+String(FANHOLDTIMEOUT_ON));    
                   break; 
                case 3 :
                       lcd.print("Vanens Temp.");
@@ -416,7 +419,7 @@ initControlPins (); // update output pins
 //delay (90);
    if (COMPONENTSTIMEOUT_ON > -1)COMPONENTSTIMEOUT_ON--;
     if (COMPONENTSTIMEOUT_OFF > -1)COMPONENTSTIMEOUT_OFF --;
-
+    if(FANHOLDTIMEOUT_ON > -1) FANHOLDTIMEOUT_ON --;
  
   if (printstatustimer > -1) printstatustimer--;
 
@@ -432,47 +435,74 @@ initControlPins (); // update output pins
 
 //     Serial.println("__set:"+ String(__set) + ",__up:"+ String(__up) + ",__down:" + String(__down)  );
 
-// initiate_updatePins (false);
+
 
      //PELLETPUSHER
          
 
          switch(PELLETPUSHERMODE.getValue()) 
          {
+          int procRatio;
+          FANSPEEDRUN = FANMINSPEED.getValue();
             case 1 : 
                   
-                    COMPONENTSTDESISION_ON =  PELLETPUSHERMILLISECONDSON.getValue(); // min = 60 seconds + custom seconds 
+                    
                     COMPONENTSTDESISION_OFF =  COMPONENTSMINSECONDS.getValue() * OneSec; // min = 60 seconds  + cunstom seconds           
-            break;
+            break;//////////////////////////////////////////////////////////////////////////////////////////////////////
             case 2 : // Temp.Low-Hight" // use temperature to shift bitween low or hight power condition
+                 
                  if (Temperature.Temperature < TEMPMAX.getValue() ) {
-                      
+                     COMPONENTSTDESISION_OFF = COMPONENTSMINSECONDS.getValue(); // if not wornm enouth when reduse Time
+                     if (FANHOLDENABLE_ON) {
+                         FANHOLDTIMEOUT_ON = FANSECONDSHOLD.getValue();
+                     }
+                        FANHOLDENABLE_ON=false;
+                  }else{
+                     COMPONENTSTDESISION_OFF = COMPONENTSMAXSECONDS.getValue(); // if  enouth warm when Increase Time
+                     FANHOLDENABLE_ON=true;                    
                   }
-            break;
+                  
+            break;//////////////////////////////////////////////////////////////////////////////////////////////////////
             case 3 : //Temp.Low%Hight // control in low hight range with sum of procenatge from min max temperature range
-            
-            break;
+                    
+                     procRatio = 100 - (  TEMPMIN.getValue() / TEMPMAX.getValue() );
+                     if (procRatio < 0) procRatio =0; //Protection from wtf logic failure 
+                       
+                     COMPONENTSTDESISION_OFF =  COMPONENTSMAXSECONDS.getValue()/100*procRatio; //set to dinamic procentage of power to work
+
+                     FANSPEEDRUN = FANMAXSPEED.getValue()/100*procRatio;
+                     if (FANSPEEDRUN < FANMIXSPEED.getValue() ) FANSPEEDRUN = FANMIXSPEED.getValue();
+                     if (COMPONENTSTDESISION_OFF < COMPONENTSMAXSECONDS.getValue())  COMPONENTSTDESISION_OFF = COMPONENTSMAXSECONDS.getValue(); // Set to minimum
+                  
+            break;/////////////////////////////////////////////////////////////////////////////////////////////////////
             default:
-            break;
+              break;
          }
 
-
-       // Time Counter
+         COMPONENTSTDESISION_ON =  PELLETPUSHERMILLISECONDSON.getValue(); // min = 60 seconds + custom seconds 
+          
+       // Fan And Pellet Time Counter
           if (COMPONENTSTIMEOUT_ON == -1 && COMPONENTSTIMEOUT_OFF == -1) // before ON_TIMEOUT become -1 , zero give window to step up a turn of mode enable
                              COMPONENTSTIMEOUT_OFF =  COMPONENTSTDESISION_OFF;
       
           if (COMPONENTSTIMEOUT_ON == -1 && COMPONENTSTIMEOUT_OFF == 0) // give beggining and turn on pellet pusher
                              COMPONENTSTIMEOUT_ON =  COMPONENTSTDESISION_ON;
                     
-        
+        // Pellet
 
           if (COMPONENTSTIMEOUT_ON > -1 ) // execute rutine   
                            //ON
                         analogWrite(PELLETPUSHERPIN, PELLETPUSHERMINSPEED.getValue()); //Give speed/power to motor
                      else // OFF
                         analogWrite(PELLETPUSHERPIN,0); //Give speed/power to motor  
+        
+        // Fan Delay Timer
 
-
+        if (FANHOLDTIMEOUT_ON) 
+            analogWrite(FANPIN,FANMAXSPEED.getValue());
+        else    
+            analogWrite(FANPIN,FANSPEEDRUN);
+            
      // Automatiskai iseinti pagal laika is option menu
      
       // to Those What to print 
