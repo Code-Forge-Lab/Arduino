@@ -103,8 +103,8 @@ void funTEMP (){
   printMenuFunc("Min temperature ",&TEMPMAX,"C*:" ,&dummyFunc,false, "Less",TEMPMAX.getValue()); // 
   break;
   default:
-  say("Nera Nustatyta","Veikimo Budo!");
-  break
+  sey("Nera Nustatyta","Veikimo Budo!");
+  break;
   }
   
 
@@ -437,7 +437,7 @@ void printstatus (bool print =false) {
                            
                      
                        if (FANHOLDTIMEOUT_ON > 0)
-                       lcd.print(",hold:"+String(FANHOLDTIMEOUT_ON));    
+                       lcd.print(",H:"+String(FANHOLDTIMEOUT_ON));    
                   break; 
                case 3 :
                       lcd.print("Vanens Temp.");
@@ -483,12 +483,44 @@ void printstatus (bool print =false) {
                             break;
                            }  
                   break;    
+                  case 5:
+                          switch (  PELLETPUSHERMODE.getValue ())
+                           {
+                            case 1:
+                                lcd.print("Galingumas");
+                                lcd.setCursor(0,1);
+                                lcd.print("Pagal Laika");
+                            break;                  
+                            
+                            case 2:
+                                lcd.print("Galingumas");
+                                lcd.setCursor(0,1);
+                                    if (LowHightProcetange_value == -1) // Hight = -1, Low = -2;
+                                            lcd.print("HIGHT>");   
+                                    else
+                                            lcd.print("LOW>" );
+                                
+                            break;
+                            
+                            case 3:
+                                
+                                lcd.print("Galingumas");
+                                lcd.setCursor(0,1);
+                                    lcd.print(String(procRatio)+ "%");
+                            break;
+                            default:
+                            lcd.print("Veikimo Budas");
+                            lcd.print("Nust.Nepavyko");
+                            break;
+                           }  
+                  break;
+                  
                }
 
 
                            
                 
-            if (printstatuscounter > 4 ) //how much status blocks in switch case 
+            if (printstatuscounter > 5 ) //how much status blocks in switch case 
                  printstatuscounter = 1;
 
             // Timer on
@@ -618,7 +650,7 @@ initControlPins (); // update output pins
         // Fan Delay Timer
 
        
-         if (FANHOLDENABLE_ON)
+         if (FANHOLDTIMEOUT_ON > 0)
             analogWrite(FANPIN,FANMAXSPEED.getValue());
          else   
             analogWrite(FANPIN,FANSPEEDRUN);
