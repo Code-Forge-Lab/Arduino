@@ -52,10 +52,7 @@ void myF () {}; // dummy function
            __down = digitalRead(BUTTON_DOWN);      
           
 
-          if (testmode && (! __up || !__down) )
-              EEPROM->setValue (0 ); //
-          else if (testmode && ( __up || __down))
-              EEPROM->setValue (testmode_value ); //
+          
                   
           if (   __up  ) { // Boundry value not exeed
                  

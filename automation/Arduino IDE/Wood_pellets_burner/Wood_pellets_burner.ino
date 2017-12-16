@@ -45,7 +45,7 @@ controls PELLETPUSHERMINSPEED(9,20);
 
 
 controls COMPONENTSMINSECONDS(10,100); // Responsible for Pellet Pusher and Fan Working Time   
-controls COMPONENTSMAXSECONDS(10,140); // Responsible for Pellet Pusher and Fan Working Time
+controls COMPONENTSMAXSECONDS(11,140); // Responsible for Pellet Pusher and Fan Working Time
 
 //   
 
@@ -389,15 +389,15 @@ void printstatus (bool print =false) {
                                    if (COMPONENTSTIMEOUT_ON != -1 )
                                      
                                         if (LowHightProcetange_value == -1) // Hight = -1, Low = -2;
-                                            lcd.print("L-HIGHT>on:"+ String (COMPONENTSTIMEOUT_ON) );   
+                                            lcd.print("-HIGHT>on:"+ String (COMPONENTSTIMEOUT_ON) );   
                                         else
-                                            lcd.print("LOW-H>on:"+ String (COMPONENTSTIMEOUT_ON) );   
+                                            lcd.print("LOW->on:"+ String (COMPONENTSTIMEOUT_ON) );   
                                   else   
                                     
                                        if (LowHightProcetange_value == -1) // Hight = -1, Low = -2;
-                                            lcd.print("L-HIGHT>off:"+ String (COMPONENTSTIMEOUT_OFF) );   
+                                            lcd.print("-HIGHT>off:"+ String (COMPONENTSTIMEOUT_OFF) );   
                                         else
-                                            lcd.print("LOW-H>off:"+ String (COMPONENTSTIMEOUT_OFF) );
+                                            lcd.print("LOW->off:"+ String (COMPONENTSTIMEOUT_OFF) );
                                             
                           }
                           
