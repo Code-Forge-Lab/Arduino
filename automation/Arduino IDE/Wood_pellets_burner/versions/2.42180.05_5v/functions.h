@@ -1,5 +1,5 @@
-#include <LiquidCrystal_I2C.h> //0x3F mine or x27 need to find out with :LINK:http://playground.arduino.cc/Main/I2cScanner
-LiquidCrystal_I2C lcd(0x27 , 2, 1, 0, 4, 5, 6,7,3, POSITIVE ); //was 0 x3F  Eldas: 0x27 ,A4 and A5 Are Used
+#include <LiquidCrystal_I2C.h> //0x3F need to find out with :LINK:http://playground.arduino.cc/Main/I2cScanner
+LiquidCrystal_I2C lcd(0x27, 2, 1, 0, 4, 5, 6,7,3, POSITIVE ); //was 0 x3F  Eldas: 0x27 ,A4 and A5 Are Used
 
 //Variables
 const static  int8_t BUTTON_SET = 12;
@@ -31,13 +31,12 @@ bool buttonRelease (int btn ) {
 //int *optional = 0
 //
 void myF () {}; // dummy function 
-  void printMenuFunc (String text , controls* EEPROM  ,String n="", void (*functionPointer)() = myF  , bool testmode = false , String valueGreaterOrLessCondition = "Less" ,int valueGreaterOrLess=-1) {
+  void printMenuFunc (String text , controls* EEPROM  ,String n="", void (*functionPointer)() = myF  , bool testmode = false , int valueGreaterOrLess=-1, String valueGreaterOrLessCondition = "Less" ) {
       
       int8_t __set; 
       int8_t __up;
       int8_t __down;
-      int  testmode_value; 
-      String wrongStatment =  "";
+      int  testmode_value;  
 //  lcd.noBlink();      
           if ( testmode ) // not save value in EEPROM that was changed here 
               testmode_value = EEPROM->getValue() ; 
@@ -51,68 +50,36 @@ void myF () {}; // dummy function
            __up = digitalRead(BUTTON_UP);
            __down = digitalRead(BUTTON_DOWN);      
           
-
-          if (testmode && (! __up || !__down) )
-              EEPROM->setValue (0 ); //
-          else if (testmode && ( __up || __down))
-              EEPROM->setValue (testmode_value ); //
-                  
+        
           if (   __up  ) { // Boundry value not exeed
                  
-                 if ( ( valueGreaterOrLess == -1 || valueGreaterOrLessCondition == "Greater"))
+                 if ( ( valueGreaterOrLess == -1))
                       EEPROM->addValue();
                  else if (valueGreaterOrLessCondition == "Less" && EEPROM->getValue() < valueGreaterOrLess) {
                       EEPROM->addValue();
-
-                      
-                  } else  if ( EEPROM->getValue() > valueGreaterOrLess )   // if value to hight when valuegreaterorLess then equlize to minimum 
-                           {   EEPROM->setValue (valueGreaterOrLess );   wrongStatment="";}
-                             
-                  
-                     //or
-                    if (valueGreaterOrLessCondition == "Greater" && EEPROM->getValue() < valueGreaterOrLess && valueGreaterOrLess !=-1)
-                       { EEPROM->setValue (valueGreaterOrLess ); wrongStatment="";}   
-
-                     if (valueGreaterOrLessCondition == "Less" && EEPROM->getValue() > valueGreaterOrLess && valueGreaterOrLess !=-1)
-                    { EEPROM->setValue (valueGreaterOrLess ); wrongStatment="";}           
+                  }else // if value to hight when valuegreaterorLess then equlize to minimum 
+                      EEPROM->setValue (valueGreaterOrLess );              
              }
          
     
              if (  __down  ) { // Boundry value not exeed
-                if ( ( valueGreaterOrLess == -1 || valueGreaterOrLessCondition == "Less"))
-                      EEPROM->subValue();
+                if ( ( valueGreaterOrLess == -1))
+                      EEPROM->addValue();
                  else if (valueGreaterOrLessCondition == "Greater" && EEPROM->getValue() > valueGreaterOrLess) {
-                      EEPROM->subValue();
-                
-                  }
-                 else  if ( EEPROM->getValue() > valueGreaterOrLess )   // if value to hight when valuegreaterorLess then equlize to minimum 
-                          {   EEPROM->setValue (valueGreaterOrLess ); wrongStatment="";   }; 
-                       
-
-                if (valueGreaterOrLessCondition == "Less" && EEPROM->getValue() > valueGreaterOrLess && valueGreaterOrLess !=-1)
-                    { EEPROM->setValue (valueGreaterOrLess ); wrongStatment="";}
-                    //or
-                     
+                      EEPROM->addValue();
+                  } else // if value to low when valuegreaterorLess then equlize to maximum 
+                      EEPROM->setValue (valueGreaterOrLess );
              }
-
-                              
                              
                 lcd.clear();
                 lcd.print (text);
                 lcd.setCursor(0,1);
                 lcd.blink();
-                lcd.print (n+EEPROM->getValue()+ String (wrongStatment) );
+                lcd.print (n+EEPROM->getValue());
                 
           functionPointer();
      delay (100);         
-     if (__set >=1) {
-         if (( valueGreaterOrLessCondition == "Less" && EEPROM->getValue() > valueGreaterOrLess && valueGreaterOrLess !=-1   ) ||
-               valueGreaterOrLessCondition == "Greater" && EEPROM->getValue() < valueGreaterOrLess && valueGreaterOrLess !=-1)
-                {
-                   wrongStatment = "?";
-                }
-                else  break; //end loop life then set button is pressed            
-     }
+     if (__set >=1) break; //end loop life then set button is pressed            
   } /////// END
         
         if ( testmode ) { // not save value in EEPROM that was changed here 

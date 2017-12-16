@@ -1,5 +1,5 @@
-#include <LiquidCrystal_I2C.h> //0x3F mine or x27 need to find out with :LINK:http://playground.arduino.cc/Main/I2cScanner
-LiquidCrystal_I2C lcd(0x27 , 2, 1, 0, 4, 5, 6,7,3, POSITIVE ); //was 0 x3F  Eldas: 0x27 ,A4 and A5 Are Used
+#include <LiquidCrystal_I2C.h> //0x3F need to find out with :LINK:http://playground.arduino.cc/Main/I2cScanner
+LiquidCrystal_I2C lcd(0x27, 2, 1, 0, 4, 5, 6,7,3, POSITIVE ); //was 0 x3F  Eldas: 0x27 ,A4 and A5 Are Used
 
 //Variables
 const static  int8_t BUTTON_SET = 12;
@@ -51,12 +51,7 @@ void myF () {}; // dummy function
            __up = digitalRead(BUTTON_UP);
            __down = digitalRead(BUTTON_DOWN);      
           
-
-          if (testmode && (! __up || !__down) )
-              EEPROM->setValue (0 ); //
-          else if (testmode && ( __up || __down))
-              EEPROM->setValue (testmode_value ); //
-                  
+        
           if (   __up  ) { // Boundry value not exeed
                  
                  if ( ( valueGreaterOrLess == -1 || valueGreaterOrLessCondition == "Greater"))

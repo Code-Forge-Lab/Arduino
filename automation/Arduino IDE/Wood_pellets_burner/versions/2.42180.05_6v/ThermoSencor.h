@@ -60,15 +60,15 @@ class ThermoSencor {
          if (AverageTimesCount >= updateAverageTimes) // average is counted then return new temperature value
           {
             AverageTimesCount = 0; // reset to begining
-            Temperature = (AverageTimesRezult / updateAverageTimes) / temperatureRatio;
+//            Temperature = (AverageTimesRezult / updateAverageTimes) / temperatureRatio;
 
 
-//           Vo = (AverageTimesRezult / updateAverageTimes);
-//           R2 = R1 * (1023.0 / (float)Vo - 1.0);
-//           logR2 = log(R2);
-//           T = (1.0 / (c1 + c2*logR2 + c3*logR2*logR2*logR2));
-//           T = T - 273.15;
-//           Temperature = T;
+           Vo = (AverageTimesRezult / updateAverageTimes);
+           R2 = R1 * (1023.0 / (float)Vo - 1.0);
+           logR2 = log(R2);
+           T = (1.0 / (c1 + c2*logR2 + c3*logR2*logR2*logR2));
+           T = T - 273.15;
+           Temperature = T;
           
           AverageTimesRezult = 0; // reset after give temerature ratio rezult
           };

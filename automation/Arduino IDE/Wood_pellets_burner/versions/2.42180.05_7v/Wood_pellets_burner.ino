@@ -89,24 +89,8 @@ void dummyFunc(){};
 
 // START menu functions
 void funTEMP (){
-
-  switch (  PELLETPUSHERMODE.getValue ())
-  {
-  case 1:
-  printMenuFunc("Min temperature ",&TEMPMIN,"C*:"); // 
-  break;
-  case 2:
-  printMenuFunc("Min temperature ",&TEMPMAX,"C*:"); // 
-  break;
-  case 3:
   printMenuFunc("Max temperature",&TEMPMAX,"C* ");
   printMenuFunc("Min temperature ",&TEMPMAX,"C*:" ,&dummyFunc,false, "Less",TEMPMAX.getValue()); // 
-  break;
-  default:
-  say("Nera Nustatyta","Veikimo Budo!");
-  break
-  }
-  
 
 };
 //////////////////
@@ -575,7 +559,7 @@ initControlPins (); // update output pins
                      COMPONENTSTDESISION_OFF = COMPONENTSMAXSECONDS.getValue()* OneSec; // if  enouth warm when Increase Time
                         
                        if (FANHOLDENABLE_ON) { // turn on fan max speed 
-                          FANHOLDTIMEOUT_ON = FANSECONDSHOLD.getValue()* OneSec;
+                          FANHOLDTIMEOUT_ON = FANSECONDSHOLD.getValue();
                           FANHOLDENABLE_ON=false;
                      }                   
                        LowHightProcetange_value = -2; // Low                    

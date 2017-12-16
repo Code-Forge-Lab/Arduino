@@ -49,8 +49,8 @@ controls COMPONENTSMAXSECONDS(10,140); // Responsible for Pellet Pusher and Fan 
 
 //   
 
-int LowHightProcetange_value = -3;
-int procRatio;
+
+
 
 void init_memory_defaults (bool conditiondefault = false) {
 
@@ -85,28 +85,9 @@ bool ScreenStatusDisplay = false;
 
 
 
-void dummyFunc(){};
-
 // START menu functions
 void funTEMP (){
-
-  switch (  PELLETPUSHERMODE.getValue ())
-  {
-  case 1:
-  printMenuFunc("Min temperature ",&TEMPMIN,"C*:"); // 
-  break;
-  case 2:
-  printMenuFunc("Min temperature ",&TEMPMAX,"C*:"); // 
-  break;
-  case 3:
   printMenuFunc("Max temperature",&TEMPMAX,"C* ");
-  printMenuFunc("Min temperature ",&TEMPMAX,"C*:" ,&dummyFunc,false, "Less",TEMPMAX.getValue()); // 
-  break;
-  default:
-  say("Nera Nustatyta","Veikimo Budo!");
-  break
-  }
-  
 
 };
 //////////////////
@@ -114,10 +95,8 @@ void funTEMP (){
 void __FANMINSPEED () {analogWrite (FANPIN, FANMINSPEED.getValue());};
 void funFAN (){
    analogWrite (PELLETPUSHERPIN, 0); //Disable Pellet Pusher 
-    
-   printMenuFunc("Max. Fan RPM",&FANMAXSPEED,"RPM:",__FANMINSPEED);
-   printMenuFunc("Min. Fan RPM ",&FANMINSPEED,"Minimum Sec:" ,&dummyFunc,false, "Less",FANMAXSPEED.getValue()); // 
-   sey ();
+    analogWrite (PELLETPUSHERPIN, 0); // Disable Pellet Pusher
+   printMenuFunc("Max. Fan RPM",&FANMINSPEED,"RPM:",__FANMINSPEED);
   };
 
   
@@ -144,40 +123,21 @@ void __PELLETPUSH () {analogWrite (PELLETPUSHERPIN, PELLETPUSHERMINSPEED.getValu
   printMenuFunc("Gran.Veik.mlsc",&PELLETPUSHERMILLISECONDSON,"millisec:"); 
   printMenuFunc("Fan.Hold.Time",&FANSECONDSHOLD,"sec:"); // Delay of Keep  Turn On Fan sum While
 
-  printMenuFunc("Darbo laikas ",&COMPONENTSMAXSECONDS,"Maximum Sec:"); // 
-  printMenuFunc("Darbo laikas ",&COMPONENTSMINSECONDS,"Minimum Sec:" ,&dummyFunc,false, "Less",COMPONENTSMAXSECONDS.getValue()); // 
-
-  printMenuFunc("Fano Greitis",&FANMAXSPEED,"Maximum RPM:" );
-  printMenuFunc("Fano Greitis",&FANMINSPEED,"Minimum RPM:", &dummyFunc ,false, "Less",FANMAXSPEED.getValue());
-
-  printMenuFunc("Temperatura",&TEMPMAX,"Maximum C*:" );
-  printMenuFunc("Temperatura",&TEMPMIN,"Minimum C*:", &dummyFunc ,false, "Less",TEMPMAX.getValue());
-
-  
-  
-  PELLETPUSHERMODE.writeValue(2);
+  printMenuFunc("Darbo laikas Max",&COMPONENTSMAXSECONDS,"Max Sec:"); // Delay of Keep  Turn On Fan sum While
+  printMenuFunc("Darbo laikas Min",&COMPONENTSMINSECONDS,"Min Sec:"); // Delay of Keep  Turn On Fan sum While 
   sey ("Gran. Min or Max");
+  PELLETPUSHERMODE.writeValue(2);
+  sey ();
  };
  
  void funPelletModeTempBetweenMinMaxProcentage ()
 
  {
   analogWrite (PELLETPUSHERPIN,0); // disable pellet pusher 
-  
   printMenuFunc("Gran. Greitis",&PELLETPUSHERMINSPEED,"RPM:");
-  printMenuFunc("Gran.Veik.mlsc",&PELLETPUSHERMILLISECONDSON,"millisec:"); 
-  printMenuFunc("Fan.Hold.Time",&FANSECONDSHOLD,"sec:"); // Delay of Keep  Turn On Fan sum While
-
-  printMenuFunc("Darbo laikas ",&COMPONENTSMAXSECONDS,"Maximum Sec:"); // 
-  printMenuFunc("Darbo laikas ",&COMPONENTSMINSECONDS,"Minimum Sec:",&dummyFunc ,false, "Less",COMPONENTSMAXSECONDS.getValue()); // 
-
-  printMenuFunc("Fano Greitis",&FANMAXSPEED,"Maximum RPM:" );
-  printMenuFunc("Fano Greitis",&FANMINSPEED,"Minimum RPM:" ,&dummyFunc,false, "Less",FANMAXSPEED.getValue());
-
-  printMenuFunc("Temperatura",&TEMPMAX,"Maximum C*:" );
-  printMenuFunc("Temperatura",&TEMPMIN,"Minimum C*:",&dummyFunc ,false, "Less",TEMPMAX.getValue());
-//printMenuFunc (String text , controls* EEPROM  ,String n="", void (*functionPointer)() = myF  , bool testmode = false , String valueGreaterOrLessCondition = "Less" ,int valueGreaterOrLess=-1) {
   
+  printMenuFunc("Gran.Greitis Max",&COMPONENTSMINSECONDS,"secundes:");
+  printMenuFunc("Fan.Hold.Time",&FANSECONDSHOLD,"sec:"); // Delay of Keep  Turn On Fan sum While
   PELLETPUSHERMODE.writeValue(3);
    sey ("Gran. Procentage");
   };
@@ -191,12 +151,11 @@ void __PELLETPUSH () {analogWrite (PELLETPUSHERPIN, PELLETPUSHERMINSPEED.getValu
 
 /////////////////
 void __funLCDLIGHT () {    // Sub Function 
-   analogWrite (PELLETPUSHERPIN, 0); // Disable Pellet Pusher
       if (LCDLIGHT.getValue() > 0)lcd.setBacklight(HIGH); else lcd.setBacklight(LOW); 
   };
 
 void funLCDLIGHT (){
-  analogWrite (PELLETPUSHERPIN, 0); // Disable Pellet Pusher
+  
   printMenuFunc("LCD Sviesa",&LCDLIGHT ,"on/off:",__funLCDLIGHT );
 };
 
@@ -290,7 +249,7 @@ void initiate_updatePins ( bool print = true) {
 // Update Pins 
 
 void initControlPins () {
-  //  analogWrite (FANPIN, FANMINSPEED.getValue()); 
+  analogWrite (FANPIN, FANMINSPEED.getValue()); 
   //////////analogWrite (PELLETPUSHERPIN, PELLETPUSHERMINSPEED.getValue()); Negali buti naudojamas be logikos isikisimo
   __funLCDLIGHT (); // Update Background Light
   
@@ -383,33 +342,14 @@ void printstatus (bool print =false) {
                           }
                           else if (PELLETPUSHERMODE.getValue () == 2) //Bitween Hight or Low , Controled by Temperature
                           {
-                                   
-                                   if (COMPONENTSTIMEOUT_ON != -1 )
-                                     
-                                        if (LowHightProcetange_value == -1) // Hight = -1, Low = -2;
-                                            lcd.print("L-HIGHT>on:"+ String (COMPONENTSTIMEOUT_ON) );   
-                                        else
-                                            lcd.print("LOW-H>on:"+ String (COMPONENTSTIMEOUT_ON) );   
-                                  else   
-                                    
-                                       if (LowHightProcetange_value == -1) // Hight = -1, Low = -2;
-                                            lcd.print("L-HIGHT>off:"+ String (COMPONENTSTIMEOUT_OFF) );   
-                                        else
-                                            lcd.print("LOW-H>off:"+ String (COMPONENTSTIMEOUT_OFF) );
-                                            
+                                   lcd.print("Temp.L-H:"  );; 
                           }
-                          
                           else if (PELLETPUSHERMODE.getValue () == 3 )// Bitween  Hight or Low using Sum of Procentage Distage , Controled by Temperature
                           {
-                                  
-                                    if (COMPONENTSTIMEOUT_ON != -1 )
-                                     lcd.print("Temp.L%H>on:"+ String (COMPONENTSTIMEOUT_ON) );
-                                  else   
-                                     lcd.print("Temp.L%H>off:"+ String (COMPONENTSTIMEOUT_OFF) );
-                                     
+                                  lcd.print("Temp.L%H:"  );; 
                           } else
                           {
-                              lcd.print("Isjungta.");   
+                              lcd.print("Isjungta.");  
                           }
                        
 
@@ -419,23 +359,7 @@ void printstatus (bool print =false) {
                case 2 :
                       lcd.print("Oro Put. Fenas");
                       lcd.setCursor(0,1);
-                      switch (  PELLETPUSHERMODE.getValue ())
-                      {
-                       case 1:
-                            lcd.print("RPM:"+ String (FANSPEEDRUN));
-                       break;
-                       case 2:
-                           if (FANSPEEDRUN == FANMAXSPEED.getValue()) 
-                            lcd.print("MAXRPM:"+ String (FANSPEEDRUN));
-                           else 
-                            lcd.print("MINRPM:"+ String (FANSPEEDRUN));
-                       break;
-                       case 3:
-                             lcd.print(String(procRatio)+"%RPM:"+ String (FANSPEEDRUN));
-                       break;
-                      }
-                           
-                     
+                      lcd.print("RPM:"+ String (FANMINSPEED.getValue()*10));
                        if (FANHOLDTIMEOUT_ON > 0)
                        lcd.print(",hold:"+String(FANHOLDTIMEOUT_ON));    
                   break; 
@@ -445,43 +369,10 @@ void printstatus (bool print =false) {
                       lcd.print("C* max:"+ String (TEMPMAX.getValue()) + ",C:"+ String(Temperature.Temperature));    // Temperature.Temperature
                  break;     
                case 4 :
-//
-//                   1-Veikimo Budas","Pagal Laika");
-//   menu[3].IncludeFunction(&funPelletModeTempMinOrMax,"2-Veikimo Budas","Temp.Min - Max");
-//   menu[4].IncludeFunction(&funPelletModeTempBetweenMinMaxProcentage,"3-Veikimo Budas","Temp.Min % Max") ;
-  
-//                      lcd.print("WTFACK");
-//                      lcd.setCursor(0,1);
-//                      lcd.print("WTFACKdick");
-
-                       
-
-
-  
-                        switch (  PELLETPUSHERMODE.getValue ())
-                           {
-                            case 1:
-                                lcd.print("1-Veikimo Budas");
-                                lcd.setCursor(0,1);
-                                lcd.print("Pagal Laika");
-                            break;                  
-                            
-                            case 2:
-                                lcd.print("2-Veikimo Budas");
-                                lcd.setCursor(0,1);
-                                lcd.print("Temp.Min - Max");
-                            break;
-                            
-                            case 3:
-                                lcd.print("3-Veikimo Budas");
-                                lcd.setCursor(0,1);
-                                lcd.print("Temp.Min % Max");
-                            break;
-                            default:
-                            lcd.print("Veikimo Budas");
-                            lcd.print("Nust.Nepavyko");
-                            break;
-                           }  
+                   
+                      lcd.print("TestBlank ");
+                      lcd.setCursor(0,1);
+                     
                   break;    
                }
 
@@ -523,7 +414,7 @@ void loop() {
 
 Temperature.InCustomTimeAverageUpdate(600);
 
-delay (90);
+delay (100);
   
 initControlPins (); // update output pins
 
@@ -551,35 +442,27 @@ initControlPins (); // update output pins
 
      //PELLETPUSHER
          
-         FANSPEEDRUN = FANMINSPEED.getValue(); // default
+
          switch(PELLETPUSHERMODE.getValue()) 
          {
-          
-         
+          int procRatio;
+          FANSPEEDRUN = FANMINSPEED.getValue();
             case 1 : 
-
-                     
+                  
                     
                     COMPONENTSTDESISION_OFF =  COMPONENTSMINSECONDS.getValue() * OneSec; // min = 60 seconds  + cunstom seconds           
             break;//////////////////////////////////////////////////////////////////////////////////////////////////////
             case 2 : // Temp.Low-Hight" // use temperature to shift bitween low or hight power condition
                  
                  if (Temperature.Temperature < TEMPMAX.getValue() ) {
-                     COMPONENTSTDESISION_OFF = COMPONENTSMINSECONDS.getValue()* OneSec; // if not worm enouth when reduse Time
-                     FANSPEEDRUN = FANMAXSPEED.getValue(); 
-      
-                      FANHOLDENABLE_ON=true;
-                      LowHightProcetange_value = -1; // Hight                    
-                        
+                     COMPONENTSTDESISION_OFF = COMPONENTSMINSECONDS.getValue(); // if not wornm enouth when reduse Time
+                     if (FANHOLDENABLE_ON) {
+                         FANHOLDTIMEOUT_ON = FANSECONDSHOLD.getValue();
+                     }
+                        FANHOLDENABLE_ON=false;
                   }else{
-                     COMPONENTSTDESISION_OFF = COMPONENTSMAXSECONDS.getValue()* OneSec; // if  enouth warm when Increase Time
-                        
-                       if (FANHOLDENABLE_ON) { // turn on fan max speed 
-                          FANHOLDTIMEOUT_ON = FANSECONDSHOLD.getValue()* OneSec;
-                          FANHOLDENABLE_ON=false;
-                     }                   
-                       LowHightProcetange_value = -2; // Low                    
-                       FANSPEEDRUN = FANMINSPEED.getValue();
+                     COMPONENTSTDESISION_OFF = COMPONENTSMAXSECONDS.getValue(); // if  enouth warm when Increase Time
+                     FANHOLDENABLE_ON=true;                    
                   }
                   
             break;//////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -588,7 +471,8 @@ initControlPins (); // update output pins
                      procRatio = 100 - (  TEMPMIN.getValue() / TEMPMAX.getValue() );
                      if (procRatio < 0) procRatio =0; //Protection from wtf logic failure 
                        
-                     COMPONENTSTDESISION_OFF =  (COMPONENTSMAXSECONDS.getValue()* OneSec)/100*procRatio; //set to dinamic procentage of power to work
+                     COMPONENTSTDESISION_OFF =  COMPONENTSMAXSECONDS.getValue()/100*procRatio; //set to dinamic procentage of power to work
+
                      FANSPEEDRUN = FANMAXSPEED.getValue()/100*procRatio;
                      if (FANSPEEDRUN < FANMAXSPEED.getValue() ) FANSPEEDRUN = FANMAXSPEED.getValue();
                      if (COMPONENTSTDESISION_OFF < COMPONENTSMAXSECONDS.getValue())  COMPONENTSTDESISION_OFF = COMPONENTSMAXSECONDS.getValue(); // Set to minimum
@@ -617,10 +501,9 @@ initControlPins (); // update output pins
         
         // Fan Delay Timer
 
-       
-         if (FANHOLDENABLE_ON)
+        if (FANHOLDTIMEOUT_ON) 
             analogWrite(FANPIN,FANMAXSPEED.getValue());
-         else   
+        else    
             analogWrite(FANPIN,FANSPEEDRUN);
             
      // Automatiskai iseinti pagal laika is option menu
