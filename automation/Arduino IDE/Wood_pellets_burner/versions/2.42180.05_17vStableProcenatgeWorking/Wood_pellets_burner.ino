@@ -530,9 +530,9 @@ void printstatus (bool print =false) {
                             
                             case 3:
                                 
-                                lcd.print("Galingumas");
+                                lcd.print("Naudojama");
                                 lcd.setCursor(0,1);
-                                lcd.print(String(calculatedRatioProc)+ "%kuro raw:"+String(procRatio)+"%");
+                                lcd.print(String(calculatedRatioProc)+ "% kuro ");//raw:"+String(procRatio)+"%");
                                  
                                    
                                    
