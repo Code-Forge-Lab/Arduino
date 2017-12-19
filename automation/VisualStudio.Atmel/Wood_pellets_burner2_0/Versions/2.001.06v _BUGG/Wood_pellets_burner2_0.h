@@ -1,3 +1,4 @@
+/// 2.001.06v _BUGG
 #include <stdlib.h>
 #include <stddef.h>
 #include "ThermoSencor.h"
@@ -23,17 +24,13 @@ controls FANMINSPEED(3, 90); //address
 controls FANMAXSPEED(4, 150); //address
 
 controls FANSECONDSHOLD(5, 40); //Hold time after fast shift , that make to burn last cycle dropet pellets
-int16_t FANHOLDTIMEOUT_ON = 0;
-int16_t FANSPEEDRUN = 0;
+controls FANSECONDSLOWRISE(6, 40);
+int FANHOLDTIMEOUT_ON = 0;
+int FANSPEEDRUN = 0;
+float FANSPEEDRUNFLOAT = 0;
 bool FANHOLDENABLE_ON = false;
-bool FANFIRESTARTTIMEENABLE = true;
-
-
-int16_t FANFIRESTARTTIME = 60*OneSec; //seconds 600
-int16_t FANFIRESTARTTIMEOUT= FANFIRESTARTTIME; //startup first time in rise fan 
-float FANSPEEDRUNFLOAT;
-float FANSPEEDRUNFLOATSUM;
-
+float FANFIRESTARTTIMEOUT = 0; // timer ,  // set to burn slowly when pellet are droped on small fire to reduse smokde shock
+float FANSPEEDRUNFLOATSUM = 0;
 
 // Pellets  
 
@@ -46,26 +43,25 @@ controls PELLETPUSHERMINSPEED(9, 20);
 //
 
 // Componets regulation
-int16_t COMPONENTSTIMEOUT_ON = 0; //time counters
-int16_t COMPONENTSTIMEOUT_OFF = 0; //time counters
+int COMPONENTSTIMEOUT_ON = 0; //time counters
+int COMPONENTSTIMEOUT_OFF = 0; //time counters
 
 							   // By Desision Stored Values 
-int16_t COMPONENTSTDESISION_ON = 0; //time counters
-int16_t COMPONENTSTDESISION_OFF = 0; //time counters
+int COMPONENTSTDESISION_ON = 0; //time counters
+int COMPONENTSTDESISION_OFF = 0; //time counters
 
 
 controls COMPONENTSMINSECONDS(10, 100); // Responsible for Pellet Pusher and Fan Working Time   
 controls COMPONENTSMAXSECONDS(11, 140); // Responsible for Pellet Pusher and Fan Working Time
 
-						 
+										//   
 
-int16_t LowHightProcetange_value = -3;
-int16_t procRatio;
-int16_t calculatedRatioProc = 0;
-int16_t procRatioStaticCalculation = 0;
-int16_t COMPONENTSTIMEOUT_OFF_Static = 0;
+int LowHightProcetange_value = -3;
+int procRatio;
+int calculatedRatioProc = 0;
+int procRatioStaticCalculation = 0;
+int COMPONENTSTIMEOUT_OFF_Static = 0;
 
-bool ScreenStatusDisplay = false;
 
 void init_memory_defaults(bool conditiondefault = false) {
 
@@ -79,6 +75,7 @@ void init_memory_defaults(bool conditiondefault = false) {
 
 	//Fan
 	FANSECONDSHOLD.setDataDefault(); // 
+	FANSECONDSLOWRISE.setDataDefault();
 
 	FANMINSPEED.setDataDefault();
 	FANMAXSPEED.setDataDefault();
@@ -96,7 +93,7 @@ void init_memory_defaults(bool conditiondefault = false) {
 
 }
 
-
+bool ScreenStatusDisplay = false;
 
 
 
@@ -113,6 +110,7 @@ void funTEMP() {
 		break;
 	case 2:
 		printMenuFunc("Max temperature ", &TEMPMAX, "C*:"); // 
+
 		break;
 	case 3:
 		printMenuFunc("Max temperature", &TEMPMAX, "C* ");
@@ -127,14 +125,62 @@ void funTEMP() {
 };
 //////////////////
 
-void __FANMINSPEED() { analogWrite(FANPIN, FANMINSPEED.getValue()); };
+
+
+
+void __FANMINSPEED() {
+
+	switch (PELLETPUSHERMODE.getValue())
+	{
+	case 1:
+		analogWrite(FANPIN, FANMINSPEED.getValue());
+		break;
+	case 2:
+
+		if (Temperature.Temperature < TEMPMAX.getValue())
+			analogWrite(FANPIN, FANMAXSPEED.getValue());
+		else
+			analogWrite(FANPIN, FANMINSPEED.getValue());
+
+		break;
+	case 3:
+		break;
+
+	default:
+		break;
+	}
+
+
+};
 void funFAN() {
 	analogWrite(PELLETPUSHERPIN, 0); //Disable Pellet Pusher 
 
-	printMenuFunc("Max. Fan RPM", &FANMAXSPEED, "RPM:", __FANMINSPEED);
-	printMenuFunc("Min. Fan RPM ", &FANMINSPEED, "RPM:", &__FANMINSPEED, false, "Less", FANMAXSPEED.getValue()); //
-	printMenuFunc("Fan Hold Time", &FANSECONDSHOLD, "Sec:");
-	sey();
+
+
+	switch (PELLETPUSHERMODE.getValue())
+	{
+	case 1:
+		printMenuFunc("Min. Fan RPM ", &FANMINSPEED, "RPM:", &dummyFunc, false, "Less", FANMAXSPEED.getValue()); //
+
+		break;
+	case 2:
+
+		printMenuFunc("Max. Fan RPM", &FANMAXSPEED, "RPM:", __FANMINSPEED);
+		printMenuFunc("Min. Fan RPM ", &FANMINSPEED, "RPM:", &__FANMINSPEED, false, "Less", FANMAXSPEED.getValue()); //
+		printMenuFunc("Fan Hold Time", &FANSECONDSHOLD, "Sec:");
+		printMenuFunc("Fan Slow Rise", &FANSECONDSLOWRISE, "Sec:");
+		break;
+	case 3:
+		printMenuFunc("Max. Fan RPM", &FANMAXSPEED, "RPM:", __FANMINSPEED);
+		printMenuFunc("Min. Fan RPM ", &FANMINSPEED, "RPM:", &__FANMINSPEED, false, "Less", FANMAXSPEED.getValue()); //
+		break;
+
+	default:
+		break;
+	}
+
+
+	sey("Fano pakeisti");
 };
 
 
@@ -183,7 +229,7 @@ void funPelletModeTempBetweenMinMaxProcentage()
 
 	printMenuFunc("Gran. Greitis", &PELLETPUSHERMINSPEED, "RPM:");
 	printMenuFunc("Gran.Veik.mlsc", &PELLETPUSHERMILLISECONDSON, "millisec:");
-	printMenuFunc("Fan.Hold.Time", &FANSECONDSHOLD, "sec:"); // Delay of Keep  Turn On Fan sum While
+
 
 	printMenuFunc("Darbo laikas ", &COMPONENTSMAXSECONDS, "Maximum Sec:"); // 
 	printMenuFunc("Darbo laikas ", &COMPONENTSMINSECONDS, "Minimum Sec:", &dummyFunc, false, "Less", COMPONENTSMAXSECONDS.getValue()); // 
@@ -216,11 +262,11 @@ void funLCDLIGHT() {
 	analogWrite(PELLETPUSHERPIN, 0); // Disable Pellet Pusher
 	printMenuFunc("LCD Sviesa", &LCDLIGHT, "on/off:", __funLCDLIGHT);
 };
-//
-//void funTestingComponents() { // temporery loaded value that not changed can be tested with commands
-//	printMenuFunc("Gran. Greitis", &PELLETPUSHERMINSPEED, "TEST-RPM:", __PELLETPUSH, true);
-//	//         printMenuFunc("Max. Fan RPM",&FANMINSPEED,"TEST-RPM:",__FANMINSPEED,true);
-//}
+
+void funTestingComponents() { // temporery loaded value that not changed can be tested with commands
+	printMenuFunc("Gran. Greitis", &PELLETPUSHERMINSPEED, "TEST-RPM:", __PELLETPUSH, true);
+	//         printMenuFunc("Max. Fan RPM",&FANMINSPEED,"TEST-RPM:",__FANMINSPEED,true);
+}
 
 
 void funSettoDefault() {
@@ -266,7 +312,7 @@ void funExit() {
 // END menu functions
 
 
-menuLiquidCrystal menu[8]; // alway give exact size of menu
+menuLiquidCrystal menu[9]; // alway give exact size of menu
 menuLiquidCrystalNavigate navmenu;
 
 // load into menu external functions
@@ -279,21 +325,22 @@ void initiate_menu_functions() {
 	menu[3].IncludeFunction(&funPelletModeTempMinOrMax, "2-Veikimo Budas", "Temp.Min - Max");
 	menu[4].IncludeFunction(&funPelletModeTempBetweenMinMaxProcentage, "3-Veikimo Budas", "Temp.Min % Max");
 	menu[5].IncludeFunction(&funLCDLIGHT, "Sviesa", "On or Off");
-	//menu[6].IncludeFunction(&funTestingComponents, "Testavimas");
+	menu[6].IncludeFunction(&funTestingComponents, "Testavimas");
 
-	menu[6].IncludeFunction(&funSettoDefault, "Set to Default", "Gamik.Parametrai");
+	menu[7].IncludeFunction(&funSettoDefault, "Set to Default", "Gamik.Parametrai");
 
-	menu[7].IncludeFunction(&funExit, "Iseiti");
+	menu[8].IncludeFunction(&funExit, "Iseiti");
 
 	//total menu available
-	navmenu.setmenuLenght(sizeof(menu) / sizeof(menu[0])); // find out about size 
+	navmenu.setmenuLenght(sizeof(menu) / sizeof(menu[0])); // find out about sieze 
 }
 
 // when program loaded newly .
 void initiate_updatePins(bool print = true) {
 	if (LCDLIGHT.getValue() > 0)lcd.setBacklight(HIGH); else lcd.setBacklight(LOW);
 
-	
+	analogWrite(FANPIN, FANMINSPEED.getValue());
+	analogWrite(PELLETPUSHERPIN, PELLETPUSHERMINSPEED.getValue());
 
 
 	//     if (print) 
@@ -444,10 +491,22 @@ void printstatus(bool print = false) {
 			lcd.print("RPM:" + String(FANSPEEDRUN));
 			break;
 		case 2:
-			if (FANSPEEDRUN == FANMAXSPEED.getValue())
-				lcd.print("MAXRPM:" + String(FANSPEEDRUN) + " "+String(FANFIRESTARTTIMEOUT));
+
+			if (FANFIRESTARTTIMEOUT > 0)
+				lcd.print("Slow-RPM:" + String((FANSPEEDRUNFLOAT)));//+",RPM:"+String(FANSPEEDRUN));
 			else
-				lcd.print("MINRPM:" + String(FANSPEEDRUN) + " " + String(FANFIRESTARTTIMEOUT));
+
+
+
+				if (FANFIRESTARTTIMEOUT <= 0)
+				{
+					if (FANSPEEDRUN == FANMAXSPEED.getValue())
+						lcd.print("MAXRPM:" + String(FANSPEEDRUN));
+					else
+						lcd.print("MINRPM:" + String(FANSPEEDRUN));
+				}
+
+
 			break;
 		case 3:
 			int valProc = (FANSPEEDRUN * 100) / FANMAXSPEED.getValue();
@@ -462,6 +521,7 @@ void printstatus(bool print = false) {
 
 		if (FANHOLDTIMEOUT_ON > 0)
 			lcd.print(",H:" + String(FANHOLDTIMEOUT_ON));
+
 		break;
 	case 3:
 		lcd.print("Temp. C*:" + String(Temperature.Temperature));
@@ -647,14 +707,14 @@ void loop() {
 			{
 
 
-				FANFIRESTARTTIMEOUT = FANFIRESTARTTIME;
+				FANFIRESTARTTIMEOUT = FANSECONDSLOWRISE.getValue() * OneSec;
 
-				FANSPEEDRUNFLOATSUM = float(FANMAXSPEED.getValue() - FANMINSPEED.getValue()) / FANFIRESTARTTIME;
+				FANSPEEDRUNFLOATSUM = (FANMAXSPEED.getValue() - FANMINSPEED.getValue()) / FANFIRESTARTTIMEOUT;
 
 				FANSPEEDRUNFLOAT = FANMINSPEED.getValue(); // set to minimum , later increases fan speed 
 			}
 
-			if (FANFIRESTARTTIMEOUT > 0 )// if true to slow start fan
+			if (FANFIRESTARTTIMEOUT > 0)// if true to slow start fan
 			{
 				FANSPEEDRUNFLOAT = FANSPEEDRUNFLOAT + FANSPEEDRUNFLOATSUM; // Minimum Speed plus each bit divided from given time 
 				FANSPEEDRUN = FANSPEEDRUNFLOAT;
@@ -662,7 +722,6 @@ void loop() {
 			else
 			{
 				FANSPEEDRUN = FANMAXSPEED.getValue(); // if time out slow ignite mode then use this 
-				
 			}
 
 			FANHOLDENABLE_ON = true;
@@ -675,7 +734,6 @@ void loop() {
 			if (FANHOLDENABLE_ON) { // turn on fan max speed 
 				FANHOLDTIMEOUT_ON = FANSECONDSHOLD.getValue()* OneSec;
 				FANHOLDENABLE_ON = false;
-				 // set value FANFIRESTARTTIMEOUT to kick fan each time 
 			}
 			LowHightProcetange_value = -2; // Low show condition                   
 			FANSPEEDRUN = FANMINSPEED.getValue();
@@ -717,9 +775,7 @@ void loop() {
 
 	COMPONENTSTDESISION_ON = PELLETPUSHERMILLISECONDSON.getValue(); // min = 60 seconds + custom seconds 
 
-
-
-//OFF																	// Fan And Pellet Time Counter
+																	// Fan And Pellet Time Counter
 	if (COMPONENTSTIMEOUT_ON == -1 && COMPONENTSTIMEOUT_OFF == -1) // before ON_TIMEOUT become -1 , zero give window to step up a turn of mode enable
 	{
 
@@ -729,8 +785,6 @@ void loop() {
 
 			break;
 		case 2:
-			
-			
 			break;
 		case 3:
 			COMPONENTSTIMEOUT_OFF_Static = COMPONENTSTDESISION_OFF;
@@ -752,12 +806,6 @@ void loop() {
 		COMPONENTSTIMEOUT_OFF = COMPONENTSTDESISION_OFF; // final setup
 	}
 
-
-
-
-
-
-	/////////////////////// ON 
 	if (COMPONENTSTIMEOUT_ON == -1 && COMPONENTSTIMEOUT_OFF == 0) // give beggining and turn on pellet pusher
 		COMPONENTSTIMEOUT_ON = COMPONENTSTDESISION_ON;
 
@@ -854,13 +902,5 @@ void loop() {
 
 
 }
-
-
-
-
-
-
-
-
 
 

@@ -1,4 +1,3 @@
-//
 #include <stdlib.h>
 #include <stddef.h>
 #include "ThermoSencor.h"
@@ -24,13 +23,9 @@ controls FANMINSPEED(3,90); //address
 controls FANMAXSPEED(4,150); //address
 
 controls FANSECONDSHOLD(5,40); //Hold time after fast shift , that make to burn last cycle dropet pellets
-controls FANSECONDSLOWRISE(6,40);
 int FANHOLDTIMEOUT_ON = 0;  
 int FANSPEEDRUN = 0; 
-float FANSPEEDRUNFLOAT = 0;
-bool FANHOLDENABLE_ON=false;  
-float FANFIRESTARTTIMEOUT = 0; // timer ,  // set to burn slowly when pellet are droped on small fire to reduse smokde shock
-float FANSPEEDRUNFLOATSUM = 0;
+float FANHOLDENABLE_ON=false;           
 
 // Pellets  
 
@@ -75,7 +70,6 @@ void init_memory_defaults (bool conditiondefault = false) {
      
        //Fan
        FANSECONDSHOLD.setDataDefault(); // 
-	   FANSECONDSLOWRISE.setDataDefault();
        
        FANMINSPEED.setDataDefault();
        FANMAXSPEED.setDataDefault();
@@ -110,7 +104,6 @@ void funTEMP (){
   break;
   case 2:
   printMenuFunc("Max temperature ",&TEMPMAX,"C*:"); // 
-  
   break;
   case 3:
   printMenuFunc("Max temperature",&TEMPMAX,"C* ");
@@ -125,62 +118,14 @@ void funTEMP (){
 };
 //////////////////
 
-
-
-
-void __FANMINSPEED () { 
-
-	switch (PELLETPUSHERMODE.getValue())
-	{
-	case 1:
-		analogWrite(FANPIN, FANMINSPEED.getValue());
-		break;
-	case 2:
-		
-		if (Temperature.Temperature < TEMPMAX.getValue())
-			analogWrite(FANPIN, FANMAXSPEED.getValue());
-		else
-			analogWrite(FANPIN, FANMINSPEED.getValue());
-
-		break;
-	case 3:
-		break;
-
-	default:
-		break;
-	}
-
-	
-};
+void __FANMINSPEED () {analogWrite (FANPIN, FANMINSPEED.getValue());};
 void funFAN (){
    analogWrite (PELLETPUSHERPIN, 0); //Disable Pellet Pusher 
     
-   
-  
-   switch (PELLETPUSHERMODE.getValue())
-   {
-   case 1:
-	   printMenuFunc("Min. Fan RPM ", &FANMINSPEED, "RPM:", &dummyFunc, false, "Less", FANMAXSPEED.getValue()); //
-
-	   break;
-   case 2:
-	   
-		   printMenuFunc("Max. Fan RPM", &FANMAXSPEED, "RPM:", __FANMINSPEED);
-		   printMenuFunc("Min. Fan RPM ", &FANMINSPEED, "RPM:", &__FANMINSPEED, false, "Less", FANMAXSPEED.getValue()); //
-		   printMenuFunc("Fan Hold Time", &FANSECONDSHOLD, "Sec:");
-		   printMenuFunc("Fan Slow Rise", &FANSECONDSLOWRISE, "Sec:");
-	   break;
-   case 3:
-		  printMenuFunc("Max. Fan RPM", &FANMAXSPEED, "RPM:", __FANMINSPEED);
-	      printMenuFunc("Min. Fan RPM ", &FANMINSPEED, "RPM:", &__FANMINSPEED, false, "Less", FANMAXSPEED.getValue()); //
-	   break;
-
-   default:
-	   break;
-   }
-   
-   
-   sey ("Fano pakeisti");
+   printMenuFunc("Max. Fan RPM",&FANMAXSPEED,"RPM:",__FANMINSPEED);
+   printMenuFunc("Min. Fan RPM ",&FANMINSPEED,"RPM:" ,&dummyFunc,false, "Less",FANMAXSPEED.getValue()); //
+   printMenuFunc("Fan Hold Time",&FANSECONDSHOLD,"Sec:");
+   sey ();
   };
 
   
@@ -229,7 +174,7 @@ void __PELLETPUSH () {analogWrite (PELLETPUSHERPIN, PELLETPUSHERMINSPEED.getValu
   
   printMenuFunc("Gran. Greitis",&PELLETPUSHERMINSPEED,"RPM:");
   printMenuFunc("Gran.Veik.mlsc",&PELLETPUSHERMILLISECONDSON,"millisec:"); 
- 
+  printMenuFunc("Fan.Hold.Time",&FANSECONDSHOLD,"sec:"); // Delay of Keep  Turn On Fan sum While
 
   printMenuFunc("Darbo laikas ",&COMPONENTSMAXSECONDS,"Maximum Sec:"); // 
   printMenuFunc("Darbo laikas ",&COMPONENTSMINSECONDS,"Minimum Sec:",&dummyFunc ,false, "Less",COMPONENTSMAXSECONDS.getValue()); // 
@@ -331,7 +276,7 @@ void initiate_menu_functions () {
    menu[8].IncludeFunction(&funExit,"Iseiti"); 
    
    //total menu available
-   navmenu.setmenuLenght (sizeof(menu)/sizeof(menu[0])) ; // find out about sieze 
+   navmenu.setmenuLenght (sizeof(menu)/sizeof(menu[0])) ; // find out about size 
   }
 
 // when program loaded newly .
@@ -489,22 +434,10 @@ void printstatus (bool print =false) {
                             lcd.print("RPM:"+ String (FANSPEEDRUN));
                        break;
                        case 2:
-						   
-						   if (FANFIRESTARTTIMEOUT > 0)
-							   lcd.print("Slow-RPM:" + String((FANSPEEDRUNFLOAT)));//+",RPM:"+String(FANSPEEDRUN));
-						   else
-						
-							
-							   
-							   if (FANFIRESTARTTIMEOUT <= 0)
-							   {
-								   if (FANSPEEDRUN == FANMAXSPEED.getValue())
-									   lcd.print("MAXRPM:" + String(FANSPEEDRUN));
-								   else
-									   lcd.print("MINRPM:" + String(FANSPEEDRUN));
-							   }
-						  
-						   
+                           if (FANSPEEDRUN == FANMAXSPEED.getValue()) 
+                            lcd.print("MAXRPM:"+ String (FANSPEEDRUN));
+                           else 
+                            lcd.print("MINRPM:"+ String (FANSPEEDRUN));
                        break;
                        case 3:
                               int valProc = ( FANSPEEDRUN * 100  ) / FANMAXSPEED.getValue()  ; 
@@ -517,9 +450,8 @@ void printstatus (bool print =false) {
                       }
                            
                      
-					  if (FANHOLDTIMEOUT_ON > 0)
-						  lcd.print(",H:" + String(FANHOLDTIMEOUT_ON));
-					  
+                       if (FANHOLDTIMEOUT_ON > 0)
+                       lcd.print(",H:"+String(FANHOLDTIMEOUT_ON));    
                   break; 
                case 3 :
                       lcd.print("Temp. C*:"+ String(Temperature.Temperature));
@@ -636,36 +568,35 @@ void printstatus (bool print =false) {
 
 
 
-int exitmenutime = 30*OneSec;//ms
+int exitmenutime = 30*10;//ms
 int exitmenutimer = exitmenutime;
 int c1Sec = 0;
 void loop() {
 
-	//  c1Sec--;
-	//  if (c1Sec <= 0 )//delay shift between temp function and just time hold function
-	//  { 
-	//    c1Sec = 10; 
-	//     Temperature.RawValueUpdate (); // Measure Temperature 100 ms Hold
-	//  }else
-	//  {
-	//    delay (100);
-	//  }
+//  c1Sec--;
+//  if (c1Sec <= 0 )//delay shift between temp function and just time hold function
+//  { 
+//    c1Sec = 10; 
+//     Temperature.RawValueUpdate (); // Measure Temperature 100 ms Hold
+//  }else
+//  {
+//    delay (100);
+//  }
 
-	Temperature.InCustomTimeAverageUpdate(600);
+Temperature.InCustomTimeAverageUpdate(600);
 
-	delay(90);
-
-	initControlPins(); // update output pins
-
-
-	//delay (90);
-	if (COMPONENTSTIMEOUT_ON > -1)COMPONENTSTIMEOUT_ON--;
-	if (COMPONENTSTIMEOUT_OFF > -1)COMPONENTSTIMEOUT_OFF--;
-	if (FANHOLDTIMEOUT_ON > -1) FANHOLDTIMEOUT_ON--;
-
-	if (printstatustimer > -1) printstatustimer--;
-	if (FANFIRESTARTTIMEOUT > -1) { FANFIRESTARTTIMEOUT--;  };
+delay (90);
   
+initControlPins (); // update output pins
+
+
+//delay (90);
+   if (COMPONENTSTIMEOUT_ON > -1)COMPONENTSTIMEOUT_ON--;
+    if (COMPONENTSTIMEOUT_OFF > -1)COMPONENTSTIMEOUT_OFF --;
+    if(FANHOLDTIMEOUT_ON > -1) FANHOLDTIMEOUT_ON --;
+ 
+  if (printstatustimer > -1) printstatustimer--;
+
   
     
 
@@ -690,49 +621,27 @@ void loop() {
             case 1 : 
 
                      
-			
-                    COMPONENTSTDESISION_OFF =  COMPONENTSMINSECONDS.getValue() * OneSec; // min = 60 seconds  + custom seconds           
+                    
+                    COMPONENTSTDESISION_OFF =  COMPONENTSMINSECONDS.getValue() * OneSec; // min = 60 seconds  + cunstom seconds           
                     FANSPEEDRUN = FANMINSPEED.getValue(); // default
             break;//////////////////////////////////////////////////////////////////////////////////////////////////////
-            case 2 : // Temp.Low-Hight" // use temperature to shift between low or hight power condition
+            case 2 : // Temp.Low-Hight" // use temperature to shift bitween low or hight power condition
                  
                  if (Temperature.Temperature < TEMPMAX.getValue() ) {
-                     COMPONENTSTDESISION_OFF = COMPONENTSMINSECONDS.getValue()* OneSec; // if not worm enough when reduce Time
-                     
-					
-						
-					 if (FANHOLDENABLE_ON == false) // if fan was started from LOW mode then try increase speed very slowly
-					 {
-						
-
-						 FANFIRESTARTTIMEOUT = FANSECONDSLOWRISE.getValue() * OneSec;
-						
-						 FANSPEEDRUNFLOATSUM = (FANMAXSPEED.getValue() - FANMINSPEED.getValue()) / FANFIRESTARTTIMEOUT;
-						 
-						 FANSPEEDRUNFLOAT = FANMINSPEED.getValue(); // set to minimum , later increases fan speed 
-					 }
-
-					   if (FANFIRESTARTTIMEOUT > 0)// if true to slow start fan
-					   {    
-						   FANSPEEDRUNFLOAT =  FANSPEEDRUNFLOAT + FANSPEEDRUNFLOATSUM; // Minimum Speed plus each bit divided from given time 
-						   FANSPEEDRUN = FANSPEEDRUNFLOAT;
-					   } 
-					   else
-					   {
-						   FANSPEEDRUN = FANMAXSPEED.getValue(); // if time out slow ignite mode then use this 
-					   }
-					  
+                     COMPONENTSTDESISION_OFF = COMPONENTSMINSECONDS.getValue()* OneSec; // if not worm enouth when reduse Time
+                     FANSPEEDRUN = FANMAXSPEED.getValue(); 
+      
                       FANHOLDENABLE_ON=true;
                       LowHightProcetange_value = -1; // Hight                    
                         
                   }else{
-                     COMPONENTSTDESISION_OFF = COMPONENTSMAXSECONDS.getValue()* OneSec; // if  enough warm when Increase Time
+                     COMPONENTSTDESISION_OFF = COMPONENTSMAXSECONDS.getValue()* OneSec; // if  enouth warm when Increase Time
                         
                        if (FANHOLDENABLE_ON) { // turn on fan max speed 
                           FANHOLDTIMEOUT_ON = FANSECONDSHOLD.getValue()* OneSec;
                           FANHOLDENABLE_ON=false;
                      }                   
-                       LowHightProcetange_value = -2; // Low show condition                   
+                       LowHightProcetange_value = -2; // Low                    
                        FANSPEEDRUN = FANMINSPEED.getValue();
                   }
                   
@@ -775,29 +684,22 @@ void loop() {
        // Fan And Pellet Time Counter
           if (COMPONENTSTIMEOUT_ON == -1 && COMPONENTSTIMEOUT_OFF == -1) // before ON_TIMEOUT become -1 , zero give window to step up a turn of mode enable
             {                 
-					
-			  switch (PELLETPUSHERMODE.getValue())
-			  {
-			  case 1:
+             
 
-				  break;
-			  case 2:
-				  break;
-			  case 3:
-				  COMPONENTSTIMEOUT_OFF_Static = COMPONENTSTDESISION_OFF;
+                  if ( PELLETPUSHERMODE.getValue() == 3 || true) // if procentage mode
+                   { 
+                     
+                     
+                     COMPONENTSTIMEOUT_OFF_Static = COMPONENTSTDESISION_OFF ;
+                     
+                     calculatedRatioProc = 100-((COMPONENTSTIMEOUT_OFF_Static * 10 ) / COMPONENTSMAXSECONDS.getValue());
+                   
+                     FANSPEEDRUN =  (FANMAXSPEED.getValue()* calculatedRatioProc) /100 ;
 
-				  calculatedRatioProc = 100 - ((COMPONENTSTIMEOUT_OFF_Static * 10) / COMPONENTSMAXSECONDS.getValue());
-
-				  FANSPEEDRUN = (FANMAXSPEED.getValue()* calculatedRatioProc) / 100;
-
-				  if (FANSPEEDRUN < FANMINSPEED.getValue()) // fan speed from procentage is lower then minimum posible value , do set minimum value 
-					 FANSPEEDRUN = FANMINSPEED.getValue();
-				  break;
-			  default:
-				  break;
-			  }
-
-                 
+                     if (FANSPEEDRUN < FANMINSPEED.getValue() ) // fan speed from procentage is lower then minimum posible value , do set minimum value 
+                         FANSPEEDRUN = FANMINSPEED.getValue(); 
+               
+                   }
                    
 
                     COMPONENTSTIMEOUT_OFF =  COMPONENTSTDESISION_OFF; // final setup
