@@ -127,12 +127,13 @@ void funTEMP() {
 };
 //////////////////
 
-void __FANMINSPEED() { analogWrite(FANPIN, FANMINSPEED.getValue()); };
+void __FANMINSPEEDMIN() { analogWrite(FANPIN, FANMINSPEED.getValue()); };
+void __FANMINSPEEDMAX() { analogWrite(FANPIN, FANMAXSPEED.getValue()); };
 void funFAN() {
 	analogWrite(PELLETPUSHERPIN, 0); //Disable Pellet Pusher 
 
-	printMenuFunc("Max. Fan RPM", &FANMAXSPEED, "RPM:", __FANMINSPEED);
-	printMenuFunc("Min. Fan RPM ", &FANMINSPEED, "RPM:", &__FANMINSPEED, false, "Less", FANMAXSPEED.getValue()); //
+	printMenuFunc("Max. Fan RPM", &FANMAXSPEED, "RPM:", &dummyFunc);
+	printMenuFunc("Min. Fan RPM ", &FANMINSPEED, "RPM:", &__FANMINSPEEDMIN, false, "Less", FANMAXSPEED.getValue()); //
 	printMenuFunc("Fan Hold/Rise", &FANSECONDSHOLD, "Sec:");
 	sey();
 };
