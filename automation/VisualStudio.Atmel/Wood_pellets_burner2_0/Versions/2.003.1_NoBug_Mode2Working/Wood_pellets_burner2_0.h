@@ -133,7 +133,7 @@ void funFAN() {
 
 	printMenuFunc("Max. Fan RPM", &FANMAXSPEED, "RPM:", __FANMINSPEED);
 	printMenuFunc("Min. Fan RPM ", &FANMINSPEED, "RPM:", &__FANMINSPEED, false, "Less", FANMAXSPEED.getValue()); //
-	printMenuFunc("Fan Hold/Rise Time", &FANSECONDSHOLD, "Sec:");
+	printMenuFunc("Fan Hold/Rise", &FANSECONDSHOLD, "Sec:");
 	sey();
 };
 
@@ -660,7 +660,7 @@ void loop() {
 				//FANFIRESTARTTIMERENABLE = false;
 				FANFIRESTARTTIMEOUT = FANSECONDSHOLD.getValue() * OneSec; //FANFIRESTARTTIME; // react if burn cycle is coplete
 
-				FANSPEEDRUNFLOATSUM = float(FANMAXSPEED.getValue() - FANMINSPEED.getValue()) / FANFIRESTARTTIME;
+				FANSPEEDRUNFLOATSUM = float(FANMAXSPEED.getValue() - FANMINSPEED.getValue()) / FANFIRESTARTTIMEOUT;
 
 				FANSPEEDRUNFLOAT = FANMINSPEED.getValue(); // set to minimum , later increases fan speed 
 			}
