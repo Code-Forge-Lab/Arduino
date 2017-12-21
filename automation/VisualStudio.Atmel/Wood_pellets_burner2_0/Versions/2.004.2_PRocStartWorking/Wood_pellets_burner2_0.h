@@ -184,7 +184,6 @@ void funPelletModeTempBetweenMinMaxProcentage()
 
 	printMenuFunc("Gran. Greitis", &PELLETPUSHERMINSPEED, "RPM:");
 	printMenuFunc("Gran.Veik.mlsc", &PELLETPUSHERMILLISECONDSON, "millisec:");
-	printMenuFunc("Fan.Hold.Time", &FANSECONDSHOLD, "sec:"); // Delay of Keep  Turn On Fan sum While
 
 	printMenuFunc("Darbo laikas ", &COMPONENTSMAXSECONDS, "Maximum Sec:"); // 
 	printMenuFunc("Darbo laikas ", &COMPONENTSMINSECONDS, "Minimum Sec:", &dummyFunc, false, "Less", COMPONENTSMAXSECONDS.getValue()-1); // 

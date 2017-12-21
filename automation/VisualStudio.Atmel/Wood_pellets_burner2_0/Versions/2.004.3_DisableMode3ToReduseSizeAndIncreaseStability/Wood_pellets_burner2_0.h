@@ -22,7 +22,7 @@ controls TEMPMAX(2, 23); //address
 controls FANMINSPEED(3, 90); //address
 controls FANMAXSPEED(4, 150); //address
 
-controls FANSECONDSHOLD(5, 50); //Hold time after fast shift , that make to burn last cycle dropet pellets
+controls FANSECONDSHOLD(5, 40); //Hold time after fast shift , that make to burn last cycle dropet pellets
 int16_t FANHOLDTIMEOUT_ON = 0;
 int16_t FANSPEEDRUN = 0;
 bool FANHOLDENABLE_ON = false;
@@ -54,7 +54,7 @@ int16_t COMPONENTSTDESISION_ON = 0; //time counters
 int16_t COMPONENTSTDESISION_OFF = 0; //time counters
 
 
-controls COMPONENTSMINSECONDS(10, 80); // Responsible for Pellet Pusher and Fan Working Time   
+controls COMPONENTSMINSECONDS(10, 100); // Responsible for Pellet Pusher and Fan Working Time   
 controls COMPONENTSMAXSECONDS(11, 140); // Responsible for Pellet Pusher and Fan Working Time
 
 						 
