@@ -276,9 +276,9 @@ void initiate_menu_functions() {
 	menu[0].IncludeFunction(&funTEMP, "Temperatura");
 	menu[1].IncludeFunction(&funFAN, "Oro Put. Fenas");
 	menu[2].IncludeFunction(&funPelletModeOnlyTimer, "1-Veikimo Budas", "Pagal Laika");
-	menu[3].IncludeFunction(&funPelletModeTempMinOrMax, "2-Veikimo Budas", "Temp.Min - Max");
+	menu[3].IncludeFunction(&funPelletModeTempMinOrMax, "2-Veikimo Budas", "Temp.Min arba Max");
 	//menu[4].IncludeFunction(&funPelletModeTempBetweenMinMaxProcentage, "3-Veikimo Budas", "Temp.Min % Max");
-	menu[4].IncludeFunction(&funLCDLIGHT, "Sviesa", "On or Off");
+	menu[4].IncludeFunction(&funLCDLIGHT, "Sviesa", "On arba Off");
 	//menu[6].IncludeFunction(&funTestingComponents, "Testavimas");
 
 	menu[5].IncludeFunction(&funSettoDefault, "Prad.Nustyti", "Gamik.Parametrai");
