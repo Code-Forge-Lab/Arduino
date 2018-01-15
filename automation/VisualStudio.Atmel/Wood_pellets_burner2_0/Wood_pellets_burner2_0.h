@@ -132,7 +132,7 @@ void __FANMINSPEEDMAX() { analogWrite(FANPIN, FANMAXSPEED.getValue()); };
 void funFAN() {
 	analogWrite(PELLETPUSHERPIN, 0); //Disable Pellet Pusher 
 
-	printMenuFunc("Max. Fan RPM", &FANMAXSPEED, "RPM:", &dummyFunc);
+	printMenuFunc("Max. Fan RPM", &FANMAXSPEED, "RPM:", &__FANMINSPEEDMAX);
 	printMenuFunc("Min. Fan RPM ", &FANMINSPEED, "RPM:", &__FANMINSPEEDMIN, false, "Less", FANMAXSPEED.getValue()-1); //
 	printMenuFunc("Fan Hold/Rise", &FANSECONDSHOLD, "Sec:");
 	sey();
@@ -266,7 +266,7 @@ void funExit() {
 // END menu functions
 
 
-menuLiquidCrystal menu[8]; // alway give exact size of menu
+menuLiquidCrystal menu[7]; // alway give exact size of menu
 menuLiquidCrystalNavigate navmenu;
 
 // load into menu external functions
@@ -281,7 +281,7 @@ void initiate_menu_functions() {
 	menu[4].IncludeFunction(&funLCDLIGHT, "Sviesa", "On or Off");
 	//menu[6].IncludeFunction(&funTestingComponents, "Testavimas");
 
-	menu[5].IncludeFunction(&funSettoDefault, "Set to Default", "Gamik.Parametrai");
+	menu[5].IncludeFunction(&funSettoDefault, "Prad.Nustyti", "Gamik.Parametrai");
 
 	menu[6].IncludeFunction(&funExit, "Iseiti");
 
