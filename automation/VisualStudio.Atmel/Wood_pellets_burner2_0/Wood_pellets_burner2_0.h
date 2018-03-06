@@ -604,10 +604,9 @@ void loop() {
 	//  {
 	//    delay (100);
 	//  }
-
-	Temperature.InCustomTimeAverageUpdate(600);
-
-	delay(90);
+	delay(45);
+		Temperature.InCustomTimeAverageUpdate(600);
+	delay(45);
 
 	initControlPins(); // update output pins
 
