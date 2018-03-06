@@ -6,7 +6,7 @@
 #include "functions.h"
 
 
-ThermoSencor Temperature(A3,8840);
+ThermoSencor Temperature(A3,8740);
 
 int8_t FANPIN = 10; // ~
 int8_t PELLETPUSHERPIN = 11; // ~
