@@ -476,7 +476,7 @@ void printstatus(bool print = false) {
 			lcd.print(",H:" + String(FANHOLDTIMEOUT_ON));
 		break;
 	case 3:
-		lcd.print("Temp. C*:" + String(Temperature.Temperature));
+		lcd.print("Temp. C*:" + String(Temperature.temperature));
 		lcd.setCursor(0, 1);
 		switch (PELLETPUSHERMODE.getValue())
 		{
@@ -649,7 +649,7 @@ void loop() {
 		break;//////////////////////////////////////////////////////////////////////////////////////////////////////
 	case 2: // Temp.Low-Hight" // use temperature to shift between low or hight power condition
 
-		if (Temperature.Temperature < TEMPMAX.getValue()) {
+		if (Temperature.temperature < TEMPMAX.getValue()) {
 			COMPONENTSTDESISION_OFF = COMPONENTSMINSECONDS.getValue()* OneSec; // if not worm enough when reduce Time
 
 
