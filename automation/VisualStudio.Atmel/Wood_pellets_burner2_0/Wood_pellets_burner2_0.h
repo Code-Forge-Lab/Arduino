@@ -6,7 +6,7 @@
 #include "functions.h"
 
 
-ThermoSencor Temperature(A3,8740);
+ThermoSencor Temperature(A3,8840);
 
 int8_t FANPIN = 10; // ~
 int8_t PELLETPUSHERPIN = 11; // ~
@@ -17,7 +17,7 @@ int8_t static OneSec = 10; // times in loop until reach one secunde
 controls LCDLIGHT(0, 1);//address
 						// Celcius
 controls TEMPMIN(1, 17); // default 
-controls TEMPMAX(2, 23); //address
+controls TEMPMAX(2, 29); //address
 						 // Fan
 controls FANMINSPEED(3, 35); //address
 controls FANMAXSPEED(4, 150); //address
@@ -42,7 +42,7 @@ float FANSPEEDRUNFLOATSUM;
 controls PELLETPUSHERMODE(7, 1); // Select Mode 1)Only Timer, 2)By Temp. Regulating Min or Max Power, 3)Power Regulating By Temp. between Min or Max in Percentages Range
 
 controls PELLETPUSHERMILLISECONDSON(8, 10); //address //  push time until sleep time + seconds
-controls PELLETPUSHERMINSPEED(9, 20);
+controls PELLETPUSHERMINSPEED(9, 35);
 //
 
 // Components regulation
@@ -54,10 +54,10 @@ int16_t COMPONENTSTDESISION_ON = 0; //time counters
 int16_t COMPONENTSTDESISION_OFF = 0; //time counters
 
 
-controls COMPONENTSMINSECONDS(10, 80); // Responsible for Pellet Pusher and Fan Working Time   
+controls COMPONENTSMINSECONDS(10, 50); // Responsible for Pellet Pusher and Fan Working Time   
 controls COMPONENTSMAXSECONDS(11, 140); // Responsible for Pellet Pusher and Fan Working Time
 
-						 
+controls ONLYTIMERFANSPEED(12, 70);
 
 int16_t LowHightProcetange_value = -3;
 int16_t procRatio;
@@ -93,6 +93,8 @@ void init_memory_defaults(bool conditiondefault = false) {
 	// Control Components Like Fan And Pellet Pusher
 	COMPONENTSMINSECONDS.setDataDefault();
 	COMPONENTSMAXSECONDS.setDataDefault();
+
+	ONLYTIMERFANSPEED.setDataDefault();
 
 }
 
@@ -130,12 +132,21 @@ void funTEMP() {
 
 void __FANMINSPEEDMIN() { analogWrite(FANPIN, FANMINSPEED.getValue()); };
 void __FANMINSPEEDMAX() { analogWrite(FANPIN, FANMAXSPEED.getValue()); };
+void __FANONLYTIMER() { analogWrite(FANPIN, ONLYTIMERFANSPEED.getValue()); };
 void funFAN() {
 	analogWrite(PELLETPUSHERPIN, 0); //Disable Pellet Pusher 
+    
+	if (PELLETPUSHERMODE.getValue() == 1)
+	{
+		printMenuFunc("Fano Greitis", &ONLYTIMERFANSPEED, "RPM:", &__FANONLYTIMER);
+	}else{
+		
+	
 
-	printMenuFunc("Max. Fan RPM", &FANMAXSPEED, "RPM:", &__FANMINSPEEDMAX);
-	printMenuFunc("Min. Fan RPM ", &FANMINSPEED, "RPM:", &__FANMINSPEEDMIN, false, "Less", FANMAXSPEED.getValue()-1); //
-	printMenuFunc("Fan.Ideg.Laikas", &FANSECONDSHOLD, "Sec:");
+		printMenuFunc("Max. Fan RPM", &FANMAXSPEED, "RPM:", &__FANMINSPEEDMAX);
+		printMenuFunc("Min. Fan RPM ", &FANMINSPEED, "RPM:", &__FANMINSPEEDMIN, false, "Less", FANMAXSPEED.getValue() - 1); //
+		printMenuFunc("Fan.Ideg.Laikas", &FANSECONDSHOLD, "Sec:");
+	}
 	sey();
 };
 
@@ -146,10 +157,14 @@ void __PELLETPUSH() { analogWrite(PELLETPUSHERPIN, PELLETPUSHERMINSPEED.getValue
 void funPelletModeOnlyTimer()
 {
 	analogWrite(PELLETPUSHERPIN, 0); // disable pellet pusher 
+
+	printMenuFunc("Fano Greitis", &ONLYTIMERFANSPEED, "RPM:", &__FANONLYTIMER);
 	printMenuFunc("Gran. Greitis", &PELLETPUSHERMINSPEED, "RPM:");
 	printMenuFunc("Gran.Veik.mlsc", &PELLETPUSHERMILLISECONDSON, "millisec:");
 	printMenuFunc("Gran.Neveik.Sec", &COMPONENTSMINSECONDS, "secundes:");
-
+	
+    
+	
 
 	PELLETPUSHERMODE.writeValue(1); // Set to user state
 	
@@ -177,36 +192,7 @@ void funPelletModeTempMinOrMax()
 	sey("Gran. Min or Max");
 };
 
-void funPelletModeTempBetweenMinMaxProcentage()
-
-{
-	//analogWrite(PELLETPUSHERPIN, 0); // disable pellet pusher 
-
-	//printMenuFunc("Gran. Greitis", &PELLETPUSHERMINSPEED, "RPM:");
-	//printMenuFunc("Gran.Veik.mlsc", &PELLETPUSHERMILLISECONDSON, "millisec:");
-
-	//printMenuFunc("Darbo laikas ", &COMPONENTSMAXSECONDS, "Maximum Sec:"); // 
-	//printMenuFunc("Darbo laikas ", &COMPONENTSMINSECONDS, "Minimum Sec:", &dummyFunc, false, "Less", COMPONENTSMAXSECONDS.getValue()-1); // 
-
-	//printMenuFunc("Fano Greitis", &FANMAXSPEED, "Maximum RPM:");
-	//printMenuFunc("Fano Greitis", &FANMINSPEED, "Minimum RPM:", &dummyFunc, false, "Less", FANMAXSPEED.getValue()-1);
-
-	//printMenuFunc("Temperatura", &TEMPMAX, "Maximum C*:");
-	//printMenuFunc("Temperatura", &TEMPMIN, "Minimum C*:", &dummyFunc, false, "Less", TEMPMAX.getValue()-1);
-	////printMenuFunc (String text , controls* EEPROM  ,String n="", void (*functionPointer)() = myF  , bool testmode = false , String valueGreaterOrLessCondition = "Less" ,int valueGreaterOrLess=-1) {
-
-	//PELLETPUSHERMODE.writeValue(3);
-	//sey("Gran. Procentage");
-};
-
-//////////////////////////////////////////////////
-//////////////////////////////////////////////////
-//////////////////////////////////////////////////
-//////////////////////////////////////////////////
-//////////////////////////////////////////////////
-//////////////////////////////////////////////////
-
-/////////////////
+ 
 void __funLCDLIGHT() {    // Sub Function 
 	analogWrite(PELLETPUSHERPIN, 0); // Disable Pellet Pusher
 	if (LCDLIGHT.getValue() > 0)lcd.setBacklight(HIGH); else lcd.setBacklight(LOW);
@@ -275,8 +261,8 @@ void initiate_menu_functions() {
 	// include menu objects
 	menu[0].IncludeFunction(&funTEMP, "Temperatura");
 	menu[1].IncludeFunction(&funFAN, "Oro Put. Fenas");
-	menu[2].IncludeFunction(&funPelletModeOnlyTimer, "1-Veikimo Budas", "Vienodas Laika");
-	menu[3].IncludeFunction(&funPelletModeTempMinOrMax, "2-Veikimo Budas", "Pagal Temp.");
+	menu[2].IncludeFunction(&funPelletModeOnlyTimer, "Veikimo Budas", "Vienodas Laikas");
+	menu[3].IncludeFunction(&funPelletModeTempMinOrMax, "Veikimo Budas", "Pagal Temp.");
 	//menu[4].IncludeFunction(&funPelletModeTempBetweenMinMaxProcentage, "3-Veikimo Budas", "Temp.Min % Max");
 	menu[4].IncludeFunction(&funLCDLIGHT, "Ekrano Sviesa", "Ijungt/Isjungt");
 	//menu[6].IncludeFunction(&funTestingComponents, "Testavimas");
@@ -416,16 +402,6 @@ void printstatus(bool print = false) {
 
 		}
 
-		else if (PELLETPUSHERMODE.getValue() == 3)// Bitween  Hight or Low using Sum of Procentage Distage , Controled by Temperature
-		{
-			//int valProc = 100 - ((COMPONENTSTIMEOUT_OFF_Static * 10) / COMPONENTSMAXSECONDS.getValue());
-
-			if (COMPONENTSTIMEOUT_ON != -1)
-				lcd.print("-" + String(calculatedRatioProc) + "%>on:" +  String(COMPONENTSTIMEOUT_ON));
-			else
-				lcd.print("-" + String(calculatedRatioProc) + "%>off:" + String(COMPONENTSTIMEOUT_OFF));
-
-		}
 		else
 		{
 			lcd.print("Isjungta.");
@@ -441,16 +417,13 @@ void printstatus(bool print = false) {
 		switch (PELLETPUSHERMODE.getValue())
 		{
 		case 1:
-			lcd.print("RPM:" + String(FANSPEEDRUN));
+			lcd.print("Laimatis RPM:" + String(FANSPEEDRUN));
 			
 			break;
 		case 2:
 
-			
-			
-			;
 
-			     if (FANFIRESTARTTIMEOUT > 0)
+			     if (FANFIRESTARTTIMEOUT > 0  ) // fix showing rise when temperature is to low  //& Temperature.temperature > TEMPMAX.getValue()
 					 lcd.print("RPM:" + String(FANSPEEDRUN) + " s:"+String(FANFIRESTARTTIMEOUT));
 			else if (FANSPEEDRUN == FANMAXSPEED.getValue())
 					lcd.print("max RPM:" + String(FANSPEEDRUN) );
@@ -520,11 +493,6 @@ void printstatus(bool print = false) {
 			lcd.print("Temp.Min - Max");
 			break;
 
-		case 3:
-			lcd.print("3-Veikimo Budas");
-			lcd.setCursor(0, 1);
-			lcd.print("Temp.Min % Max");
-			break;
 		default:
 			lcd.print("Veikimo Budas");
 			lcd.print("Nust.Nepavyko");
@@ -547,18 +515,6 @@ void printstatus(bool print = false) {
 				lcd.print("H.Daugiau Kuro.");
 			else
 				lcd.print("L.Maziau Kuro.");
-
-			break;
-
-		case 3:
-
-			lcd.print("Naudojama");
-			lcd.setCursor(0, 1);
-			lcd.print("-"+String(calculatedRatioProc) + "% kuro.");//raw:"+String(procRatio)+"%");
-
-
-
-
 			break;
 		default:
 			lcd.print("Veikimo Budas");
@@ -645,7 +601,7 @@ void loop() {
 
 
 		COMPONENTSTDESISION_OFF = COMPONENTSMINSECONDS.getValue() * OneSec; // min = 60 seconds  + custom seconds           
-		FANSPEEDRUN = FANMINSPEED.getValue(); // default
+		FANSPEEDRUN = ONLYTIMERFANSPEED.getValue(); // default
 		break;//////////////////////////////////////////////////////////////////////////////////////////////////////
 	case 2: // Temp.Low-Hight" // use temperature to shift between low or hight power condition
 
