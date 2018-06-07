@@ -9,7 +9,7 @@ Liquid Crystal Functions: https://github.com/fdebrabander/Arduino-LiquidCrystal-
 
 ## Wiki: https://bitbucket.org/fmalpartida/new-liquidcrystal/wiki/Home ##
 
-[LCD library](https://bitbucket.org/fmalpartida/new-liquidcrystal/downloads/I2CLCDextraIO_assemblyProject_small.jpg)
+![LCD library](https://bitbucket.org/fmalpartida/new-liquidcrystal/downloads/I2CLCDextraIO_assemblyProject_small.jpg)
 
 ## Connection ##
 
