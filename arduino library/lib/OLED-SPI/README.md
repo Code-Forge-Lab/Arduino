@@ -1,4 +1,4 @@
-Source cane [be](https://www.brainy-bits.com/connect-and-use-a-spi-oled-display/) found.
+Source can [be](https://www.brainy-bits.com/connect-and-use-a-spi-oled-display/) found.
 U8glib are used.
 ## Requare libraries ##
 - U8GLib 
