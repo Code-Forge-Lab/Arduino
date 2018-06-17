@@ -3,7 +3,7 @@ U8glib are used.
 ## Requare libraries ##
 - U8GLib 
 
-## --- ##
+##  ##
 
 ![connection](https://github.com/Code-Forge-Lab/Arduino/blob/master/arduino%20library/lib/OLED-SPI/schematic_edited-1024x936.png)
 
