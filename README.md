@@ -19,15 +19,15 @@
 ![minimu component requared](https://github.com/Code-Forge-Lab/Arduino/blob/master/arduino%20library/lib/s-l300.jpg)
 
 # Common library #
- > [ROTARY ENCODER](https://github.com/0xPIT/encoder/tree/arduino)
- > Adafruit_ILI9341
- > Adafruit_GFX_Library
- > Adafruit_Circuit_Playground
- > Adafruit_SSD1306
- > Adafruit-GFX
- > i2c_2device
- > I2CScanner_hex
- > U8glib
+ * > [ROTARY ENCODER](https://github.com/0xPIT/encoder/tree/arduino)
+ * >  Adafruit_ILI9341
+ * > Adafruit_GFX_Library
+ * > Adafruit_Circuit_Playground
+ * > Adafruit_SSD1306
+ * > Adafruit-GFX
+ * > i2c_2device
+ * > I2CScanner_hex
+ * > U8glib
  
  
 # Chips #
