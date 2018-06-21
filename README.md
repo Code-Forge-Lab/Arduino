@@ -17,6 +17,7 @@
 ![arduino-spec-IO](https://github.com/Code-Forge-Lab/Arduino/blob/master/arduino%20library/lib/arduino-1284-unopro-pinout.jpg)
 ![atmel328p](https://github.com/Code-Forge-Lab/Arduino/blob/master/arduino%20library/lib/4mY0y.png)
 ![minimu component requared](https://github.com/Code-Forge-Lab/Arduino/blob/master/arduino%20library/lib/s-l300.jpg)
+![atmel328p_2](https://github.com/Code-Forge-Lab/Arduino/blob/master/images/main-qimg-8175532811e0a6fa855e137be63d7ef4.png)
 
 # Common library #
  * > [ROTARY ENCODER](https://github.com/0xPIT/encoder/tree/arduino)
