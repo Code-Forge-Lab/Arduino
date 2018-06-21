@@ -6,10 +6,8 @@
 - U8glib
 # Code Example #
 
+```cpp
 #include "U8glib.h"
-
-
-
 
 
 U8GLIB_SH1106_128X64 u8g(13, 11, 10, 9, 8);  // D0=13, D1=11, CS=10, DC=9, Reset=8
@@ -64,3 +62,4 @@ void loop(void) {
   
   delay(5000);  
 }
+```
