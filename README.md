@@ -20,6 +20,16 @@
 
 # Common library #
  > [ROTARY ENCODER](https://github.com/0xPIT/encoder/tree/arduino)
+ > Adafruit_ILI9341
+ > Adafruit_GFX_Library
+ > Adafruit_Circuit_Playground
+ > Adafruit_SSD1306
+ > Adafruit-GFX
+ > i2c_2device
+ > I2CScanner_hex
+ > U8glib
+ 
+ 
 # Chips #
 - Atmega8515l-8pu = Program Memory Size (KB)8
 - ATMEGA1284P-PU 128kb Flash memory , 16kb SRAM
