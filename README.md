@@ -19,6 +19,9 @@
 ![minimu component requared](https://github.com/Code-Forge-Lab/Arduino/blob/master/arduino%20library/lib/s-l300.jpg)
 ![atmel328p_2](https://github.com/Code-Forge-Lab/Arduino/blob/master/images/main-qimg-8175532811e0a6fa855e137be63d7ef4.png)
 
+# Atmega128A #
+ Source [link](https://forum.arduino.cc/index.php?topic=410576.0).
+![atmega128](https://camo.githubusercontent.com/1364255dc8fb3fec6f91046a123a410e4233854e/687474703a2f2f692e696d6775722e636f6d2f64456e6a3838422e6a7067)
 # Interput #
 ![interupt pins](https://github.com/Code-Forge-Lab/Arduino/blob/master/images/2018-06-22%2011_46_41-(74)%20Arduino%20Interrupts%20Tutorial%20-%20YouTube.png)
 > Example
