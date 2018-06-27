@@ -47,7 +47,7 @@
 - ATMEGA1284P-PU 128kb Flash memory , 16kb SRAM
 
 # Example #
- > - Serial **I/O communication**
+ > - Serial **I/O** communication
 
 ```cpp
 // the setup function runs once when you press reset or power the board
