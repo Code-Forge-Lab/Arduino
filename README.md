@@ -45,3 +45,6 @@
 # Chips #
 - Atmega8515l-8pu = Program Memory Size (KB)8
 - ATMEGA1284P-PU 128kb Flash memory , 16kb SRAM
+
+# Example #
+# Serial I/O communication #
