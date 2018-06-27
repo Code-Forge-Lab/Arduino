@@ -47,4 +47,88 @@
 - ATMEGA1284P-PU 128kb Flash memory , 16kb SRAM
 
 # Example #
-# Serial I/O communication #
+ > - Serial **I/O communication**
+
+```cpp
+// the setup function runs once when you press reset or power the board
+void setup() {
+
+    Serial.begin(9600);
+    pinMode(13, OUTPUT);
+    pinMode(11, OUTPUT); // output to external led
+
+}
+
+ char incomingByte[20] ; // for incoming serial data
+
+
+
+// the loop function runs over and over again forever
+void loop() {
+
+    
+
+   if (Serial.available()) {
+//      give signal when is active         
+        digitalWrite(13, HIGH);
+
+
+//     read the incoming byte:
+//        incomingByte = Serial.read(); // bug with readBytes as missing first letter if bouth is reading 
+
+//     read whole array of char           //char     , lenght
+      Serial.readBytes(incomingByte, 20);
+
+//    // say what you got:
+        Serial.print("I received: ");
+        Serial.println(incomingByte );
+        
+    
+        
+        delay(200);
+        digitalWrite(13, LOW); 
+    }
+
+
+    // condition what to do if getting any instruction
+    if ( strcmp (incomingByte, "alive")== 0  ) 
+       Serial.print ("Command 'alive' accepted");
+       
+    if (strcmp (incomingByte,"responde") == 0 ) // compare char if math
+       Serial.print ("Command 'responde' accepted");   
+// turn on led
+    if (strcmp (incomingByte,"on") == 0 ) 
+       {
+          digitalWrite(11, 1023); // output 5v max.
+        }
+
+ // turn off led
+    if (strcmp (incomingByte,"off") == 0 ) 
+       {
+          digitalWrite(11, LOW);
+       }    
+     
+     clearChar (incomingByte,20); 
+    
+   
+    
+   // Capture serial data if even is sleeping
+   delay(1000);    
+
+
+   Serial.println (" input "+String (analogRead (PB1 )) + " "); // only can tolerate 3.4v max.
+   Serial.println ("-"); 
+     
+                 // wait for a second
+}
+
+void clearChar ( char *characters , int size ){
+
+         
+        for ( int x = 0; x <  size;  x++){
+//             Serial.print (", "+String (x) + " -= " + String(characters [x]));
+             // remove each character to nill
+             characters[x]  = '\0';
+          }
+  }
+```
