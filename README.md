@@ -30,6 +30,8 @@
 ```cpp
 
 ```
+https://github.com/Code-Forge-Lab/Arduino/blob/master/FTDI-328p.jpg
+![ROTARY ENCODER](https://github.com/Code-Forge-Lab/Arduino/blob/master/FTDI-328p.jpg)
 # Common library #
  * > [ROTARY ENCODER](https://github.com/0xPIT/encoder/tree/arduino)
  * >  Adafruit_ILI9341
