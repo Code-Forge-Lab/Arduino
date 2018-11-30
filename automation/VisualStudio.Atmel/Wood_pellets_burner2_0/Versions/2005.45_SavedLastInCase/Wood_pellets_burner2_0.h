@@ -35,20 +35,14 @@ float FANSPEEDRUNFLOAT;
 float FANSPEEDRUNFLOATSUM;
 
 
-
 // Pellets  
 
-controls PELLETsOFTsTart(13, 5); // When pellet motor is started, draw burst amount of amperes. (1/10 second * pelletSoftStart/5/) = time to slow start
-
-///int8_t pelletSoftStart = 5; // When pellet motor is started, draw burst amount of amperes. (1/10 second * pelletSoftStart) = time to slow start
-int8_t pelletSoftCount = PELLETsOFTsTart.getValue(); // set count rutine using pelletSoftStart variable. Divide maximum value from pelletSoftCount as pelletSoftStart bounderies for start up spin.
 
 
 controls PELLETPUSHERMODE(7, 1); // Select Mode 1)Only Timer, 2)By Temp. Regulating Min or Max Power, 3)Power Regulating By Temp. between Min or Max in Percentages Range
 
 controls PELLETPUSHERMILLISECONDSON(8, 10); //address //  push time until sleep time + seconds
 controls PELLETPUSHERMINSPEED(9, 35);
-
 //
 
 // Components regulation
@@ -60,8 +54,8 @@ int16_t COMPONENTSTDESISION_ON = 0; //time counters
 int16_t COMPONENTSTDESISION_OFF = 0; //time counters
 
 
-controls COMPONENTSMINSECONDS(10, 30); // Responsible for Pellet Pusher and Fan Working Time   
-controls COMPONENTSMAXSECONDS(11, 80); // Responsible for Pellet Pusher and Fan Working Time
+controls COMPONENTSMINSECONDS(10, 50); // Responsible for Pellet Pusher and Fan Working Time   
+controls COMPONENTSMAXSECONDS(11, 140); // Responsible for Pellet Pusher and Fan Working Time
 
 controls ONLYTIMERFANSPEED(12, 70);
 
@@ -101,7 +95,6 @@ void init_memory_defaults(bool conditiondefault = false) {
 	COMPONENTSMAXSECONDS.setDataDefault();
 
 	ONLYTIMERFANSPEED.setDataDefault();
-  PELLETsOFTsTart.setDataDefault();
 
 }
 
@@ -166,9 +159,9 @@ void funPelletModeOnlyTimer()
 	analogWrite(PELLETPUSHERPIN, 0); // disable pellet pusher 
 
 	printMenuFunc("Fano Greitis", &ONLYTIMERFANSPEED, "RPM:", &__FANONLYTIMER);
-	//  printMenuFunc("Gran. Greitis", &PELLETPUSHERMINSPEED, "RPM:");// DONT TOCHT ONLY IN PROGRAMMER MODE SETTINGS ALLOWED
-	printMenuFunc("Gran.Veiks", &PELLETPUSHERMILLISECONDSON, "millisec:");
-	printMenuFunc("Gran.Neveiks.", &COMPONENTSMINSECONDS, "secundes:");
+	printMenuFunc("Gran. Greitis", &PELLETPUSHERMINSPEED, "RPM:");
+	printMenuFunc("Gran.Veik.mlsc", &PELLETPUSHERMILLISECONDSON, "millisec:");
+	printMenuFunc("Gran.Neveik.Sec", &COMPONENTSMINSECONDS, "secundes:");
 	
     
 	
@@ -182,15 +175,15 @@ void funPelletModeOnlyTimer()
 void funPelletModeTempMinOrMax()
 {
 	analogWrite(PELLETPUSHERPIN, 0); // disable pellet pusher 
-//	printMenuFunc("Gran. Greitis", &PELLETPUSHERMINSPEED, "RPM:");// DONT TOCHT ONLY IN PROGRAMMER MODE SETTINGS ALLOWED
+	printMenuFunc("Gran. Greitis", &PELLETPUSHERMINSPEED, "RPM:");
 	printMenuFunc("Gran.Veik.mlsc", &PELLETPUSHERMILLISECONDSON, "millisec:");
 	printMenuFunc("Fan.Ideg.Laikas", &FANSECONDSHOLD, "sec:"); // Delay of Keep  Turn On Fan sum While
 
-	printMenuFunc("Gran.Saltas ", &COMPONENTSMAXSECONDS, "Degimas Sec:"); // Daugiausia
-	printMenuFunc("Gran.Karstas ", &COMPONENTSMINSECONDS, "Degimas Sec:", &dummyFunc, false, "Less", COMPONENTSMAXSECONDS.getValue()-1); // 
+	printMenuFunc("Gran.Laukia ", &COMPONENTSMAXSECONDS, "Maximum Sec:"); // Daugiausia
+	printMenuFunc("Gran.Laukia ", &COMPONENTSMINSECONDS, "Minimum Sec:", &dummyFunc, false, "Less", COMPONENTSMAXSECONDS.getValue()-1); // 
 
-	printMenuFunc("Fanas Saltas", &FANMAXSPEED, "Degimas RPM:", &__FANMINSPEEDMAX);
-	printMenuFunc("Fanas Karstas", &FANMINSPEED, "Degimas RPM:", &__FANMINSPEEDMIN, false, "Less", FANMAXSPEED.getValue()-1);
+	printMenuFunc("Fano Greitis", &FANMAXSPEED, "Maximum RPM:", &__FANMINSPEEDMAX);
+	printMenuFunc("Fano Greitis", &FANMINSPEED, "Minimum RPM:", &__FANMINSPEEDMIN, false, "Less", FANMAXSPEED.getValue()-1);
 
 	printMenuFunc("Temperatura", &TEMPMAX, "Maximum C*:");
 
@@ -252,29 +245,11 @@ void funSettoDefault() {
 
 };
 
-
-void ProgrammerSettings() {
-       analogWrite(PELLETPUSHERPIN, 0); // disable pellet pusher 
-       
-    if (ArgueAgree("Jautrus paramet?"))
-    {
-      printMenuFunc("Gran. Galia", &PELLETPUSHERMINSPEED, "J:");
-//      pelletSoftStart/ PELLETsOFTsTart
-      printMenuFunc("Gran.Soft", &PELLETsOFTsTart, "start%:");
-      sey ();
-      
-      }else {
-        
-      sey("Nepakeista");
-      }
-  }
-  
-
 void funExit() {
 	ScreenStatusDisplay = false;
 };
 
-// END menu functions///////////////////////////////////////////
+// END menu functions
 
 
 menuLiquidCrystal menu[7]; // alway give exact size of menu
@@ -292,11 +267,9 @@ void initiate_menu_functions() {
 	menu[4].IncludeFunction(&funLCDLIGHT, "Ekrano Sviesa", "Ijungt/Isjungt");
 	//menu[6].IncludeFunction(&funTestingComponents, "Testavimas");
 
-  menu[5].IncludeFunction(&ProgrammerSettings, "Programuotojo", "Nustatymai");
-  
-	menu[6].IncludeFunction(&funSettoDefault, "Prad.Nustyti", "Gamik.Parametrai");
+	menu[5].IncludeFunction(&funSettoDefault, "Prad.Nustyti", "Gamik.Parametrai");
 
-	menu[7].IncludeFunction(&funExit, "Iseiti");
+	menu[6].IncludeFunction(&funExit, "Iseiti");
 
 	//total menu available
 	navmenu.setmenuLenght(sizeof(menu) / sizeof(menu[0])); // find out about size 
@@ -338,11 +311,8 @@ const static  int wind = 11;
 
 
 void setup() {
-  Wire.begin();
 	lcd.begin(16, 2);
-  delay (500);
-  lcd.begin(16, 2);
-  
+
 
 
 	// put your setup code here, to run once:
@@ -776,26 +746,12 @@ void loop() {
 
 	// Pellet
 
-	if (COMPONENTSTIMEOUT_ON > -1){ // execute rutine   
+	if (COMPONENTSTIMEOUT_ON > -1) // execute rutine   
 								   //ON
-		 
-//		    / if ( (pelletSoftStart * 10 /*seconds*/ < /* still less*/ PELLETPUSHERMINSPEED.getValue()) && pelletSoftStart * 10  <  pelletSoftCount)
-          
-         
-          if (PELLETsOFTsTart.getValue() < pelletSoftCount)  // divide maximum value from pelletSoftCount as pelletSoftStart bounderies.
-            
-            pelletSoftCount -= 1;       
-           
-        
-         
-        
-		 analogWrite(PELLETPUSHERPIN , PELLETPUSHERMINSPEED.getValue() / pelletSoftCount ); //Give speed/power to motor
-    
-//     /analogWrite(PELLETPUSHERPIN, PELLETPUSHERMINSPEED.getValue()); //Give speed/power to motor Save
-	  }
+		analogWrite(PELLETPUSHERPIN, PELLETPUSHERMINSPEED.getValue()); //Give speed/power to motor
 	else // OFF
 		analogWrite(PELLETPUSHERPIN, 0); //Give speed/power to motor  
-    pelletSoftCount = PELLETsOFTsTart.getValue(); // reset t
+
 										 // Fan Delay Timer
 
 
@@ -881,3 +837,13 @@ void loop() {
 
 
 }
+
+
+
+
+
+
+
+
+
+
