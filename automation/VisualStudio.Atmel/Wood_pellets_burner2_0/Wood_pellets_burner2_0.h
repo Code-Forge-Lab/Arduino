@@ -367,11 +367,17 @@ const static  int wind = 11;
 
 void setup() {
   Wire.begin();
-	lcd.begin(16, 2);
-  delay (1000);
-  lcd.begin(16, 2);
+	
+ 
+    delay (500);
+    lcd.begin(16, 2);
+    delay (1000);
+    lcd.begin(16, 2);
+    delay (500);
+    
+    
   
-
+  
 
 	// put your setup code here, to run once:
 	pinMode(pusher, OUTPUT);
