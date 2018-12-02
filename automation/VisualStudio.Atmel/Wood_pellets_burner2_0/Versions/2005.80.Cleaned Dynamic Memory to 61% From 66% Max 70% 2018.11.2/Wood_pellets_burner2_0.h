@@ -444,15 +444,15 @@ void printstatus(bool print = false) {
 
 			if (COMPONENTSTIMEOUT_ON != -1)
 
-				if (LowHightProcetange_value == -1) // Hight = -1, Low = -2;
+				//if (LowHightProcetange_value == -1) // Hight = -1, Low = -2;
+				//	lcd.print("Ijungtas:" + String(COMPONENTSTIMEOUT_ON));
+			//	else
 					lcd.print("Ijungtas:" + String(COMPONENTSTIMEOUT_ON));
-				else
-					lcd.print("Isjungtas:" + String(COMPONENTSTIMEOUT_ON));
 			else
 
-				if (LowHightProcetange_value == -1) // Hight = -1, Low = -2;
-					lcd.print("Ijungtas:" + String(COMPONENTSTIMEOUT_OFF));
-				else
+				//if (LowHightProcetange_value == -1) // Hight = -1, Low = -2;
+				//	lcd.print("Isjungtas:" + String(COMPONENTSTIMEOUT_OFF));
+				//else
 					lcd.print("Isjungtas:" + String(COMPONENTSTIMEOUT_OFF));
 
 		}
