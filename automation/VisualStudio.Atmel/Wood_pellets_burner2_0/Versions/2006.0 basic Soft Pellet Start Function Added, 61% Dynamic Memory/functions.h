@@ -193,7 +193,7 @@ void sey (String lineA = "Issaugoti nauji", String lineB = "Nustatimai",int time
 
 
 /*
-  bool findLiquidCrystal_I2C () {
+  byte  findLiquidCrystal_I2C () {
  
  
  
@@ -210,7 +210,7 @@ void sey (String lineA = "Issaugoti nauji", String lineB = "Nustatimai",int time
     // a device did acknowledge to the address.
     Wire.beginTransmission(address);
     error = Wire.endTransmission();
- 
+    
     if (error == 0)
     {
 //      Serial.print("I2C device found at address 0x");/
@@ -225,14 +225,14 @@ void sey (String lineA = "Issaugoti nauji", String lineB = "Nustatimai",int time
   }
 
   
-  if (nDevices == 0)
-    return false; //    Serial.println("No I2C devices found\n");/
-  else
-    return true; //    Serial.println("done\n");/
+//  if (nDevices == 0)
+//    return false; //    Serial.println("No I2C devices found\n");/
+//  else
+//    return true; //    Serial.println("done\n");/
  
-  
+  return  nDevices;
 }
- */   
+ */ 
 
 /**
     void f () {

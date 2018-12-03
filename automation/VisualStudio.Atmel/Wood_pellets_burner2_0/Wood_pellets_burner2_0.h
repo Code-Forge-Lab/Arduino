@@ -191,9 +191,7 @@ void funPelletModeOnlyTimer()
 void funPelletModeTempMinOrMax()
 {
 	analogWrite(PELLETPUSHERPIN, 0); // disable pellet pusher 
-//	printMenuFunc("Gran. Greitis", &PELLETPUSHERMINSPEED, "RPM:");// DONT TOCHT ONLY IN PROGRAMMER MODE SETTINGS ALLOWED
-	printMenuFunc("Gran.Veik", &PELLETPUSHERMILLISECONDSON, "millisec:");
-	
+
 
 	printMenuFunc("Gran."+Cold, &COMPONENTSMAXSECONDS, Burning + " Sec:"); // Daugiausia
 	printMenuFunc("Gran."+Hot, &COMPONENTSMINSECONDS, Burning + " Sec:", &dummyFunc, false, "Less", COMPONENTSMAXSECONDS.getValue()-1); // 
@@ -240,10 +238,10 @@ void funLCDLIGHT() {
     if (ArgueAgree("%Prog%"))
     {
       printMenuFunc("Gran. Galia", &PELLETPUSHERMINSPEED, "J:");
-      printMenuFunc("Fan.Ideg", &FANSECONDSHOLD, "sec:"); // Delay of Keep  Turn On Fan sum While
-
+      printMenuFunc("Gran.Veik", &PELLETPUSHERMILLISECONDSON, "millisec:");
 //      pelletSoftStart/ PELLETsOFTsTart
-       printMenuFunc ("Gran.Soft.Start" , &PELLETsOFTsTart  ,"%:",  &__DUMMYFUNCTION  , false ,"Greater" , 1); 
+      printMenuFunc ("Gran.Soft.Start" , &PELLETsOFTsTart  ,"%:",  &__DUMMYFUNCTION  , false ,"Greater" , 1); 
+      printMenuFunc("Fan.Ideg", &FANSECONDSHOLD, "sec:"); // Delay of Keep  Turn On Fan sum While
       
       sey ();
       
