@@ -241,9 +241,10 @@ void funLCDLIGHT() {
       printMenuFunc("Gran. Galia", &PELLETPUSHERMINSPEED, "J:");
       printMenuFunc("Gran.Veik", &PELLETPUSHERMILLISECONDSON, "millisec:");
 //      pelletSoftStart/ PELLETsOFTsTart
-      printMenuFunc ("Gran.Soft.Start" , &PELLETsOFTsTart  ,"%:",  &__DUMMYFUNCTION  , false ,"Greater" , 1); 
+      printMenuFunc ("Gran.Soft.Start" , &PELLETsOFTsTart  ,"%:",  &__DUMMYFUNCTION  , false ,"Less" , PELLETPUSHERMILLISECONDSON.getValue() ); 
       printMenuFunc("Fan.Ideg", &FANSECONDSHOLD, "sec:"); // Delay of Keep  Turn On Fan sum While
-      
+        
+        if (PELLETsOFTsTart.getValue() <= 1) PELLETsOFTsTart.writeValue(1);// fix user that rare set to zero and in program cannot react that. Give one instead
       sey ();
       
       }
@@ -831,7 +832,9 @@ void loop() {
         if (pelletSofRresult > PELLETPUSHERMINSPEED.getValue()  ) // if rezult become greater then expeted then give original value from the settings
              pelletSofRresult = PELLETPUSHERMINSPEED.getValue();
           
-     }
+     }else {
+             pelletSofRresult = PELLETPUSHERMINSPEED.getValue();  // if rezult less then expected   
+         }
      
      analogWrite(PELLETPUSHERPIN ,  pelletSofRresult ); //Give incresing speed by divided packets  
       
@@ -840,8 +843,8 @@ void loop() {
 	else // OFF
 		{
 		analogWrite(PELLETPUSHERPIN, 0); //Give speed/power to motor  
-
-//    pelletSofRresult = 0; // reset after increments
+     pelletSoftCount = PELLETsOFTsTart.getValue();
+     pelletSofRresult = 0; 
 		}								 
 										 // Fan Delay Timer
 
