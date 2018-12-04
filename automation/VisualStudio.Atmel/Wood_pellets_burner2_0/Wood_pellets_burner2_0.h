@@ -38,9 +38,10 @@ float FANSPEEDRUNFLOATSUM;
 
 // Pellets  
 
-controls PELLETsOFTsTart(13, 5); // When pellet motor is started, draw burst amount of amperes. (1/10 second * pelletSoftStart/5/) = time to slow start
 
-int8_t pelletSoftStart = 5; // When pellet motor is started, draw burst amount of amperes. (1/10 second * pelletSoftStart) = time to slow start
+
+
+controls PELLETsOFTsTart(13, 5); // When pellet motor is started, draw burst amount of amperes. ( (PelletPusherPower*80*  / pelletSoftStart*5* == 16); (for x =0,x< pelletSoftStart*5*,pelletSoftCount+=divided rezult*16*) = time to increase speed by rezult*16*
 int8_t pelletSoftCount = PELLETsOFTsTart.getValue(); // set count rutine using pelletSoftStart variable. Divide maximum value from pelletSoftCount as pelletSoftStart bounderies for start up spin.
 int pelletSofRresult=0;
 
@@ -818,21 +819,29 @@ void loop() {
             
 
            
-       //                            Cast a result  
-      pelletSofRresult =  PELLETPUSHERMINSPEED.getValue()  / pelletSoftCount; //   pelletSoftCount never les then 1 to divide correctly
-    
-		 analogWrite(PELLETPUSHERPIN ,  pelletSofRresult ); //Give speed/power to motor
      
-     if (pelletSoftCount > 1)  pelletSoftCount -= 1;// Deacrease each time as reduser are changed 
+
      
-        
+     if (pelletSoftCount >= 1)  {
+          pelletSoftCount -= 1;// Count down each time where was completed pellet this rutine unti 1
+
+               //                            Cast a result  
+              pelletSofRresult +=  (PELLETPUSHERMINSPEED.getValue()  / PELLETsOFTsTart.getValue()) ; //   pelletSoftCount never les then 1 to divide correctly
+          
+        if (pelletSofRresult > PELLETPUSHERMINSPEED.getValue()  ) // if rezult become greater then expeted then give original value from the settings
+             pelletSofRresult = PELLETPUSHERMINSPEED.getValue();
+          
+     }
+     
+     analogWrite(PELLETPUSHERPIN ,  pelletSofRresult ); //Give incresing speed by divided packets  
       
 //     /analogWrite(PELLETPUSHERPIN, PELLETPUSHERMINSPEED.getValue()); //Give speed/power to motor Save
 	  }
 	else // OFF
 		{
 		analogWrite(PELLETPUSHERPIN, 0); //Give speed/power to motor  
-    pelletSoftCount = PELLETsOFTsTart.getValue(); // reset reduser/
+
+//    pelletSofRresult = 0; // reset after increments
 		}								 
 										 // Fan Delay Timer
 
