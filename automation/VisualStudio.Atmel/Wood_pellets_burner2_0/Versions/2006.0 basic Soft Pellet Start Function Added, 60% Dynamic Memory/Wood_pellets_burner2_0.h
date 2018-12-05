@@ -177,7 +177,7 @@ void funPelletModeOnlyTimer()
 
 	printMenuFunc("Fano Greitis", &ONLYTIMERFANSPEED, RPM, &__FANONLYTIMER);
 	//  printMenuFunc("Gran. Greitis", &PELLETPUSHERMINSPEED, RPM);// DONT TOCHT ONLY IN PROGRAMMER MODE SETTINGS ALLOWED
-	printMenuFunc("Gran.Veiks", &PELLETPUSHERMILLISECONDSON, "mlsec:");
+	//printMenuFunc("Gran.Veiks", &PELLETPUSHERMILLISECONDSON, "mlsec:");
 	printMenuFunc("Gran.Neveiks", &COMPONENTSMINSECONDS, "sec:");
 	
     
