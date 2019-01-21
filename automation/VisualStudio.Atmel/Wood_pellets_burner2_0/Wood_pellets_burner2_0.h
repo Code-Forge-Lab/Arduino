@@ -208,6 +208,7 @@ void funPelletModeTempMinOrMax()
 	printMenuFunc("Fanas "+Hot, &FANMAXSPEED, Burning + " "+RPM, &__FANMINSPEEDMAX);
 	printMenuFunc("Fanas "+Cold, &FANMINSPEED, Burning + " "+RPM, &__FANMINSPEEDMIN, false, "Less", FANMAXSPEED.getValue()-1);
 
+  
 	printMenuFunc("Temperatura", &TEMPMAX, "Maximum C*:");
 
 
@@ -249,7 +250,7 @@ void funLCDLIGHT() {
     if (ArgueAgree("%Prog%"))
     {
       printMenuFunc("Gran. Galia", &PELLETPUSHERMINSPEED, "J:");
-      printMenuFunc("Gran.Veik", &PELLETPUSHERMILLISECONDSON, "millisec:");
+      printMenuFunc("Gran.Veiks", &PELLETPUSHERMILLISECONDSON, "millisec:");
 //      pelletSoftStart/ PELLETsOFTsTart
       printMenuFunc ("Gran.Soft.Start" , &PELLETsOFTsTart  ,"%:",  &__DUMMYFUNCTION  , false ,"Less" , PELLETPUSHERMILLISECONDSON.getValue() ); 
       printMenuFunc("Fan.Ideg", &FANSECONDSHOLD, "sec:"); // Delay of Keep  Turn On Fan sum While
