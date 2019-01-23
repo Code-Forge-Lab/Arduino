@@ -12,7 +12,7 @@ const static  int8_t BUTTON_SET = 12;
 const static  int8_t BUTTON_UP = A0;
 */
 
-/*
+/* Mano
 const static  int8_t BUTTON_DOWN = A0;
 const static  int8_t BUTTON_SET = 12; 
 const static  int8_t BUTTON_UP = 13;
@@ -20,9 +20,9 @@ const static  int8_t BUTTON_UP = 13;
 */
 
 // Valdas
-const static  int8_t BUTTON_DOWN = A0;
-const static  int8_t BUTTON_SET = 12; 
-const static  int8_t BUTTON_UP = 13;
+const static  int8_t BUTTON_DOWN = 12;
+const static  int8_t BUTTON_SET = 13; 
+const static  int8_t BUTTON_UP = A0;
 
 
 
