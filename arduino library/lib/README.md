@@ -8,5 +8,5 @@
 - Atmega8515l-8pu = Program Memory Size (KB)8
 - ATMEGA1284P-PU 128kb Flash memory , 16kb SRAM
 # GRBL Mashining #
-More informaction can befound [here](https://arduinoboardproject.com/en/how-to-install-grbl-on-arduino-uno-with-the-arduino-ide-software/)
+More  about GRBL informaction can befound [here](https://arduinoboardproject.com/en/how-to-install-grbl-on-arduino-uno-with-the-arduino-ide-software/)
 
