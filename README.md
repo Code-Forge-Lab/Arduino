@@ -136,7 +136,7 @@ void clearChar ( char *characters , int size ){
 ```
 # GRBL Arduino #
 >- More information about GRBL can be found at [here](https://arduinoboardproject.com/en/how-to-install-grbl-on-arduino-uno-with-the-arduino-ide-software/) and [here](https://cnc.js.org/)
->- IDE [java based](https://winder.github.io/ugs_website/download/)
+>- IDE [java based](https://winder.github.io/ugs_website/download/), [here](https://github.com/grbl/grbl/wiki/Using-Grbl)
   >- How look Arduino Uno GRBL shield
 ![](https://github.com/Code-Forge-Lab/Arduino/blob/master/images/cnc_v3_arduino_uno.jpg)
   >- Stepper Motor Driver Module DRV8825 
