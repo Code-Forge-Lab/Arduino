@@ -136,7 +136,9 @@ void clearChar ( char *characters , int size ){
 ```
 # GRBL Arduino #
 More information about GRBL can be found at [here]()
- > - Arduino Uno
+  
+  >- Arduino Uno
+  
 ![](https://github.com/Code-Forge-Lab/Arduino/blob/master/images/cnc_v3_arduino_uno.jpg)
 
 ![pin out](https://github.com/Code-Forge-Lab/Arduino/blob/master/images/CNC%20Shield%20V3.0%20pinout.jpg)
