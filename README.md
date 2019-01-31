@@ -135,11 +135,18 @@ void clearChar ( char *characters , int size ){
   }
 ```
 # GRBL Arduino #
-More information about GRBL can be found at [here]()
+More information about GRBL can be found at [here](https://arduinoboardproject.com/en/how-to-install-grbl-on-arduino-uno-with-the-arduino-ide-software/)
   
   >- Arduino Uno
- How look the GRBL shield
- * Stepper Motor Driver Module DRV8825 
+  
+* How look the GRBL shield
+ 
 ![](https://github.com/Code-Forge-Lab/Arduino/blob/master/images/cnc_v3_arduino_uno.jpg)
+
+* Stepper Motor Driver Module DRV8825 
+
+  ![DRV8825 Driver](https://github.com/Code-Forge-Lab/Arduino/blob/master/images/DRV8825%20.png)
+
 * Pin out a GRBL with Arduino Uno or atmel328p chip.
+
 ![pin out](https://github.com/Code-Forge-Lab/Arduino/blob/master/images/CNC%20Shield%20V3.0%20pinout.jpg)
