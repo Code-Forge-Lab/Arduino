@@ -9,6 +9,8 @@ const static int stepPinZ = 4;
 const static int dirPinZ = 7;
 
 
+const static int stepperEnable = 8;
+
 void setup() {
   // put your setup code here, to run once:
 
@@ -20,13 +22,17 @@ void setup() {
 
  pinMode (stepPinX, OUTPUT);
  pinMode (dirPinX, OUTPUT);
+
+ pinMode (stepperEnable,OUTPUT);
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
 
+digitalWrite(stepperEnable, HIGH);
 
-/*
+
+
   digitalWrite (dirPinX, HIGH);
 
 
@@ -55,7 +61,7 @@ for (int x = 0; x < 200; x++) {
 
 delay (1000);
 
-*/
+
 
 
 
@@ -83,7 +89,7 @@ int dir = LOW;
      digitalWrite (directionPin, dir);
      
 
-for (int x = 0; x < 200; x++) {
+for (int x = 0; x < 1000; x++) {
     
       digitalWrite (stepPin,HIGH);
       delayMicroseconds (500);
