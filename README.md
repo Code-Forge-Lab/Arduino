@@ -134,7 +134,7 @@ void clearChar ( char *characters , int size ){
           }
   }
 ```
-# GRBL Arduino#
+# GRBL Arduino #
 More information about GRBL can be found at [here]()
 Arduino Uno
 ![](https://github.com/Code-Forge-Lab/Arduino/blob/master/images/cnc_v3_arduino_uno.jpg)
