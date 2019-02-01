@@ -145,3 +145,7 @@ void clearChar ( char *characters , int size ){
   ![DRV8825 Driver](https://github.com/Code-Forge-Lab/Arduino/blob/master/images/DRV8825%20.png)  
   >- Pin out a GRBL with Arduino Uno or atmel328p chip.
 ![pin out](https://github.com/Code-Forge-Lab/Arduino/blob/master/images/CNC%20Shield%20V3.0%20pinout.jpg)
+
+# Parameters of GRBL 0.8-0.9 version #
+ Sum information are [here](http://forum.arduino.cc/index.php?topic=576107.0)
+
