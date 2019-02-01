@@ -157,9 +157,9 @@ void clearChar ( char *characters , int size ){
 * $111 = 10.000    (Y-axis maximum rate, mm/min) speed
 * $112 = 10.000    (Z-axis maximum rate, mm/min) speed
 ###### **Full-Step** option
-* $100 = 13100.000    (X-axis travel resolution, step/mm) Dont Know Not Tested
-* $101 = 13100.000    (Y-axis travel resolution, step/mm) Dont Know Not Tested
-* $102 = 13100.000    (Z-axis travel resolution, step/mm) Dont Know Not Tested
-* $110 = 5.000    (X-axis maximum rate, mm/min) speed must be redused by half
-* $111 = 5.000    (Y-axis maximum rate, mm/min)
-* $112 = 5.000    (Z-axis maximum rate, mm/min)
+* $100 = 1000.000    (X-axis travel resolution, step/mm) 95% accurancy not cached 100%
+* $101 = 1000.000    (Y-axis travel resolution, step/mm) 95% accurancy
+* $102 = 1000.00    (Z-axis travel resolution, step/mm) 95% accurancy
+* $110 = 100.000    (X-axis maximum rate, mm/min) speed is stable and fast
+* $111 = 100.000    (Y-axis maximum rate, mm/min)
+* $112 = 100.000    (Z-axis maximum rate, mm/min)
