@@ -69,7 +69,7 @@ void setup() {
 void loop() {
 
     
-
+28BYJ-48
    if (Serial.available()) {
 //      give signal when is active         
         digitalWrite(13, HIGH);
@@ -148,8 +148,8 @@ void clearChar ( char *characters , int size ){
 
 # Parameters of GRBL 0.8-0.9 version #
  Sum information are [here](http://forum.arduino.cc/index.php?topic=576107.0)
- Motor ** 28BYJ-48 **
- ** Half-Step option **
+>- Motor **28BYJ-48**
+>- **Half-Step option**
 * $100 = 13100.000    (X-axis travel resolution, step/mm)
 * $101 = 13100.000    (Y-axis travel resolution, step/mm)
 * $102 = 13100.000    (Z-axis travel resolution, step/mm)
