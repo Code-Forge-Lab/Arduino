@@ -147,7 +147,7 @@ void clearChar ( char *characters , int size ){
 ![pin out](https://github.com/Code-Forge-Lab/Arduino/blob/master/images/CNC%20Shield%20V3.0%20pinout.jpg)
 
 # Parameters of GRBL 0.8-0.9 version #
- Sum information are [here](http://forum.arduino.cc/index.php?topic=576107.0) and [here](https://www.instructables.com/id/3020-CNC-Arduino-GRBL-CNC-Shield-V3/)
+ Sum information are [here](http://forum.arduino.cc/index.php?topic=576107.0) and [here with math as bonus](https://www.instructables.com/id/3020-CNC-Arduino-GRBL-CNC-Shield-V3/)
  
  G-Code Generation and [more](https://www.norwegiancreations.com/2015/08/an-intro-to-g-code-and-how-to-generate-it-using-inkscape/)
 ## Motor **28BYJ-48**
