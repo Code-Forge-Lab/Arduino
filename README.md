@@ -150,9 +150,16 @@ void clearChar ( char *characters , int size ){
  Sum information are [here](http://forum.arduino.cc/index.php?topic=576107.0)
 ## Motor **28BYJ-48**
 ###### **Half-Step** option
-* $100 = 13100.000    (X-axis travel resolution, step/mm)
-* $101 = 13100.000    (Y-axis travel resolution, step/mm)
-* $102 = 13100.000    (Z-axis travel resolution, step/mm)
-* $110 = 10.000    (X-axis maximum rate, mm/min)
-* $111 = 10.000    (Y-axis maximum rate, mm/min)
-* $112 = 10.000    (Z-axis maximum rate, mm/min)
+* $100 = 13100.000    (X-axis travel resolution, step/mm) times shoud spin to reach 1 mm
+* $101 = 13100.000    (Y-axis travel resolution, step/mm) times shoud spin to reach 1 mm
+* $102 = 13100.000    (Z-axis travel resolution, step/mm) times shoud spin to reach 1 mm 
+* $110 = 10.000    (X-axis maximum rate, mm/min) speed 
+* $111 = 10.000    (Y-axis maximum rate, mm/min) speed
+* $112 = 10.000    (Z-axis maximum rate, mm/min) speed
+###### **Full-Step** option
+* $100 = 13100.000    (X-axis travel resolution, step/mm) Dont Know Not Tested
+* $101 = 13100.000    (Y-axis travel resolution, step/mm) Dont Know Not Tested
+* $102 = 13100.000    (Z-axis travel resolution, step/mm) Dont Know Not Tested
+* $110 = 5.000    (X-axis maximum rate, mm/min) speed must be redused by half
+* $111 = 5.000    (Y-axis maximum rate, mm/min)
+* $112 = 5.000    (Z-axis maximum rate, mm/min)
