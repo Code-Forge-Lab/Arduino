@@ -135,7 +135,7 @@ void clearChar ( char *characters , int size ){
   }
 ```
 # GRBL Arduino #
- >- More information about GRBL can be found at [here](https://arduinoboardproject.com/en/how-to-install-grbl-on-arduino-uno-with-the-arduino-ide-software/) and [here](https://cnc.js.org/)
+ >- More information about GRBL can be found at [here](https://arduinoboardproject.com/en/how-to-install-grbl-on-arduino-uno-with-the-arduino-ide-software/) and  working IDE [here](https://cnc.js.org/)
  >- IDE [java based](https://winder.github.io/ugs_website/download/), [here](https://github.com/grbl/grbl/wiki/Using-Grbl)
  >- [Xloader](https://github.com/xinabox/xLoader/releases/tag/v1.339) or [else](http://www.mikrodb.com/index.php/85-arduino/85-emdebe-hex-loader-load-hex-to-arduino-board) or upluad hex's with [arduino IDE](https://www.youtube.com/watch?v=dAwmZDIUeuU)
  >- Clear [EEPROM](https://www.youtube.com/watch?v=zlRCzGwHft0) Memory 
