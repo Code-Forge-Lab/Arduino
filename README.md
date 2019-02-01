@@ -98,7 +98,7 @@ void loop() {
        
     if (strcmp (incomingByte,"responde") == 0 ) // compare char if math
        Serial.print ("Command 'responde' accepted");   
-// turn on led
+// turn on ledhttps://www.instructables.com/id/3020-CNC-Arduino-GRBL-CNC-Shield-V3/
     if (strcmp (incomingByte,"on") == 0 ) 
        {
           digitalWrite(11, 1023); // output 5v max.
@@ -147,7 +147,7 @@ void clearChar ( char *characters , int size ){
 ![pin out](https://github.com/Code-Forge-Lab/Arduino/blob/master/images/CNC%20Shield%20V3.0%20pinout.jpg)
 
 # Parameters of GRBL 0.8-0.9 version #
- Sum information are [here](http://forum.arduino.cc/index.php?topic=576107.0)
+ Sum information are [here](http://forum.arduino.cc/index.php?topic=576107.0) and [here](https://www.instructables.com/id/3020-CNC-Arduino-GRBL-CNC-Shield-V3/)
  
  G-Code Generation and [more](https://www.norwegiancreations.com/2015/08/an-intro-to-g-code-and-how-to-generate-it-using-inkscape/)
 ## Motor **28BYJ-48**
