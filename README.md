@@ -148,6 +148,7 @@ void clearChar ( char *characters , int size ){
 
 # Parameters of GRBL 0.8-0.9 version #
  Sum information are [here](http://forum.arduino.cc/index.php?topic=576107.0)
+ G-Code Generation and [more](https://www.norwegiancreations.com/2015/08/an-intro-to-g-code-and-how-to-generate-it-using-inkscape/)
 ## Motor **28BYJ-48**
 ###### **Half-Step** option
 * $100 = 13100.000    (X-axis travel resolution, step/mm) times shoud spin to reach 1 mm
