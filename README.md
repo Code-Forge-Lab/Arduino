@@ -1,7 +1,7 @@
 
 
 # Arduino SPI, IC2, IO ##
-## Processing 3 Arduino IDE For Graphic Processing
+## 'Processing 3' IDE For Arduino Graphic Sensors Processing
 ![arduino-spec-IO](https://github.com/Code-Forge-Lab/Arduino/blob/master/arduino%20library/lib/Arduino-Uno-Pin-Diagram.png)
 ## ##
 ![arduino-spec-IO](https://github.com/Code-Forge-Lab/Arduino/blob/master/arduino%20library/lib/ATmega328P-PU-PIN-Diagram-connection-configration.jpg)
