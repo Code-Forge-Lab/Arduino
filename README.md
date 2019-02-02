@@ -149,7 +149,13 @@ void clearChar ( char *characters , int size ){
 # Parameters of GRBL 0.8-0.9 version #
  Sum information are [here](http://forum.arduino.cc/index.php?topic=576107.0) and [here with math as bonus](https://www.instructables.com/id/3020-CNC-Arduino-GRBL-CNC-Shield-V3/)
  
+ 
  G-Code Generation and [more](https://www.norwegiancreations.com/2015/08/an-intro-to-g-code-and-how-to-generate-it-using-inkscape/)
+###### G-Code IDE Inksckape  install linux mint or ubuntu
+sudo add-apt-repository ppa:inkscape.dev/stable
+sudo apt-get update
+sudo apt-get install inkscape
+ 
 ## Motor **28BYJ-48**
 ###### **Half-Step** option
 * $100 = 13100.000    (X-axis travel resolution, step/mm) times shoud spin to reach 1 mm
