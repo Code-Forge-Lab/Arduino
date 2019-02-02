@@ -151,10 +151,10 @@ void clearChar ( char *characters , int size ){
  
  
  G-Code Generation and [more](https://www.norwegiancreations.com/2015/08/an-intro-to-g-code-and-how-to-generate-it-using-inkscape/)
-###### G-Code IDE Inksckape  install linux mint or ubuntu
-sudo add-apt-repository ppa:inkscape.dev/stable
-sudo apt-get update
-sudo apt-get install inkscape
+## G-Code IDE Inksckape  install linux mint or ubuntu
+* sudo add-apt-repository ppa:inkscape.dev/stable
+* sudo apt-get update
+* sudo apt-get install inkscape
  
 ## Motor **28BYJ-48**
 ###### **Half-Step** option
