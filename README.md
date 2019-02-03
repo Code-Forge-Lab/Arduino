@@ -160,6 +160,7 @@ void clearChar ( char *characters , int size ){
 * Visualize solid work 
 * Cross Platform
 * Browser Based
+* Minimum Bugs
 ![CNCJS](https://github.com/Code-Forge-Lab/Arduino/blob/master/images/CNCJSDEKSTOP.png)
 
 ## Motor **28BYJ-48**
