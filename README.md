@@ -155,7 +155,13 @@ void clearChar ( char *characters , int size ){
 * sudo add-apt-repository ppa:inkscape.dev/stable
 * sudo apt-get update
 * sudo apt-get install inkscape
- 
+
+## Best IDE CNCJS
+* Visualize solid work 
+* Cross Platform
+* Browser Based
+![CNCJS](https://github.com/Code-Forge-Lab/Arduino/blob/master/images/CNCJSDEKSTOP.png)
+
 ## Motor **28BYJ-48**
 ###### **Half-Step** option
 * $100 = 13100.000    (X-axis travel resolution, step/mm) times shoud spin to reach 1 mm
