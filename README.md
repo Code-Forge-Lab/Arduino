@@ -157,7 +157,7 @@ void clearChar ( char *characters , int size ){
 * sudo apt-get install inkscape
 
 ## How Generate G-Code With Inkscape
-1. Select Images
+1. Select Image ''Important''
 2. Go Extension > GCodeTools
 3. Tools Library: and give cutting bit option
 4. Orentaition Point: and give 2D or 3D usage. If Ask somthing is then GO Path/Object To Path or Path/Bitmat < convert image to black and white
