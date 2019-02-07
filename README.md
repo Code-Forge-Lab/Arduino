@@ -172,7 +172,7 @@ void clearChar ( char *characters , int size ){
 ![CNCJS](https://github.com/Code-Forge-Lab/Arduino/blob/master/images/CNCJSDEKSTOP.png)
 
 ## Motor **28BYJ-48**
-###### **Half-Step** option
+###### **Half-Step** working option 
 * $0=10 (step pulse, usec)
 * $1=25 (step idle delay, msec)
 * $2=0 (step port invert mask:00000000)
