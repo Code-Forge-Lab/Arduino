@@ -162,7 +162,8 @@ void clearChar ( char *characters , int size ){
 3. Tools Library: and give cutting bit option
 4. Orentaition Point: and give 2D or 3D usage. If Ask somthing went wrong then GO Path/Object To Path or Path/Bitmat < convert image to black and white
 5. In Extension > GCodeTools, Path to GCode and set path and name in 'Preferences'
-
+## How Inskape Work With Servo Motor
+[Go in here for full tutorial](https://www.instructables.com/id/How-to-Make-GRBL-CNC-V3-Shield-Based-Mini-CNC-Mach-1/)
 ## Best IDE CNCJS
 * Visualize solid work 
 * Cross Platform
