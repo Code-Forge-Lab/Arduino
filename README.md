@@ -140,7 +140,7 @@ void clearChar ( char *characters , int size ){
  >- [Xloader](https://github.com/xinabox/xLoader/releases/tag/v1.339) or [else](http://www.mikrodb.com/index.php/85-arduino/85-emdebe-hex-loader-load-hex-to-arduino-board) or upluad hex's with [arduino IDE](https://www.youtube.com/watch?v=dAwmZDIUeuU)
  >- Clear [EEPROM](https://www.youtube.com/watch?v=zlRCzGwHft0) Memory 
  ## GRBL frimware with Servo ##
- Ged grbl + servo frimware for [arduino](https://github.com/robottini/grbl-servo)
+ Get grbl + servo frimware for [arduino](https://github.com/robottini/grbl-servo) controller.
   ## How look Arduino Uno GRBL shield
 ![](https://github.com/Code-Forge-Lab/Arduino/blob/master/images/cnc_v3_arduino_uno.jpg)
   >- Stepper Motor Driver Module DRV8825   
