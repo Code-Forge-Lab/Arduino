@@ -146,7 +146,8 @@ void clearChar ( char *characters , int size ){
  * GRBL 0.9i with servo motor support. Use the PIN D11 to drive the servo. Use the commands M03 Sxxx (xxx between 0 and 255) to rotate the servo between 0-180. The command M05 turn the servo to zero degrees As 'STOP'+Z from CNC v3.0 Shield
   ## How look Arduino Uno GRBL shield
 ![](https://github.com/Code-Forge-Lab/Arduino/blob/master/images/cnc_v3_arduino_uno.jpg)
-  >- Stepper Motor Driver Module DRV8825   
+  >- Stepper Motor Driver Module DRV8825 
+  >- How ajust DRV8825 Voltage [reference](https://www.youtube.com/watch?v=YJSmrbeZUp4)
   ![DRV8825 Driver](https://github.com/Code-Forge-Lab/Arduino/blob/master/images/DRV8825%20.png)  
   >- Pin out a GRBL with Arduino Uno or atmel328p chip.
 ![pin out](https://github.com/Code-Forge-Lab/Arduino/blob/master/images/CNC%20Shield%20V3.0%20pinout.jpg)
