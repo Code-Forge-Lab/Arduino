@@ -172,7 +172,7 @@ void clearChar ( char *characters , int size ){
 [Go in here for full tutorial](https://www.instructables.com/id/How-to-Make-GRBL-CNC-V3-Shield-Based-Mini-CNC-Mach-1/)
 
 ## PCB engraving tool download [flatcam](http://flatcam.org/download) and [video](https://www.youtube.com/watch?v=ILnc-7I0zQA)
-* Convert GRBL to G-Code [video](https://www.youtube.com/watch?v=IbsBCMlQB_c)
+* Convert GRBL to G-Code [video](https://www.youtube.com/watch?v=IbsBCMlQB_c), [video2](https://www.youtube.com/watch?v=1N5ZjYQXTiw)
 * Works on Linux
 
 ## Best G-Code Sender IDE CNCJS
