@@ -170,6 +170,7 @@ void clearChar ( char *characters , int size ){
 5. In Extension > GCodeTools, Path to GCode and set path and name in 'Preferences'
 ## How Inskape Work With Servo Motor
 [Go in here for full tutorial](https://www.instructables.com/id/How-to-Make-GRBL-CNC-V3-Shield-Based-Mini-CNC-Mach-1/)
+## PCB engraving tool download [flatcam](http://flatcam.org/download and [video](https://www.youtube.com/watch?v=ILnc-7I0zQA)
 ## Best G-Code Sender IDE CNCJS
 * Visualize solid work 
 * Cross Platform
@@ -177,7 +178,7 @@ void clearChar ( char *characters , int size ){
 * Minimum Bugs
 ![CNCJS](https://github.com/Code-Forge-Lab/Arduino/blob/master/images/CNCJSDEKSTOP.png)
 
-## PCB engraving tool download [flatcam](http://flatcam.org/download and [video](https://www.youtube.com/watch?v=ILnc-7I0zQA)
+
 ## Motor **28BYJ-48**
 ###### **Half-Step** working option 
 * $0=10 (step pulse, usec)
