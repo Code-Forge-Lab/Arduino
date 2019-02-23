@@ -25,7 +25,15 @@ public:
   long  getPosition();
 
   // adjust the current position
-  void setPosition(long newPosition);
+  void setPosition(long newPosition); 
+  
+  // provide about spinning side of rotary encoder and gives -1 and 1 // ADDED  EXTERNAL USER // 
+  short getRotationSide();
+  
+  // react to retrieve the current position in while loop time out 
+  long getPositionTimeout(int milisec = 50); 
+  //
+  short getPositionSideTimeout(int milisec = 50); 
 
   // call this function every some milliseconds or by using an interrupt for handling state changes of the rotary encoder.
   void tick(void);

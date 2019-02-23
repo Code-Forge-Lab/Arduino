@@ -65,6 +65,82 @@ void RotaryEncoder::setPosition(long newPosition) {
   _positionExt = newPosition;
 } // setPosition()
 
+ short RotaryEncoder::getRotationSide() {
+  // provide rotation side.
+  
+  short side = 0;
+  
+
+
+  if (getPosition() > 1 )  {  
+     side = 1;
+     setPosition(0);
+         
+   }
+
+  else if (getPosition() < -1 ) {
+     side = -1;
+     setPosition(0);
+   
+   }
+  
+  return  side;
+   
+} // provide Position()
+ 
+
+long RotaryEncoder::getPositionTimeout (int milisec ) {
+
+ unsigned long time = millis();
+ static int pos = 0;
+ int newPos = getPosition();  
+ 
+ // while loop cach events from rotary encoder then execute program
+  while (time + milisec > millis()) 
+    { 
+  
+     // updates
+         tick();
+
+    }
+    
+    return getPosition(); 
+
+}
+
+short RotaryEncoder::getPositionSideTimeout (int milisec ) {
+
+ unsigned long time = millis();
+ int posSide;
+
+ 
+ // while loop cach events from rotary encoder then execute program
+  while (time + milisec > millis()) 
+{ 
+   
+  // updates
+    tick();
+
+    posSide = getRotationSide();
+
+
+   if ( posSide == 1 ) {
+//    Serial.println ("up:"+String(posSide));
+        return 1;
+    }
+   else if ( posSide == -1) {
+//    Serial.println ("down"+String(posSide));
+        return  -1;
+    }
+   
+        
+
+
+ }
+    return posSide;  
+
+}
+
 
 void RotaryEncoder::tick(void)
 {
