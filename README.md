@@ -136,6 +136,7 @@ void clearChar ( char *characters , int size ){
 ```
 # GRBL Arduino #
  >- More information about GRBL can be found at [here](https://arduinoboardproject.com/en/how-to-install-grbl-on-arduino-uno-with-the-arduino-ide-software/) and  working IDE [here](https://cnc.js.org/)
+ >- Basic set up for begginer are [here](https://www.instructables.com/id/How-to-Make-GRBL-CNC-V3-Shield-Based-Mini-CNC-Mach-1/)
  >- IDE [java based](https://winder.github.io/ugs_website/download/), [here](https://github.com/grbl/grbl/wiki/Using-Grbl)
  >- [Xloader](https://github.com/xinabox/xLoader/releases/tag/v1.339) or [else](http://www.mikrodb.com/index.php/85-arduino/85-emdebe-hex-loader-load-hex-to-arduino-board) or upluad hex's with [arduino IDE](https://www.youtube.com/watch?v=dAwmZDIUeuU)
  >- Clear [EEPROM](https://www.youtube.com/watch?v=zlRCzGwHft0) Memory 
@@ -145,7 +146,8 @@ void clearChar ( char *characters , int size ){
  * GRBL 0.9i with servo motor support. Use the PIN D11 to drive the servo. Use the commands M03 Sxxx (xxx between 0 and 255) to rotate the servo between 0-180. The command M05 turn the servo to zero degrees As 'STOP'+Z from CNC v3.0 Shield
   ## How look Arduino Uno GRBL shield
 ![](https://github.com/Code-Forge-Lab/Arduino/blob/master/images/cnc_v3_arduino_uno.jpg)
-  >- Stepper Motor Driver Module DRV8825   
+  >- Stepper Motor Driver Module DRV8825 
+  >- How ajust DRV8825 Voltage [reference](https://www.youtube.com/watch?v=YJSmrbeZUp4)
   ![DRV8825 Driver](https://github.com/Code-Forge-Lab/Arduino/blob/master/images/DRV8825%20.png)  
   >- Pin out a GRBL with Arduino Uno or atmel328p chip.
 ![pin out](https://github.com/Code-Forge-Lab/Arduino/blob/master/images/CNC%20Shield%20V3.0%20pinout.jpg)
@@ -155,7 +157,7 @@ void clearChar ( char *characters , int size ){
  
  
  G-Code Generation and [more](https://www.norwegiancreations.com/2015/08/an-intro-to-g-code-and-how-to-generate-it-using-inkscape/)
-## G-Code IDE Inksckape  install linux mint or ubuntu
+# G-Code IDE Inksckape  install linux mint or ubuntu
 * sudo add-apt-repository ppa:inkscape.dev/stable
 * sudo apt-get update
 * sudo apt-get install inkscape
@@ -168,12 +170,18 @@ void clearChar ( char *characters , int size ){
 5. In Extension > GCodeTools, Path to GCode and set path and name in 'Preferences'
 ## How Inskape Work With Servo Motor
 [Go in here for full tutorial](https://www.instructables.com/id/How-to-Make-GRBL-CNC-V3-Shield-Based-Mini-CNC-Mach-1/)
-## Best IDE CNCJS
+
+## PCB engraving tool [flatcam](http://flatcam.org/download) download _[8.5v](https://bitbucket.org/jpcgt/flatcam/downloads/)_ and [video](https://www.youtube.com/watch?v=ILnc-7I0zQA)
+* Convert GRBL to G-Code [video](https://www.youtube.com/watch?v=IbsBCMlQB_c), [video2](https://www.youtube.com/watch?v=1N5ZjYQXTiw)
+* Works on Linux
+
+## Best G-Code Sender IDE CNCJS
 * Visualize solid work 
 * Cross Platform
 * Browser Based
 * Minimum Bugs
 ![CNCJS](https://github.com/Code-Forge-Lab/Arduino/blob/master/images/CNCJSDEKSTOP.png)
+
 
 ## Motor **28BYJ-48**
 ###### **Half-Step** working option 
@@ -196,22 +204,15 @@ void clearChar ( char *characters , int size ){
 * $25=500.000 (homing seek, mm/min)
 * $26=250 (homing debounce, msec)
 * $27=1.000 (homing pull-off, mm)
-* $100=136.000 (x, step/mm)
-* $101=138.000 (y, step/mm)
-* $102=250.000 (z, step/mm)
+* $100=136.000 (x, step/mm) <-Important for Steppers
+* $101=136.000 (y, step/mm) <-Important for Steppers
+* $102=250.000 (z, step/mm) <-Important for Steppers
 * $110=500.000 (x max rate, mm/min)
 * $111=500.000 (y max rate, mm/min)
 * $112=500.000 (z max rate, mm/min)
-* $120=10.000 (x accel, mm/sec^2)
-* $121=10.000 (y accel, mm/sec^2)
-* $122=10.000 (z accel, mm/sec^2)
+* $120=10.000 (x accel, mm/sec^2) <-Important for Steppers
+* $121=10.000 (y accel, mm/sec^2) <-Important for Steppers
+* $122=20.000 (z accel, mm/sec^2) <-Important for Steppers
 * $130=200.000 (x max travel, mm)
 * $131=200.000 (y max travel, mm)
 * $132=200.000 (z max travel, mm)
-###### **Full-Step** option
-* $100 = 50.000    (X-axis travel resolution, step/mm) 95% accurancy not cached 100%
-* $101 = 50.000    (Y-axis travel resolution, step/mm) 95% accurancy
-* $102 = 50.00    (Z-axis travel resolution, step/mm) 95% accurancy
-* $110 = 200.000    (X-axis maximum rate, mm/min) speed is stable and fast
-* $111 = 200.000    (Y-axis maximum rate, mm/min)
-* $112 = 100.000    (Z-axis maximum rate, mm/min)
