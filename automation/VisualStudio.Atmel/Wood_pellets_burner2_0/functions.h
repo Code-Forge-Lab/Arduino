@@ -1,6 +1,6 @@
 #include "Arduino.h"
 #include <LiquidCrystal_I2C.h> //0x3F mine or 0x27 need to find out with :LINK:http://playground.arduino.cc/Main/I2cScanner
-LiquidCrystal_I2C lcd(0x3F, 2, 1, 0, 4, 5, 6,7,3, POSITIVE ); //was 0x3F  Eldas: 0x27 ,A4 and A5 Are Used
+LiquidCrystal_I2C lcd(0x27, 2, 1, 0, 4, 5, 6,7,3, POSITIVE ); //was 0x3F  Eldas: 0x27 ,A4 and A5 Are Used
 
 
  

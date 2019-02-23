@@ -1,10 +1,12 @@
-#include <stdlib.h>
-#include <stddef.h>
+//#include <stdlib.h>
+//#include <stddef.h>
+//#include <RotaryEncoder.h>
 #include "ThermoSencor.h"
 #include "ManageReadWrite8bitEEPROM.h"
 #include "menuLiquidCrystal.h"
 #include "functions.h"
 
+//RotaryEncoder encoder(A0, 12);
 
 ThermoSencor Temperature(A3,8740);
 
@@ -379,7 +381,8 @@ const static  int wind = 11;
 void setup() {
   Wire.begin();
 	
- 
+//    encoder.tick();
+    
     delay (500);
     lcd.begin(16, 2);
     delay (1000);
