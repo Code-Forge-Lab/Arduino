@@ -140,7 +140,6 @@ void funTEMP() {
 		break;
 	case 2:
 		printMenuFunc("Max temperatura ", &TEMPMAX, "C*:"); // 
-    sey();
 		break;
 	case 3:
 		//printMenuFunc("Max temperature", &TEMPMAX, "C* ");
