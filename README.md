@@ -134,6 +134,98 @@ void clearChar ( char *characters , int size ){
           }
   }
 ```
+# Example #
+ > - Serial **I/O** communication using integer imput as value
+ ```cpp
+ 
+int externalPinReact = 8;
+
+void setup() {
+
+    Serial.begin(9600);
+    pinMode(13, OUTPUT);
+    pinMode(externalPinReact, OUTPUT); // output to external led
+
+}
+
+ char incomingByte[20] ; // for incoming serial data
+
+ int incomingInt;
+
+
+int counter;
+
+
+void loop() {
+
+
+   if (Serial.available()) {
+//      give signal when is active         
+        digitalWrite(13, HIGH);
+
+
+//     read the incoming byte:
+//        incomingByte = Serial.read(); // bug with readBytes as missing first letter if bouth is reading 
+
+//     read whole array of char           //char     , lenght
+      Serial.readBytes(incomingByte, 20);
+
+//    // say what you got:
+        Serial.print("I received: ");
+        Serial.println(incomingByte );
+
+        incomingInt = atoi( incomingByte)  ; // here efectivly contvert char numbers to integer using atoi( ) 
+//        incomingString = String(incomingByte);
+    
+        
+        delay(100);
+        digitalWrite(13, LOW); 
+    }
+
+
+   
+ // turn off led
+
+
+     if (incomingInt <= counter )
+      {
+        digitalWrite(externalPinReact,HIGH); 
+      
+       Serial.println ("blink at: "+String(counter) );
+        
+          counter = 0;
+        }
+     
+//     clearChar (incomingByte,20); 
+    
+        //Serial.println (" input time: "+String ( (incomingInt) ) + ",counter: "+String(counter) + " ,incomingInt < counter:" + String( (incomingInt <= counter) ? "true":"false" ) ); // only can tolerate 3.4v max.
+        //Serial.println ("-"); 
+
+    
+   // Capture serial data if even is sleeping
+   delay(100);    
+
+
+   
+     
+
+  counter++;
+  if (counter > 100) counter = 0;
+  digitalWrite (externalPinReact, LOW);
+               
+}
+
+void clearChar ( char *characters , int size ){
+
+         
+        for ( int x = 0; x <  size;  x++){
+//             Serial.print (", "+String (x) + " -= " + String(characters [x]));
+             // remove each character to nill
+             characters[x]  = '\0';
+          }
+  }
+ ```
+
 # GRBL Arduino #
  >- More information about GRBL can be found at [here](https://arduinoboardproject.com/en/how-to-install-grbl-on-arduino-uno-with-the-arduino-ide-software/) and  working IDE [here](https://cnc.js.org/)
  >- Basic set up for begginer are [here](https://www.instructables.com/id/How-to-Make-GRBL-CNC-V3-Shield-Based-Mini-CNC-Mach-1/)
