@@ -267,7 +267,9 @@ void clearChar ( char *characters , int size ){
 * Convert GRBL to G-Code [video](https://www.youtube.com/watch?v=IbsBCMlQB_c), [video2](https://www.youtube.com/watch?v=1N5ZjYQXTiw)
 * Works on Linux
 
-## Best G-Code Sender IDE CNCJS
+## G-Code Sender IDE CNCJS
+* Start command: cnc 
+* Go to broswes http://127.0.1.1:8000 address
 * Visualize solid work 
 * Cross Platform
 * Browser Based
