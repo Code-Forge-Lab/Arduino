@@ -254,6 +254,10 @@ void clearChar ( char *characters , int size ){
 * sudo apt-get update
 * sudo apt-get install inkscape
 
+## G-Code Sender
+* Java Based
+* Works no problem [download](https://winder.github.io/ugs_website/download/)
+
 ## How Generate G-Code With Inkscape
 1. Select Image ''Important''
 2. Go Extension > GCodeTools
