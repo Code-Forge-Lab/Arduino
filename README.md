@@ -254,12 +254,6 @@ void clearChar ( char *characters , int size ){
 * sudo apt-get update
 * sudo apt-get install inkscape
 
-## G-Code Sender
-* Java Based
-* Works no problem [download](https://winder.github.io/ugs_website/download/)
-## G-Code Sender With AutoLevel
-* Download can be found (here bCNC-0.9.14.30)[https://github.com/vlachoudis/bCNC/releases] and python set up [here](https://github.com/vlachoudis/bCNC)
-* How to use it are this [site](http://www.electronoobs.com/eng_impresoras_eleksmill.php) and a [video(https://www.youtube.com/watch?v=YkMgsRTXpyg)
 
 
 ## How Generate G-Code With Inkscape
@@ -274,6 +268,8 @@ void clearChar ( char *characters , int size ){
 ## PCB engraving tool [flatcam](http://flatcam.org/download) download _[8.5v](https://bitbucket.org/jpcgt/flatcam/downloads/)_ and [video](https://www.youtube.com/watch?v=ILnc-7I0zQA)
 * Convert GRBL to G-Code [video](https://www.youtube.com/watch?v=IbsBCMlQB_c), [video2](https://www.youtube.com/watch?v=1N5ZjYQXTiw)
 * Works on Linux
+
+
 ## PCB Autoleveling and Comunication java based tool - not use
 Download is in the bottom [get here.](https://github.com/pknoe3lh/cncgcodecontroller/releases/tag/6.2)
 
@@ -286,6 +282,14 @@ Download is in the bottom [get here.](https://github.com/pknoe3lh/cncgcodecontro
 * Browser Based
 * Minimum Bugs
 ![CNCJS](https://github.com/Code-Forge-Lab/Arduino/blob/master/images/CNCJSDEKSTOP.png)
+
+## G-Code Sender
+* Java Based
+* Works no problem [download](https://winder.github.io/ugs_website/download/)
+
+## G-Code Sender With AutoLevel
+* Download can be found [here bCNC-0.9.14.30](https://github.com/vlachoudis/bCNC/releases) and python set up [here](https://github.com/vlachoudis/bCNC)
+* How to use it are this [site](http://www.electronoobs.com/eng_impresoras_eleksmill.php) and a [video](https://www.youtube.com/watch?v=YkMgsRTXpyg)
 
 
 ## Motor **28BYJ-48**
