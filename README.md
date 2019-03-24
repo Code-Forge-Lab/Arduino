@@ -266,6 +266,8 @@ void clearChar ( char *characters , int size ){
 ## PCB engraving tool [flatcam](http://flatcam.org/download) download _[8.5v](https://bitbucket.org/jpcgt/flatcam/downloads/)_ and [video](https://www.youtube.com/watch?v=ILnc-7I0zQA)
 * Convert GRBL to G-Code [video](https://www.youtube.com/watch?v=IbsBCMlQB_c), [video2](https://www.youtube.com/watch?v=1N5ZjYQXTiw)
 * Works on Linux
+## PCB Autoleveling and Comunication java based tool
+Download is in the bottom [get here.](https://github.com/pknoe3lh/cncgcodecontroller/releases/tag/6.2)
 
 ## G-Code Sender IDE CNCJS
 * Start command: cnc 
