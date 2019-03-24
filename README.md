@@ -270,6 +270,7 @@ void clearChar ( char *characters , int size ){
 Download is in the bottom [get here.](https://github.com/pknoe3lh/cncgcodecontroller/releases/tag/6.2)
 
 ## G-Code Sender IDE CNCJS
+* Instalation [page](https://cnc.js.org/docs/)
 * Start command: cnc 
 * Go to broswes http://127.0.1.1:8000 address
 * Visualize solid work 
