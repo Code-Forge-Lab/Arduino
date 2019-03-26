@@ -93,7 +93,7 @@ void loop() {
 
 
     // condition what to do if getting any instruction
-    if ( strcmp (incomingByte, "alive")== 0  ) 
+    if ( strcmp (incomingByte, "alive")== 0  ) https://stackoverflow.com/questions/7818811/import-error-no-module-named-numpy
        Serial.print ("Command 'alive' accepted");
        
     if (strcmp (incomingByte,"responde") == 0 ) // compare char if math
@@ -245,7 +245,7 @@ void clearChar ( char *characters , int size ){
 ![pin out](https://github.com/Code-Forge-Lab/Arduino/blob/master/images/CNC%20Shield%20V3.0%20pinout.jpg)
 
 # Parameters of GRBL 0.8-0.9 version #
- Sum information are [here](http://forum.arduino.cc/index.php?topic=576107.0) and [here with math as bonus](https://www.instructables.com/id/3020-CNC-Arduino-GRBL-CNC-Shield-V3/)
+ Sum information are [here](http://forum.arduino.cc/index.php?topic=576107.0) and [here with math https://stackoverflow.com/questions/7818811/import-error-no-module-named-numpyas bonus](https://www.instructables.com/id/3020-CNC-Arduino-GRBL-CNC-Shield-V3/)
  
  
  G-Code Generation and [more](https://www.norwegiancreations.com/2015/08/an-intro-to-g-code-and-how-to-generate-it-using-inkscape/)
@@ -289,7 +289,7 @@ Download is in the bottom [get here.](https://github.com/pknoe3lh/cncgcodecontro
 
 ## G-Code Sender With AutoLevel
 * Download can be found [here bCNC-0.9.14.30](https://github.com/vlachoudis/bCNC/releases) and python set up [here](https://tecadmin.net/install-python-3-7-on-ubuntu-linuxmint/) and manual install bCNC [here](https://github.com/vlachoudis/bCNC)
-* Python Errors, [numpy](https://stackoverflow.com/questions/7818811/import-error-no-module-named-numpy)
+* Python Errors, [numpy](https://stackoverflow.com/questions/7818811/import-error-no-module-named-numpy),pyserial:pip install pyserial
 * How to use it are this [site](http://www.electronoobs.com/eng_impresoras_eleksmill.php) and a [video](https://www.youtube.com/watch?v=YkMgsRTXpyg)
 
 
