@@ -78,7 +78,7 @@ void loop() {
 //     read the incoming byte:
 //        incomingByte = Serial.read(); // bug with readBytes as missing first letter if bouth is reading 
 
-//     read whole array of char           //char     , lenght
+//     read whole array of char           //char     , lenghthttps://stackoverflow.com/questions/7818811/import-error-no-module-named-numpy
       Serial.readBytes(incomingByte, 20);
 
 //    // say what you got:
@@ -289,6 +289,7 @@ Download is in the bottom [get here.](https://github.com/pknoe3lh/cncgcodecontro
 
 ## G-Code Sender With AutoLevel
 * Download can be found [here bCNC-0.9.14.30](https://github.com/vlachoudis/bCNC/releases) and python set up [here](https://tecadmin.net/install-python-3-7-on-ubuntu-linuxmint/) and manual install bCNC [here](https://github.com/vlachoudis/bCNC)
+* Python Errors, [numpy](https://stackoverflow.com/questions/7818811/import-error-no-module-named-numpy)
 * How to use it are this [site](http://www.electronoobs.com/eng_impresoras_eleksmill.php) and a [video](https://www.youtube.com/watch?v=YkMgsRTXpyg)
 
 
