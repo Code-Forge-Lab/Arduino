@@ -198,7 +198,7 @@ void loop() {
      
 //     clearChar (incomingByte,20); 
     
-        //Serial.println (" input time: "+String ( (incomingInt) ) + ",counter: "+String(counter) + " ,incomingInt < counter:" + String( (incomingInt <= counter) ? "true":"false" ) ); // only can tolerate 3.4v max.
+        //Serial.println (" input time: "+String ( (incominhttps://tecadmin.net/install-python-3-7-on-ubuntu-linuxmint/gInt) ) + ",counter: "+String(counter) + " ,incomingInt < counter:" + String( (incomingInt <= counter) ? "true":"false" ) ); // only can tolerate 3.4v max.
         //Serial.println ("-"); 
 
     
@@ -288,7 +288,7 @@ Download is in the bottom [get here.](https://github.com/pknoe3lh/cncgcodecontro
 * Works no problem [download](https://winder.github.io/ugs_website/download/)
 
 ## G-Code Sender With AutoLevel
-* Download can be found [here bCNC-0.9.14.30](https://github.com/vlachoudis/bCNC/releases) and python set up [here](https://github.com/vlachoudis/bCNC)
+* Download can be found [here bCNC-0.9.14.30](https://github.com/vlachoudis/bCNC/releases) and python set up [here](https://tecadmin.net/install-python-3-7-on-ubuntu-linuxmint/) and manual install bCNC [here](https://github.com/vlachoudis/bCNC)
 * How to use it are this [site](http://www.electronoobs.com/eng_impresoras_eleksmill.php) and a [video](https://www.youtube.com/watch?v=YkMgsRTXpyg)
 
 
