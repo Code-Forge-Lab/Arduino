@@ -1,5 +1,5 @@
 
-# Arduino Clone [LGT8F328P](https://github.com/RalphBacon/LGT8F328P-Arduino-Clone-Chip-ATMega328P) as ATMega328P ##
+# Arduino Clone [LGT8F328P](https://github.com/RalphBacon/LGT8F328P-Arduino-Clone-Chip-ATMega328P) as ATMega328P ## [Youtube](https://www.youtube.com/watch?v=Myfeqrl3QP0&list=WL&index=101&t=0s)
 
 
 # Arduino SPI, IC2, IO ##
