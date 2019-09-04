@@ -1,4 +1,6 @@
 
+Arduino Clone ![LGT8F328P](https://github.com/RalphBacon/LGT8F328P-Arduino-Clone-Chip-ATMega328P) as ATMega328P
+
 
 # Arduino SPI, IC2, IO ##
 ## 'Processing 3' IDE For Arduino Graphic Sensors Processing
