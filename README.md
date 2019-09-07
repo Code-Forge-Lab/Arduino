@@ -234,11 +234,13 @@ void clearChar ( char *characters , int size ){
  >- IDE [java based](https://winder.github.io/ugs_website/download/), [here](https://github.com/grbl/grbl/wiki/Using-Grbl)
  >- [Xloader](https://github.com/xinabox/xLoader/releases/tag/v1.339) or [else](http://www.mikrodb.com/index.php/85-arduino/85-emdebe-hex-loader-load-hex-to-arduino-board) or upluad hex's with [arduino IDE](https://www.youtube.com/watch?v=dAwmZDIUeuU)
  >- Clear [EEPROM](https://www.youtube.com/watch?v=zlRCzGwHft0) Memory 
- ## GRBL frimware with Servo ##
+
+## GRBL frimware with Servo ##
  * Get grbl + servo frimware for [arduino](https://github.com/robottini/grbl-servo) controller.
  * Control function up and down M3 and M5
  * GRBL 0.9i with servo motor support. Use the PIN D11 to drive the servo. Use the commands M03 Sxxx (xxx between 0 and 255) to rotate the servo between 0-180. The command M05 turn the servo to zero degrees As 'STOP'+Z from CNC v3.0 Shield
-  ## How look Arduino Uno GRBL shield
+ 
+ ## How look Arduino Uno GRBL shield
 ![](https://github.com/Code-Forge-Lab/Arduino/blob/master/images/cnc_v3_arduino_uno.jpg)
   >- Stepper Motor Driver Module DRV8825 
   >- How ajust DRV8825 Voltage [reference](https://www.youtube.com/watch?v=YJSmrbeZUp4)
@@ -270,19 +272,18 @@ void clearChar ( char *characters , int size ){
 ## PCB engraving tool [flatcam](http://flatcam.org/download) download _[8.5v](https://bitbucket.org/jpcgt/flatcam/downloads/)_ and [video](https://www.youtube.com/watch?v=ILnc-7I0zQA)
 * Convert GRBL to G-Code [video](https://www.youtube.com/watch?v=IbsBCMlQB_c), [video2](https://www.youtube.com/watch?v=1N5ZjYQXTiw)
 * Works on Linux
+* Parameters tool dia:0.25mm, Cut Z:-0.01, Travel Z:3cm, Feed rate:120(Travel Speed), Spindle Speed(2000),
+* Can convert GRBL from EasyEda
+* I Use to get G-Code from PCB and then use G-Code Sender
 
-
-## PCB Autoleveling and Comunication java based tool - not use
-Download is in the bottom [get here.](https://github.com/pknoe3lh/cncgcodecontroller/releases/tag/6.2)
 
 ## G-Code Sender IDE Universal-G-Code-Sender (Best Expirence)
 * Instalation [page](https://winder.github.io/ugs_website/download/) a 2.0 Platform (Beta).
-*![Image](https://github.com/winder/Universal-G-Code-Sender/raw/master/pictures/2.0_platform_customizable_panels.png)
-*Download [2.0 Platform(Beta)](http://bit.ly/2Z3DIVC)
+* ![Image](https://github.com/winder/Universal-G-Code-Sender/raw/master/pictures/2.0_platform_customizable_panels.png)
+* Download for windows but can work on Java's [2.0 Platform(Beta)](http://bit.ly/2Z3DIVC)
+* Executable in bin folder...
 
-## G-Code Sender 
-* Java Based
-* Works no problem [download](https://winder.github.io/ugs_website/download/)
+
 
 ## G-Code Sender With AutoLevel
 * Download can be found [here bCNC-0.9.14.30](https://github.com/vlachoudis/bCNC/releases) and python set up [here](https://tecadmin.net/install-python-3-7-on-ubuntu-linuxmint/) and manual install bCNC [here](https://github.com/vlachoudis/bCNC)
