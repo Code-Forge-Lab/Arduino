@@ -277,8 +277,8 @@ Download is in the bottom [get here.](https://github.com/pknoe3lh/cncgcodecontro
 
 ## G-Code Sender IDE Universal-G-Code-Sender (Best Expirence)
 * Instalation [page](https://winder.github.io/ugs_website/download/) a 2.0 Platform (Beta).
-*[Image](src="https://github.com/winder/Universal-G-Code-Sender/raw/master/pictures/2.0_platform_customizable_panels.png")
-![2.0 Platform](http://bit.ly/2Z3DIVC)
+*[Image](https://github.com/winder/Universal-G-Code-Sender/raw/master/pictures/2.0_platform_customizable_panels.png)
+*Download ![2.0 Platform(Beta)](http://bit.ly/2Z3DIVC)
 
 ## G-Code Sender 
 * Java Based
