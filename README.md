@@ -258,7 +258,7 @@ void clearChar ( char *characters , int size ){
 
 
 
-## How Generate G-Code With Inkscape
+## How Generate G-Code With Inkscape From Photos
 1. Select Image ''Important''
 2. Go Extension > GCodeTools
 3. Tools Library: and give cutting bit option
@@ -275,17 +275,12 @@ void clearChar ( char *characters , int size ){
 ## PCB Autoleveling and Comunication java based tool - not use
 Download is in the bottom [get here.](https://github.com/pknoe3lh/cncgcodecontroller/releases/tag/6.2)
 
-## G-Code Sender IDE CNCJS
-* Instalation [page](https://cnc.js.org/docs/installation/)
-* Start command: cnc 
-* Go to broswes http://127.0.1.1:8000 address
-* Visualize solid work 
-* Cross Platform
-* Browser Based
-* Minimum Bugs
-![CNCJS](https://github.com/Code-Forge-Lab/Arduino/blob/master/images/CNCJSDEKSTOP.png)
+## G-Code Sender IDE Universal-G-Code-Sender (Best Expirence)
+* Instalation [page](https://winder.github.io/ugs_website/download/) a 2.0 Platform (Beta).
+*[Image](src="https://github.com/winder/Universal-G-Code-Sender/raw/master/pictures/2.0_platform_customizable_panels.png")
+![2.0 Platform](http://bit.ly/2Z3DIVC)
 
-## G-Code Sender
+## G-Code Sender 
 * Java Based
 * Works no problem [download](https://winder.github.io/ugs_website/download/)
 
