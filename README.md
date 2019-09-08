@@ -272,7 +272,8 @@ void clearChar ( char *characters , int size ){
 ## PCB engraving tool [flatcam](http://flatcam.org/download) download _[8.5v](https://bitbucket.org/jpcgt/flatcam/downloads/)_ and [video](https://www.youtube.com/watch?v=ILnc-7I0zQA)
 * Convert GRBL to G-Code [video](https://www.youtube.com/watch?v=IbsBCMlQB_c), [video2](https://www.youtube.com/watch?v=1N5ZjYQXTiw)
 * Works on Linux
-* Parameters tool dia:0.25mm, Cut Z:-0.01, Travel Z:3cm, Feed rate:120(Travel Speed), Spindle Speed(2000),
+* Milling parameters tool dia:0.25mm, Cut Z:-0.01, Travel Z:3cm, Feed rate:120(Travel Speed), Spindle Speed(2000),
+* Drilling holes parameters: tool dia:0.25mm, Cut Z:-1.7, Travel Z:3cm, Feed rate:120(Travel Speed), Spindle Speed(2000),
 * Can convert GRBL from EasyEda
 * I Use to get G-Code from PCB and then use G-Code Sender
 
