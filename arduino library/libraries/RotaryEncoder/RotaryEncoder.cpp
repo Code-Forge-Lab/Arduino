@@ -13,7 +13,7 @@
 #include "RotaryEncoder.h"
 
 
-// The array holds the values –1 for the entries where a position was decremented,
+// The array holds the values ï¿½1 for the entries where a position was decremented,
 // a 1 for the entries where the position was incremented
 // and 0 in all the other (no change or not valid) cases.
 
@@ -38,12 +38,9 @@ RotaryEncoder::RotaryEncoder(int pin1, int pin2) {
   _pin1 = pin1;
   _pin2 = pin2;
   
-  // Setup the input pins
-  pinMode(pin1, INPUT);
-  digitalWrite(pin1, HIGH);   // turn on pullup resistor
-
-  pinMode(pin2, INPUT);
-  digitalWrite(pin2, HIGH);   // turn on pullup resistor
+  // Setup the input pins and turn on pullup resistor
+  pinMode(pin1, INPUT_PULLUP);
+  pinMode(pin2, INPUT_PULLUP);
 
   // when not started in motion, the current state of the encoder should be 3
   _oldState = 3;
@@ -51,6 +48,7 @@ RotaryEncoder::RotaryEncoder(int pin1, int pin2) {
   // start with position 0;
   _position = 0;
   _positionExt = 0;
+  _positionExtPrev = 0;
 } // RotaryEncoder()
 
 
@@ -59,87 +57,37 @@ long  RotaryEncoder::getPosition() {
 } // getPosition()
 
 
+int8_t  RotaryEncoder::getDirection() {
+
+    int8_t ret = 0;
+    
+    if( _positionExtPrev > _positionExt )
+    {
+        ret = -1;
+        _positionExtPrev = _positionExt;
+    }
+    else if( _positionExtPrev < _positionExt )
+    {
+        ret = 1;
+        _positionExtPrev = _positionExt;
+    }
+    else 
+    {
+        ret = 0;
+        _positionExtPrev = _positionExt;
+    }        
+    
+    return ret;
+}
+
+
+
 void RotaryEncoder::setPosition(long newPosition) {
   // only adjust the external part of the position.
   _position = ((newPosition<<2) | (_position & 0x03L));
   _positionExt = newPosition;
+  _positionExtPrev = newPosition;
 } // setPosition()
-
- short RotaryEncoder::getRotationSide() {
-  // provide rotation side.
-  
-  short side = 0;
-  
-
-
-  if (getPosition() > 1 )  {  
-     side = 1;
-     setPosition(0);
-         
-   }
-
-  else if (getPosition() < -1 ) {
-     side = -1;
-     setPosition(0);
-   
-   }
-  
-  return  side;
-   
-} // provide Position()
- 
-
-long RotaryEncoder::getPositionTimeout (int milisec ) {
-
- unsigned long time = millis();
- static int pos = 0;
- int newPos = getPosition();  
- 
- // while loop cach events from rotary encoder then execute program
-  while (time + milisec > millis()) 
-    { 
-  
-     // updates
-         tick();
-
-    }
-    
-    return getPosition(); 
-
-}
-
-short RotaryEncoder::getPositionSideTimeout (int milisec ) {
-
- unsigned long time = millis();
- int posSide;
-
- 
- // while loop cach events from rotary encoder then execute program
-  while (time + milisec > millis()) 
-{ 
-   
-  // updates
-    tick();
-
-    posSide = getRotationSide();
-
-
-   if ( posSide == 1 ) {
-//    Serial.println ("up:"+String(posSide));
-        return 1;
-    }
-   else if ( posSide == -1) {
-//    Serial.println ("down"+String(posSide));
-        return  -1;
-    }
-   
-        
-
-
- }
-    return posSide;  
-
-}
 
 
 void RotaryEncoder::tick(void)

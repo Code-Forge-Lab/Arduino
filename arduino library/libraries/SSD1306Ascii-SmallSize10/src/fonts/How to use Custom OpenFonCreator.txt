@@ -1,0 +1,10 @@
+Goto openGLCDFontCreator folder
+In Windows , double click on start//
+Opened new Java base tool
+Create new font press new.
+
+In New Font Give name name correctly as file name, else do manual name changin in font file.h
+Some bug when exporting 'general option' custom font, in this case you much change height in HEX values where was created and exported in the file
+
+
+FONT: Berlin SansFB

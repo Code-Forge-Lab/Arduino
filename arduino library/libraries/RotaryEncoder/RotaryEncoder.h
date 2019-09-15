@@ -6,6 +6,7 @@
 // More information on: http://www.mathertel.de/Arduino
 // -----
 // 18.01.2014 created by Matthias Hertel
+// 16.06.2019 pin initialization using INPUT_PULLUP
 // -----
 
 #ifndef RotaryEncoder_h
@@ -23,17 +24,12 @@ public:
   
   // retrieve the current position
   long  getPosition();
+  
+  // simple retrieve of the direction the knob was rotated at. 0 = No rotation, 1 = Clockwise, -1 = Counter Clockwise
+  int8_t getDirection();
 
   // adjust the current position
-  void setPosition(long newPosition); 
-  
-  // provide about spinning side of rotary encoder and gives -1 and 1 // ADDED  EXTERNAL USER // 
-  short getRotationSide();
-  
-  // react to retrieve the current position in while loop time out 
-  long getPositionTimeout(int milisec = 50); 
-  //
-  short getPositionSideTimeout(int milisec = 50); 
+  void setPosition(long newPosition);
 
   // call this function every some milliseconds or by using an interrupt for handling state changes of the rotary encoder.
   void tick(void);
@@ -41,10 +37,12 @@ public:
 private:
   int _pin1, _pin2; // Arduino pins used for the encoder. 
   
-  int8_t _oldState;
+  volatile int8_t _oldState;
   
-  long _position;     // Internal position (4 times _positionExt)
-  long _positionExt;  // External position
+  volatile long _position;         // Internal position (4 times _positionExt)
+  volatile long _positionExt;      // External position
+  volatile long _positionExtPrev;  // External position (used only for direction checking)
+
 };
 
 #endif
