@@ -629,6 +629,7 @@ void loop() {
 		display.println("Temperat.");
 		display.println("Sensor.");
 		display.println("?:" + String(sensorTemp.temperature));
+		digitalWrite(RELAY_FRIDGE0, LOW);
 
 	}
 
