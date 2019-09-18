@@ -510,8 +510,16 @@ void loop() {
 
 		overworkTimer(boolOverworkState);
 		
-
-
+		if (boolUserP3_Timeout) {
+			display.setCursor(0, 9);
+			display.println("CooldownC:" + String(userP4_CooldownC));
+		}
+		else
+		{
+			display.setCursor(0, 9);
+			display.println("TimeoutC:" + String(userP3_TimeoutC));
+		}
+		display.setCursor(0, 0);
 
 			// for 0 = C-H = 1 Cooling Heating 6.59
 			if (userP0 == 0) 
@@ -525,8 +533,10 @@ void loop() {
 					display.print("-stop:" + String(userP5FixTemperature() + userP2FixLogicRangeOffse()));
 					display.println("c:"+ String(boolUserP3_Timeout));
 					
-					display.println("TimeoutC:" + String(userP3_TimeoutC));
-					display.println("CooldownC:" + String(userP4_CooldownC));
+					//display.println("TimeoutC:" + String(userP3_TimeoutC));
+					//display.println("CooldownC:" + String(userP4_CooldownC));
+
+					
 				
 				// offset mode
 				// when temperatue are rising after feezer was on then wait more temperature offset to confirm that is not a fluctuation
@@ -574,8 +584,8 @@ void loop() {
 					display.print("-stop:" + String(userP5FixTemperature() - userP2FixLogicRangeOffse()));
 					display.println("c:" + String(boolUserP3_Timeout));
 
-					display.println("TimeoutC:" + String(userP3_TimeoutC));
-					display.println("CooldownC:" + String(userP4_CooldownC));
+					//display.println("TimeoutC:" + String(userP3_TimeoutC));
+					//display.println("CooldownC:" + String(userP4_CooldownC));
 
 				// offset mode
 				// when temperatue are falling after heating was on then wait more temperature offset to confirm that is not a fluctuating
