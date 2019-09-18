@@ -326,7 +326,7 @@ void loop() {
 					}
 
 				}
-				else if (meniuOptionSelectFun() == 3) { // P2 Timer to ignore after working some time
+				else if (meniuOptionSelectFun() == 3) { // Not included
 					//display.println("[P2]");
 					meniuDescribeOptionDisplay("-");
 
@@ -340,7 +340,7 @@ void loop() {
 
 				}
 
-				else if (meniuOptionSelectFun() == 4) { // P2 Timer to ignore after working some time
+				else if (meniuOptionSelectFun() == 4) { // P3 Timer count while relay is on, untit set a limit are reached.
 					//display.println("[P3]");
 					meniuDescribeOptionDisplay("<Overworking timeout>");
 
@@ -354,7 +354,7 @@ void loop() {
 
 				}
 
-				else if (meniuOptionSelectFun() == 5) { // P2 Timer to ignore after working some time
+				else if (meniuOptionSelectFun() == 5) { // P4 Timer to off relay when are in cooldown mode
 					//display.println("[P4]");
 					meniuDescribeOptionDisplay("<Overworking cooldown");
 
