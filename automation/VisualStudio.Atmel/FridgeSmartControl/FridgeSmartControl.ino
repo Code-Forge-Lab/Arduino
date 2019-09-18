@@ -522,7 +522,7 @@ void loop() {
 				if (!boolUserOffsetTemperatureRange)
 					display.print("ing:" + String(userP5FixTemperature()));
 				else
-					display.print("-stop:" + String(userP5FixTemperature() - userP2FixLogicRangeOffse()));
+					display.print("-stop:" + String(userP5FixTemperature() + userP2FixLogicRangeOffse()));
 					display.println("c:"+ String(boolUserP3_Timeout));
 					
 					display.println("TimeoutC:" + String(userP3_TimeoutC));
@@ -569,9 +569,9 @@ void loop() {
 
 				display.print("Heat");
 				if (!boolUserOffsetTemperatureRange)
-					display.print("ing:" + String(userP5FixTemperature() + userP2FixLogicRangeOffse()));
+					display.print("ing:" + String(userP5FixTemperature()));  
 				else
-					display.print("-stop:" + String(userP5FixTemperature()));
+					display.print("-stop:" + String(userP5FixTemperature() - userP2FixLogicRangeOffse()));
 					display.println("c:" + String(boolUserP3_Timeout));
 
 					display.println("TimeoutC:" + String(userP3_TimeoutC));
