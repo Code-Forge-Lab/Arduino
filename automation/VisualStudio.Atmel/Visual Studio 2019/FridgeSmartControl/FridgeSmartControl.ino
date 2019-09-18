@@ -512,12 +512,12 @@ void loop() {
 		
 		if (boolUserP3_Timeout) {
 			display.setCursor(0, 9);
-			display.println("CooldownC:" + String(userP4_CooldownC));
+			display.println("CooldownC:" + String(userP4_CooldownC) + "/" + String (userP4) );
 		}
 		else
 		{
 			display.setCursor(0, 9);
-			display.println("TimeoutC:" + String(userP3_TimeoutC));
+			display.println("TimeoutC:" + String(userP3_TimeoutC) + "/" + String (userP3) );
 		}
 		display.setCursor(0, 0);
 
