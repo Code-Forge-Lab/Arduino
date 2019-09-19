@@ -2,7 +2,7 @@
 
 //  Programed for LGT8F328P Arduino Pro Mini Clone.
 // 'LGT8F328P-LQFP32 MiniEVB'
-// At 79% project progress , start do 'crashing-buggy' stuff... 23.428 bytes
+// At 79% project progress , start do 'crashing-buggy' stuff... 23.428 bytes,maybe more
 #pragma once
 
 /*
@@ -18,6 +18,8 @@
 #include <Adafruit_SSD1306.h>
 #include "ThermoSencor.h"
 #include <EEPROM.h>
+
+
 
 
 // Variables
@@ -642,8 +644,6 @@ void loop() {
 
 
 
-
-
  
 
 
@@ -798,6 +798,8 @@ void userGetValues() {
 	userP3 = EEPROM.read(MEMORY_P3); // over working timeout when working too long
 	userP4 = EEPROM.read(MEMORY_P4); // over working cooldown when working too long
 	userP5 = EEPROM.read(MEMORY_P5); // over working cooldown when working too long
+
+	
 }
 
 
