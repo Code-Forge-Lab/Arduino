@@ -69,6 +69,11 @@ byte   userP4_CooldownC = 0; //counter  over working cooldown when working too l
 //byte userFixP4 = 60;  // multyplies to get 255(1 byte) to 255 minutes
 
 
+// Common Text Variables
+String Cool = "Cool";
+String Heat = "Heat";
+String down = "down";
+
 // Defines
 #define SCREEN_WIDTH 128 // OLED display width, in pixels
 #define SCREEN_HEIGHT 64 // OLED display height, in pixels
@@ -306,7 +311,7 @@ void loop() {
 					
 				if (meniuOptionSelectFun() == 1) { // P0 C-H
 					//display.println("[P0]");
-					meniuDescribeOptionDisplay("<Mode:Cool,Heat>");
+					meniuDescribeOptionDisplay("<Mode:"+Cool+","+Heat);
 
 					// do EEPROM changes
 					if (meniuOptionIsSelected) {
@@ -370,7 +375,7 @@ void loop() {
 
 				else if (meniuOptionSelectFun() == 5) { // P4 Timer to off relay when are in cooldown mode
 					//display.println("[P4]");
-					meniuDescribeOptionDisplay("<Overworking cooldown");
+					meniuDescribeOptionDisplay("<Overworking "+Cool+down);
 
 					// do EEPROM changes
 					if (meniuOptionIsSelected) {
@@ -432,6 +437,10 @@ void loop() {
 					}
 				}
 				*/
+
+				// too much memory usage
+				/*
+
 						meniuDescribeOptionDisplay("Power Usage Per Day");
 					//  power usage per day ratio 
 					if (meniuOptionIsSelected)
@@ -439,6 +448,9 @@ void loop() {
 						
 						display.println(String( int(powerUsageMin * float(userP6EnergyOnMin)  / ((userP6EnergyOffMin / 60) / 24)) ) + "w");
 					}
+				*/
+
+
 				}
 
 
@@ -559,7 +571,7 @@ void loop() {
 	{ 
 
 
-		overworkTimer(boolOverworkState &&/* and ignore counting if protection timer is on*/ userP2Timeout == 0);
+		overworkTimer(boolOverworkState || /* or ignore counting if protection timer is on*/ userP2Timeout > 0);
 		
 		if (((long)clock_1min + 60000UL) < millis())
 		{
@@ -582,7 +594,7 @@ void loop() {
 		if (userP2Timeout == 0)
 		{
 			if (boolUserP3_Timeout) {
-				display.println("Cooldown:" + String(userP4_CooldownC) + "/" + String(userP4)+"min" /*+ " bk:" + String(userP2Timeout)*/);
+				display.println(Cool+down+":" + String(userP4_CooldownC) + "/" + String(userP4)+"min" /*+ " bk:" + String(userP2Timeout)*/);
 			}
 			else
 			{
@@ -602,7 +614,7 @@ void loop() {
 			{
 
 
-					display.print("Cool");
+					display.print(Cool);
 				if (!boolUserOffsetTemperatureRange)
 					display.print("ing:" + String(userP5FixTemperature()));
 				else
@@ -664,7 +676,7 @@ void loop() {
 			{
 
 
-				display.print("Heat");
+				display.print(Heat);
 				if (!boolUserOffsetTemperatureRange)
 					display.print("ing:" + String(userP5FixTemperature()));  
 				else
@@ -721,9 +733,9 @@ void loop() {
 		//display.clearDisplay();
 		//display.setTextSize(2);
 
-		display.println("Nera");
-		display.println("Temperat.");
-		display.println("Sensor.");
+		//display.println("Nera");
+		//display.println("Temperat.");
+		//display.println("Sensor.");
 		display.println("?:" + String(sensorTemp.temperature));
 		digitalWrite(RELAY_FRIDGE0, LOW);
 
@@ -1007,7 +1019,7 @@ String convertMinutesToTime(unsigned long int *time) {
 	int_fast16_t min = (int_fast16_t)(*time % 60);
 	int_fast16_t h = (int_fast16_t)((*time / 60) % 24);
 	int_fast16_t d = (int_fast16_t)((*time / 60) / 24);
-	int_fast16_t motuh = (int_fast16_t)( ((*time / 60) / 24) / 30 );
+	//int_fast16_t motuh = (int_fast16_t)( ((*time / 60) / 24) / 30 );
 	// int_fast16_t year = (int_fast16_t)((((*time / 60) / 24) / 30) / 12 );
 
 		//text += String(year) + "y";
