@@ -2,7 +2,7 @@
 
 //  Programed for LGT8F328P Arduino Pro Mini Clone.
 // 'LGT8F328P-LQFP32 MiniEVB'
-// At 79% project progress , start do 'crashing-buggy' stuff... 23.428 bytes,maybe more
+// At 79% project progress , start do 'crashing-buggy' stuff... 23.428 bytes,maybe more  22,706
 #pragma once
 
 /*
@@ -18,8 +18,8 @@
 #include <Adafruit_SSD1306.h>
 #include "ThermoSencor.h"
 #include <EEPROM.h>
-
-
+#include "EEPROM32.h"
+//#include <time.h>
 
 
 // Variables
@@ -28,7 +28,7 @@ bool boolSetButton = false;
 bool boolSetMenu = false;
 bool boolQuicklyChange = false;
 byte meniuOptionSelected = 1;
-byte meniuOptionsLenght = 7; // how much meniu option in meniu
+byte meniuOptionsLenght = 8; // how much meniu option in meniu
 bool meniuOptionIsPressing = false;// detect when button no longer is press
 bool meniuOptionIsSelected = false; // When eventualy are at P0-P3 option then time to select what specificly are changing a values that are included in the statement.
 unsigned long startedWaiting;
@@ -38,6 +38,13 @@ unsigned long startedWaitingmeniuOptionSelected;
 bool boolUserOffsetTemperatureRange = false;  // return true when completed temperature range escape
 bool boolUserP3_Timeout;
 unsigned long clock_1min = 0;
+// always count down when was worked 
+byte userP2Timeout = 0;
+bool boolUserP2Timeout =  true;
+// total working time counter userP6EnergyOffMin
+unsigned long int userP6EnergyOnMin = 0;
+unsigned long int userP6EnergyOffMin = 0;
+
 /// button events variable
 bool buttonUP;
 bool buttonSET;
@@ -46,7 +53,7 @@ bool buttonDOWN;
 // user saved condition in long term memory 'EEPROM'
 byte   userP0; // for 0 = C-H = 1 Cooling Heating  +
 byte   userP1; // for temperature  logic range offset '0.5' range +
-byte   userP2; // working temperature gap time
+byte   userP2; // last on timeout to prevent frequent fridge on and off
 byte   userP3; // over working timeout when working too long
 byte   userP4; // over working cooldown when working too long
 byte   userP5; //1byte, save temperature that must be reached
@@ -84,6 +91,8 @@ byte   userP4_CooldownC = 0; //counter  over working cooldown when working too l
 #define MEMORY_P3 4  //1byte,  over working timeout when working too long
 #define MEMORY_P4 5  //1byte,  over working cooldown when working too long
 #define MEMORY_P5 6 //1byte, save temperature that must be reached
+#define MEMORY_P6ON 7 // +4 bytes energy counter
+#define MEMORY_P6OFF 11 // +4 bytes energy counter
 
 // Declaration for an SSD1306 display connected to I2C (SDA, SCL pins)
 #define OLED_RESET     1 // 4 or Reset pin # (or -1 if sharing Arduino reset pin) '1' one is with LGT8F328P32'pins' But //#include <avr/power.h> library not working before SSD1306_SWITCHCAPVCC placing
@@ -203,11 +212,10 @@ void setup() {
 
 byte toggleDisplay = 0;
 bool boolOverworkState;
-
+int tst = 55;
 void loop() {
 	// clear display
 	
-
 
 	buttonUP = digitalRead(BUTTON_UP);
 	buttonSET = digitalRead(BUTTON_SET);
@@ -215,6 +223,7 @@ void loop() {
 	bool temp = analogRead(SENSOR_TEMP0);
 
 	
+
 
 	//read in long term temperature
 	sensorTemp.InCustomTimeAverageUpdate(50); // 
@@ -330,14 +339,14 @@ void loop() {
 				}
 				else if (meniuOptionSelectFun() == 3) { // Not included
 					//display.println("[P2]");
-					meniuDescribeOptionDisplay("-");
+					meniuDescribeOptionDisplay("Frequent on timeout ");
 
 					// do EEPROM changes
 					if (meniuOptionIsSelected) {
 						// Change values interface
-						//userChangeMeniuValue(&userP2);
+						userChangeMeniuValue(&userP2, 10, 0);
 						// Display
-						//txtBigNumber(userP2, "min");
+						txtBigNumber(userP2, "min");
 					}
 
 				}
@@ -391,9 +400,39 @@ void loop() {
 							meniuOptionIsSelected = !meniuOptionIsSelected; // back to meniu options
 						}
 					}
+				}	
+				/*
+				else if (meniuOptionSelectFun() == 7) {
+					
+				//display.println("[R6]"); energyOffMin energyOffMin
+				meniuDescribeOptionDisplay("<Reset energy wasted>");
+				// do EEPROM changes
+				if (meniuOptionIsSelected) 
+				{
+					display.println("Press up to reset");
+
+					if (buttonUP)
+					{
+						display.setTextSize(4);
+						display.println(" Done");
+						display.display();
+						// reset to default
+						userP6EnergyOffMin = 0;
+						userP6EnergyOnMin = 0;
+
+						writeEEPROM32(MEMORY_P6OFF,0);
+						delay(1);
+						writeEEPROM32(MEMORY_P6ON,0);
+
+						delay(2000);
+						meniuOptionIsSelected = !meniuOptionIsSelected; // back to meniu options
+					}
+				}
+
 				}
 
 
+				*/
 				else if (meniuOptionSelectFun() == meniuOptionsLenght) { // Exit
 					display.println("[EXIT]");
 
@@ -505,22 +544,43 @@ void loop() {
 
 
 
-	// if temperature sensor is connected do program
+	// if temperature sensor is connected then do program
 	if (sensorTemp.temperature > -65)
 	{ 
 
 
-		overworkTimer(boolOverworkState);
+		overworkTimer(boolOverworkState &&/* and ignore counting if protection timer is on*/ userP2Timeout == 0);
 		
-		if (boolUserP3_Timeout) {
-			display.setCursor(0, 9);
-			display.println("Cooldown:" + String(userP4_CooldownC) + "/" + String (userP4) );
-		}
-		else
+		if (((long)clock_1min + 60000UL) < millis())
 		{
-			display.setCursor(0, 9);
-			display.println("Timeout:" + String(userP3_TimeoutC) + "/" + String (userP3) );
+
+			clock_1min = millis(); // reset each  60 seconds  time
+
+		if (userP2Timeout > 0)
+			userP2Timeout--;
+
+		userP6EnergyOffMin++;
 		}
+
+		display.setCursor(0, 9);
+
+		// Display status about timeouts
+		if (userP2Timeout == 0)
+		{
+			if (boolUserP3_Timeout) {
+				display.println("Cooldown:" + String(userP4_CooldownC) + "/" + String(userP4)+"min" /*+ " bk:" + String(userP2Timeout)*/);
+			}
+			else
+			{
+				display.println("Timeout:" + String(userP3_TimeoutC) + "/" + String(userP3)+"min" /*+ " bk:" + String (userP2Timeout)*/);
+			}
+		}
+		else 
+		{// delay when
+		display.println("Next On:" + String(userP2Timeout)+"min");
+		}
+		display.println(convertMinutesToTime(&userP6EnergyOffMin));
+
 		display.setCursor(0, 0);
 
 			// for 0 = C-H = 1 Cooling Heating 6.59
@@ -532,8 +592,8 @@ void loop() {
 				if (!boolUserOffsetTemperatureRange)
 					display.print("ing:" + String(userP5FixTemperature()));
 				else
-					display.print("-stop:" + String(userP5FixTemperature() + userP2FixLogicRangeOffse()));
-					display.println("c:"+ String(boolUserP3_Timeout));
+					display.print("-stoped:" + String(userP5FixTemperature() + userP2FixLogicRangeOffse()));
+					display.println("c"/*+ String(boolUserP3_Timeout)*/);
 					
 					//display.println("TimeoutC:" + String(userP3_TimeoutC));
 					//display.println("CooldownC:" + String(userP4_CooldownC));
@@ -554,17 +614,28 @@ void loop() {
 				if ( (sensorTemp.temperature > userP5FixTemperature() && !boolUserOffsetTemperatureRange) )
 				{
 
+						
+
 						// initiation completed, not count down working time until reached critical point
 						boolOverworkState = false; // keep counting working time 
+						
 
-					if (!boolUserP3_Timeout) // if reached overwork state then turn off relay
-						digitalWrite(RELAY_FRIDGE0, 255);
+						if (!boolUserP3_Timeout && userP2Timeout == 0) // if reached overwork state then turn off relay and protection timer equal zero
+						{
+							boolUserP2Timeout = true; // // reset when fridge was on 
+							digitalWrite(RELAY_FRIDGE0, 255);
+						}
 					else 
 						digitalWrite(RELAY_FRIDGE0, LOW);
 
 				}
 				else
 				{
+
+					if (boolUserP2Timeout) {  // set only ones to countdown timer
+						userP2Timeout = userP2;
+						boolUserP2Timeout = false;
+					}
 
 					boolUserOffsetTemperatureRange = true; // set to offset mode
 					boolOverworkState = true; // disable counting wornking time and reset
@@ -583,8 +654,8 @@ void loop() {
 				if (!boolUserOffsetTemperatureRange)
 					display.print("ing:" + String(userP5FixTemperature()));  
 				else
-					display.print("-stop:" + String(userP5FixTemperature() - userP2FixLogicRangeOffse()));
-					display.println("c:" + String(boolUserP3_Timeout));
+					display.print("-stoped:" + String(userP5FixTemperature() - userP2FixLogicRangeOffse()));
+					display.println("c"/* + String(boolUserP3_Timeout)*/);
 
 					//display.println("TimeoutC:" + String(userP3_TimeoutC));
 					//display.println("CooldownC:" + String(userP4_CooldownC));
@@ -603,14 +674,23 @@ void loop() {
 					// initiation completed, not count down working time until reached critical point
 					boolOverworkState = false; // keep counting working time 
 
-					if (!boolUserP3_Timeout) // if reached overwork state then turn off relay
+					if (!boolUserP3_Timeout && userP2Timeout == 0) // if reached overwork state then turn off relay and protection timer equal zero  
+					{	
+						boolUserP2Timeout = true; // reset when fridge was on
 						digitalWrite(RELAY_FRIDGE0, 255);
+					}
 					else
 						digitalWrite(RELAY_FRIDGE0, LOW);
 
 				}
 				else
 				{
+
+					if (boolUserP2Timeout) { // set only ones to countdown timer
+						userP2Timeout = userP2;
+						boolUserP2Timeout = false;
+					}
+
 
 					boolUserOffsetTemperatureRange = true; // set to offset mode
 					boolOverworkState = true; // disable counting wornking time and reset
@@ -759,11 +839,11 @@ void meniuDescribeOptionDisplay(String txt) {
 // set user defaults all values
 void userSetDefault() {
 	userP0 = 1; // for 0 = C-H = 1 Cooling Heating
-	userP1 = 5; // for temperature  logic range offset 5/10 = '0.5' range
-	userP2 = 20; // working temperature gap time
-	userP3 = 120; // over working timeout when working too long
-	userP4 = 25;  // over working cooldown when working too long
-	userP5 = 20;  // save temperature that must be reached
+	userP1 = 5; // for temperature  logic range offset 5/10 = '0.5'celcius range
+	userP2 = 4; //min last on timeout to prevent frequent fridge on and off
+	userP3 = 25; //min over working timeout when working too long
+	userP4 = 10;  //min over working cooldown when working too long
+	userP5 = 20;  //50 celcius save temperature that must be reached
 
 	userSetValuesToMemory();
 }
@@ -774,7 +854,7 @@ void userSetValuesToMemory() {
 	byte c__ = 0;
 	c__ += writeMemory(MEMORY_P0, userP0); // for C-H Cooling Heating
 	c__ += writeMemory(MEMORY_P1, userP1); // for temperature  logic range offset '0.5' range
-	c__ += writeMemory(MEMORY_P2, userP2); // working temperature gap time
+	c__ += writeMemory(MEMORY_P2, userP2); // last on timeout to prevent frequent fridge on and off
 	c__ += writeMemory(MEMORY_P3, userP3); // over working timeout when working too long
 	c__ += writeMemory(MEMORY_P4, userP4); // over working cooldown when working too long
 	c__ += writeMemory(MEMORY_P5, userP5); // temperature
@@ -798,21 +878,11 @@ void userGetValues() {
 	userP3 = EEPROM.read(MEMORY_P3); // over working timeout when working too long
 	userP4 = EEPROM.read(MEMORY_P4); // over working cooldown when working too long
 	userP5 = EEPROM.read(MEMORY_P5); // over working cooldown when working too long
-
+	//userP6EnergyOffMin = readEEPROM32(MEMORY_P6OFF);
+	//userP6EnergyOnMin = readEEPROM32(MEMORY_P6ON);
 	
 }
 
-
-// write to memory ones 
-bool writeMemory(int16_t address, byte value) {
-	
-	if (EEPROM.read(address) != value) {
-		EEPROM.write(address, value);
-		return true;
-	}
-
-	return false;
-}
 
 // use for converting byte 255 to decimal 25.5
 float userP2FixLogicRangeOffse() {
@@ -870,7 +940,7 @@ void overworkTimer(bool reset_timer) {
 	if (((long)clock_1min + 60000UL) < millis())
 	{
 
-		clock_1min = millis(); // reset each  60 seconds  time
+		//clock_1min = millis(); // reset each  60 seconds  time
 
 
 		// Cooldown time cownting up
@@ -898,4 +968,25 @@ void overworkTimer(bool reset_timer) {
 
 	
 
+}
+
+
+String convertMinutesToTime(unsigned long int *time) {
+
+	String text = "";
+
+	
+
+	int_fast16_t m = (int_fast16_t)(*time % 60);
+	int_fast16_t h = (int_fast16_t)((*time * 60) % 60);
+	int_fast16_t d = (int_fast16_t)((*time * 60 * 60) % 24);
+
+		text += String(d)+"d";
+
+	 	text += String(h)+"h";
+	
+		text += String(m)+"m"; 
+
+	
+		return text;
 }

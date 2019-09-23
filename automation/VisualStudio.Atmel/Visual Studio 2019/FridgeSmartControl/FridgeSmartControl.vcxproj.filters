@@ -45,5 +45,8 @@
     <ClInclude Include="Lib2.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="EEPROM32.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
