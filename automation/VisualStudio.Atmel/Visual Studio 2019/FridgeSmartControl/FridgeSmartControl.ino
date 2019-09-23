@@ -45,6 +45,7 @@ bool boolUserP2Timeout =  true;
 unsigned long int userP6EnergyOnMin = 0;
 unsigned long int userP6EnergyOffMin = 0;
 
+
 /// button events variable
 bool buttonUP;
 bool buttonSET;
@@ -81,6 +82,7 @@ byte   userP4_CooldownC = 0; //counter  over working cooldown when working too l
 // relays
 #define RELAY_FRIDGE0 13
 #define RELAY_FRIDGE1BACKUPRead A4
+#define POWER_USAGE 65 // power usage per hour
 
 // user saved condition in long term memory 'EEPROM'
 // byte size is 1, int size is 2 byte's, float size is 4 byte's
@@ -102,6 +104,7 @@ ThermoSencor sensorTemp(SENSOR_TEMP0, 9370);
 // include function after display was declarated 
 //#include "functions.h"
 
+float powerUsageMin = POWER_USAGE / 60; // power used in minute
 
 // SPECIAL BUGGY FUNCTION! WANA BE ON TOP
 // user when changin something in meniu options, doest trow here 
@@ -401,9 +404,9 @@ void loop() {
 						}
 					}
 				}	
-				/*
+				
 				else if (meniuOptionSelectFun() == 7) {
-					
+				/*	
 				//display.println("[R6]"); energyOffMin energyOffMin
 				meniuDescribeOptionDisplay("<Reset energy wasted>");
 				// do EEPROM changes
@@ -428,11 +431,18 @@ void loop() {
 						meniuOptionIsSelected = !meniuOptionIsSelected; // back to meniu options
 					}
 				}
-
+				*/
+						meniuDescribeOptionDisplay("Power Usage Per Day");
+					//  power usage per day ratio 
+					if (meniuOptionIsSelected)
+					{	
+						
+						display.println(String( int(powerUsageMin * float(userP6EnergyOnMin)  / ((userP6EnergyOffMin / 60) / 24)) ) + "w");
+					}
 				}
 
 
-				*/
+				
 				else if (meniuOptionSelectFun() == meniuOptionsLenght) { // Exit
 					display.println("[EXIT]");
 
@@ -559,8 +569,12 @@ void loop() {
 		if (userP2Timeout > 0)
 			userP2Timeout--;
 
-		userP6EnergyOffMin++;
+			
+		userP6EnergyOffMin++; // count in each minute
+
 		}
+
+		
 
 		display.setCursor(0, 9);
 
@@ -579,7 +593,7 @@ void loop() {
 		{// delay when
 		display.println("Next On:" + String(userP2Timeout)+"min");
 		}
-		display.println(convertMinutesToTime(&userP6EnergyOffMin));
+		display.println( convertMinutesToTime(&userP6EnergyOffMin) + "->" + String ( int(powerUsageMin * float(userP6EnergyOnMin)) ) + "w");
 
 		display.setCursor(0, 0);
 
@@ -947,11 +961,13 @@ void overworkTimer(bool reset_timer) {
 		// boolUserP3_Timeout can be use as mode result
 		if (boolUserP3_Timeout) {
 			userP4_CooldownC++;
+			
 
 			if (userP4 <= userP4_CooldownC) // reset to 'do' job until overwork mode are entered
 			{
 				boolUserP3_Timeout = false;
 				userP4_CooldownC = 0;
+				
 			}
 		}
 		// when overwork time are reached then set time to cooldown timer
@@ -962,6 +978,7 @@ void overworkTimer(bool reset_timer) {
 		else {
 			// Overworking time counting up
 			userP3_TimeoutC++;
+			userP6EnergyOnMin++;
 		}
 
 	}
@@ -975,17 +992,33 @@ String convertMinutesToTime(unsigned long int *time) {
 
 	String text = "";
 
-	
+	/*	*min
+		43,200 mouth
+		1,440 day
 
-	int_fast16_t m = (int_fast16_t)(*time % 60);
-	int_fast16_t h = (int_fast16_t)((*time * 60) % 60);
-	int_fast16_t d = (int_fast16_t)((*time * 60 * 60) % 24);
+		int days = input_seconds / 60 / 60 / 24;
+		int hours = (input_seconds / 60 / 60) % 24;
+		int minutes = (input_seconds / 60) % 60;
+		int seconds = input_seconds % 60;
+
+	
+	*/
+
+	int_fast16_t min = (int_fast16_t)(*time % 60);
+	int_fast16_t h = (int_fast16_t)((*time / 60) % 24);
+	int_fast16_t d = (int_fast16_t)((*time / 60) / 24);
+	int_fast16_t motuh = (int_fast16_t)( ((*time / 60) / 24) / 30 );
+	// int_fast16_t year = (int_fast16_t)((((*time / 60) / 24) / 30) / 12 );
+
+		//text += String(year) + "y";
+
+		//text += String(motuh) + "m";
 
 		text += String(d)+"d";
 
 	 	text += String(h)+"h";
 	
-		text += String(m)+"m"; 
+		text += String(min);
 
 	
 		return text;
