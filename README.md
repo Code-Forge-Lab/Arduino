@@ -273,7 +273,7 @@ void clearChar ( char *characters , int size ){
 * Convert GRBL to G-Code [video](https://www.youtube.com/watch?v=IbsBCMlQB_c), [video2](https://www.youtube.com/watch?v=1N5ZjYQXTiw)
 * Works on Linux
 * Milling parameters tool dia:0.25mm, Cut Z:-0.01, Travel Z:3cm, Feed rate:120(Travel Speed), Spindle Speed(2000),
-* Drilling holes parameters: tool dia:0.25mm, Cut Z:-1.7, Travel Z:3cm, Feed rate:120(Travel Speed), Spindle Speed(2000),
+* Drilling holes parameters: tool dia:0.25mm, Cut Z:-1.6, Travel Z:3cm, Feed rate:120(Travel Speed), Spindle Speed(2000),
 * Can convert GRBL from EasyEda
 * I Use to get G-Code from PCB and then use G-Code Sender
 
