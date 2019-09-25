@@ -86,7 +86,11 @@ unsigned long int readEEPROM32(int_fast16_t address) {
 		}
 
 	}
-	return bitSum;
+	if (bitSum > 0 )
+		return bitSum + 1; // always return 1 value lower
+	else 
+	   return bitSum;
+
 }
 
 
@@ -130,6 +134,7 @@ void writeEEPROM32(int_fast16_t address, signed long int value) {
 */
 
 
+//ERROR
 //bitRead (value,64); ERROR: invalid operands of types 'double' and 'int' to binary 'operator>>'
 
 /*  
