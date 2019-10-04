@@ -61,3 +61,22 @@ m3 s3000
 
 Spidnel OFF
 m3 s0
+
+
+
+CutVertLine
+
+m3 s3000
+F80.00
+
+G01 Z -.3
+G01 Y 88
+G01 Z -.7
+G01 Y 0
+
+G01 Z -1.0
+G01 Y 88
+G01 Z -1.4
+G01 Y 0
+
+m3 s0
