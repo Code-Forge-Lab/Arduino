@@ -56,5 +56,8 @@ G01 Y 10
 G01 X 40
 G01 Y -40
 
+Spindle On
+m3 s3000
 
---
+Spidnel OFF
+m3 s0
