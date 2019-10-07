@@ -80,3 +80,14 @@ G01 Z -1.4
 G01 Y 0
 
 m3 s0
+
+
+Set Manualy Cordinates
+X 
+ G10 P0 L20 X26
+ 
+Y 
+G10 P0 L20 Y5
+
+Z 
+G10 P0 L20 Z0
