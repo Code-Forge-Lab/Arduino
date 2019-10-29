@@ -9,11 +9,65 @@ bool writeMemory(int16_t address, byte value) {
 
 	if (EEPROM.read(address) != value) {
 		EEPROM.write(address, value);
+		//print("Wrote!");
+		//delay(200);
 		return true;
 	}
 
 	return false;
 }
+
+// write to memory ones 
+bool writeMemory(int16_t address, bool value) {
+
+	if (EEPROM.read(address) != value) {
+		EEPROM.write(address, value);
+		//print("Wrote!");
+		//delay(200);
+		return true;
+	}
+
+	return false;
+}
+
+
+// write to memory ones 
+bool readMemoryBool(int16_t address) {
+
+
+	return EEPROM.read(address);
+};
+
+byte byteReadMemory = 0; // reduce reading noise
+
+// write to memory ones 
+byte readMemoryByte(int16_t address) {
+
+	return EEPROM.read(address);
+};
+
+
+
+
+
+
+
+
+// write to memory ones 
+void readMemoryBool(int16_t address, bool* value) {
+
+	*value = EEPROM.read(address);
+};
+
+
+// write to memory ones 
+void readMemoryByte(int16_t address, byte * value) {
+
+	*value = EEPROM.read(address);
+};
+
+
+
 
 
 /*  // to much memory usage

@@ -93,7 +93,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\MashineWashControl;$(ProjectDir)..\..\..\..\..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\Wire;$(ProjectDir)..\..\..\..\..\..\Arduino\libraries\Adafruit_GFX_Library;$(ProjectDir)..\..\..\..\..\..\Arduino\libraries\Adafruit_SSD1306_LargeSize;$(ProjectDir)..\..\..\..\..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\SPI\src;$(ProjectDir)..\..\..\..\..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\E2PROM;$(ProjectDir)..\..\..\..\..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\LGT\avr\cores\lgt8f;$(ProjectDir)..\..\..\..\..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\LGT\avr\variants\lgt8fx8p;$(ProjectDir)..\..\..\..\..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\tools\avr\avr\include;$(ProjectDir)..\..\..\..\..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\tools\avr\avr\include\avr;$(ProjectDir)..\..\..\..\..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\tools\avr\lib\gcc\avr\4.9.2\include;$(ProjectDir)..\..\..\..\..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\tools\avr\lib\gcc\avr\4.9.2\include;$(ProjectDir)..\..\..\..\..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\tools\avr\lib\gcc\avr\4.9.3\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\MashineWashControl;$(ProjectDir)..\..\..\..\..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\Wire;$(ProjectDir)..\..\..\..\..\..\Arduino\libraries\SSD1306Ascii-SmallSize10\src;$(ProjectDir)..\..\..\..\..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\Wire\utility;$(ProjectDir)..\..\..\..\..\..\Arduino\libraries\SSD1306Ascii-SmallSize10\src\utility;$(ProjectDir)..\..\..\..\..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\LGT\avr\cores\lgt8f;$(ProjectDir)..\..\..\..\..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\LGT\avr\variants\lgt8fx8p;$(ProjectDir)..\..\..\..\..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\tools\avr\avr\include;$(ProjectDir)..\..\..\..\..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\tools\avr\avr\include\avr;$(ProjectDir)..\..\..\..\..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\tools\avr\lib\gcc\avr\4.9.2\include;$(ProjectDir)..\..\..\..\..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\tools\avr\lib\gcc\avr\4.9.2\include;$(ProjectDir)..\..\..\..\..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\tools\avr\lib\gcc\avr\4.9.3\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <ForcedIncludeFiles>$(ProjectDir)__vm\.MashineWashControl.vsarduino.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
       <PreprocessorDefinitions>__AVR_atmega328p__;__AVR_ATmega328P__;__AVR_ATmega328p__;F_CPU=16000000L;ARDUINO=108010;ARDUINO_AVR_LARDU_328E;ARDUINO_ARCH_AVR;__cplusplus=201103L;_VMICRO_INTELLISENSE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
@@ -115,6 +115,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Backup.h" />
     <ClInclude Include="ButtonPull.h" />
     <ClInclude Include="EEPROM32.h" />
     <ClInclude Include="functions.h" />

@@ -1,241 +1,323 @@
 
-	
-void myF () {}; // dummy function 
-  void printMenuFunc (String text , controls* EEPROM  ,String n="", void (*functionPointer)() = myF  , bool testmode = false , String valueGreaterOrLessCondition = "Less" ,int valueGreaterOrLess=-1) {
-	  
-	  int8_t __set; 
-	  int8_t __up;
-	  int8_t __down;
-	  int  testmode_value; 
-	  String wrongStatment =  "";
-//  lcd.noBlink();      
-		  if ( testmode ) // not save value in EEPROM that was changed here 
-			  testmode_value = EEPROM->getValue() ; 
-			   
-  delay(500);
-  while ( true ) 
-  {
-			
-		  
 
-		  
-				  
-		  if (   __up  ) { // Boundry value not exeed
-				 
-				 if ( ( valueGreaterOrLess == -1 || valueGreaterOrLessCondition == "Greater"))
-					  EEPROM->addValue();
-				 else if (valueGreaterOrLessCondition == "Less" && EEPROM->getValue() < valueGreaterOrLess) {
-					  EEPROM->addValue();
+void onOff(int index, bool enable, bool manual_enable = true) {
 
-					  
-				  } else  if ( EEPROM->getValue() > valueGreaterOrLess )   // if value to hight when valuegreaterorLess then equlize to minimum 
-						   {   EEPROM->setValue (valueGreaterOrLess );   wrongStatment="";}
-							 
-				  
-					 //or
-					if (valueGreaterOrLessCondition == "Greater" && EEPROM->getValue() < valueGreaterOrLess && valueGreaterOrLess !=-1)
-					   { EEPROM->setValue (valueGreaterOrLess ); wrongStatment="";}   
-
-					 if (valueGreaterOrLessCondition == "Less" && EEPROM->getValue() > valueGreaterOrLess && valueGreaterOrLess !=-1)
-					{ EEPROM->setValue (valueGreaterOrLess ); wrongStatment="";}           
-			 }
-		 
-	
-			 if (  __down  ) { // Boundry value not exeed
-				if ( ( valueGreaterOrLess == -1 || valueGreaterOrLessCondition == "Less"))
-					  EEPROM->subValue();
-				 else if (valueGreaterOrLessCondition == "Greater" && EEPROM->getValue() > valueGreaterOrLess) {
-					  EEPROM->subValue();
-				
-				  }
-				 else  if ( EEPROM->getValue() > valueGreaterOrLess )   // if value to hight when valuegreaterorLess then equlize to minimum 
-						  {   EEPROM->setValue (valueGreaterOrLess ); wrongStatment="";   }; 
-					   
-
-				if (valueGreaterOrLessCondition == "Less" && EEPROM->getValue() > valueGreaterOrLess && valueGreaterOrLess !=-1)
-					{ EEPROM->setValue (valueGreaterOrLess ); wrongStatment="";}
-					//or
-					 
-			 }
-
-							  
-							 
-				display.clearDisplay();
-				display.print (text);
-				display.setCursor(0,1);
-//                display.dim(true);
-				display.print (n+EEPROM->getValue()+ String (wrongStatment) );
-				
-		  functionPointer();
-//     delay (100); // SLEEP COMMAND         
-	 if (__set >=1) {
-		 if (( valueGreaterOrLessCondition == "Less" && EEPROM->getValue() > valueGreaterOrLess && valueGreaterOrLess !=-1   ) ||
-			   valueGreaterOrLessCondition == "Greater" && EEPROM->getValue() < valueGreaterOrLess && valueGreaterOrLess !=-1)
-				{
-				   wrongStatment = "?";
-				}
-				else  break; //end loop life then set button is pressed            
-	 }
-  } /////// END
-		
-		if ( testmode ) { // not save value in EEPROM that was changed here 
-			 EEPROM->setValue(testmode_value  );  // return original state
-			 functionPointer();
-		} 
-   /////////////////////////////////////////  
-			
-		EEPROM->setValue ();
-   //     lcd.noBlink();
-		
-	 //   pinMode (13,OUTPUT);
-	 //   delay(30);
-	 //   digitalWrite(13,HIGH);
-	 //   delay(30);
-	 //   digitalWrite(13,LOW);
-	  //  pinMode (13,INPUT);
+	if (enable && manual_enable) {
+		analogWrite(index, 255);
+		//printLn("on:",index);
+		//delay(sleep);
 	}
-
-
-
-bool ArgueAgree (String text = "Ar tikrai taip?"  ) {
-	  
-	  int8_t __set; 
-	  int8_t __up;
-	  int8_t __down;
-	  bool  condition = false;
-
-			   
-  delay(500);
-  while ( true ) 
-  {
-	   
-		
-			  
-		
-			
-		  // if no rotory encoder but only push buttons
-		   __up = digitalRead(BUTTON_UP);
-		   __down = digitalRead(BUTTON_DOWN); 
-		   delay (100);         
-		  
-
-			__set = digitalRead(BUTTON_SET) ;     
-		  
-		
-		  if (   __up  && !condition   ) 
-					condition = true;
-			 
-		 
-	
-		  if (  __down && condition ) 
-					condition = false;
-			 
-
-		  if ( __set )                            
-				return condition; // return desided condition
-				
-				display.clearDisplay();
-				display.print (text);
-				display.setCursor(0,1);
-			  
-			  if (condition) // if true condition
-				  display.print ("taip");
-			  else // not true codition
-				  display.print ("ne");
-	
-		  
-   
+	else {
+		analogWrite(index, 0);
+		//printLn("off:",index);
+		//delay(sleep);
 	}
 }
 
-void sey (String lineA = "Issaugoti nauji", String lineB = "Nustatimai",int timeLastHold=3400) {
-	display.clearDisplay();
-	display.setCursor(0,0);
-	display.print (lineA);
-   delay (500);
-   display.setCursor(0,1);
-   display.print (lineB);
-   delay(timeLastHold);
-  }
 
 
 
 /*
-  byte  findLiquidCrystal_I2C () {
- 
- 
- 
-  byte error, address;
-  int nDevices;
- 
-//  Serial.println("Scanning...");/
- 
-  nDevices = 0;
-  for(address = 1; address < 127; address++ )
-  {
-	// The i2c_scanner uses the return value of
-	// the Write.endTransmisstion to see if
-	// a device did acknowledge to the address.
-	Wire.beginTransmission(address);
-	error = Wire.endTransmission();
-	
-	if (error == 0)
-	{
-//      Serial.print("I2C device found at address 0x");/
-	  if (address<16)
-//        Serial.print("0");
-//      Serial.print(address,HEX);
-//      Serial.println("  !");
- 
-	  nDevices++;
-	}
-	
-  }
+void printLn(String text, int value) {
+	display.print(text);
 
-  
-//  if (nDevices == 0)
-//    return false; //    Serial.println("No I2C devices found\n");/
-//  else
-//    return true; //    Serial.println("done\n");/
- 
-  return  nDevices;
+
+	// lane are changed
+	int ln[8] = {};
+
+	//  delete changed letters
+	if (ln[display.row()] != value)
+	{
+		ln[display.row()] = value;
+
+		display.clearField(display.col(), display.row(), byte(String(value).length() + 2));
+		display.println(value);
+	}
+	else
+		display.println(value);
 }
- */ 
+*/
 
-/**
-	void f () {
-	  
- 
- 
-  byte error, address;
-  int nDevices;
- 
-//  Serial.println("Scanning...");/
- 
-  nDevices = 0;
-  for(address = 1; address < 127; address++ )
-  {
-	// The i2c_scanner uses the return value of
-	// the Write.endTransmisstion to see if
-	// a device did acknowledge to the address.
-	Wire.beginTransmission(address);
-	error = Wire.endTransmission();
- 
-	if (error == 0)
+void print(String txt) {
+	String SPACE = "                   ";
+	display.print(txt);
+	display.println(SPACE);
+
+}
+
+
+void print(byte txt) {
+	String SPACE = "                   ";
+	display.print(txt);
+	display.println(SPACE);
+
+}
+
+void println(String txt) {
+	
+	display.print(txt);
+
+}
+
+
+void printbool(bool statement) {
+	display.print(statement);
+}
+
+
+
+// meniu function
+
+bool uploadValues(byte index, byte* value, bool changeOption) {
+
+	println(String(index) + ".");
+
+
+
+
+	switch (index)
 	{
-//      Serial.print("I2C device found at address 0x");/
-	  if (address<16)
-//        Serial.print("0");
-//      Serial.print(address,HEX);
-//      Serial.println("  !");
- 
-	  nDevices++;
+
+	case 0:
+		println("Start Program:");
+		print(*value);
+
+		if (changeOption) {
+			startWokProgram = *value;
+		}
+		else // always read until user request a changes
+		{
+			*value = startWokProgram;
+		}
+		break;
+	case 1:
+		println("Fill water:");
+		print(*value);
+
+		if (*value < 2 && changeOption) {
+			
+			value_ON_WaterInValveSignal = *value;
+		}
+		else // always read until user request a changes
+		{
+			*value = value_ON_WaterInValveSignal;
+		}
+
+		break;
+	case 2:
+		println("Out water:");
+		print(*value);
+
+		if (*value < 2 && changeOption) {
+			
+			value_ON_WaterOutPumpSingnal = *value;
+		}
+		else // always read until user request a changes
+		{
+			*value = value_ON_WaterOutPumpSingnal;
+		}
+
+		break;
+	case 3:
+		println("Sprayer:");
+		print(*value);
+
+		if (*value < 2 && changeOption) {
+			
+			value_ON_WaterPumpSprayerSignal = *value;
+		}
+		else	// always read until user request a changes
+		{
+			*value = value_ON_WaterPumpSprayerSignal;
+		}
+
+		break;
+	case 4:
+		println("Heater:");
+		print(*value);
+
+		if (*value < 2 && changeOption) {
+			value_ON_HeaterWaterSignal = *value;
+		}
+		else // always read until user request a changes
+		{
+			*value = value_ON_HeaterWaterSignal;
+		}
+
+		break;
+	case 5:
+		println("M.Normal power:");
+		print(*value);
+
+		if (changeOption) {
+			value_M_NORMALWASHPOWER = *value;
+		}
+		else // always read until user request a changes
+		{
+			*value = value_M_NORMALWASHPOWER;
+		}
+
+		break;
+	case 6:
+		println("M.Normal speed:");
+		print(*value);
+
+		if (changeOption) {
+			value_M_NORMALWASHSPEED = *value;
+		}
+		else // always read until user request a changes
+		{
+			*value = value_M_NORMALWASHSPEED;
+		}
+
+		break;
+	case 7:
+		println("M.Rise power:");
+		print(*value);
+
+
+		if (changeOption) {
+			value_M_RISEWASHSPOWER = *value;
+		}
+		else// always read until user request a changes
+		{
+			*value = value_M_RISEWASHSPOWER;
+		}
+
+		break;
+	case 8:
+		println("M.Rise speed:");
+		print(*value);
+
+
+		if (changeOption) {
+			value_M_RISEWASHSPEED = *value;
+		}
+		else // always read until user request a changes
+		{
+			*value = value_M_RISEWASHSPEED;
+		}
+
+		break;
+	case 9:
+		print("Not used!");
+		break;
+	default:
+		print("no options");
+		return false;
+	};
+
+	if (changeOption) // display option when it needed
+		print(*value);
+};
+
+
+
+void updateMemoryValues() {
+
+	writeMemory(MEMORY_ON_WaterOutPumpSingnal, value_ON_WaterOutPumpSingnal);
+	writeMemory(MEMORY_ON_WaterInValveSignal, value_ON_WaterInValveSignal);
+	writeMemory(MEMORY_ON_WaterPumpSprayerSignal, value_ON_WaterPumpSprayerSignal);
+	writeMemory(MEMORY_ON_HeaterWaterSignal, value_ON_HeaterWaterSignal);
+	writeMemory(MEMORY_M_NORMALWASHPOWER, value_M_NORMALWASHPOWER);
+	writeMemory(MEMORY_M_NORMALWASHSPEED, value_M_NORMALWASHSPEED);
+	writeMemory(MEMORY_M_RISEWASHSPOWER, value_M_RISEWASHSPOWER);
+	writeMemory(MEMORY_M_RISEWASHSPEED, value_M_RISEWASHSPEED);
+
+}
+
+// update value from memory to local RAM memory 
+void updateValuesfromMemory() {
+
+	readMemoryBool(MEMORY_ON_WaterOutPumpSingnal, &value_ON_WaterOutPumpSingnal);
+	readMemoryBool(MEMORY_ON_WaterInValveSignal, &value_ON_WaterInValveSignal);
+	readMemoryBool(MEMORY_ON_WaterPumpSprayerSignal, &value_ON_WaterPumpSprayerSignal);
+	readMemoryBool(MEMORY_ON_HeaterWaterSignal, &value_ON_HeaterWaterSignal);
+	readMemoryByte(MEMORY_M_NORMALWASHPOWER, &value_M_NORMALWASHPOWER);
+	readMemoryByte(MEMORY_M_NORMALWASHSPEED, &value_M_NORMALWASHSPEED);
+	readMemoryByte(MEMORY_M_RISEWASHSPOWER, &value_M_RISEWASHSPOWER);
+	readMemoryByte(MEMORY_M_RISEWASHSPEED, &value_M_RISEWASHSPEED);
+
+}
+
+byte rotaryEncoderDirection(bool* sideUp, bool* sideDown) {
+
+	String side = "";
+	if (spinSide == 0)
+	{
+		if (*sideUp && !*sideDown)
+			spinSide = 1;
+
+		else if (*sideDown && !*sideUp)
+			spinSide = 2;
 	}
-	else if (error==4)
+
+
+
+
+	if (!*sideUp && !*sideDown)
 	{
-//      Serial.print("Unknown error at address 0x");/
-	  if (address<16)
-//        Serial.print("0");/
-//      Serial.println(address,/HEX);
-	}    
-  };**/
+		byte xspin = spinSide;
+		spinSide = 0;
+		return xspin;
+
+	}
+	return 0;
+}
+
+
+
+void WaterInValveSignal(bool on) {
+	//bool value = readMemoryBool(MEMORY_ON_WaterInValveSignal);
+	onOff(RELAY_WaterInValveSignal, value_ON_WaterInValveSignal, on);
+	//if (value_ON_WaterInValveSignal && on)
+		reportComponentsWork += ",in:" + String(value_ON_WaterInValveSignal && on);
+}
+
+
+void WaterOutPumpSingnal(bool on) {
+	//bool value = readMemoryBool(MEMORY_ON_WaterOutPumpSingnal);
+	onOff(RELAY_WaterOutPumpSingnal, value_ON_WaterOutPumpSingnal, on);
+	
+	//if (value_ON_WaterOutPumpSingnal && on)
+		reportComponentsWork += ",out:" + String(value_ON_WaterOutPumpSingnal && on);
+}
+
+
+void WaterPumpSprayerSignal(bool on) {
+	//bool value = readMemoryBool(MEMORY_ON_WaterPumpSprayerSignal);
+	onOff(RELAY_WaterPumpSprayerSignal, value_ON_WaterPumpSprayerSignal, on);
+	//if (value_ON_WaterPumpSprayerSignal && on) 
+		reportComponentsWork += ",spr:" + String(value_ON_WaterPumpSprayerSignal && on);
+	
+}
+
+
+void HeaterWaterSignal(bool on) {
+	//bool value = readMemoryBool(MEMORY_ON_HeaterWaterSignal);
+	onOff(RELAY_HeaterWaterSignal, value_ON_HeaterWaterSignal, on);
+	//if (value_ON_HeaterWaterSignal && on)
+		reportComponentsWork += ",heatr:" + String(value_ON_HeaterWaterSignal && on);
+}
+
+
+void M_NORMALWASHPOWER(bool on) {
+	//onOff(RELAY_WaterOutPumpSingnal, MEMORY_ON_WaterOutPumpSingnal, on);
+}
+
+
+void M_NORMALWASHSPEED(bool on) {
+	//onOff(RELAY_WaterOutPumpSingnal, MEMORY_ON_WaterOutPumpSingnal, on);
+}
+
+
+void M_RISEWASHSPOWER(bool on) {
+	//onOff(RELAY_WaterOutPumpSingnal, MEMORY_ON_WaterOutPumpSingnal, on);
+}
+
+
+void M_RISEWASHSPEED(bool on) {
+	//onOff(RELAY_WaterOutPumpSingnal, MEMORY_ON_WaterOutPumpSingnal, on);
+}
+
+
