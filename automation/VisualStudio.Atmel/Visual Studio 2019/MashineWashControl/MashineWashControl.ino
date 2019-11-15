@@ -496,8 +496,3 @@ void motorTunOff() {
 	timerMotorWork = 0; //reset timer for turn off a motorNormalWashInterval function
 	timerMotorWorkBool = false;
 }
-
-
-
-
-

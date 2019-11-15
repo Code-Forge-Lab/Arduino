@@ -1,7 +1,0 @@
-# = is a sad face.
-& = is a happy face.
-@ = Celcius symbol
-$ = arrow right
-~ = arrow left
-
-# & @ $ ~

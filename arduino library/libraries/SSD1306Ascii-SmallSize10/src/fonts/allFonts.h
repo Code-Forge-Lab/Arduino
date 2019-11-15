@@ -6,53 +6,7 @@
  *
  * Note that the build environment only holds a font in Flash if its selected
  * so there is no penalty to including a font file here if its not used
- 
- 
- *
- *----------------------------------------------
- * CustomFont8
- *
- * created with FontCreator
- * written by F. Maximilian Thiele
- *
- * http://www.apetech.de/fontCreator
- * me@apetech.de
- *
- * File Name           : CustomFont8.h
- * Date                : 15.09.2019
- * Font size in bytes  : 6992
- * Font width          : 99
- * Font height         : 13
- * Font first char     : 32
- * Font last char      : 128
- * Font used chars     : 96
- *
- * The font data are defined as
- *
- * struct _FONT_ {
- *     uint16_t   font_Size_in_Bytes_over_all_included_Size_it_self;
- *     uint8_t    font_Width_in_Pixel_for_fixed_drawing;
- *     uint8_t    font_Height_in_Pixel_for_all_characters;
- *     unit8_t    font_First_Char;
- *     uint8_t    font_Char_Count;
- *
- *     uint8_t    font_Char_Widths[font_Last_Char - font_First_Char +1];
- *                  // for each character the separate width in pixels,
- *                  // characters < 128 have an implicit virtual right empty row
- *
- *     uint8_t    font_data[];
- *                  // bit field of all characters
- 
- 
- 0x1B, 0x50, // size
-    0x63, // width
-    0x0D, // height
-    0x20, // first char
-    0x60, // char count
- 
- 
  */
- 
 /**
  * @file allFonts.h
  * @brief Font definitions.
@@ -101,23 +55,13 @@
 // any other value means variable width font in FontCreator2 (thiele)
 // format with pixel padding
 
-#include "CustomFont5.h"// My Custom Font
-#include "CustomFont8.h" 
-#include "CustomFont5x5.h"
-#include "CustomFont10x14.h"
-#include "CustomFont16.h"
-#include "CustomFont10.h" 
-
 #include "Adafruit5x7.h"        // Font from Adafruit GFX library
-#include "ZevvPeep8x16.h"
-#include "CalBlk36.h"
-
 #include "font5x7.h"
 #include "lcd5x7.h"
 #include "Stang5x7.h"
 #include "X11fixed7x14.h"
 #include "X11fixed7x14B.h"
-include "ZevvPeep8x16.h"
+#include "ZevvPeep8x16.h"
 
 #include "System5x7.h" 	        // system font (fixed width)
 #include "SystemFont5x7.h"      // backward compability System5x7 header
@@ -159,9 +103,9 @@ include "ZevvPeep8x16.h"
 #include "Wendy3x5.h"
 #include "newbasic3x5.h"
 
-
- // These fonts require no-pad rendering code
-
+/*
+ * These fonts require no-pad rendering code
+ */
 #include "font8x8.h"		// fixed wider font but similar to system5x7 font
 #include "cp437font8x8.h"       // fixed Font from 80's IBM PC
 
@@ -169,7 +113,7 @@ include "ZevvPeep8x16.h"
  * These fonts require UTF8 encoding support
  */
 
-//#include "utf8font10x16.h"	// UTF8 font up to U+00FF
+#include "utf8font10x16.h"	// UTF8 font up to U+00FF
 				// http://www.fileformat.info/info/charset/UTF-8/list.htm
 
 #endif
