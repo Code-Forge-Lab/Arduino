@@ -197,11 +197,40 @@ bool uploadValues(byte index, byte* value, bool changeOption) {
 		{
 			*value = value_M_RISEWASHSPEED;
 		}
-
+		
 		break;
 	case 9:
+		print("MotorWashIntervalON"); // motorNormalWashInterval
+		
+
+		if (changeOption) {
+			value_M_NORMALWASHINTERVALON = *value;
+		}
+		else// always read until user request a changes
+		{
+			*value = value_M_NORMALWASHINTERVALON;
+		}
+
+		if (value_M_NORMALWASHINTERVALON == 0) // reset to protection mode
+			value_M_NORMALWASHINTERVALON = 1;
+		break;
+	case 10:
+		print("MotorWashIntervalOFF"); // motorNormalWashInterval
+		if (changeOption) {
+			value_M_NORMALWASHINTERVALOFF = *value;
+		}
+		else// always read until user request a changes
+		{
+			*value = value_M_NORMALWASHINTERVALOFF;
+		}
+
+		if (value_M_NORMALWASHINTERVALOFF == 0) // reset to protection mode
+			value_M_NORMALWASHINTERVALOFF = 1;
+		break;
+	case 11:
 		print("Not used!");
 		break;
+
 	default:
 		print("no options");
 		return false;
@@ -223,6 +252,8 @@ void updateMemoryValues() {
 	writeMemory(MEMORY_M_NORMALWASHSPEED, value_M_NORMALWASHSPEED);
 	writeMemory(MEMORY_M_RISEWASHSPOWER, value_M_RISEWASHSPOWER);
 	writeMemory(MEMORY_M_RISEWASHSPEED, value_M_RISEWASHSPEED);
+	writeMemory(MEMORY_M_NORMALWASHINTERVALON , value_M_NORMALWASHINTERVALON);
+	writeMemory(MEMORY_M_NORMALWASHINTERVALOFF, value_M_NORMALWASHINTERVALOFF);
 
 }
 
@@ -237,6 +268,8 @@ void updateValuesfromMemory() {
 	readMemoryByte(MEMORY_M_NORMALWASHSPEED, &value_M_NORMALWASHSPEED);
 	readMemoryByte(MEMORY_M_RISEWASHSPOWER, &value_M_RISEWASHSPOWER);
 	readMemoryByte(MEMORY_M_RISEWASHSPEED, &value_M_RISEWASHSPEED);
+	readMemoryByte(MEMORY_M_NORMALWASHINTERVALON, &value_M_NORMALWASHINTERVALON);
+	readMemoryByte(MEMORY_M_NORMALWASHINTERVALOFF, &value_M_NORMALWASHINTERVALOFF);
 
 }
 
@@ -266,6 +299,56 @@ byte rotaryEncoderDirection(bool* sideUp, bool* sideDown) {
 }
 
 
+// simplify to manualy adding next time value
+int_fast16_t timeChangeVar = 0;
+int_fast16_t timeChangeTb[30]; 
+int_fast16_t timeChangeCnt = 0;
+int_fast16_t timeChange(int_fast16_t timeToAdd , byte positional ) {
+	
+	// fix initiation
+
+	if (timeChangeTb[0] == 0)
+		timeChangeTb[0] = timeToAdd;
+
+
+	if (clockTotalMin >= timeChangeVar) {
+		timeChangeVar = timeChangeVar + timeToAdd;
+		timeChangeTb[timeChangeCnt] = timeChangeVar; // save a 'was' value to the table
+		timeChangeCnt++;
+	}
+
+	return timeChangeTb[positional]; // by added position return a value 
+}
+
+
+void timeChangeReset() {
+	timeChangeVar = 0;
+	// timeChangeTb[30];
+	timeChangeCnt = 0;
+}
+
+// Spin a motor by time interval
+void motorNormalWashInterval(byte timeOn = value_M_NORMALWASHINTERVALON, byte timeOff = value_M_NORMALWASHINTERVALOFF) {
+
+
+	timerMotorWorkBool = true;
+
+
+	if (timerMotorWork < timeOn) {
+		motorNormalWash();
+		print("M@ wash " + String(timerMotorWork));
+	}
+	else if (timerMotorWork < timeOn + timeOff) {
+		motorTurnOffRequest();
+		print("M@ off " + String(timerMotorWork));
+	}
+	else {
+		timerMotorWork = 0; // set to reapet
+
+	}
+
+
+}
 
 void WaterInValveSignal(bool on) {
 	//bool value = readMemoryBool(MEMORY_ON_WaterInValveSignal);

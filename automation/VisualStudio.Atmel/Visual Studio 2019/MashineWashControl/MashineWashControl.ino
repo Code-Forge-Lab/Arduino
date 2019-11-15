@@ -25,6 +25,8 @@ SSD1306AsciiWire display;
 
 #define MEMORY_M_RISEWASHSPOWER 7 // power of maximum that usuly determent how triac is on
 #define MEMORY_M_RISEWASHSPEED 8 // speed maximu program read and align
+#define MEMORY_M_NORMALWASHINTERVALON 9 // how much time in the normal wash mode a motor must work
+#define MEMORY_M_NORMALWASHINTERVALOFF 10 // how much time in the normal wash mode a motor must Not to work
 // buttons
 #define BUTTON_DOWN 5
 #define BUTTON_SET 4
@@ -93,6 +95,9 @@ byte value_M_NORMALWASHSPEED = 0; // speed nominal program read and align
 byte value_M_RISEWASHSPOWER = 0; // power of maximum that usuly determent how triac is on
 byte value_M_RISEWASHSPEED = 0;// speed maximu program read and align
 
+byte value_M_NORMALWASHINTERVALON = 1; 
+byte value_M_NORMALWASHINTERVALOFF = 1;
+
 //------------------------------------------------------------------------------
 
 #include "EEPROM32.h"
@@ -148,6 +153,9 @@ void setup() {
 
 		writeMemory(MEMORY_M_RISEWASHSPOWER, byte(4));
 		writeMemory(MEMORY_M_RISEWASHSPEED, byte(20));
+
+		writeMemory(MEMORY_M_NORMALWASHINTERVALON, byte(2));
+		writeMemory(MEMORY_M_NORMALWASHINTERVALOFF, byte(3));
 	}
 
 
@@ -204,8 +212,8 @@ void loop() {
 
 
 
-	/// CLOCK 1 min
-	if (((long)clock_1min + 60000UL * 1) < millis())
+	/// CLOCK 1 min			60000UL  120000UL
+	if (((long)clock_1min + 120000UL) < millis()) // 120000UL a double clock speed by
 	{
 		
 		clock_1min = millis(); // reset each  60 seconds  time
@@ -215,8 +223,8 @@ void loop() {
 		if (timerMotorWorkBool) {
 			timerMotorWork += 1;
 
-			print("ADDDDD" + String (timerMotorWork) );
-			delay(4000);
+		//	print("ADDDDD" + String (timerMotorWork) );
+		//	delay(4000);
 		}
 
 	}
@@ -280,26 +288,27 @@ void loop() {
 
 	if (startWokProgram ) {
 
-		println(""+String (clockTotalMin)+ "m|");
+		println("" + String(clockTotalMin));//+ "m|nx:" + String (timeChangeVar) );
 
-		if (clockTotalMin < 2) {
+		if (clockTotalMin < 10) { // if (clockTotalMin < timeChange(7 ,0)) {
 			
 			WaterInValveSignal(true);
 			print("Filling water>");
 		}
-		else if (clockTotalMin < 9) {
+		else if (clockTotalMin < 70) {
 			WaterInValveSignal(false);
-			print("Spray water>");
 			print("Spin motor");
+			print("Spray water>");
+		
 
-			motorNormalWashInterval( 2,  1);
+			motorNormalWashInterval( );
 			// turn on sprayer
 			
 			WaterOutPumpSingnal(true);
 			WaterPumpSprayerSignal(true);
 			
 		}		
-		else if (clockTotalMin < 10) {
+		else if (clockTotalMin < 73) {
 			print("Heat Water>");
 			
 			
@@ -308,14 +317,15 @@ void loop() {
 			WaterOutPumpSingnal(false);
 			motorTunOff();
 		}
-		else if (clockTotalMin < 11) {
+		else if (clockTotalMin < 90) {
 			print("Push water out>");
 			
 			WaterOutPumpSingnal(true);
 			HeaterWaterSignal(false);
-			motorNormalWashInterval(2, 1);
+			//motorNormalWashInterval(2, 1);
+			motorNormalWashInterval(1,3); // was by selected interval
 		}
-		else if (clockTotalMin < 15) {
+		else if (clockTotalMin < 93) {
 			print("Off pumps>");
 
 			WaterOutPumpSingnal(false);
@@ -329,10 +339,13 @@ void loop() {
 			
 			startWokProgram = 0; // program end 
 			motorTunOff();
+			timeChangeReset();
 		}
 		
 		
-		}
+	}
+	
+		
 
 			//onOff(RELAY_WaterInValveSignal, meniuOption[1]);
 
@@ -355,6 +368,11 @@ void loop() {
 
 
 		clockTotalMin = 0; // reset clock if program not started
+
+
+		if (timeChangeCnt != 0) // reset single time a timeChange() function to work next time 
+			timeChangeReset();
+
 	}
 
 	
@@ -461,28 +479,7 @@ void motorNormalWash() {
 }
 
 
-// Spin a motor by time interval
-void motorNormalWashInterval(byte timeOn, byte timeOff) {
-	
 
-		timerMotorWorkBool = true;
-		
-
-		if (timerMotorWork < timeOn ) {
-			motorNormalWash();
-			print("M@ wash " + String(timerMotorWork));
-		}
-		else if (timerMotorWork < timeOn + timeOff ) {
-			motorTurnOffRequest();
-			print("M@ off " + String(timerMotorWork));
-		}
-		else {
-			timerMotorWork = 0; // set to reapet
-			
-		}
-
-
-}
 
 void motorTurnOffRequest() { // only turn off request of a motor 
 	motorSpeedRequest = 0;
@@ -496,3 +493,4 @@ void motorTunOff() {
 	timerMotorWork = 0; //reset timer for turn off a motorNormalWashInterval function
 	timerMotorWorkBool = false;
 }
+
