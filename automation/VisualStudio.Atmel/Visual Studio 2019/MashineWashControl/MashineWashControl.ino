@@ -175,7 +175,7 @@ void loop() {
 	bool buttonUP = !digitalRead(BUTTON_UP);
 	bool buttonSET = !digitalRead(BUTTON_SET);
 	bool buttonDOWN = !digitalRead(BUTTON_DOWN);
-
+	
 
 	byte rotory = rotaryEncoderDirection(&buttonUP, &buttonDOWN);
 
@@ -211,8 +211,8 @@ void loop() {
 		
 
 
-
-	/// CLOCK 1 min			60000UL  120000UL
+	//                      16MHz	 32MHz
+	/// CLOCK 1 min			60000UL  120000UL  x 2 clock speed 
 	if (((long)clock_1min + 120000UL) < millis()) // 120000UL a double clock speed by
 	{
 		
@@ -288,31 +288,81 @@ void loop() {
 
 	if (startWokProgram ) {
 
-		println("" + String(clockTotalMin));//+ "m|nx:" + String (timeChangeVar) );
+		println("" + String(clockTotalMin) + "m|");// nx:"+String(timeChangeVar) );
 
 		if (clockTotalMin < 10) { // if (clockTotalMin < timeChange(7 ,0)) {
 			
 			WaterInValveSignal(true);
 			print("Filling water>");
 		}
-		else if (clockTotalMin < 70) {
+		else if (clockTotalMin < 24) {
 			WaterInValveSignal(false);
 			print("Spin motor");
-			print("Spray water>");
+			print("Heat>");
 		
 
 			motorNormalWashInterval( );
 			// turn on sprayer
 			
+		
+			HeaterWaterSignal(true);
+			
+		}
+
+		else if (clockTotalMin < 25) { // soft relays transition
+			print("Spray On>");
+			WaterPumpSprayerSignal(true);
+			HeaterWaterSignal(false);
+		}
+		else if (clockTotalMin < 40) {
+			print("Spin motor");
+			print("Spray water>");
+
+
+			motorNormalWashInterval();
+			// turn on sprayer
+
 			WaterOutPumpSingnal(true);
 			WaterPumpSprayerSignal(true);
 			
-		}		
+
+		}
+		
+		else if (clockTotalMin < 55) {
+			print("Spin motor");
+			print("Spray's Rest>");
+
+
+			motorNormalWashInterval();
+			// turn on sprayer
+
+			WaterOutPumpSingnal(false);
+			WaterPumpSprayerSignal(false);
+
+
+		}
+		else if (clockTotalMin < 56) {
+			print("Spray On>");
+			WaterPumpSprayerSignal(true);
+
+		}
 		else if (clockTotalMin < 73) {
-			print("Heat Water>");
+			print("Spin motor");
+			print("Spray water>");
+
+
+			motorNormalWashInterval();
+			// turn on sprayer
+
+			WaterOutPumpSingnal(true);
+			WaterPumpSprayerSignal(true);
+
+
+		}
+		else if (clockTotalMin < 76) {
+			print("Wait time>");
 			
 			
-			HeaterWaterSignal(true);
 			WaterPumpSprayerSignal(false);
 			WaterOutPumpSingnal(false);
 			motorTunOff();
@@ -323,7 +373,7 @@ void loop() {
 			WaterOutPumpSingnal(true);
 			HeaterWaterSignal(false);
 			//motorNormalWashInterval(2, 1);
-			motorNormalWashInterval(1,3); // was by selected interval
+			motorNormalWashInterval(); // was by selected interval
 		}
 		else if (clockTotalMin < 93) {
 			print("Off pumps>");
