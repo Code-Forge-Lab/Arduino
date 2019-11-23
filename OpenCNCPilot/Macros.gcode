@@ -2,30 +2,33 @@
 
 
 
-Left-1cm
+Left-1mm
 $J=G21G91X-1F500
 
-Right 1cm
+Right 1mm
 $J=G21G91X1F500
 
-Up .1cm
+Right .1mm
+$J=G21G91X.1F500
+
+Up .1mm
 $J=G21G91Z0.1F500
 
 Down .1cm
 $J=G21G91Z-0.1F500
 
 
-Up 1cm
+Up 1mm
 $J=G21G91Z1F500
 
 Down 1cm
 $J=G21G91Z-1F500
 
-Forward 1cm
-$J=G21G91Y11F500
+Forward 1mm
+$J=G21G91Y1F500
 
-Back 1cm
-$J=G21G91X-1F500
+Back 1mm
+$J=G21G91Y-1F500
 
 RETURN TO ZERO
 F300.00
