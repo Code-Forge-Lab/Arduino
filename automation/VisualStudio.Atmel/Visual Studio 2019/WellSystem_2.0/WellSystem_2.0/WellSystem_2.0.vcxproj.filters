@@ -36,5 +36,8 @@
     <ClInclude Include="EEPROM32.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="lib_meniuInterface128x64OLEDBased(SSD1306AsciiWire).h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

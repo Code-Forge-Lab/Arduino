@@ -1,12 +1,58 @@
 
 
-// functions  
-bool buttonUP;
-bool buttonSET;
-bool buttonDOWN;
-  
- 
 
+void func1() { print("func1"); };
+void func2() { print("func2"); };
+void func3() { print("func3"); };
+void func4() { print("4Aliejaus Reik"); display.set2X(); print("DABAR"); display.set1X(); };
+void func5() {};
+void func6() {};
+void func7() {};
+void func8() {};
+
+
+/*
+void userSetValuesToMemory() {
+	writeMemory(MEMORY_Water_Preasure_Minimum, var_Water_Preasure_Minimum);  // minimum of water preasure to turn on a water source unit
+	writeMemory(MEMORY_Water_Preasure_Maximum, var_Water_Preasure_Maximum);  // Maximum of water preasure to turn on a water source unit
+	writeMemory(MEMORY_Water_Flow_Sensor_Minimum, var_Water_Flow_Sensor_Minimum); //  minimum of water flow to turn on a water source unit
+	writeMemory(MEMORY_Allow_External_Button, var_Allow_External_Button); // react to external button
+	writeMemory(MEMORY_Allow_Exeption_Source_Vin, var_Allow_Exeption_Source_Vin); // react to when  heater  is on to turn on a water source unit
+	writeMemory(MEMORY_Source_Unit_Timeout, var_Source_Unit_Timeout);	// Turn on a motor/solenoid(water source available) for some time to equalize a fliquating sensors inputs
+	writeMemory(MEMORY_manualMode, var_manualMode);
+
+
+};
+
+
+
+
+void userGetValues() {
+
+	readMemoryByte(MEMORY_Water_Preasure_Minimum, &var_Water_Preasure_Minimum);  // minimum of water preasure to turn on a water source unit
+	readMemoryByte(MEMORY_Water_Preasure_Maximum, &var_Water_Preasure_Maximum);  // Maximum of water preasure to turn on a water source unit
+	readMemoryByte(MEMORY_Water_Flow_Sensor_Minimum, &var_Water_Flow_Sensor_Minimum); //  minimum of water flow to turn on a water source unit
+	readMemoryByte(MEMORY_Allow_External_Button, &var_Allow_External_Button); // react to external button
+	readMemoryByte(MEMORY_Allow_Exeption_Source_Vin, &var_Allow_Exeption_Source_Vin); // react to when  heater  is on to turn on a water source unit
+	readMemoryByte(MEMORY_Source_Unit_Timeout, &var_Source_Unit_Timeout);	// Turn on a motor/solenoid(water source available) for some time to equalize a fliquating sensors inputs
+	readMemoryByte(MEMORY_manualMode, &var_manualMode);
+
+};
+*/
+
+
+
+void userSetDefault() {
+	var_Water_Preasure_Minimum = 5;  // minimum of water preasure to turn on a water source unit
+	var_Water_Preasure_Maximum = 5;  // Maximum of water preasure to turn on a water source unit
+	var_Water_Flow_Sensor_Minimum = 5; //  minimum of water flow to turn on a water source unit
+	var_Allow_External_Button = 5; // react to external button
+	var_Allow_Exeption_Source_Vin = 5; // react to when  heater  is on to turn on a water source unit
+	var_Source_Unit_Timeout = 5;	// Turn on a motor/solenoid(water source available) for some time to equalize a fliquating sensors inputs
+	var_manualMode = 6;
+	menu.userSetValuesToMemory();
+
+};
 
 void onOff(int index, bool enable, bool manual_enable = true) {
 
@@ -45,21 +91,6 @@ void printLn(String text, int value) {
 		display.println(value);
 }
 */
-
-void print(String txt) {
-	String SPACE = "                   ";
-	display.print(txt);
-	display.println(SPACE);
-
-}
-
-
-void print(byte txt) {
-	String SPACE = "                   ";
-	display.print(txt);
-	display.println(SPACE);
-
-}
 
 void println(String txt) {
 	
@@ -285,6 +316,7 @@ void updateValuesfromMemory() {
 	*/
 }
 
+byte spinSide = 0;
 byte rotaryEncoderDirection(bool* sideUp, bool* sideDown) {
 
 	String side = "";
@@ -341,472 +373,3 @@ void timeChangeReset() {
 
 
 
-
-
-//------------------------------------------------- Meniu Starts-----------------------------
-
-
-
-bool boolSetButton = false;
-bool boolSetMenu = false;
-bool boolQuicklyChange = false;
-byte meniuOptionSelected = 1;
-byte meniuOptionsLenght = 8; // how much meniu option in meniu
-bool meniuOptionIsPressing = false;// detect when button no longer is press
-bool meniuOptionIsSelected = false; // When eventualy are at P0-P3 option then time to select what specificly are changing a values that are included in the statement.
-bool meniuOptionWhenSelected = false;// for clearing one time a meniu option are change
-unsigned long startedWaiting;
-unsigned long startedWaitingmeniuOptionSelected;
-byte toggleDisplay = 0;
-String Cool = "Cool";
-String Heat = "Heat";
-
-
-
-
-void meniuDescribeOptionDisplay(String txt) {
-	display.setCursor(0, 9);
-	/*
-	display.setTextSize(1);
-	display.println(txt);
-	*/
-
-	print(txt);
-}
-
-
-//Print big numbers in screen // compiler do not construct correctly giving wrong function
-void txtBigNumber(float value, String valueType) {
-	display.setCursor(0, 29);
-	// set text size auto
-	//(String(value).length() <= 5 ? display.setTextSize(4) : display.setTextSize(3));
-
-	//display.setTextColor(WHITE);
-	//print(subLargeText(String(value)));
-	//(String(value).length() <= 5 ? display.setTextSize(2) : display.setTextSize(1));
-	println(valueType /*+ String(value).length()*/);
-};
-//Print big numbers in screen // compiler do not construct correctly giving wrong function
-void txtBigNumber(byte value, String valueType) {
-	display.setCursor(0, 29);
-	// set text size auto
-	//(String(value).length() <= 5 ? display.setTextSize(4) : display.setTextSize(3));
-
-	//display.setTextColor(WHITE);
-	print(value);
-	//(String(value).length() <= 5 ? display.setTextSize(2) : display.setTextSize(1));
-	println(valueType);
-};
-
-void txtBigNumber(String value, String valueType) {
-	display.setCursor(0, 29);
-	//display.setTextSize(4);
-
-	//display.setTextColor(WHITE);
-	print(value);
-	//	(String(value).length() <= 5 ? display.setTextSize(2) : display.setTextSize(1));
-	println(valueType);
-};
-
-
-String subLargeText(String value) {
-
-	return (value.length() > 6) ? (value.substring(0, value.length() - 2)) : (value.substring(0, value.length() - 1));
-};
-
-
-byte meniuOptionSelectFun() {
-
-
-	// if pressing a button and meniu where are selected are not to big then...
-	if ((buttonUP && meniuOptionSelected < meniuOptionsLenght) && meniuOptionIsPressing && !meniuOptionIsSelected) {
-
-		++meniuOptionSelected;
-		startedWaitingmeniuOptionSelected = millis();// time out start point
-
-
-	}
-	// if pressing a button and meniu where are selected are not to small then...
-	if ((buttonDOWN && meniuOptionSelected > 1) && meniuOptionIsPressing && !meniuOptionIsSelected) {
-
-		--meniuOptionSelected;
-		startedWaitingmeniuOptionSelected = millis();// time out start point
-
-	}
-
-	// Give new timeout and starting point for menu fuctions to work
-	if (buttonSET && !meniuOptionIsSelected) {
-		//meniuOptionIsPressing = true;
-		startedWaitingmeniuOptionSelected = millis();// time out start point
-	}
-
-	// if user do not do for a while , accures a time out.
-	if ((millis() > (long)(startedWaitingmeniuOptionSelected + 25000UL)) && !meniuOptionIsSelected)
-	{
-		boolSetButton = false; // exit from boolSetButton statement
-		boolSetMenu = false; // exit from boolSetMenu statement
-		meniuOptionSelected = 1; //reset meniu position to P0
-	}
-
-	// capture when button is pressing and set a one time button push
-	if (buttonUP || buttonDOWN) {
-		meniuOptionIsPressing = false; //While pressing ignore incrementing a meniuOptionSelected
-	}
-	else
-	{
-		meniuOptionIsPressing = true; //but when no longer is pressing set to default 
-	}
-
-	return meniuOptionSelected;
-}
-
-
-
-// SPECIAL BUGGY FUNCTION! WANA BE ON TOP
-// user when changin something in meniu options, doest trow here 
-void userChangeMeniuValue(byte* userPx, byte __delay = 10, byte minValue = 1, byte maxValue = 255) {
-
-	// incrament
-	if (buttonUP && *userPx < maxValue)
-	{
-		*userPx = *userPx + 1;
-
-		delay(__delay);
-		//startedWaiting = millis(); //reset meniu delay counter // LAG When  push SET Button
-	}
-
-	// substract 
-	if (buttonDOWN && *userPx > minValue)
-	{
-		*userPx = *userPx - 1;
-		delay(__delay);
-		//startedWaiting = millis();  //reset meniu delay counter // LAG When  push SET Button
-	}
-
-}
-
-
-
-bool meniuInterface() {
-
-	
-
-	if (buttonSET || boolSetButton) {
-		boolSetButton = true;
-
-		// Set menu for more options
-		/*Is on timer when boolSetButton was passed and user must pressing a button for a 5 seconds*/
-		if (buttonSET && (millis() > (long)(startedWaiting + 5000UL) && !boolQuicklyChange) || boolSetMenu) {
-			// set loop from boolean
-
-
-			// exit from tight loops!
-			// event trigger if after some time will react to button set
-			// reset whole set loop
-			//                                              Extra timer for not hit a first option
-			if ((millis() > (long)(startedWaiting + 5000UL + 1550UL)) && buttonSET) {
-
-				// After meniu option was selected 
-				if (meniuOptionIsSelected) {
-					//userSetValuesToMemory();
-				}
-				//  if meniu option selected and need change a values to EEPROM
-				meniuOptionIsSelected = !meniuOptionIsSelected;
-
-				// Exit from progra  and main boolSetButton loop...if meniu not selected
-				if (meniuOptionSelectFun() == meniuOptionsLenght) { // Exit
-
-					boolSetButton = false; // exit from boolSetButton statement
-					boolSetMenu = false; // exit from boolSetMenu statement
-					meniuOptionSelected = 1; //reset meniu position to P0
-					meniuOptionIsSelected = false; // when user exit from meniu set to default 
-				}
-				//userSetValuesToMemory();
-				delay(111);
-			}
-			else
-			{
-				// set whole set loop by default if no buttons event accures
-				boolSetMenu = true;
-				boolSetButton = true;
-
-			}
-
-			//progra-------------------------------------------------------
-			if ((buttonSET || boolSetMenu)) {
-
-				//display.clear();
-
-				display.setCursor(0, 0);
-				display.set1X();
-				if (meniuOptionSelectFun() < meniuOptionsLenght) // only display meniu option values exept on 'EXIT'
-					print("[P" + String(meniuOptionSelectFun() - 1) + "]");
-
-				// if meniu option not selected print about meniu abbreviation
-					
-				if (meniuOptionWhenSelected) {
-					//print("-");
-					//print("");
-				}
-				// if not meniu option selected and meniu are not at EXIT point
-				if (!meniuOptionIsSelected && meniuOptionSelectFun() != meniuOptionsLenght) { 
-					meniuOptionWhenSelected = true;
-				
-					
-					print("      MENIU");//display.println("MENIU"); 
-					
-				}
-				else {
-					
-					meniuOptionWhenSelected = false;
-				}
-
-				
-
-				if (meniuOptionSelectFun() == 1) { // P0 C-H
-					//display.println("[P0]");
-					meniuDescribeOptionDisplay("<Mode:" + Cool + "," + Heat);
-
-					// do EEPROM changes
-					if (meniuOptionIsSelected) {
-						// Change values interface
-						//userChangeMeniuValue(&userP0, 1, 0);
-
-						if (0/*userP0 == 0*/) {
-							// -C-
-							//txtBigNumber("C", "ooling");
-							//boolUserOffsetTemperatureRange = false; // reset after chaning performance mode to work first time
-						}
-						else {
-							// -H-
-							txtBigNumber("H", "eating");
-							//boolUserOffsetTemperatureRange = false; // reset after chaning performance mode to work first time
-						}
-
-					}
-
-				}
-				else if (meniuOptionSelectFun() == 2) { // P1 Temp Logic offset 0.5
-					//display.println("[P1]");
-					meniuDescribeOptionDisplay("<Logic Temp. Offset>");
-
-					// do EEPROM changes
-					if (meniuOptionIsSelected) {
-						// Change values interface
-						//userChangeMeniuValue(&userP1);
-						// Display
-						//txtBigNumber(userP2FixLogicRangeOffse(), "C");
-					}
-
-				}
-				else if (meniuOptionSelectFun() == 3) { // Not included
-					//display.println("[P2]");
-					meniuDescribeOptionDisplay("Frequent on timeout ");
-
-					// do EEPROM changes
-					if (meniuOptionIsSelected) {
-						// Change values interface
-						//userChangeMeniuValue(&userP2, 10, 0);
-						// Display
-						//txtBigNumber(userP2, "min");
-					}
-
-				}
-
-				else if (meniuOptionSelectFun() == 4) { // P3 Timer count while relay is on, untit set a limit are reached.
-					//display.println("[P3]");
-					meniuDescribeOptionDisplay("<Overworking timeout>");
-
-					// do EEPROM changes
-					if (meniuOptionIsSelected) {
-						// Change values interface
-						//userChangeMeniuValue(&userP3);
-						// Display
-						//txtBigNumber(3, "min");
-					}
-
-				}
-
-				else if (meniuOptionSelectFun() == 5) { // P4 Timer to off relay when are in cooldown mode
-					//display.println("[P4]");
-					meniuDescribeOptionDisplay("<Overworking " + Cool);
-
-					// do EEPROM changes
-					if (meniuOptionIsSelected) {
-						// Change values interface
-						//userChangeMeniuValue(&userP4);
-						// Display
-						//txtBigNumber(4, "min");
-					}
-
-				}
-
-				else if (meniuOptionSelectFun() == 6) { // Reset to default
-					//display.println("[R5]");
-					meniuDescribeOptionDisplay("<Reset to default>");
-					// do EEPROM changes
-					if (meniuOptionIsSelected) {
-						display.println("Press up to reset");
-
-						if (buttonUP)
-						{
-							//display.setTextSize(4);
-							println(" Done");
-							//display.display();
-							// reset to default
-							//userSetDefault();
-							//userSetValuesToMemory();
-
-
-							delay(2000);
-							meniuOptionIsSelected = !meniuOptionIsSelected; // back to meniu options
-						}
-					}
-				}
-
-				else if (meniuOptionSelectFun() == 7) {
-					/*
-					//display.println("[R6]"); energyOffMin energyOffMin
-					meniuDescribeOptionDisplay("<Reset energy wasted>");
-					// do EEPROM changes
-					if (meniuOptionIsSelected)
-					{
-						display.println("Press up to reset");
-
-						if (buttonUP)
-						{
-							display.setTextSize(4);
-							display.println(" Done");
-							display.display();
-							// reset to default
-							userP6EnergyOffMin = 0;
-							userP6EnergyOnMin = 0;
-
-							writeEEPROM32(MEMORY_P6OFF,0);
-							delay(1);
-							writeEEPROM32(MEMORY_P6ON,0);
-
-							delay(2000);
-							meniuOptionIsSelected = !meniuOptionIsSelected; // back to meniu options
-						}
-					}
-					*/
-
-					// too much memory usage
-					/*
-
-							meniuDescribeOptionDisplay("Power Usage Per Day");
-						//  power usage per day ratio
-						if (meniuOptionIsSelected)
-						{
-
-							display.println(String( int(powerUsageMin * float(userP6EnergyOnMin)  / ((userP6EnergyOffMin / 60) / 24)) ) + "w");
-						}
-					*/
-
-
-				}
-
-
-
-				else if (meniuOptionSelectFun() == meniuOptionsLenght) { // Exit
-				display.setCursor(0, 0);
-					
-				display.set2X();
-					print("");
-					print("  [EXIT]");
-					
-					if (meniuOptionIsSelected) {
-						
-						boolSetMenu = false;
-						boolQuicklyChange = false;
-						display.clear();
-					}
-				
-					
-				}
-
-				
-
-			}
-
-
-		}
-
-
-
-
-
-		// Quickly change option
-		else if (buttonSET == LOW || boolQuicklyChange) {
-			// set loop from boolean
-
-
-
-			// exit from tight loops!
-			// event trigger if after some time will react to button set
-			if ( /*Wait while user realesing a button*/(millis() > (long)(startedWaiting + 230UL)) && buttonSET || /*or timeout for 45s*/(millis() > (long)(startedWaiting + 45100UL))) {
-				// reset whole set loop
-				boolQuicklyChange = false;
-				boolSetButton = false;
-				//userSetValuesToMemory(); // write temperature changes to memory
-				delay(100);
-			}
-			else
-			{
-				// set whole set loop
-				boolQuicklyChange = true;
-				boolSetButton = true;
-
-			}
-
-			//progra-------------------------------------------------------
-			if (boolQuicklyChange) {
-				//display.setTextColor(BLACK, WHITE); // Draw 'inverse' text
-
-			//	display.clear();
-
-
-
-				display.println("Keisti temperatura");
-
-				// Change values interface
-				//userChangeMeniuValue(&userP5, 100);
-
-
-
-				if (toggleDisplay > 20) // work as text blinker)
-				{
-					txtBigNumber(" ", " ");
-					toggleDisplay = 0; //reset display flashing counter
-				}
-				else
-					// display temperature 
-					//txtBigNumber(5, "C");
-
-				toggleDisplay++;
-
-
-
-				//delay(4000);
-
-
-			}
-		}
-
-	}
-	else
-	{
-		startedWaiting = millis(); //by default will register values until condition
-		boolQuicklyChange = false; //activate condition ones until event is trigered
-		boolSetMenu = false; // set default to meniu option
-		boolSetMenu = false; //activate condition ones until event is trigered
-		//display.clear(); // blinking...
-	}
-
-
-	return boolSetMenu || boolQuicklyChange;
-}
-
-
-//------------------------------------------------- Meniu Ends-----------------------------

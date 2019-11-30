@@ -29,22 +29,22 @@ Bepper if out of water
  // double a speed and delay time are reduced 2 times
 //#include <avr/power.h> // library not working propietly with oled display '<Adafruit_SSD1306.h>' if placed before initiliaziniot in setup() clock_prescale_set(clock_div_1); loop
 
-#include <Wire.h>
-#include "SSD1306Ascii.h"
-#include "SSD1306AsciiWire.h"
-SSD1306AsciiWire display;
+
+#include "lib_meniuInterface128x64OLEDBased(SSD1306AsciiWire).h"
 
 
 
-
+/*
 // memory address
 	// on units if selected
-#define MEMORY_Water_Preasure_Minimum  1  // minimum of water preasure to turn on a water source unit
-#define MEMORY_Water_Preasure_Maximum  2  // Maximum of water preasure to turn on a water source unit
-#define MEMORY_Water_Flow_Sensor_Minimum 3 //  minimum of water flow to turn on a water source unit
-#define MEMORY_Allow_External_Button 4 // react to external button
-#define MEMORY_Allow_Exeption_Source_Vin 5 // react to when  heater  is on to turn on a water source unit
-#define MEMORY_Source_Unit_Timeout 6	// Turn on a motor/solenoid(water source available) for some time to equalize a fliquating sensors inputs
+int_fast16_t MEMORY_Water_Preasure_Minimum = 1; // minimum of water preasure to turn on a water source unit
+int_fast16_t MEMORY_Water_Preasure_Maximum = 2;  // Maximum of water preasure to turn on a water source unit
+int_fast16_t MEMORY_Water_Flow_Sensor_Minimum = 3; //  minimum of water flow to turn on a water source unit
+int_fast16_t MEMORY_Allow_External_Button =  4; // react to external button
+int_fast16_t MEMORY_Allow_Exeption_Source_Vin =  5; // react to when  heater  is on to turn on a water source unit
+int_fast16_t MEMORY_Source_Unit_Timeout =  6;	// Turn on a motor/solenoid(water source available) for some time to equalize a fliquating sensors inputs
+int_fast16_t MEMORY_manualMode =  7;
+*/
 
 // buttons
 #define BUTTON_DOWN 5
@@ -61,18 +61,26 @@ SSD1306AsciiWire display;
 #define SENSOR_WATER_FLOW A2
 
 // Interrupts
-#define INTERRUPT_SignalRight 3 // Rotary Encoder
-#define INTERRUPT_SignalLeft 2 // Rotary Encoder
-// 0X3C+SA0 - 0x3C or 0x3D
-#define I2C_ADDRESS 0x3C
+const int   INTERRUPT_SignalRight = 2; // Rotary Encoder 0
+const int   INTERRUPT_SignalLeft = 3; // Rotary Encoder 1
 
-// Define proper RST_PIN if required.
-#define RST_PIN -1
 
 
 // Variables
+// to memory 
+byte var_Water_Preasure_Minimum ;  // minimum of water preasure to turn on a water source unit
+byte var_Water_Preasure_Maximum ;  // Maximum of water preasure to turn on a water source unit
+byte var_Water_Flow_Sensor_Minimum ; //  minimum of water flow to turn on a water source unit
+byte var_Allow_External_Button = 0; // react to external button
+byte var_Allow_Exeption_Source_Vin; // react to when  heater  is on to turn on a water source unit
+byte var_Source_Unit_Timeout;	// Turn on a motor/solenoid(water source available) for some time to equalize a fliquating sensors inputs
+byte var_manualMode ; // manual pull water from the well with no conditional logic, auto does oposite
+// casual
+
+
 String reportComponentsWork = "";
-byte spinSide = 0;
+
+
 //Clock variables
 unsigned long clock_1min = 0;
 unsigned long clock_1sec = 0;
@@ -104,30 +112,52 @@ byte value_Water_Flow_Sensor_Minimum;
 byte value_Allow_External_Button;
 
 
+bool INTERUPT_UP = false;
+bool INTERUPT_DOWN = false;
+byte INTERUPT_SIDE = 0;
 
+
+volatile int virtualPosition = 50;
 //------------------------------------------------------------------------------
+
+
+
+// functions  
+bool buttonUP;
+bool buttonSET;
+bool buttonDOWN;
+
+lib_meniuInterface128x64OLEDSSD1306AsciiWire menu(buttonUP, buttonDOWN, buttonSET);
 
 #include "EEPROM32.h"
 #include "functions.h"
 
+byte  rotory;
+
 
 //------------------------------------------------------------------------------
+
+
+
+
 void setup() {
-	Wire.begin();
-	Wire.setClock(800000L);
+	
+	// add function to menu 
 
-#if RST_PIN >= 0
-	display.begin(&Adafruit128x64, I2C_ADDRESS, RST_PIN);
-#else // RST_PIN >= 0
-	display.begin(&Adafruit128x64, I2C_ADDRESS);
-#endif // RST_PIN >= 0
-
-	display.setFont(Adafruit5x7);
+	menu.IncludeFunction(&func1, var_Water_Preasure_Minimum, "Water minimum");
+	menu.IncludeFunction(&func2, var_Water_Preasure_Maximum, "Water manimum",false);
+	menu.IncludeFunction(&func3, var_Water_Flow_Sensor_Minimum, "Flow minimum");
+	menu.IncludeFunction(&func3,var_Allow_External_Button, "Sensor Grab");
+	menu.IncludeQuckAccessFunction(&func4, var_manualMode, "Retro mode");
+	initiateDisplay();
 
 	// include buttons
 	pinMode(BUTTON_DOWN, INPUT);
 	pinMode(BUTTON_SET, INPUT);
 	pinMode(BUTTON_UP, INPUT);
+
+	pinMode(INTERRUPT_SignalLeft, INPUT);
+	pinMode(INTERRUPT_SignalRight, INPUT);
 
 	pinMode(RELAY_To_a_Pump_Output, OUTPUT);
 	pinMode(RELAY_To_a_Solenoid_Valve_Output, OUTPUT);
@@ -136,19 +166,20 @@ void setup() {
 	pinMode(SENSOR_WATER_PREASURE, INPUT);
 	pinMode(SENSOR_Well_System_Minimum_Water_Sensor, INPUT);
 	//pinMode(2, INPUT);
-	attachInterrupt(INTERRUPT_SignalLeft, INTSignalLeft, FALLING);
+	attachInterrupt(digitalPinToInterrupt(INTERRUPT_SignalLeft), INTSignalLeft, FALLING);
 
-	attachInterrupt(INTERRUPT_SignalRight, INTSignalRight, FALLING);
+	attachInterrupt(digitalPinToInterrupt(INTERRUPT_SignalRight), INTSignalRight, FALLING);
 
 
 
 
 	// set up memory default 
-	if (readMemoryByte(0) != true) {
+	if (readMemoryByte(0)!= true ) {
 
 		print("MEMORY SET!");
 		writeMemory(0, true);
 
+		//userSetDefault();
 		/*
 		writeMemory(MEMORY_ON_WaterInValveSignal, true);
 		writeMemory(MEMORY_ON_WaterOutPumpSingnal, true);
@@ -169,7 +200,8 @@ void setup() {
 	updateValuesfromMemory();
 	*/
 	};
-
+	 
+	menu.userGetValues();
 };
 
 
@@ -177,26 +209,25 @@ void setup() {
 bool setButtonPressed = false;
 void loop() {
 
+
+	
+
+
 	display.setCursor(0, 0);
 	//display.clear();
 
-	 buttonUP = digitalRead(BUTTON_UP);
 	 buttonSET = digitalRead(BUTTON_SET);
 	 buttonDOWN = digitalRead(BUTTON_DOWN);
+	 buttonUP = digitalRead (BUTTON_UP);
 
-
-	byte rotory = rotaryEncoderDirection(&buttonUP, &buttonDOWN);
+	 rotory = rotaryEncoderDirection(&buttonUP, &buttonDOWN);
 
 
 	if (rotory == 1) {
 
 		if (!button_SET_PRESSED && meniuIndex != 0)
 			meniuIndex--; // select meniu index
-		else
-		{
-			if (meniuValue != 0)
-				meniuValue--; // when se;ecting meniu , change a value
-		}
+		
 
 	}
 	else if (rotory == 2)
@@ -204,18 +235,10 @@ void loop() {
 
 		if (!button_SET_PRESSED)
 			meniuIndex++; // select meniu index
-		else {
-
-			//if (meniuIndex >)
-			meniuValue++; // when se;ecting meniu , change a value
-		}
-
 
 	}
 
-	// meniu set and show
-
-	uploadValues(meniuIndex, &meniuValue, button_SET_PRESSED);
+	
 
 
 
@@ -277,6 +300,7 @@ void loop() {
 
 
 	 // if meniu is not selected
+	/*
 	if (!meniuInterface()) {
 		print("Hello work");
 		print("Me in the wind");
@@ -284,16 +308,51 @@ void loop() {
 		print("");
 	}
 	
+	*/
+
+
 
 	//print(meniuOption[meniuIndex]);
 
+	if (!menu.InterfaceDinamic()) {
+		//menu.displayButtonsValue();
 
+		print(menu.func_stored[0].__functionName);
+		print(menu.func_stored[1].__functionName);
+		print(menu.func_stored[2].__functionName);
+	}
+	
+	
+	//meniu.addFunction(&meniu.func_store, 2);
+	//meniu.addFunction(&meniu.func_store, 3);
+	//meniu.addFunction(&meniu.func_store, 4);
+	//meniu.addFunction(&meniu.func_store, 5);
 
-
+	//print(String(meniu.func_store[0].functionValue));
+	
 
 	
 
-	print("");
+	//meniu.printFunctions();
+
+	
+
+	/*
+	print(carOld.brand  + " " + carOld.model  + " "+ carOld.year);
+
+	meniu.displayRotaryValues();
+
+
+	print("Rotary1 " + String(INTERUPT_UP));
+	
+	print("Rotary2 " + String(INTERUPT_DOWN));
+
+	print("buttonDOWN" + String(buttonDOWN));
+	print("buttonUP" + String(buttonUP)); 
+	
+
+	*/
+	
 	print("");
 	print("");
 	print("");
@@ -304,7 +363,9 @@ void loop() {
 
 
 
-	
+	bool INTERUPT_UP = false;
+	bool INTERUPT_DOWN = false;
+	byte INTERUPT_SIDE = 0;
 }
 
 
@@ -317,10 +378,32 @@ void loop() {
 
 
 
-
+// interup rotary encoder not workiyng proietly at all!
 void INTSignalLeft() {
+	 
+	//buttonDOWN = digitalRead(BUTTON_DOWN);
+	//buttonUP = digitalRead(BUTTON_UP);
+	/*
+	
+	INTERUPT_UP = true;
+	if (INTERUPT_DOWN)
+		INTERUPT_SIDE = 1;
+	INTERUPT_DOWN = false;
+
+	*/
+	
 };
 
+// interup rotary encoder not workiyng proietly at all!
 void INTSignalRight() {
 
+	//buttonDOWN = digitalRead(BUTTON_DOWN);
+	//buttonUP = digitalRead(BUTTON_UP);
+
+	/*
+	INTERUPT_DOWN = true;
+	if (INTERUPT_UP)
+		INTERUPT_SIDE = 2;
+	INTERUPT_UP = false;
+	*/
 };
