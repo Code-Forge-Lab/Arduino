@@ -1,13 +1,33 @@
 
 
+void userSetDefault() {
+	var_Water_Preasure_Minimum = 5;  // minimum of water preasure to turn on a water source unit
+	var_Water_Preasure_Maximum = 5;  // Maximum of water preasure to turn on a water source unit
+	var_Water_Flow_Sensor_Minimum = 5; //  minimum of water flow to turn on a water source unit
+	var_Allow_External_Button = 5; // react to external button
+	var_Allow_Exeption_Source_Vin = 5; // react to when  heater  is on to turn on a water source unit
+	var_Source_Unit_Timeout = 5;	// Turn on a motor/solenoid(water source available) for some time to equalize a fliquating sensors inputs
+	var_manualMode = 4;
+	menu.userSetValuesToMemory();
+
+};
+
+
+
 
 void func1() { print("func1"); };
 void func2() { print("func2"); };
 void func3() { print("func3"); };
 void func4() { print("4Aliejaus Reik"); display.set2X(); print("DABAR"); display.set1X(); };
 void func5() {};
-void func6() {};
-void func7() {};
+
+void func6Default() {
+	print("HEYY DEF");
+	delay(2000);
+};
+void func7() {//display.println("[R5]");
+	
+	};
 void func8() {};
 
 
@@ -41,18 +61,6 @@ void userGetValues() {
 */
 
 
-
-void userSetDefault() {
-	var_Water_Preasure_Minimum = 5;  // minimum of water preasure to turn on a water source unit
-	var_Water_Preasure_Maximum = 5;  // Maximum of water preasure to turn on a water source unit
-	var_Water_Flow_Sensor_Minimum = 5; //  minimum of water flow to turn on a water source unit
-	var_Allow_External_Button = 5; // react to external button
-	var_Allow_Exeption_Source_Vin = 5; // react to when  heater  is on to turn on a water source unit
-	var_Source_Unit_Timeout = 5;	// Turn on a motor/solenoid(water source available) for some time to equalize a fliquating sensors inputs
-	var_manualMode = 6;
-	menu.userSetValuesToMemory();
-
-};
 
 void onOff(int index, bool enable, bool manual_enable = true) {
 

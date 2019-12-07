@@ -70,7 +70,7 @@ void print(byte txt) {
 
 
 
-// store a function in here 
+
 struct funcBuffer {
 
 public:	 // Only works in public , private throw error 
@@ -112,7 +112,7 @@ public:	 // Only works in public , private throw error
 
 
 
-
+// Store a value to memory while also can be used as menu options for a specific task
 class lib_meniuInterface128x64OLEDSSD1306AsciiWire
 {
 
@@ -122,15 +122,14 @@ class lib_meniuInterface128x64OLEDSSD1306AsciiWire
 	bool boolSetMenu = false;
 	bool boolQuicklyChange = false;
 	byte meniuOptionSelected = 1;
-	byte meniuOptionsLenght = 8; // how much meniu option in meniu
+	
 	bool meniuOptionIsPressing = false;// detect when button no longer is press
-	bool meniuOptionIsSelected = false; // When eventualy are at P0-P3 option then time to select what specificly are changing a values that are included in the statement.
+    bool meniuOptionIsSelected = false; // When eventualy are at P0-P3 option then time to select what specificly are changing a values that are included in the statement.
 	bool meniuOptionWhenSelected = false;// for clearing one time a meniu option are change
 	unsigned long startedWaiting;
 	unsigned long startedWaitingmeniuOptionSelected;
 	byte toggleDisplay = 0;
-	String Cool = "Cool";
-	String Heat = "Heat";
+	
 
 		
 	//////
@@ -139,7 +138,14 @@ class lib_meniuInterface128x64OLEDSSD1306AsciiWire
 	bool *buttonSET;
 	byte *rotarySpinedSIDE;
 	bool isRoatry = false; // detect where is a rotary encoder
-	byte includedMenuCount = 1;
+
+	// if default function exsist then use in menu to set a new default
+public:void (*defaultFunc)();
+	bool defaultIsFunc = false;
+
+	int_fast16_t  includeStartingPointMem = 10; // where start to populate values from menu options to a memory EEPROM
+	int_fast16_t includedMenuCount = 2; // start generate by a count a slow access menu position in memory EEPROM
+	int_fast16_t includeQuckAccessMenu = 1; // always first positioning
 
 	//ADDRESS STORED Stored memory managment
 	//void (*userSetValuesToMemory)(); // 
@@ -168,7 +174,7 @@ public:
 		//func_store[5];
 	}
 
-	// if using rotary encoder 
+	// if using rotary encoder " Not advanced propetly right now"
 	lib_meniuInterface128x64OLEDSSD1306AsciiWire(byte &rotarySpinedSide, bool  & buttonSet) {
 		rotarySpinedSIDE = &rotarySpinedSide;
 		buttonSET = &buttonSet;
@@ -180,17 +186,28 @@ public:
 
 
 	// access menu by long pressed a Set button
-	void IncludeFunction(void (*functionPointer)(), byte& functionValue, String functionName = "Uknown"  , bool printfunctionValue = true)
+public:void IncludeFunction(void (*functionPointer)(), byte& functionValue, String functionName = "Uknown"  , bool printfunctionValue = true)
 	{ // where magic on
-		func_stored[includedMenuCount].IncludeFunction( (functionPointer), functionValue,  functionName , printfunctionValue);
+		func_stored[includedMenuCount ].IncludeFunction( (functionPointer), functionValue,  functionName , printfunctionValue);
 
 		includedMenuCount++;
 	}
 
+
+	  // access menu by long pressed a Set button
+	  // specific function to set a default
+public:void IncludeFunctionSetDefault(void (*functionPointer)() )
+{ 
+
+	defaultFunc = functionPointer;
+	//includedMenuCount++;
+	defaultIsFunc = true;
+}
+
 	// access menu by  short pressed a Set button
-	void IncludeQuckAccessFunction( void (*functionPointer)(), byte & functionValue , String functionName = "Uknown"   , bool printfunctionValue = true)
+public:void IncludeQuckAccessFunction( void (*functionPointer)(), byte & functionValue , String functionName = "Uknown"   , bool printfunctionValue = true)
 	{
-		func_stored[includedMenuCount + 1].IncludeFunction((functionPointer), functionValue, functionName,   printfunctionValue );
+		func_stored[includeQuckAccessMenu].IncludeFunction((functionPointer), functionValue, functionName,   printfunctionValue );
 	}
 
 	// using iterator :https://www.youtube.com/watch?v=cAZ8CyDY56s
@@ -241,7 +258,7 @@ public:
 
 
 	//------------------------------------------------------------------
-	void meniuDescribeOptionDisplay(String txt) {
+private:void meniuDescribeOptionDisplay(String txt) {
 		display.setCursor(0, 9);
 		
 		//display.setTextSize(1);
@@ -251,8 +268,8 @@ public:
 		print(txt);
 	}
 
-
-	byte meniuOptionSelectFun() {
+	   // only for a buttos/ badly on rotary encoder
+private:byte meniuOptionSelectFun() {
 
 
 		// if pressing a button and meniu where are selected are not to big then...
@@ -301,7 +318,7 @@ public:
 
 	// SPECIAL BUGGY FUNCTION! WANA BE ON TOP
 	// user when changin something in meniu options, doest trow here 
-	void userChangeMeniuValue(byte* userPx, byte __delay = 10, byte minValue = 1, byte maxValue = 255) {
+private:void userChangeMeniuValue(byte* userPx, byte __delay = 10, byte minValue = 0, byte maxValue = 255) {
 
 		// incrament
 		if (*buttonUP && *userPx < maxValue)
@@ -324,7 +341,7 @@ public:
 
 
 
-	void userChangeMeniuValue(bool* userPx, byte __delay = 10) {
+private:void userChangeMeniuValue(bool* userPx, byte __delay = 10) {
 
 		// incrament
 		if ((*buttonDOWN ||* buttonUP) && *userPx)
@@ -339,9 +356,9 @@ public:
 
 	}
 
-	bool InterfaceDinamic() {
+public:bool InterfaceDinamic() {
 		
-
+	// Slow access options
 		if (*buttonSET || boolSetButton) {
 			boolSetButton = true;
 
@@ -386,12 +403,12 @@ public:
 				//progra-------------------------------------------------------
 				if ((*buttonSET || boolSetMenu)) {
 
-					//display.clear();
+					
 
 					display.setCursor(0, 0);
 					display.set1X();
-					if (meniuOptionSelectFun() < includedMenuCount  ) // only display meniu option values exept on 'EXIT'
-						print("[P" + String(meniuOptionSelectFun() - 1) + "]");
+					if (meniuOptionSelectFun() + 1 < includedMenuCount   ) // only display meniu option values exept on 'EXIT'
+						print("[P" + String(meniuOptionSelectFun()) + "]");
 
 					// if meniu option not selected print about meniu abbreviation
 
@@ -400,7 +417,7 @@ public:
 						//print("");
 					}
 					// if not meniu option selected and meniu are not at EXIT point
-					if (!meniuOptionIsSelected && meniuOptionSelectFun() != includedMenuCount) {
+					if (!meniuOptionIsSelected && meniuOptionSelectFun() + 1  < includedMenuCount) {
 						meniuOptionWhenSelected = true;
 
 						print("      MENIU");//display.println("MENIU"); 
@@ -412,25 +429,50 @@ public:
 					}
 
 
-					// print about  menu  what it's doing
-					print(func_stored[meniuOptionSelectFun()].__functionName);
-					
-					// if user select a desire function, then change his value
-					if (meniuOptionIsSelected) {
-						// print something specific  about a this function out frtom this scope 
-						func_stored[meniuOptionSelectFun()].fnc_();
-						// change values by spinint/pushing up or down buttons 
-						userChangeMeniuValue(func_stored[meniuOptionSelectFun()].__functionValueAddress);
 
-						// if allowed to print function
-						//if (func_stored[includedMenuCount].printfunctionValue)
-							//print stored values from a memory 
-							print(*func_stored[meniuOptionSelectFun()].__functionValueAddress);
+					//Set to Default
+					//check if option is available
+					if (defaultIsFunc && meniuOptionSelectFun() + 2 == includedMenuCount) { // set to default 
+						print("<Reset to default>");
+
+						if (meniuOptionIsSelected) {
+							print("Press up to reset");
+
+							if (*buttonUP)
+							{
+								print(" Done");
+								// reset to default
+								defaultFunc();
+
+								delay(2000);
+								meniuOptionIsSelected = !meniuOptionIsSelected; // back to meniu options
+							}
+						}
+					}
+					else {
+						// ----------------------do rest of options------------------------------------
+
+						// print about  menu  what it's doing
+						print(func_stored[meniuOptionSelectFun() + 1].__functionName); // + 1 to avoid to stuble a Quck access menu option
+
+						// if user select a desire function, then change his value
+						if (meniuOptionIsSelected) {
+							// print something specific  about a this function out frtom this scope 
+							func_stored[meniuOptionSelectFun() + 1].fnc_();
+							// change values by spinint/pushing up or down buttons 
+							userChangeMeniuValue(func_stored[meniuOptionSelectFun() + 1].__functionValueAddress);
+
+							// if allowed to print function
+							//if (func_stored[includedMenuCount].printfunctionValue)
+								//print stored values from a memory 
+							print(*func_stored[meniuOptionSelectFun() + 1].__functionValueAddress);
+						}
+
+
 					}
 
-
 					//  EXIT
-					 if (meniuOptionSelectFun() == includedMenuCount  ) { // Exit
+					 if (meniuOptionSelectFun() + 1 >= includedMenuCount  ) { // Exit
 						display.setCursor(0, 0);
 
 						display.set2X();
@@ -457,7 +499,7 @@ public:
 
 
 
-			// Quickly change option
+//-----------------// Quickly Access/change single option-----------------------------------------
 			else if (*buttonSET == LOW || boolQuicklyChange) {
 				// set loop from boolean
 
@@ -470,6 +512,7 @@ public:
 					boolQuicklyChange = false;
 					boolSetButton = false;
 					userSetValuesToMemory(); // write temperature changes to memory
+					display.clear();
 					delay(100);
 				}
 				else
@@ -489,23 +532,24 @@ public:
 
 
 
+
 						// print name of the function 
-						print(func_stored[includedMenuCount+1].__functionName);
-					
-						// specific function to call outside this class
-						func_stored[includedMenuCount+1].fnc_();
-					
-						//change a value 
+					print(func_stored[includeQuckAccessMenu].__functionName);
 
-						userChangeMeniuValue(func_stored[includedMenuCount + 1].__functionValueAddress);
+					// specific function to call outside this class
+					func_stored[includeQuckAccessMenu].fnc_();
+
+					//change a value 
+
+					userChangeMeniuValue(func_stored[includeQuckAccessMenu].__functionValueAddress);
 
 
-						// if allowed to print function
-						if (func_stored[includedMenuCount+1].__printfunctionValue)
-							//print stored values from a memory 
-							print(*func_stored[includedMenuCount+1].__functionValueAddress);
+					// if allowed to print function
+					if (func_stored[includeQuckAccessMenu].__printfunctionValue)
+						//print stored values from a memory 
+					print(*func_stored[includeQuckAccessMenu].__functionValueAddress);
 
-						//var_manualMode
+					//var_manualMode
 
 					display.set1X();
 
@@ -539,9 +583,9 @@ public:
 
 
 	// address automaticly by 1 byte each time 
-	void userSetValuesToMemory() { // plus quick access function
-		for (int_fast16_t count = 1; count < includedMenuCount +1  ; count++) {
-			writeMemory(count, *func_stored[count].__functionValueAddress); //save all values to memory EEPROM
+public:void userSetValuesToMemory() { // plus quick access function
+		for (int_fast16_t count = 1; count < (includedMenuCount); count++) {
+			writeMemory((count + includeStartingPointMem), *func_stored[count].__functionValueAddress); //save all values to memory EEPROM
 			print(String (count)+ ", " + String (func_stored[count].__funcAddress) +", "+String(*func_stored[count].__functionValueAddress));
 		}
 
@@ -550,17 +594,17 @@ public:
 
 	
 	// address automaticly by 1 byte each time 
-	void userGetValues() {
+public:void userGetValues() {
 								// plus quick access function
-		for (int count = 1; count < includedMenuCount + 1  ; count++) {
+		for (int count = 1; count < (includedMenuCount)  ; count++) {
 			
-			byte val = readMemoryByte(count); //save all values to memory EEPROM
+			byte val = readMemoryByte(count + includeStartingPointMem); //save all values to memory EEPROM
 			
 			*func_stored[count].__functionValueAddress = val;
 
 			print(String(*func_stored[count].__functionValueAddress));
 		}
-		delay(1000);
+		delay(5000);
 	};
 
 

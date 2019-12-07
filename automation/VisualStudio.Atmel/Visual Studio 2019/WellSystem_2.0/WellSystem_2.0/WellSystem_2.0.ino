@@ -147,8 +147,10 @@ void setup() {
 	menu.IncludeFunction(&func1, var_Water_Preasure_Minimum, "Water minimum");
 	menu.IncludeFunction(&func2, var_Water_Preasure_Maximum, "Water manimum",false);
 	menu.IncludeFunction(&func3, var_Water_Flow_Sensor_Minimum, "Flow minimum");
-	menu.IncludeFunction(&func3,var_Allow_External_Button, "Sensor Grab");
-	menu.IncludeQuckAccessFunction(&func4, var_manualMode, "Retro mode");
+	menu.IncludeFunction(&func4,var_Allow_External_Button, "Sensor Grab");
+	menu.IncludeQuckAccessFunction(&func7, var_manualMode, "Quic Access");
+	menu.IncludeFunctionSetDefault(&func6Default);
+
 	initiateDisplay();
 
 	// include buttons
@@ -317,9 +319,10 @@ void loop() {
 	if (!menu.InterfaceDinamic()) {
 		//menu.displayButtonsValue();
 
-		print(menu.func_stored[0].__functionName);
-		print(menu.func_stored[1].__functionName);
-		print(menu.func_stored[2].__functionName);
+		//print(menu.func_stored[0].__functionName);
+		//print(menu.func_stored[1].__functionName);
+		//print(menu.func_stored[2].__functionName);
+		print("HEY");
 	}
 	
 	
