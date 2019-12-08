@@ -277,7 +277,7 @@ void loop() {
 	if (!menu.InterfaceDinamic()) {
 		//menu.displayButtonsValue();
 
-		print(menu.func_stored[1].__functionName); // access a unit from menu memory 
+		//print(menu.func_stored[1].__functionName); // access a unit from menu memory 
 		
 		print("PRogram Are Here");
 		

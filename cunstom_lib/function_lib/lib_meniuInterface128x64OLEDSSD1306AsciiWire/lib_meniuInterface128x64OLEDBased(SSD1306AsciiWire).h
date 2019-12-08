@@ -467,7 +467,8 @@ public:bool InterfaceDinamic() {
 
 					// After meniu option was selected 
 					if (meniuOptionIsSelected) {
-						userSetValuesToMemory();
+						userSetValuesToMemory(meniuOptionSelectFun());
+						
 						// CLEAR DISPLAY  Ones when enter to selected option condition
 						if (!isDisplayCleared) {
 							
@@ -485,6 +486,7 @@ public:bool InterfaceDinamic() {
 						}
 
 						isDisplayCleared = true; // display was cleared 
+						delay(90);
 					}
 					else
 						isDisplayCleared = false; //reset status about cleard display
@@ -682,12 +684,16 @@ public:bool InterfaceDinamic() {
 
 
 	// address automaticly by 1 byte each time 
-public:void userSetValuesToMemory() { // plus quick access function
+public:void userSetValuesToMemory(int index = -1) { // plus quick access function
+	if (index > -1) {
 		for (int_fast16_t count = 1; count < (includedMenuCount); count++) {
 			writeMemory((count + includeStartingPointMem), *func_stored[count].__functionValueAddress); //save all values to memory EEPROM
 			//print(String (count)+ ", " + String (func_stored[count].__funcAddress) +", "+String(*func_stored[count].__functionValueAddress));
 		}
-
+	}
+	else {
+		writeMemory((index + includeStartingPointMem), *func_stored[index].__functionValueAddress); //save all values to memory EEPROM
+	}
 		//delay(1000);
 	};
 
