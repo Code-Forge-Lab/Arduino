@@ -15,7 +15,9 @@ void userSetDefault() {
 
 
 
-void func1() { print("func1"); };
+void func1() {
+	print("func1");
+};
 void func2() { print("func2"); };
 void func3() { print("func3"); };
 void func4() { print("4Aliejaus Reik"); display.set2X(); print("DABAR"); display.set1X(); };
@@ -26,7 +28,7 @@ void func6Default() {
 	delay(2000);
 };
 void func7() {//display.println("[R5]");
-	
+	print("func7"); print("func7");
 	};
 void func8() {};
 
@@ -324,31 +326,7 @@ void updateValuesfromMemory() {
 	*/
 }
 
-byte spinSide = 0;
-byte rotaryEncoderDirection(bool* sideUp, bool* sideDown) {
 
-	String side = "";
-	if (spinSide == 0)
-	{
-		if (*sideUp && !*sideDown)
-			spinSide = 1;
-
-		else if (*sideDown && !*sideUp)
-			spinSide = 2;
-	}
-
-
-
-
-	if (!*sideUp && !*sideDown)
-	{
-		byte xspin = spinSide;
-		spinSide = 0;
-		return xspin;
-
-	}
-	return 0;
-}
 
 
 // simplify to manualy adding next time value

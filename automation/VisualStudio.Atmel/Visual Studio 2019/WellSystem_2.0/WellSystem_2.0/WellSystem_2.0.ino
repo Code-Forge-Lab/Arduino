@@ -144,14 +144,16 @@ void setup() {
 	
 	// add function to menu 
 
-	menu.IncludeFunction(&func1, var_Water_Preasure_Minimum, "Water minimum");
-	menu.IncludeFunction(&func2, var_Water_Preasure_Maximum, "Water manimum",false);
-	menu.IncludeFunction(&func3, var_Water_Flow_Sensor_Minimum, "Flow minimum");
-	menu.IncludeFunction(&func4,var_Allow_External_Button, "Sensor Grab");
-	menu.IncludeQuckAccessFunction(&func7, var_manualMode, "Quic Access");
+	menu.IncludeFunction(&func1, var_Water_Preasure_Minimum, "Water MInimum","psi");
+	menu.IncludeFunction(&func2, var_Water_Preasure_Maximum, "Water maXimum","psi");
+	menu.IncludeFunction(&func3, var_Water_Flow_Sensor_Minimum, "Flow minimum","l/min");
+	menu.IncludeFunction(&func4,var_Allow_External_Button, "Sensor Grab","val",false);
+	menu.IncludeFunction(&func4, var_Allow_External_Button, "Farger Potato", "val", true);
+
+	menu.IncludeQuckAccessFunction(&func7, var_manualMode, "Quic Access","psi",true);
 	menu.IncludeFunctionSetDefault(&func6Default);
 
-	initiateDisplay();
+	menu.initiateDisplay();
 
 	// include buttons
 	pinMode(BUTTON_DOWN, INPUT);
@@ -180,27 +182,8 @@ void setup() {
 
 		print("MEMORY SET!");
 		writeMemory(0, true);
-
-		//userSetDefault();
-		/*
-		writeMemory(MEMORY_ON_WaterInValveSignal, true);
-		writeMemory(MEMORY_ON_WaterOutPumpSingnal, true);
-		writeMemory(MEMORY_ON_WaterPumpSprayerSignal, true);
-		writeMemory(MEMORY_ON_HeaterWaterSignal, false);
-
-		writeMemory(MEMORY_M_NORMALWASHPOWER, byte(4));
-		writeMemory(MEMORY_M_NORMALWASHSPEED, byte(20));
-
-		writeMemory(MEMORY_M_RISEWASHSPOWER, byte(4));
-		writeMemory(MEMORY_M_RISEWASHSPEED, byte(20));
-
-		writeMemory(MEMORY_M_NORMALWASHINTERVALON, byte(2));
-		writeMemory(MEMORY_M_NORMALWASHINTERVALOFF, byte(3));
-	}
-
-
-	updateValuesfromMemory();
-	*/
+		menu.defaultFunc();// call a default function to set a new values 
+		menu.userSetValuesToMemory();
 	};
 	 
 	menu.userGetValues();
@@ -282,35 +265,10 @@ void loop() {
 
 
 
-	if (buttonSET) {
-
-
-		//meniuOption[meniuIndex] = !meniuOption[meniuIndex];
-
-		button_SET_PRESSED = !button_SET_PRESSED;
-
-		if (!button_SET_PRESSED) // update changed option to a memory when pressing out of meniu
-			updateMemoryValues();
-
-		//meniuValue = 0; // reset 
-		delay(300 * 2);
-	}
 
 
 
 	
-
-
-	 // if meniu is not selected
-	/*
-	if (!meniuInterface()) {
-		print("Hello work");
-		print("Me in the wind");
-		print("");
-		print("");
-	}
-	
-	*/
 
 
 
@@ -319,53 +277,15 @@ void loop() {
 	if (!menu.InterfaceDinamic()) {
 		//menu.displayButtonsValue();
 
-		//print(menu.func_stored[0].__functionName);
-		//print(menu.func_stored[1].__functionName);
-		//print(menu.func_stored[2].__functionName);
-		print("HEY");
+		print(menu.func_stored[1].__functionName); // access a unit from menu memory 
+		
+		print("PRogram Are Here");
+		
+		
 	}
 	
-	
-	//meniu.addFunction(&meniu.func_store, 2);
-	//meniu.addFunction(&meniu.func_store, 3);
-	//meniu.addFunction(&meniu.func_store, 4);
-	//meniu.addFunction(&meniu.func_store, 5);
-
-	//print(String(meniu.func_store[0].functionValue));
-	
 
 	
-
-	//meniu.printFunctions();
-
-	
-
-	/*
-	print(carOld.brand  + " " + carOld.model  + " "+ carOld.year);
-
-	meniu.displayRotaryValues();
-
-
-	print("Rotary1 " + String(INTERUPT_UP));
-	
-	print("Rotary2 " + String(INTERUPT_DOWN));
-
-	print("buttonDOWN" + String(buttonDOWN));
-	print("buttonUP" + String(buttonUP)); 
-	
-
-	*/
-	
-	print("");
-	print("");
-	print("");
-	print("");
-	print("");
-
-	// clear last lines
-
-
-
 	bool INTERUPT_UP = false;
 	bool INTERUPT_DOWN = false;
 	byte INTERUPT_SIDE = 0;
