@@ -486,7 +486,7 @@ public:bool InterfaceDinamic() {
 						}
 
 						isDisplayCleared = true; // display was cleared 
-						delay(90);
+						delay(60);
 					}
 					else
 						isDisplayCleared = false; //reset status about cleard display
@@ -504,7 +504,7 @@ public:bool InterfaceDinamic() {
 						display.set1X();
 					}
 					//userSetValuesToMemory();
-					delay(111);
+					delay(130);// wait until set button not realesed
 				}
 				else
 				{
