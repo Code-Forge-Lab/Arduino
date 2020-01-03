@@ -1,10 +1,12 @@
 //#include <stdlib.h>
 //#include <stddef.h>
 //#include <RotaryEncoder.h>
+#include <Arduino.h>
 #include "ThermoSencor.h"
 #include "ManageReadWrite8bitEEPROM.h"
 #include "menuLiquidCrystal.h"
 #include "functions.h"
+
 
 
 
@@ -651,7 +653,7 @@ void loop() {
 
  if (rotaryEnable) 
           {
-            int side =  encoder.getPositionSideTimeout (80); //timeout
+	 int side;// = encoder.getPositionSideTimeout(80); //timeout
              __up = 0; // reset
              __down = 0; // reset
              

@@ -34,17 +34,6 @@ Bepper if out of water
 
 
 
-/*
-// memory address
-	// on units if selected
-int_fast16_t MEMORY_Water_Preasure_Minimum = 1; // minimum of water preasure to turn on a water source unit
-int_fast16_t MEMORY_Water_Preasure_Maximum = 2;  // Maximum of water preasure to turn on a water source unit
-int_fast16_t MEMORY_Water_Flow_Sensor_Minimum = 3; //  minimum of water flow to turn on a water source unit
-int_fast16_t MEMORY_Allow_External_Button =  4; // react to external button
-int_fast16_t MEMORY_Allow_Exeption_Source_Vin =  5; // react to when  heater  is on to turn on a water source unit
-int_fast16_t MEMORY_Source_Unit_Timeout =  6;	// Turn on a motor/solenoid(water source available) for some time to equalize a fliquating sensors inputs
-int_fast16_t MEMORY_manualMode =  7;
-*/
 
 // buttons
 #define BUTTON_DOWN 5
@@ -55,8 +44,9 @@ int_fast16_t MEMORY_manualMode =  7;
 #define RELAY_To_a_Solenoid_Valve_Output 8
 
 // sensors
-#define SENSOR_Well_System_Minimum_Water_Sensor A1
-#define SENSOR_Exeption_Source_Vin 11   // Read Heater On condition
+#define SENSOR_Well_System_Minimum_Water_Sensor 12
+#define SENSOR_Exeption_Source_Vin 11   // Read Heater On condition , also source a own power to a board of Uno
+#define SENSOR_Button_External 10 // power out 
 #define SENSOR_WATER_PREASURE A3
 #define SENSOR_WATER_FLOW A2
 
@@ -111,6 +101,12 @@ byte value_Water_Preasure_Maximum;
 byte value_Water_Flow_Sensor_Minimum;
 byte value_Allow_External_Button;
 
+//raw sensor rezult 
+byte raw_SENSOR_Well_System_Minimum_Water_Sensor;
+byte raw_SENSOR_Exeption_Source_Vin;
+byte raw_SENSOR_Button_External;
+byte raw_SENSOR_WATER_PREASURE;
+byte raw_SENSOR_WATER_FLOW;
 
 bool INTERUPT_UP = false;
 bool INTERUPT_DOWN = false;
@@ -169,6 +165,8 @@ void setup() {
 	pinMode(SENSOR_WATER_FLOW, INPUT);
 	pinMode(SENSOR_WATER_PREASURE, INPUT);
 	pinMode(SENSOR_Well_System_Minimum_Water_Sensor, INPUT);
+	pinMode(SENSOR_Button_External, INPUT);
+
 	//pinMode(2, INPUT);
 	attachInterrupt(digitalPinToInterrupt(INTERRUPT_SignalLeft), INTSignalLeft, FALLING);
 
@@ -204,6 +202,13 @@ void loop() {
 	 buttonSET = digitalRead(BUTTON_SET);
 	 buttonDOWN = digitalRead(BUTTON_DOWN);
 	 buttonUP = digitalRead (BUTTON_UP);
+
+	  //raw_SENSOR_Well_System_Minimum_Water_Sensor = analogRead(SENSOR_Well_System_Minimum_Water_Sensor);
+	  //raw_SENSOR_Exeption_Source_Vin = analogRead(SENSOR_Exeption_Source_Vin);
+	  //raw_SENSOR_Button_External = analogRead(SENSOR_Button_External);
+	  //raw_SENSOR_WATER_PREASURE = analogRead (SENSOR_WATER_FLOW) ;
+	  //raw_SENSOR_WATER_FLOW = analogRead (SENSOR_WATER_FLOW); 
+
 
 	 rotory = rotaryEncoderDirection(&buttonUP, &buttonDOWN);
 
@@ -277,10 +282,18 @@ void loop() {
 	if (!menu.InterfaceDinamic()) {
 		//menu.displayButtonsValue();
 
-		//print(menu.func_stored[1].__functionName); // access a unit from menu memory 
+	
+		//print("Minimum Well Water " + String(analogRead(raw_SENSOR_Well_System_Minimum_Water_Sensor)));
+		//print("Exeption_Source_Vin " + String(analogRead(raw_SENSOR_Exeption_Source_Vin)) );
+		print("Button_External " + String(analogRead(raw_SENSOR_Button_External)) );
+		//print("WATER_PREASURE " + String(analogRead(raw_SENSOR_WATER_PREASURE)));
+		//print("WATER_FLOW " + String(analogRead(raw_SENSOR_WATER_FLOW)));
+
 		
-		print("PRogram Are Here");
-		
+		print("");
+		print("");
+		print("");
+		print("");
 		
 	}
 	

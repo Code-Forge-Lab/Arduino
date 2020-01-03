@@ -1,11 +1,14 @@
 #pragma once
 
-
+// THIS LIBRARY NOT DONE
 // const Varables
 
 #define CONST_TOTALMENUELEMENTS  15 // maximum ammount of elemtents(functions) in meniu 
 
 //Structure
+#include "Arduino.h"
+#include <Wire.h>
+#include <LiquidCrystal_I2C.h> //0x3F mine or 0x27 need to find out with :LINK:http://playground.arduino.cc/Main/I2cScanner
 #include<stdlib.h>
 #include <stdio.h>
 #include "EEPROM32.h"
@@ -20,24 +23,21 @@ using namespace std;
 #define RST_PIN -1
 
 
-#include <Wire.h>
-#include "SSD1306Ascii.h"
-#include "SSD1306AsciiWire.h"
-SSD1306AsciiWire display;
+LiquidCrystal_I2C display(0x3F, 2, 1, 0, 4, 5, 6, 7, 3, POSITIVE); //was 0x3F  Eldas: 0x27 ,A4 and A5 Are Used
 
 
 
-String SPACE = "                        ";
+//String SPACE = "                        ";
 void print(String txt) {
 	display.print(txt);
-	display.println(SPACE);
+//	display.println(SPACE);
 
 }
 
 
 void print(byte txt) {
 	display.print(txt);
-	display.println(SPACE);
+	//display.println(SPACE);
 
 }
 
@@ -85,7 +85,7 @@ byte rotaryEncoderDirection(bool* sideUp, bool* sideDown) {
 
 
 
-
+//store sub functions and variables from each menu block
 struct funcBuffer {
 
 public:	 // Only works in public , private throw error 
@@ -130,7 +130,7 @@ public:	 // Only works in public , private throw error
 
 
 // Store a value to memory while also can be used as menu options for a specific task
-class lib_meniuInterface128x64OLEDSSD1306AsciiWire
+class lib_meniuInterface16x2_LiquidCrystal_I2C
 {
 
 	// old ones
@@ -185,7 +185,7 @@ public:
 public:
 	// constructor
 		// using a simple buttons																		 Available menius in selection
-	lib_meniuInterface128x64OLEDSSD1306AsciiWire(bool &buttonUp , bool &buttonDown, bool &buttonSet) {
+	lib_meniuInterface16x2_LiquidCrystal_I2C(bool &buttonUp , bool &buttonDown, bool &buttonSet) {
 		buttonUP = &buttonUp; // store address of a buttons
 		buttonDOWN = &buttonDown; // store address of a buttons
 		buttonSET = &buttonSet; // store address of a buttons
@@ -194,7 +194,7 @@ public:
 	}
 
 	// if using rotary encoder " Not advanced propetly right now"
-	lib_meniuInterface128x64OLEDSSD1306AsciiWire(byte &rotarySpinedSide, bool  & buttonSet) {
+	lib_meniuInterface16x2_LiquidCrystal_I2C(byte &rotarySpinedSide, bool  & buttonSet) {
 		rotarySpinedSIDE = &rotarySpinedSide;
 		buttonSET = &buttonSet;
 		isRoatry = true;
@@ -280,14 +280,14 @@ public:void IncludeQuckAccessFunction( void (*functionPointer)(), byte & functio
 
 		  Wire.begin();
 		  Wire.setClock(800000L); // 800000L or 400000L
+		  delay(500);
+		  display.begin(16, 2);
+		  delay(1000);
+		  display.begin(16, 2);
+		  delay(500);
+		  display.setBacklight(HIGH);
 
-#if RST_PIN >= 0
-		  display.begin(&Adafruit128x64, I2C_ADDRESS, RST_PIN);
-#else // RST_PIN >= 0
-		  display.begin(&Adafruit128x64, I2C_ADDRESS);
-#endif // RST_PIN >= 0
-
-		  display.setFont(Adafruit5x7);
+		  userGetValues();// load values from EEPROM memory!
 	  }
 
 
@@ -330,7 +330,7 @@ private:byte meniuOptionSelectFun() {
 		}
 
 		// if user do not do for a while , accures a time out.
-		if ((millis() > (long)(startedWaitingmeniuOptionSelected + 25000UL)) && !meniuOptionIsSelected)
+		if ((millis() > (long)(startedWaitingmeniuOptionSelected + 45000UL)) && !meniuOptionIsSelected)
 		{
 			boolSetButton = false; // exit from boolSetButton statement
 			boolSetMenu = false; // exit from boolSetMenu statement
@@ -395,7 +395,8 @@ private:void menuSelectedPrint() {
 	// print something specific  about a this function out frtom this scope 
 	func_stored[meniuOptionSelectFun() + 1].fnc_();
 
-	display.set2X();
+//	display.set2X();
+	display.setCursor(0, 0);
 	// if allowed to print function
 	//if (func_stored[includedMenuCount].printfunctionValue)
 		
@@ -403,7 +404,7 @@ private:void menuSelectedPrint() {
 		//print stored values from a memory 
 		println(*func_stored[meniuOptionSelectFun() + 1].__functionValueAddress);
 
-		display.set1X();
+//		display.set1X();
 		print(" " + func_stored[meniuOptionSelectFun() + 1].__functionValueAbbreviation);
 
 		//display.setCursor(0, 30);
@@ -415,6 +416,8 @@ private:void menuSelectedPrint() {
 private:void menuQuckAccesPrint() {
 
 	//display.set2X();
+
+	display.setCursor(0, 0);
 
 	print("[-]");
 	// print name of the function 
@@ -431,10 +434,11 @@ private:void menuQuckAccesPrint() {
 	if (func_stored[includeQuckAccessMenu].__printfunctionValue) {
 		//print stored values from a memory 
 
-		display.set2X();
+//		display.set2X(); 
+		display.setCursor(0, 1);
 		println(*func_stored[includeQuckAccessMenu].__functionValueAddress);
 
-		display.set1X();
+//		display.set1X();
 		print(" " + func_stored[includeQuckAccessMenu].__functionValueAbbreviation);
 		//var_manualMode
 
@@ -472,7 +476,7 @@ public:bool InterfaceDinamic() {
 						// CLEAR DISPLAY  Ones when enter to selected option condition
 						if (!isDisplayCleared) {
 							
-							display.set1X();
+	//						display.set1X();
 							if (meniuOptionSelectFun() < includedMenuCount) // only display meniu option values exept on 'EXIT'
 								print("[P" + String(meniuOptionSelectFun()) + "]");
 
@@ -501,7 +505,7 @@ public:bool InterfaceDinamic() {
 						boolSetMenu = false; // exit from boolSetMenu statement
 						meniuOptionSelected = 1; //reset meniu position to P0
 						meniuOptionIsSelected = false; // when user exit from meniu set to default 
-						display.set1X();
+	//					display.set1X();
 					}
 					//userSetValuesToMemory();
 					delay(130);// wait until set button not realesed
@@ -520,7 +524,7 @@ public:bool InterfaceDinamic() {
 					
 
 					display.setCursor(0, 0);
-					display.set1X();
+//					display.set1X();
 					if (meniuOptionSelectFun()  < includedMenuCount   ) // only display meniu option values exept on 'EXIT'
 						print("[P" + String(meniuOptionSelectFun()) + "]");
 
@@ -547,16 +551,17 @@ public:bool InterfaceDinamic() {
 					//Set to Default
 					//check if option is available
 					if (defaultIsFunc && meniuOptionSelectFun()  == includedMenuCount - 1) { // set to default 
-						print("<Reset to default>");
+						//print("<Reset to default>");
 
 						if (meniuOptionIsSelected) {
 							print("Press up to reset");
 
 							if (*buttonUP)
 							{
-								display.set2X();
+	//							display.set2X();
+								display.setCursor(0, 1);
 								print(" Done");
-								display.set1X();
+	//							display.set1X();
 								// reset to default
 								defaultFunc();
 
@@ -586,8 +591,7 @@ public:bool InterfaceDinamic() {
 					 if (meniuOptionSelectFun()  >= includedMenuCount  ) { // Exit
 						display.setCursor(0, 0);
 
-						display.set2X();
-						print("");
+	//					display.set2X();
 						print("  [EXIT]");
 
 						if (meniuOptionIsSelected) {
@@ -620,7 +624,8 @@ public:bool InterfaceDinamic() {
 						 isDisplayCleared = false; //reset status about cleard display
 
 
-					 display.set1X(); 
+	//				 display.set1X(); 
+					 
 				}
 
 
@@ -731,7 +736,7 @@ public:void userGetValues() {
 
 /*
 Example 
-
+lib_meniuInterface128x64OLEDSSD1306AsciiWire menu(buttonUP, buttonDOWN, buttonSET);
 // 
 setup() {
 

@@ -21,5 +21,14 @@
     <ClInclude Include="__vm\.Wood_pellets_burner2_0.vsarduino.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="BACKUPfile.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BACKUP2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BACKUP3.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
