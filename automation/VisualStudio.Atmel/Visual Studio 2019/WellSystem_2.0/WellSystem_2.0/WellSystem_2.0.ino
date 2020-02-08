@@ -102,11 +102,11 @@ byte value_Water_Flow_Sensor_Minimum;
 byte value_Allow_External_Button;
 
 //raw sensor rezult 
-byte raw_SENSOR_Well_System_Minimum_Water_Sensor;
-byte raw_SENSOR_Exeption_Source_Vin;
-byte raw_SENSOR_Button_External;
-byte raw_SENSOR_WATER_PREASURE;
-byte raw_SENSOR_WATER_FLOW;
+bool raw_SENSOR_Well_System_Minimum_Water_Sensor;
+bool raw_SENSOR_Exeption_Source_Vin;
+bool raw_SENSOR_Button_External;
+int_fast16_t raw_SENSOR_WATER_PREASURE;
+int_fast16_t raw_SENSOR_WATER_FLOW; // but option to read analog
 
 bool INTERUPT_UP = false;
 bool INTERUPT_DOWN = false;
@@ -166,7 +166,9 @@ void setup() {
 	pinMode(SENSOR_WATER_PREASURE, INPUT);
 	pinMode(SENSOR_Well_System_Minimum_Water_Sensor, INPUT);
 	pinMode(SENSOR_Button_External, INPUT);
-
+	
+	pinMode(LED_BUILTIN, OUTPUT);// chost glow of led bug
+	digitalWrite(LED_BUILTIN, LOW);
 	//pinMode(2, INPUT);
 	attachInterrupt(digitalPinToInterrupt(INTERRUPT_SignalLeft), INTSignalLeft, FALLING);
 
@@ -203,11 +205,11 @@ void loop() {
 	 buttonDOWN = digitalRead(BUTTON_DOWN);
 	 buttonUP = digitalRead (BUTTON_UP);
 
-	  //raw_SENSOR_Well_System_Minimum_Water_Sensor = analogRead(SENSOR_Well_System_Minimum_Water_Sensor);
-	  //raw_SENSOR_Exeption_Source_Vin = analogRead(SENSOR_Exeption_Source_Vin);
-	  //raw_SENSOR_Button_External = analogRead(SENSOR_Button_External);
-	  //raw_SENSOR_WATER_PREASURE = analogRead (SENSOR_WATER_FLOW) ;
-	  //raw_SENSOR_WATER_FLOW = analogRead (SENSOR_WATER_FLOW); 
+	  raw_SENSOR_Well_System_Minimum_Water_Sensor = digitalRead(SENSOR_Well_System_Minimum_Water_Sensor);
+	  raw_SENSOR_Exeption_Source_Vin = digitalRead(SENSOR_Exeption_Source_Vin);
+	  raw_SENSOR_Button_External = digitalRead(SENSOR_Button_External);
+	  raw_SENSOR_WATER_PREASURE = analogRead (SENSOR_WATER_PREASURE) ;
+	  raw_SENSOR_WATER_FLOW = analogRead(SENSOR_WATER_FLOW);
 
 
 	 rotory = rotaryEncoderDirection(&buttonUP, &buttonDOWN);
@@ -283,11 +285,11 @@ void loop() {
 		//menu.displayButtonsValue();
 
 	
-		//print("Minimum Well Water " + String(analogRead(raw_SENSOR_Well_System_Minimum_Water_Sensor)));
-		//print("Exeption_Source_Vin " + String(analogRead(raw_SENSOR_Exeption_Source_Vin)) );
-		print("Button_External " + String(analogRead(raw_SENSOR_Button_External)) );
-		//print("WATER_PREASURE " + String(analogRead(raw_SENSOR_WATER_PREASURE)));
-		//print("WATER_FLOW " + String(analogRead(raw_SENSOR_WATER_FLOW)));
+		print("Minimum Well Water " + String(raw_SENSOR_Well_System_Minimum_Water_Sensor));
+		print("Exeption_Source_Vin " + String(raw_SENSOR_Exeption_Source_Vin) );
+		print("Button_External " + String(raw_SENSOR_Button_External) );
+		print("WATER_PREASURE " + String (raw_SENSOR_WATER_PREASURE));
+		print("WATER_FLOW " + String(raw_SENSOR_WATER_FLOW));
 
 		
 		print("");
