@@ -434,24 +434,24 @@ private:void userChangeMeniuValue(bool* userPx, byte __delay = 10) {
 
 private:void menuSelectedPrint(int value = 0, bool value_print = false) {
 	// print something specific  about a this function out frtom this scope 
-	func_stored[meniuOptionSelectFun() + 1].fnc_();
+	func_stored[meniuOptionSelected + 1].fnc_();
 
 	display.set2X();
 	// if allowed to print function
 	//if (func_stored[includedMenuCount].printfunctionValue)
 
-	if (func_stored[meniuOptionSelectFun() + 1].__printfunctionValue) {
+	if (func_stored[meniuOptionSelected + 1].__printfunctionValue) {
 		//print stored values from a memory 
-		println(*func_stored[meniuOptionSelectFun() + 1].__functionValueAddress);
+		println(String (*func_stored[meniuOptionSelected + 1].__functionValueAddress) + " " );
 
 		display.set1X();
-		print(" " + func_stored[meniuOptionSelectFun() + 1].__functionValueAbbreviation);
+		print( func_stored[meniuOptionSelected + 1].__functionValueAbbreviation);
 
 		//display.setCursor(0, 30);
 	} // if not allowed to print 
 
 	// change values by spinint/pushing up or down buttons 
-	userChangeMeniuValue(func_stored[meniuOptionSelectFun() + 1].__functionValueAddress);
+	userChangeMeniuValue(func_stored[meniuOptionSelected + 1].__functionValueAddress);
 }
 
 private:void menuQuckAccesPrint() {
@@ -474,10 +474,10 @@ private:void menuQuckAccesPrint() {
 		//print stored values from a memory 
 
 		display.set2X();
-		println(*func_stored[includeQuckAccessMenu].__functionValueAddress);
+		println( String (*func_stored[includeQuckAccessMenu].__functionValueAddress) + " ");
 
 		display.set1X();
-		print(" " + func_stored[includeQuckAccessMenu].__functionValueAbbreviation);
+		print( func_stored[includeQuckAccessMenu].__functionValueAbbreviation);
 		//var_manualMode
 
 	} // if not allowed to print 
@@ -493,26 +493,28 @@ private:void menuQuckAccesPrint() {
 // Interpeter all alligment and print a manual value in custom function = .func
 public: void menuPrintManuallyValue(int value) {
 	
-	//print(meniuOptionSelectFun() + 1);
+	//print(meniuOptionSelected + 1);
 	
-	if (!func_stored[meniuOptionSelectFun() + 1 ].__printfunctionValue) { // if allowed to print in config
+	if (!func_stored[meniuOptionSelected + 1 ].__printfunctionValue) { // if allowed to print in config
 		display.set2X();
-		println(value);
+		println(String(value) + " ");
 
 		display.set1X();
-		print(" " + func_stored[meniuOptionSelectFun() + 1].__functionValueAbbreviation);
+		print( func_stored[meniuOptionSelected + 1].__functionValueAbbreviation);
 	}
 }
 	  
 // Interpeter all alligment and print a manual value in custom function = .func only for quick access menu
 public:void menuQuckAccesPrintManuallyValue(int value) {
+	
+	//print(meniuOptionSelected + 1);
 
 	if (!func_stored[includeQuckAccessMenu].__printfunctionValue) { // if allowed to print in config
 		display.set2X();
-		println(value);
+		println(String (value) + " ");
 
 		display.set1X();
-		print(" " + func_stored[includeQuckAccessMenu].__functionValueAbbreviation);
+		print( func_stored[includeQuckAccessMenu].__functionValueAbbreviation);
 	}
 
   }
@@ -799,7 +801,7 @@ public:void userSetValuesToMemory(int index = -1) { // plus quick access functio
 	}
 	else {
 		//save all values to memory EEPROM
-		display.clear(); print("Multyple point debug");
+		//display.clear(); print("Multyple point debug");
 
 		for (int_fast16_t count = 1; count < (includedMenuCount); count++) {
 			writeMemory((count + includeStartingPointMem), *func_stored[count].__functionValueAddress); //save all values to memory EEPROM
