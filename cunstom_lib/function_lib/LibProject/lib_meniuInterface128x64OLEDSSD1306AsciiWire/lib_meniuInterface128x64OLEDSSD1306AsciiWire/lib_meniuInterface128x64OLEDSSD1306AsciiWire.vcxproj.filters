@@ -33,5 +33,11 @@
     <ClInclude Include="lib_meniuInterface128x64OLEDBased(SSD1306AsciiWire).h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="BK1.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BK2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

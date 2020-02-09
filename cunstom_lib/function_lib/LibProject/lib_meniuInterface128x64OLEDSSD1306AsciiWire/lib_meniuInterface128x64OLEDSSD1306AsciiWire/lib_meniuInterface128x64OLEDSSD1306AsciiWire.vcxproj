@@ -119,6 +119,8 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BK1.h" />
+    <ClInclude Include="BK2.h" />
     <ClInclude Include="EEPROM32.h" />
     <ClInclude Include="functions.h" />
     <ClInclude Include="lib_meniuInterface128x64OLEDBased(SSD1306AsciiWire).h" />
