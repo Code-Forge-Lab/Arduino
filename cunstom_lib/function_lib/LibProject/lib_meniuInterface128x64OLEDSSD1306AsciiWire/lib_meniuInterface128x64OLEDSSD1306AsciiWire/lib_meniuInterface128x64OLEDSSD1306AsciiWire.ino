@@ -84,6 +84,8 @@ void loop() {
 		//print("var_six " + String(var_six));
 		menu.displayStoredMemoryValues();
 
+		print("::" + String (menu.isclearedDisplayCommon));
+
 		print("");
 		print("");
 		print("");

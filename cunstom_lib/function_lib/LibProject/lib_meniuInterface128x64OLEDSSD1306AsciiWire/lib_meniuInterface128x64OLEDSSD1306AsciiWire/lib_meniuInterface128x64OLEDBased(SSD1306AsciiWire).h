@@ -159,9 +159,10 @@ class lib_meniuInterface128x64OLEDSSD1306AsciiWire
 	byte toggleDisplay = 0;
 	
 	// less inportant
-	bool isDisplayCleared = false; // track if display was cleared when exitind from meniuOptionIsSelected
-	bool isclearedDisplayCommon = false; // comontry use to clear once when enter in a option 
-		
+	//bool isDisplayCleared = false; // track if display was cleared when exitind from meniuOptionIsSelected
+public:bool isclearedDisplayCommon = false; // comontry use to clear once when enter in a option 
+    bool isCompletedChangeValueToExitFromSelectedOption = false; // more robust Set button press waiter
+
 	//////
 	bool *buttonUP;
 	bool *buttonDOWN;
@@ -174,8 +175,9 @@ public:void (*defaultFunc)();
 	bool defaultIsFunc = false;
 
 	int_fast16_t  includeStartingPointMem = 10; // where start to populate values from menu options to a memory EEPROM
-	int_fast16_t includedMenuCount = 2; // start generate by a count a slow access menu position in memory EEPROM
 	int_fast16_t includeQuckAccessMenu = 1;  // //*not tested!*/ +includeStartingPointMem; // always first positioning
+	int_fast16_t includedMenuCount = 2; // start generate by a count a slow access menu position in memory EEPROM. Any of menu option start + 1 from includeQuckAccessMenu or 2
+	
 
 	//ADDRESS STORED Stored memory managment
 	//void (*userSetValuesToMemory)(); // 
@@ -360,6 +362,8 @@ private:byte meniuOptionSelectFun() {
 			boolSetButton = false; // exit from boolSetButton statement
 			boolSetMenu = false; // exit from boolSetMenu statement
 			meniuOptionSelected = 1; //reset meniu position to P0
+			isclearedDisplayCommon = false;
+
 		}
 
 		// capture when button is pressing and set a one time button push
@@ -470,20 +474,39 @@ private:void menuQuckAccesPrint() {
 
 }
 
-
+	   // clear display just at the moment needed
+private: void clearMenuDisplay() {
+	if (!isclearedDisplayCommon) // clear display
+	{
+		isclearedDisplayCommon = true;
+		display.clear();
+	}
+}
 
 public:bool InterfaceDinamic() {
 	// always set display at zero state.	
 	display.setCursor(0, 0);
+
+	if (!*buttonSET) {
+		delay(50);
+		if (isCompletedChangeValueToExitFromSelectedOption && !*buttonSET) {
+			isCompletedChangeValueToExitFromSelectedOption = false; // help for a pressing to short to press while it needet
+		}
+	}
 	// Slow access options
-		if (*buttonSET || boolSetButton) {
+		if ((*buttonSET || boolSetButton) ) {
 			boolSetButton = true;
+			
+			// when in menu selected option and pressing a set button to exit to common parameters. 
+			if (meniuOptionIsSelected && *buttonSET) {
+				isclearedDisplayCommon = false;
+			}
 
 			// Set menu for more options
 			/*Is on timer when boolSetButton was passed and user must pressing a button for a 5 seconds*/
 			if (*buttonSET && (millis() > (long)(startedWaiting + 5000UL) && !boolQuicklyChange) || boolSetMenu) {
 				// set loop from boolean
-
+				clearMenuDisplay();
 
 				// exit from tight loops!
 				// event trigger if after some time will react to button set
@@ -493,26 +516,24 @@ public:bool InterfaceDinamic() {
 
 					// After meniu option was selected 
 					if (meniuOptionIsSelected) {
-						userSetValuesToMemory(meniuOptionSelectFun()+1);
+						userSetValuesToMemory(meniuOptionSelectFun()+1);// start common menu options addresing in memory from 2, skipping 1 place.
 						
-						// CLEAR DISPLAY  Ones when enter to selected option condition
-						if (!isDisplayCleared) {
 							
 							display.set1X();
 							if (meniuOptionSelectFun() < includedMenuCount) // only display meniu option values exept on 'EXIT'
 								print("[P" + String(meniuOptionSelectFun()) + "]");
 
-							clearinDisplay();
-						}
-
-						isDisplayCleared = true; // display was cleared 
-						delay(60);
+							
+						
+						//delay(60);
 					}
-					else
-						isDisplayCleared = false; //reset status about cleard display
+					
 
-					//  if meniu option selected and need change a values to EEPROM
-					meniuOptionIsSelected = !meniuOptionIsSelected;
+					if (!isCompletedChangeValueToExitFromSelectedOption) // wait until user releas Set button 
+					{//  if meniu option selected and need change a values to EEPROM
+						meniuOptionIsSelected = !meniuOptionIsSelected;
+						isCompletedChangeValueToExitFromSelectedOption = true;
+					}
 
 					// Exit from progra  and main boolSetButton loop...if meniu not selected
 					if (meniuOptionSelectFun() == includedMenuCount) { // Exit
@@ -521,10 +542,15 @@ public:bool InterfaceDinamic() {
 						boolSetMenu = false; // exit from boolSetMenu statement
 						meniuOptionSelected = 1; //reset meniu position to P0
 						meniuOptionIsSelected = false; // when user exit from meniu set to default 
+						isclearedDisplayCommon = false;
 						display.set1X();
 					}
-					//userSetValuesToMemory();
+
+					
+					
 					delay(130);// wait until set button not realesed
+					
+					
 				}
 				else
 				{
@@ -546,16 +572,19 @@ public:bool InterfaceDinamic() {
 
 					// if meniu option not selected print about meniu abbreviation
 
-					if (meniuOptionWhenSelected) {
+					if (!meniuOptionWhenSelected) {
 						//print("-");
 						//print("");
+
+						
 
 					}
 					// if not meniu option selected and meniu are not at EXIT point
 					if (!meniuOptionIsSelected && meniuOptionSelectFun()   < includedMenuCount) {
 						meniuOptionWhenSelected = true;
 
-						print("      MENIU");//display.println("MENIU"); 
+						print("      MENU");//display.println("MENIU"); 
+						
 
 					}
 					else {
@@ -590,14 +619,23 @@ public:bool InterfaceDinamic() {
 					else {
 						// ----------------------do rest of options------------------------------------
 
+
+
+
 						// print about  menu  what it's doing
 						print(func_stored[meniuOptionSelectFun() + 1].__functionName); // + 1 to avoid to stuble a Quck access menu option
 
+
 						// if user select a desire function, then change his value
-						if (meniuOptionIsSelected) {
+						if (meniuOptionIsSelected && !isCompletedChangeValueToExitFromSelectedOption) {
+							
+							
+							
+							//print menu
 							menuSelectedPrint();
 						}
 
+						
 
 					}
 
@@ -615,7 +653,9 @@ public:bool InterfaceDinamic() {
 
 							boolSetMenu = false;
 							boolQuicklyChange = false;
+							isclearedDisplayCommon = false; // reset a clearing system
 							display.clear();
+
 						}
 
 
@@ -625,18 +665,9 @@ public:bool InterfaceDinamic() {
 
 
 					 // clear [EXIT] stuff left on screen
-					 if (meniuOptionSelectFun() == includedMenuCount - 1)
-					 {
-						 if (!isDisplayCleared) {
-
-							 clearinDisplay();
-							
-						 }
-
-						 isDisplayCleared = true; // display was cleared 
-					 }
-					 else
-						 isDisplayCleared = false; //reset status about cleard display
+					// if (meniuOptionSelectFun() == includedMenuCount - 1)
+					
+						
 
 
 					 display.set1X(); 
@@ -661,9 +692,12 @@ public:bool InterfaceDinamic() {
 					// reset whole set loop
 					boolQuicklyChange = false;
 					boolSetButton = false;
+					isclearedDisplayCommon = false;
 					userSetValuesToMemory(); // write temperature changes to memory includeQuckAccessMenu
 					display.clear();
 					delay(100);
+					
+
 				}
 				else
 				{
@@ -679,12 +713,9 @@ public:bool InterfaceDinamic() {
 
 					//display.clear();
 
-					if (isDisplayCleared)
+					//if (isDisplayCleared)
 
-						if (!isclearedDisplayCommon)
-						{   display.clear(); 
-							isclearedDisplayCommon = true;
-						}
+					clearMenuDisplay();
 
 					menuQuckAccesPrint();
 					
@@ -704,7 +735,7 @@ public:bool InterfaceDinamic() {
 
 	
 		if (boolSetMenu || boolQuicklyChange) { // when exit from any option, reset a clearing display ones a  boolean.
-			isclearedDisplayCommon = false;
+			
 		};
 
 		return boolSetMenu || boolQuicklyChange; // if any selected , give true.
@@ -718,20 +749,20 @@ public:void userSetValuesToMemory(int index = -1) { // plus quick access functio
 		// save single value to memory
 		writeMemory((index + includeStartingPointMem), *func_stored[index].__functionValueAddress);
 
-		display.clear(); print("Single point debug");	print(String(index) + ",addr: " + String(func_stored[index].__funcAddress) + ",val:" + String(*func_stored[index].__functionValueAddress));
+		//display.clear(); print("Single point debug");	print(String(index) + ",addr: " + String(func_stored[index].__funcAddress) + ",val:" + String(*func_stored[index].__functionValueAddress));
 		
 	}
 	else {
 		//save all values to memory EEPROM
-		display.clear(); print("Multyple point debug");
+		//display.clear(); print("Multyple point debug");
 
 		for (int_fast16_t count = 1; count < (includedMenuCount); count++) {
 			writeMemory((count + includeStartingPointMem), *func_stored[count].__functionValueAddress); //save all values to memory EEPROM
-			print(String(count) + ",addr:" + String(func_stored[count].__funcAddress) + "val:, " + String(*func_stored[count].__functionValueAddress));
+			//print(String(count) + ",addr:" + String(func_stored[count].__funcAddress) + "val:, " + String(*func_stored[count].__functionValueAddress));
 		}
 	
 	}
-		delay(11000);
+		//delay(11000);
 	};
 
 	
@@ -749,6 +780,14 @@ public:void userGetValues() {
 		//delay(5000);
 	};
 
+
+
+	  // print barebone information
+
+
+
+
+
 	void displayStoredMemoryValues() {
 		for (int count = 1; count < (includedMenuCount); count++) {
 
@@ -757,6 +796,7 @@ public:void userGetValues() {
 			print(func_stored[count].__functionName + " " + String(*func_stored[count].__functionValueAddress) + " " + func_stored[count].__functionValueAbbreviation);
 		}
 	  }
+
 	void displayButtonsValue() {
 
 		print("buttonSET:" + String(*buttonSET)); // getting value of the pointer
