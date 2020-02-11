@@ -2,13 +2,13 @@
 
 void userSetDefault() {
 	var_Water_Preasure_Minimum = 5;  // minimum of water preasure to turn on a water source unit
-	var_Water_Preasure_Maximum = 5;  // Maximum of water preasure to turn on a water source unit
-	var_Water_Flow_Sensor_Minimum = 5; //  minimum of water flow to turn on a water source unit
-	var_Allow_External_Button = 5; // react to external button
-	var_Allow_Exeption_Source_Vin = 5; // react to when  heater  is on to turn on a water source unit
-	var_Source_Unit_Timeout = 5;	// Turn on a motor/solenoid(water source available) for some time to equalize a fliquating sensors inputs
-	var_manualMode = 4;
-	menu.userSetValuesToMemory();
+	var_Water_Preasure_Maximum = 6;  // Maximum of water preasure to turn on a water source unit
+	var_Water_Flow_Sensor_Minimum = 7; //  minimum of water flow to turn on a water source unit
+	var_Allow_External_Button = 8; // react to external button
+	var_Allow_Exeption_Source_Vin = 9; // react to when  heater  is on to turn on a water source unit
+	var_Source_Unit_Timeout = 10;	// Turn on a motor/solenoid(water source available) for some time to equalize a fliquating sensors inputs
+	var_manualMode = 11;
+	
 
 };
 
@@ -32,35 +32,6 @@ void func7() {//display.println("[R5]");
 	};
 void func8() {};
 
-
-/*
-void userSetValuesToMemory() {
-	writeMemory(MEMORY_Water_Preasure_Minimum, var_Water_Preasure_Minimum);  // minimum of water preasure to turn on a water source unit
-	writeMemory(MEMORY_Water_Preasure_Maximum, var_Water_Preasure_Maximum);  // Maximum of water preasure to turn on a water source unit
-	writeMemory(MEMORY_Water_Flow_Sensor_Minimum, var_Water_Flow_Sensor_Minimum); //  minimum of water flow to turn on a water source unit
-	writeMemory(MEMORY_Allow_External_Button, var_Allow_External_Button); // react to external button
-	writeMemory(MEMORY_Allow_Exeption_Source_Vin, var_Allow_Exeption_Source_Vin); // react to when  heater  is on to turn on a water source unit
-	writeMemory(MEMORY_Source_Unit_Timeout, var_Source_Unit_Timeout);	// Turn on a motor/solenoid(water source available) for some time to equalize a fliquating sensors inputs
-	writeMemory(MEMORY_manualMode, var_manualMode);
-
-
-};
-
-
-
-
-void userGetValues() {
-
-	readMemoryByte(MEMORY_Water_Preasure_Minimum, &var_Water_Preasure_Minimum);  // minimum of water preasure to turn on a water source unit
-	readMemoryByte(MEMORY_Water_Preasure_Maximum, &var_Water_Preasure_Maximum);  // Maximum of water preasure to turn on a water source unit
-	readMemoryByte(MEMORY_Water_Flow_Sensor_Minimum, &var_Water_Flow_Sensor_Minimum); //  minimum of water flow to turn on a water source unit
-	readMemoryByte(MEMORY_Allow_External_Button, &var_Allow_External_Button); // react to external button
-	readMemoryByte(MEMORY_Allow_Exeption_Source_Vin, &var_Allow_Exeption_Source_Vin); // react to when  heater  is on to turn on a water source unit
-	readMemoryByte(MEMORY_Source_Unit_Timeout, &var_Source_Unit_Timeout);	// Turn on a motor/solenoid(water source available) for some time to equalize a fliquating sensors inputs
-	readMemoryByte(MEMORY_manualMode, &var_manualMode);
-
-};
-*/
 
 
 
@@ -102,11 +73,6 @@ void printLn(String text, int value) {
 }
 */
 
-void println(String txt) {
-	
-	display.print(txt);
-
-}
 
 
 void printbool(bool statement) {
@@ -293,39 +259,6 @@ bool uploadValues(byte index, byte* value, bool changeOption) {
 
 
 
-void updateMemoryValues() {
-	/*
-	writeMemory(MEMORY_ON_WaterOutPumpSingnal, value_ON_WaterOutPumpSingnal);
-	writeMemory(MEMORY_ON_WaterInValveSignal, value_ON_WaterInValveSignal);
-	writeMemory(MEMORY_ON_WaterPumpSprayerSignal, value_ON_WaterPumpSprayerSignal);
-	writeMemory(MEMORY_ON_HeaterWaterSignal, value_ON_HeaterWaterSignal);
-	writeMemory(MEMORY_M_NORMALWASHPOWER, value_M_NORMALWASHPOWER);
-	writeMemory(MEMORY_M_NORMALWASHSPEED, value_M_NORMALWASHSPEED);
-	writeMemory(MEMORY_M_RISEWASHSPOWER, value_M_RISEWASHSPOWER);
-	writeMemory(MEMORY_M_RISEWASHSPEED, value_M_RISEWASHSPEED);
-	writeMemory(MEMORY_M_NORMALWASHINTERVALON , value_M_NORMALWASHINTERVALON);
-	writeMemory(MEMORY_M_NORMALWASHINTERVALOFF, value_M_NORMALWASHINTERVALOFF);
-
-	*/
-
-}
-
-// update value from memory to local RAM memory 
-void updateValuesfromMemory() {
-	/*
-	readMemoryBool(MEMORY_ON_WaterOutPumpSingnal, &value_ON_WaterOutPumpSingnal);
-	readMemoryBool(MEMORY_ON_WaterInValveSignal, &value_ON_WaterInValveSignal);
-	readMemoryBool(MEMORY_ON_WaterPumpSprayerSignal, &value_ON_WaterPumpSprayerSignal);
-	readMemoryBool(MEMORY_ON_HeaterWaterSignal, &value_ON_HeaterWaterSignal);
-	readMemoryByte(MEMORY_M_NORMALWASHPOWER, &value_M_NORMALWASHPOWER);
-	readMemoryByte(MEMORY_M_NORMALWASHSPEED, &value_M_NORMALWASHSPEED);
-	readMemoryByte(MEMORY_M_RISEWASHSPOWER, &value_M_RISEWASHSPOWER);
-	readMemoryByte(MEMORY_M_RISEWASHSPEED, &value_M_RISEWASHSPEED);
-	readMemoryByte(MEMORY_M_NORMALWASHINTERVALON, &value_M_NORMALWASHINTERVALON);
-	readMemoryByte(MEMORY_M_NORMALWASHINTERVALOFF, &value_M_NORMALWASHINTERVALOFF);
-	*/
-}
-
 
 
 
@@ -358,4 +291,17 @@ void timeChangeReset() {
 }
 
 
+byte Sensor_WaterFlowTime = 0;
+byte Sensor_WaterFlowPerTimeSaved = 0; // save each second a value in here 
+bool isWaterFlowPerTimePassed = false;; // void alway on state
+void SensorFun_WaterFlowPerSec() {
 
+	if (raw_SENSOR_WATER_FLOW > 80 && !isWaterFlowPerTimePassed)
+	{
+		Sensor_WaterFlowTime++;
+		isWaterFlowPerTimePassed = true;
+	}
+	else if (raw_SENSOR_WATER_FLOW < 80) {
+		isWaterFlowPerTimePassed = false;
+	}
+}

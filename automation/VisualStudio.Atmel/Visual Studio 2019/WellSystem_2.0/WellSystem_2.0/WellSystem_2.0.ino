@@ -147,9 +147,9 @@ void setup() {
 	menu.IncludeFunction(&func4, var_Allow_External_Button, "Farger Potato", "val", true);
 
 	menu.IncludeQuckAccessFunction(&func7, var_manualMode, "Quic Access","psi",true);
-	menu.IncludeFunctionSetDefault(&func6Default);
+	menu.IncludeFunctionSetDefault(&userSetDefault); 
 
-	menu.initiateDisplay();
+	menu.initiate();
 
 	// include buttons
 	pinMode(BUTTON_DOWN, INPUT);
@@ -212,6 +212,7 @@ void loop() {
 	  raw_SENSOR_WATER_FLOW = analogRead(SENSOR_WATER_FLOW);
 
 
+	  /*
 	 rotory = rotaryEncoderDirection(&buttonUP, &buttonDOWN);
 
 
@@ -232,7 +233,7 @@ void loop() {
 
 	
 
-
+*/
 
 	//                      16MHz	 32MHz
 	/// CLOCK 1 min			60000UL  120000UL  x 2 clock speed 
@@ -253,19 +254,13 @@ void loop() {
 	}
 
 	/// CLOCK 1 sec
-	if (((long)clock_1sec + 600UL) < millis())
+	if (((long)clock_1sec + 2000L) < millis())
 	{
 
 		clock_1sec = millis(); // reset each  1 seconds  time
-		/*
-		if ( > motorSpeed) {
-			motorSpeed += 1;
-		}
-		else if (motorSpeed > 0) {
-			motorSpeed -= 1;
-		}
+		Sensor_WaterFlowPerTimeSaved = Sensor_WaterFlowTime; // save progress value in here for another time 
+		Sensor_WaterFlowTime = 0; // then progress value will be returned to new start
 
-		*/
 	}
 
 	
@@ -275,7 +270,7 @@ void loop() {
 
 
 
-	
+	SensorFun_WaterFlowPerSec();
 
 
 
@@ -285,15 +280,19 @@ void loop() {
 		//menu.displayButtonsValue();
 
 	
-		print("Minimum Well Water " + String(raw_SENSOR_Well_System_Minimum_Water_Sensor));
-		print("Exeption_Source_Vin " + String(raw_SENSOR_Exeption_Source_Vin) );
-		print("Button_External " + String(raw_SENSOR_Button_External) );
-		print("WATER_PREASURE " + String (raw_SENSOR_WATER_PREASURE));
-		print("WATER_FLOW " + String(raw_SENSOR_WATER_FLOW));
+		//print("Minimum Well Water " + String(raw_SENSOR_Well_System_Minimum_Water_Sensor));
+		//print("Exeption_Source_Vin " + String(raw_SENSOR_Exeption_Source_Vin) );
+		//print("Button_External " + String(raw_SENSOR_Button_External) );
+		//print("WATER_PREASURE " + String (raw_SENSOR_WATER_PREASURE));
+		//print("WATER_FLOW " + String(raw_SENSOR_WATER_FLOW));
 
+
+
+		println("WaterFlowPerSec:"); print(String (Sensor_WaterFlowPerTimeSaved) + ":/" + String(Sensor_WaterFlowTime));
+		print(raw_SENSOR_WATER_FLOW);
 		
-		print("");
-		print("");
+		//print("");
+		//print("");
 		print("");
 		print("");
 		
