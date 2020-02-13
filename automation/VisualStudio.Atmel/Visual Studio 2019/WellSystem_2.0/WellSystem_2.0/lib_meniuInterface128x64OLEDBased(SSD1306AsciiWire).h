@@ -735,7 +735,7 @@ public:bool InterfaceDinamic() {
 
 			// exit from tight loops!
 			// event trigger if after some time will react to button set
-			if ( /*Wait while user realesing a button*/(millis() > (long)(startedWaiting + 230UL)) && *buttonSET || /*or timeout for 45s*/(millis() > (long)(startedWaiting + 45100UL))) {
+			if ( /*Wait while user realesing a button*/(millis() > (long)(startedWaiting + 830UL)) && *buttonSET || /*or timeout for 45s*/(millis() > (long)(startedWaiting + 45100UL))) {
 				// reset whole set loop
 				boolQuicklyChange = false;
 				boolSetButton = false;
