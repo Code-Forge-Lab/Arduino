@@ -30,14 +30,14 @@ void func6Default() {
 
 
 void printbool(bool statement) {
-	menu.print(statement);
+	menu.println__(statement);
 }
 
 
 void printeach_1sec(String text) {
 
 	if ( manualReapetEach1sec)
-		menu.print(text);
+		menu.println__(text);
 
 };
 
@@ -46,7 +46,7 @@ void printeach_1sec(String text) {
 void printeach_1sec(byte text) { // allow to print a only each second.
 
 	if ( manualReapetEach1sec)
-		menu.print(text);
+		menu.println__(text);
 
 };
 

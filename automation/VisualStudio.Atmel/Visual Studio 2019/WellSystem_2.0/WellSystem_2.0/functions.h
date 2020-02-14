@@ -91,8 +91,8 @@ void printbool(bool statement) {
 
 void printeach_1sec(String text) {
 
-   if (!isMenuActive && manualReapetEach1sec )
-		print(text); 
+   if ( manualReapetEach1sec )
+		menu.print(text); 
 
 };
 
@@ -100,22 +100,22 @@ void printeach_1sec(String text) {
 
 void printeach_1sec(byte text) { // allow to print a only each second.
 
-	if (!isMenuActive && manualReapetEach1sec )
-		print(text);
+	if ( manualReapetEach1sec )
+		menu.print(text);
 
 };
 
 
 void printeach_1secWhenButtonSet(String text) { // if button right  is set then print this 
 
-	if (!isMenuActive && manualReapetEach1sec && allowPrintWhenRightButton )
-		print(text);
+	if ( manualReapetEach1sec && allowPrintWhenRightButton )
+		menu.print(text);
 }
 
 void printeach_1secWhenButtonNotSet(String text) { // if button right  is unset then not print this 
 
-	if (!isMenuActive && manualReapetEach1sec && !allowPrintWhenRightButton)
-		print(text);
+	if (manualReapetEach1sec && !allowPrintWhenRightButton)
+		menu.print(text);
 }
 
 
