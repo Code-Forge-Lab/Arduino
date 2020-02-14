@@ -66,24 +66,19 @@ void print(String txt) {
 }
 
 
-void print(byte txt) {
+void print(int txt) {
 	display.print(txt);
 	display.println(SPACE);
 
 }
 
 
-void println(byte txt) {
-	display.print(txt);
-	//display.println(SPACE);Ftext
-
-}
-
 void println(int txt) {
 	display.print(txt);
 	//display.println(SPACE);Ftext
 
 }
+
 
 void println(String txt) {
 	display.print(txt);
@@ -228,7 +223,7 @@ public:
 
 
 
-public:void print(String txt) {
+public:void print__(String txt) {
 	if (!isMenuOpened) {
 		display.print(txt);
 		display.println(SPACE);
@@ -237,7 +232,7 @@ public:void print(String txt) {
 	}
 
 
-public:void print(int txt) { // also works with bytes, no casting needed
+public:void print__(int txt) { // also works with bytes, no casting needed
 	
 	if (!isMenuOpened) {
 		display.print(txt);
@@ -247,21 +242,15 @@ public:void print(int txt) { // also works with bytes, no casting needed
 	}
 
 
-public:void println(byte txt) {
+public:void println__(int txt) {
 	if (!isMenuOpened)
 		display.print(txt);
 		//display.println(SPACE);Ftext
 
 	}
 
-public:void println(int txt) {
-	if (!isMenuOpened)
-		display.print(txt);
-		//display.println(SPACE);Ftext
 
-	}
-
-public:void println(String txt) {
+public:void println__(String txt) {
 	if (!isMenuOpened)
 		display.print(txt);
 		//display.println(SPACE);
@@ -269,7 +258,7 @@ public:void println(String txt) {
 	}
 
 	// clear start at where was last print end.
-public:void clearinDisplay() {
+public:void clearinDisplay__() {
 
 	if (!isMenuOpened) {
 		print("");
@@ -900,21 +889,21 @@ public:void userGetValues() {
 
 			  byte val = readMemoryByte(count + includeStartingPointMem); //save all values to memory EEPROM 
 
-			  this->print(func_stored[count].__functionName.substring(0, 8) + "," + func_stored[count].__printfunctionValue + ":" + String(*func_stored[count].__functionValueAddress) + " " + func_stored[count].__functionValueAbbreviation);
+			  this->print__(func_stored[count].__functionName.substring(0, 8) + "," + func_stored[count].__printfunctionValue + ":" + String(*func_stored[count].__functionValueAddress) + " " + func_stored[count].__functionValueAbbreviation);
 		  }
 	  }
 
 	  void displayButtonsValue() {
 
-		  this->print("buttonSET:" + String(*buttonSET)); // getting value of the pointer
-		  this->print("buttonUP:" + String(*buttonUP)); // value of the pointer
-		  this->print("buttonDOWN:" + String(*buttonDOWN)); // value of the pointer
+		  this->print__("buttonSET:" + String(*buttonSET)); // getting value of the pointer
+		  this->print__("buttonUP:" + String(*buttonUP)); // value of the pointer
+		  this->print__("buttonDOWN:" + String(*buttonDOWN)); // value of the pointer
 	  };
 
 
 	  void displayRotaryValues() {
-		  this->print("buttonSET:" + String(*buttonSET)); // value of the pointer
-		  this->print("rotarySpinedSIDE:" + String(*rotarySpinedSIDE)); // value of the pointer
+		  this->print__("buttonSET:" + String(*buttonSET)); // value of the pointer
+		  this->print__("rotarySpinedSIDE:" + String(*rotarySpinedSIDE)); // value of the pointer
 		  
 		  
 	  }

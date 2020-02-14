@@ -66,24 +66,19 @@ void print(String txt) {
 }
 
 
-void print(byte txt) {
+void print(int txt) {
 	display.print(txt);
 	display.println(SPACE);
 
 }
 
 
-void println(byte txt) {
-	display.print(txt);
-	//display.println(SPACE);Ftext
-
-}
-
 void println(int txt) {
 	display.print(txt);
 	//display.println(SPACE);Ftext
 
 }
+
 
 void println(String txt) {
 	display.print(txt);
@@ -228,48 +223,42 @@ public:
 
 
 
-public:void print(String txt) {
+public:void print__(String txt) {
 	if (!isMenuOpened) {
 		display.print(txt);
 		display.println(SPACE);
 	}
 
-	}
+}
 
 
-public:void print(int txt) { // also works with bytes, no casting needed
-	
+public:void print__(int txt) { // also works with bytes, no casting needed
+
 	if (!isMenuOpened) {
 		display.print(txt);
 		display.println(SPACE);
 	}
 
-	}
+}
 
 
-public:void println(byte txt) {
+public:void println__(int txt) {
 	if (!isMenuOpened)
 		display.print(txt);
-		//display.println(SPACE);Ftext
+	//display.println(SPACE);Ftext
 
-	}
+}
 
-public:void println(int txt) {
+
+public:void println__(String txt) {
 	if (!isMenuOpened)
 		display.print(txt);
-		//display.println(SPACE);Ftext
+	//display.println(SPACE);
 
-	}
+}
 
-public:void println(String txt) {
-	if (!isMenuOpened)
-		display.print(txt);
-		//display.println(SPACE);
-
-	}
-
-	// clear start at where was last print end.
-public:void clearinDisplay() {
+	  // clear start at where was last print end.
+public:void clearinDisplay__() {
 
 	if (!isMenuOpened) {
 		print("");
@@ -282,10 +271,10 @@ public:void clearinDisplay() {
 		print("");
 		print("");
 	}
-	}
+}
 
 
-	// access menu by long pressed a Set button
+	  // access menu by long pressed a Set button
 public:void IncludeFunction(void (*functionPointer)(), byte& functionValue, String functionName = "Uknown", String functionValueAbbreviation = "", bool printfunctionValue = true)
 { // where magic on
 	func_stored[includedMenuCount].IncludeFunction((functionPointer), functionValue, functionName, functionValueAbbreviation, printfunctionValue);
@@ -498,10 +487,10 @@ private:void menuSelectedPrint(int value = 0, bool value_print = false) {
 
 	if (func_stored[meniuOptionSelected + 1].__printfunctionValue) {
 		//print stored values from a memory 
-		println(String (*func_stored[meniuOptionSelected + 1].__functionValueAddress) + " " );
+		println(String(*func_stored[meniuOptionSelected + 1].__functionValueAddress) + " ");
 
 		display.set1X();
-		print( func_stored[meniuOptionSelected + 1].__functionValueAbbreviation);
+		print(func_stored[meniuOptionSelected + 1].__functionValueAbbreviation);
 
 		//display.setCursor(0, 30);
 	} // if not allowed to print 
@@ -530,10 +519,10 @@ private:void menuQuckAccesPrint() {
 		//print stored values from a memory 
 
 		display.set2X();
-		println( String (*func_stored[includeQuckAccessMenu].__functionValueAddress) + " ");
+		println(String(*func_stored[includeQuckAccessMenu].__functionValueAddress) + " ");
 
 		display.set1X();
-		print( func_stored[includeQuckAccessMenu].__functionValueAbbreviation);
+		print(func_stored[includeQuckAccessMenu].__functionValueAbbreviation);
 		//var_manualMode
 
 	} // if not allowed to print 
@@ -546,34 +535,34 @@ private:void menuQuckAccesPrint() {
 
 
 
-// Interpeter all alligment and print a manual value in custom function = .func
+	   // Interpeter all alligment and print a manual value in custom function = .func
 public: void menuPrintManuallyValue(int value) {
-	
+
 	//print(meniuOptionSelected + 1);
-	
-	if (!func_stored[meniuOptionSelected + 1 ].__printfunctionValue) { // if allowed to print in config
+
+	if (!func_stored[meniuOptionSelected + 1].__printfunctionValue) { // if allowed to print in config
 		display.set2X();
 		println(String(value) + " ");
 
 		display.set1X();
-		print( func_stored[meniuOptionSelected + 1].__functionValueAbbreviation);
+		print(func_stored[meniuOptionSelected + 1].__functionValueAbbreviation);
 	}
 }
-	  
-// Interpeter all alligment and print a manual value in custom function = .func only for quick access menu
+
+	  // Interpeter all alligment and print a manual value in custom function = .func only for quick access menu
 public:void menuQuckAccesPrintManuallyValue(int value) {
-	
+
 	//print(meniuOptionSelected + 1);
 
 	if (!func_stored[includeQuckAccessMenu].__printfunctionValue) { // if allowed to print in config
 		display.set2X();
-		println(String (value) + " ");
+		println(String(value) + " ");
 
 		display.set1X();
-		print( func_stored[includeQuckAccessMenu].__functionValueAbbreviation);
+		print(func_stored[includeQuckAccessMenu].__functionValueAbbreviation);
 	}
 
-  }
+}
 
 	  // clear display just at the moment needed
 private: void clearMenuDisplay() {
@@ -697,7 +686,7 @@ public:bool InterfaceDinamic() {
 				//Set to Default
 				//check if option is available
 				if (defaultIsFunc && meniuOptionSelectFun() == includedMenuCount - 1) { // set to default 
-					
+
 					print("<Reset to default>");
 					print("");
 
@@ -900,23 +889,23 @@ public:void userGetValues() {
 
 			  byte val = readMemoryByte(count + includeStartingPointMem); //save all values to memory EEPROM 
 
-			  this->print(func_stored[count].__functionName.substring(0, 8) + "," + func_stored[count].__printfunctionValue + ":" + String(*func_stored[count].__functionValueAddress) + " " + func_stored[count].__functionValueAbbreviation);
+			  this->print__(func_stored[count].__functionName.substring(0, 8) + "," + func_stored[count].__printfunctionValue + ":" + String(*func_stored[count].__functionValueAddress) + " " + func_stored[count].__functionValueAbbreviation);
 		  }
 	  }
 
 	  void displayButtonsValue() {
 
-		  this->print("buttonSET:" + String(*buttonSET)); // getting value of the pointer
-		  this->print("buttonUP:" + String(*buttonUP)); // value of the pointer
-		  this->print("buttonDOWN:" + String(*buttonDOWN)); // value of the pointer
+		  this->print__("buttonSET:" + String(*buttonSET)); // getting value of the pointer
+		  this->print__("buttonUP:" + String(*buttonUP)); // value of the pointer
+		  this->print__("buttonDOWN:" + String(*buttonDOWN)); // value of the pointer
 	  };
 
 
 	  void displayRotaryValues() {
-		  this->print("buttonSET:" + String(*buttonSET)); // value of the pointer
-		  this->print("rotarySpinedSIDE:" + String(*rotarySpinedSIDE)); // value of the pointer
-		  
-		  
+		  this->print__("buttonSET:" + String(*buttonSET)); // value of the pointer
+		  this->print__("rotarySpinedSIDE:" + String(*rotarySpinedSIDE)); // value of the pointer
+
+
 	  }
 };
 

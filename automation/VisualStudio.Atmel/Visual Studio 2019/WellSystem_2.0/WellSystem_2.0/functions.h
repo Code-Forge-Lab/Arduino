@@ -61,7 +61,7 @@ void func2() {
 	menu.menuPrintManuallyValue(map(var_Water_Preasure_Maximum, 0, 255, 0, 1023));
 };
 void func3() { print("func3"); };
-void func4() { print("TEST"); display.set2X(); print("HERe"); display.set1X(); };
+void func4() { if (var_Allow_External_Button <= 1) var_Allow_External_Button = 1; };
 void func5() {};
 void func6() { 
 			  // menu.menuPrintManuallyValue(var_FlowWaterOwerworkTimer);
@@ -85,14 +85,14 @@ void func8() {};
 
 
 void printbool(bool statement) {
-	display.print(statement);
+	menu.print__(statement);
 }
 
 
 void printeach_1sec(String text) {
 
    if ( manualReapetEach1sec )
-		menu.print(text); 
+		menu.print__(text); 
 
 };
 
@@ -101,7 +101,7 @@ void printeach_1sec(String text) {
 void printeach_1sec(byte text) { // allow to print a only each second.
 
 	if ( manualReapetEach1sec )
-		menu.print(text);
+		menu.print__(text);
 
 };
 
@@ -109,13 +109,13 @@ void printeach_1sec(byte text) { // allow to print a only each second.
 void printeach_1secWhenButtonSet(String text) { // if button right  is set then print this 
 
 	if ( manualReapetEach1sec && allowPrintWhenRightButton )
-		menu.print(text);
+		menu.print__(text);
 }
 
 void printeach_1secWhenButtonNotSet(String text) { // if button right  is unset then not print this 
 
 	if (manualReapetEach1sec && !allowPrintWhenRightButton)
-		menu.print(text);
+		menu.print__(text);
 }
 
 
