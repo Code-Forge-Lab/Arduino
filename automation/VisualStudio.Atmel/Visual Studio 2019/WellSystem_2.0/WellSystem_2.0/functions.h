@@ -1,14 +1,20 @@
+bool isMenuActive; // menu is active 
+/////////////Water Flow Sencor Counter Per Seconds///////////////////////
+byte Sensor_WaterFlowTime = 0;
+byte Sensor_WaterFlowPerTimeSaved = 0; // save each second a value in here 
+bool isWaterFlowPerTimePassed = false;; // void alway on state
 
 
 void userSetDefault() {
-	var_Water_Preasure_Minimum = 5;  // minimum of water preasure to turn on a water source unit
-	var_Water_Preasure_Maximum = 6;  // Maximum of water preasure to turn on a water source unit
+	var_Water_Preasure_Minimum = 90;  // minimum of water preasure to turn on a water source unit
+	var_Water_Preasure_Maximum = 104;  // Maximum of water preasure to turn on a water source unit
 	var_Water_Flow_Sensor_Minimum = 7; //  minimum of water flow to turn on a water source unit
 	var_Allow_External_Button = 8; // react to external button
 	var_Allow_Exeption_Source_Vin = 9; // react to when  heater  is on to turn on a water source unit
 	
 	var_Mode = 1; // takes city water
 	var_TurnOnDelaySec = 5; //seconds, // Turn on a motor/solenoid(water source available) for some time to equalize a fliquating sensors inputs
+	var_FlowWaterOwerworkTimer = 20; // mins not working rezult in 
 };
 
 
@@ -41,15 +47,29 @@ void func0() {
 }
 
 void func1() {
-	menu.menuQuckAccesPrintManuallyValue(map(var_Water_Preasure_Minimum,0,255,0,1023));
+	if (var_Water_Preasure_Maximum  <= var_Water_Preasure_Minimum ) // if minimum value is greater then hight value then reset to minimum
+		var_Water_Preasure_Minimum = var_Water_Preasure_Maximum  - 1;
+	
+	print(String (map(var_Water_Preasure_Maximum, 0, 255, 0, 1023)) ); //  + "/" + String (value_FlowWaterOwerworkTimer) + " " + String (Sensor_WaterFlowPerTimeSaved)
+	menu.menuPrintManuallyValue(map(var_Water_Preasure_Minimum,0,255,0,1023));
 };
 void func2() { 
-	menu.menuQuckAccesPrintManuallyValue(map(var_Water_Preasure_Maximum, 0, 255, 0, 1023));
+	if (var_Water_Preasure_Minimum  >= var_Water_Preasure_Maximum  ) // if minimum value is greater then hight value then reset to minimum
+		var_Water_Preasure_Maximum = var_Water_Preasure_Minimum + 1; // reset.
+	
+	print(String(map(var_Water_Preasure_Minimum, 0, 255, 0, 1023))  ); // + "/" + String (value_FlowWaterOwerworkTimer) + " " +String (Sensor_WaterFlowPerTimeSaved)
+	menu.menuPrintManuallyValue(map(var_Water_Preasure_Maximum, 0, 255, 0, 1023));
 };
 void func3() { print("func3"); };
-void func4() { print("4Aliejaus Reik"); display.set2X(); print("DABAR"); display.set1X(); };
+void func4() { print("TEST"); display.set2X(); print("HERe"); display.set1X(); };
 void func5() {};
-void func6() {};
+void func6() { 
+			  // menu.menuPrintManuallyValue(var_FlowWaterOwerworkTimer);
+			   //display.setCursor(0, 45);
+			   print("If not see flow water");
+			   print("then need,timeout.");
+			  // print("See by flow sensor");
+};
 
 void func7() {//display.println("[R5]");
 	
@@ -71,7 +91,7 @@ void printbool(bool statement) {
 
 void printeach_1sec(String text) {
 
-   if (manualReapetEach1sec)
+   if (!isMenuActive && manualReapetEach1sec )
 		print(text); 
 
 };
@@ -80,7 +100,7 @@ void printeach_1sec(String text) {
 
 void printeach_1sec(byte text) { // allow to print a only each second.
 
-	if (manualReapetEach1sec)
+	if (!isMenuActive && manualReapetEach1sec )
 		print(text);
 
 };
@@ -88,19 +108,19 @@ void printeach_1sec(byte text) { // allow to print a only each second.
 
 void printeach_1secWhenButtonSet(String text) { // if button right  is set then print this 
 
-	if (manualReapetEach1sec && allowPrintWhenRightButton)
+	if (!isMenuActive && manualReapetEach1sec && allowPrintWhenRightButton )
 		print(text);
 }
 
 void printeach_1secWhenButtonNotSet(String text) { // if button right  is unset then not print this 
 
-	if (manualReapetEach1sec && !allowPrintWhenRightButton)
+	if (!isMenuActive && manualReapetEach1sec && !allowPrintWhenRightButton)
 		print(text);
 }
 
-byte Sensor_WaterFlowTime = 0;
-byte Sensor_WaterFlowPerTimeSaved = 0; // save each second a value in here 
-bool isWaterFlowPerTimePassed = false;; // void alway on state
+
+
+/////////////Water Flow Sencor Counter Per Seconds///////////////////////
 void SensorFun_WaterFlowPerSec() {
 
 	if (raw_SENSOR_WATER_FLOW > 80 && !isWaterFlowPerTimePassed)

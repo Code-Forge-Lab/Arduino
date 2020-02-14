@@ -41,6 +41,12 @@ void print(byte txt) {
 
 }
 
+void print(int txt) {
+	display.print(txt);
+	display.println(SPACE);
+
+}
+
 
 void println(byte txt) {
 	display.print(txt);

@@ -64,9 +64,8 @@ byte var_Water_Preasure_Maximum ;  // Maximum of water preasure to turn on a wat
 byte var_Water_Flow_Sensor_Minimum ; //  minimum of water flow to turn on a water source unit
 byte var_Allow_External_Button = 0; // react to external button
 byte var_Allow_Exeption_Source_Vin; // react to when  heater  is on to turn on a water source unit
-
 byte var_TurnOnDelaySec; // how much seconds wait (on) unti values are reached for a well or city water relays
-
+byte var_FlowWaterOwerworkTimer; // protection against a unpumped water that in rezult doesnt build a preasure and a any flow rate 
 
 // casual
 
@@ -88,6 +87,7 @@ bool button_SET_PRESSED = false;
 bool manualReapetEach1sec = false; // allow to print at 1 second rate on the screen
 bool allowPrintWhenRightButton = false; // if right button was pressed then allow to show extra menu 
 bool isWaterTurnedOn = false; // when reached minimu water preasure, this condition allow to wait until get maximum preasure.
+bool isPossibleWaterTurnOn = true; // if flow sensor are in sincronicly working together with preasure sensor.
 
 byte WaterSourcePreasureRequest = 0;
 byte WaterSourcePreasure = 0;
@@ -102,7 +102,7 @@ byte meniuValue = 0;
 //byte value_Allow_External_Button;
 byte value_SourceCityWaterTimeout;	// Turn on a motor/solenoid(water source available) for some time to equalize a fliquating sensors inputs
 byte value_SourceWellWaterTimeout;   // Turn on a motor/solenoid(water source available) for some time to equalize a fliquating sensors inputs
-byte value_FlowWaterOwerworkTimer = 20; // protection against a unpumped water that in rezult doesnt build a preasure and a any flow rate 
+byte value_FlowWaterOwerworkTimer; // protection against a unpumped water that in rezult doesnt build a preasure and a any flow rate 
 bool bool_FlowWaterOverwork = false;  // protection against a unpumped water that in rezult doesnt build a preasure and a any flow rate( condition trigering timeout protetion) 
 
 
@@ -144,14 +144,15 @@ byte  rotory;
 void setup() {
 	
 	// add function to menu 
-
+	
 	//menu.IncludeFunction(&func0, var_Mode, "Do Modes", "mode" , false);
-	menu.IncludeFunction(&func1, var_Water_Preasure_Minimum, "Water pressure minimum","psi",false);
-	menu.IncludeFunction(&func2, var_Water_Preasure_Maximum, "Water pressure maximum","psi",false);
+	menu.IncludeFunction(&func1, var_Water_Preasure_Minimum, "Water pressure minimum","presure",false);
+	menu.IncludeFunction(&func2, var_Water_Preasure_Maximum, "Water pressure maximum","presure",false);
 	menu.IncludeFunction(&func3, var_Water_Flow_Sensor_Minimum, "Flow minimum rate","u/sec");
 	menu.IncludeFunction(&func4, var_Allow_External_Button, "Allow External Button", "");
 	menu.IncludeFunction(&func4, var_Allow_Exeption_Source_Vin, "Exeption Source Vin","");
 	menu.IncludeFunction(&func5, var_TurnOnDelaySec, "Delay On Water", "sec");
+	menu.IncludeFunction(&func6, var_FlowWaterOwerworkTimer, "Not Sucking Water", "min",true);
 
 	menu.IncludeQuckAccessFunction(&func0, var_Mode, "Modes","",false);
 	menu.IncludeFunctionSetDefault(&userSetDefault); 
@@ -194,6 +195,8 @@ void setup() {
 	};
 	 
 	menu.userGetValues();
+
+	value_FlowWaterOwerworkTimer = var_FlowWaterOwerworkTimer;// set timer to default
 };
 
 
@@ -202,45 +205,24 @@ bool setButtonPressed = false;
 void loop() {
 
 
-	
+
 
 
 	display.setCursor(0, 0);
 	//display.clear();
 
-	 buttonSET = digitalRead(BUTTON_SET);
-	 buttonDOWN = digitalRead(BUTTON_DOWN);
-	 buttonUP = digitalRead (BUTTON_UP);
+	buttonSET = digitalRead(BUTTON_SET);
+	buttonDOWN = digitalRead(BUTTON_DOWN);
+	buttonUP = digitalRead(BUTTON_UP);
 
-	  raw_SENSOR_Well_System_Minimum_Water_Sensor = digitalRead(SENSOR_Well_System_Minimum_Water_Sensor);
-	  raw_SENSOR_Exeption_Source_Vin = digitalRead(SENSOR_Exeption_Source_Vin);
-	  raw_SENSOR_Button_External = digitalRead(SENSOR_Button_External);
-	  raw_SENSOR_WATER_PREASURE = analogRead (SENSOR_WATER_PREASURE) ;
-	  raw_SENSOR_WATER_FLOW = analogRead(SENSOR_WATER_FLOW);
-
-
-	  /*
-	 rotory = rotaryEncoderDirection(&buttonUP, &buttonDOWN);
+	raw_SENSOR_Well_System_Minimum_Water_Sensor = digitalRead(SENSOR_Well_System_Minimum_Water_Sensor);
+	raw_SENSOR_Exeption_Source_Vin = digitalRead(SENSOR_Exeption_Source_Vin);
+	raw_SENSOR_Button_External = digitalRead(SENSOR_Button_External);
+	raw_SENSOR_WATER_PREASURE = analogRead(SENSOR_WATER_PREASURE);
+	raw_SENSOR_WATER_FLOW = analogRead(SENSOR_WATER_FLOW);
 
 
-	if (rotory == 1) {
 
-		if (!button_SET_PRESSED && meniuIndex != 0)
-			meniuIndex--; // select meniu index
-		
-
-	}
-	else if (rotory == 2)
-	{
-
-		if (!button_SET_PRESSED)
-			meniuIndex++; // select meniu index
-
-	}
-
-	
-
-*/
 
 	//                      16MHz	 32MHz
 	/// CLOCK 1 min			60000UL  120000UL  x 2 clock speed 
@@ -249,10 +231,10 @@ void loop() {
 
 		clock_1min = millis(); // reset each  60 seconds  time
 		display.clear();
-
+		manualReapetEach1sec = true; // for fast print a printeach_1sec("")
 	}
 
-	
+
 
 	/// CLOCK 1 sec
 	if (((long)clock_1sec + 1000L) < millis())
@@ -260,34 +242,34 @@ void loop() {
 
 		clock_1sec = millis(); // reset each  1 seconds  time
 		manualReapetEach1sec = true;
-		
+
 		if (buttonUP) // if button right was pressed
 			allowPrintWhenRightButton = !allowPrintWhenRightButton; // enter to extra menu state
 
 		// timeouts
 		if (value_SourceWellWaterTimeout > 0)
-		value_SourceWellWaterTimeout = value_SourceWellWaterTimeout - 1; // timeout countdown
-		
-		if (value_SourceCityWaterTimeout > 0)
-		value_SourceCityWaterTimeout = value_SourceCityWaterTimeout - 1; // timeout countdown
-		//
+			value_SourceWellWaterTimeout = value_SourceWellWaterTimeout - 1; // timeout countdown
 
-		//overwork/emty load protetion counter 
-		if (var_Water_Flow_Sensor_Minimum > Sensor_WaterFlowPerTimeSaved && value_FlowWaterOwerworkTimer > 0) // if even flow rate is less then expeted then do countdown protection
+		if (value_SourceCityWaterTimeout > 0)
+			value_SourceCityWaterTimeout = value_SourceCityWaterTimeout - 1; // timeout countdown
+			//
+
+			//overwork/emty load protetion counter then no flow of water for a to long time 
+		if (!isPossibleWaterTurnOn && value_FlowWaterOwerworkTimer > 0) // if even flow rate is less then expeted then do countdown protection
 			value_FlowWaterOwerworkTimer = value_FlowWaterOwerworkTimer - 1;
-		
+
 
 		//programe variables 
 		Sensor_WaterFlowPerTimeSaved = Sensor_WaterFlowTime; // save progress value in here for another time 
 		Sensor_WaterFlowTime = 0; // then progress value will be returned to new start
 	}
 
-	
+
 	if (((long)clock_manual + 1000L) < millis())
 	{
 
 		clock_manual = millis(); // reset each  1 seconds  time
-		
+
 
 	}
 
@@ -297,33 +279,36 @@ void loop() {
 
 	SensorFun_WaterFlowPerSec();// scan flow sensor signals rate 
 
+	if (buttonDOWN || buttonUP) // reset when key inputs from the user 
+	{
+		//value_FlowWaterOwerworkTimer = var_FlowWaterOwerworkTimer;// set timer to default
+	}
+
 
 
 	//print(meniuOption[meniuIndex]);
+	isMenuActive = menu.InterfaceDinamic(); // get condition when to print a not menu unints
 
-	if (!menu.InterfaceDinamic()) {
 		//menu.displayButtonsValue();
 
 
-		//print("Minimum Well Water " + String(raw_SENSOR_Well_System_Minimum_Water_Sensor));
-		//print("Exeption_Source_Vin " + String(raw_SENSOR_Exeption_Source_Vin) );
-		//print("Button_External " + String(raw_SENSOR_Button_External) );
-		//print("WATER_PREASURE " + String (raw_SENSOR_WATER_PREASURE));
-		//print("WATER_FLOW " + String(raw_SENSOR_WATER_FLOW));
+		printeach_1secWhenButtonSet("Minimum Well Water " + String(raw_SENSOR_Well_System_Minimum_Water_Sensor));
+		printeach_1secWhenButtonSet("Exeption_Source_Vin " + String(raw_SENSOR_Exeption_Source_Vin));
+		printeach_1secWhenButtonSet("Button_External " + String(raw_SENSOR_Button_External));
+		printeach_1secWhenButtonSet("W_FLOW:" + String(Sensor_WaterFlowPerTimeSaved) + " (" + String(raw_SENSOR_WATER_FLOW) + ")");
+		printeach_1secWhenButtonSet("W_PREASURE:" + String(raw_SENSOR_WATER_PREASURE) + "[ " + String(isWaterTurnedOn) + " ]");
+		/*
+
+				}
+
+			*/
 
 
-/*
-
-		}
-
-	*/
-
-		printeach_1secWhenButtonSet("Tekme:" + String(Sensor_WaterFlowPerTimeSaved) +  " (" + String(raw_SENSOR_WATER_FLOW) + ")");
 
 		if (var_Water_Flow_Sensor_Minimum < Sensor_WaterFlowPerTimeSaved) // or flow of water is greater then turn on a water!
 		{
 			isWaterTurnedOn = true;
-			value_FlowWaterOwerworkTimer = 20;  // if flow exist, reset protection timer
+			value_FlowWaterOwerworkTimer = var_FlowWaterOwerworkTimer;  // if flow exist, reset protection timer
 			printeach_1secWhenButtonNotSet("FLow ON");
 		}
 		else
@@ -334,18 +319,23 @@ void loop() {
 
 		if (raw_SENSOR_WATER_PREASURE > 50) {// if greater pressure as usual ( 99 of 1024) when do filling water process 
 
-			printeach_1secWhenButtonSet("Slegis:" + String(raw_SENSOR_WATER_PREASURE));
+
 
 			// cach a preasure condition then 
 			if (!isWaterTurnedOn && raw_SENSOR_WATER_PREASURE <= map(var_Water_Preasure_Minimum, 0, 255, 0, 1023)) // map(var_Water_Preasure_Minimum, 0, 255, 0, 1023)
 			{
-				printeach_1secWhenButtonNotSet("Preasure On");
+				printeach_1secWhenButtonNotSet("Pressure Low"); // on
 				isWaterTurnedOn = true;
+				isPossibleWaterTurnOn = false;
+
 			}
 			else if (/*isWaterTurnedOn &&*/ raw_SENSOR_WATER_PREASURE >= map(var_Water_Preasure_Maximum, 0, 255, 0, 1023)) // map(var_Water_Preasure_Maximum, 0, 255, 0, 1023)
 			{
-				printeach_1secWhenButtonNotSet("Preasure Off");
+				printeach_1secWhenButtonNotSet("Pressure Reached"); // off 
 				isWaterTurnedOn = false;
+				isPossibleWaterTurnOn = true;
+
+				value_FlowWaterOwerworkTimer = var_FlowWaterOwerworkTimer; // if pressure is reached then no point to countdown. Reset to original state 
 			}
 
 		}
@@ -353,6 +343,14 @@ void loop() {
 			printeach_1secWhenButtonSet("Nera Slegio sensoriaus!");
 			isWaterTurnedOn = false;
 		}
+		////////////////External Statements////////////////
+		///////////////////////////////////////////////////
+
+
+		if (!raw_SENSOR_Exeption_Source_Vin) // always 1 if true then 0
+		{
+			isWaterTurnedOn = true;
+		}
 
 
 
@@ -360,16 +358,15 @@ void loop() {
 
 
 
-
-		printeach_1secWhenButtonNotSet("Hey am here! " + String (raw_SENSOR_WATER_PREASURE) + "[ " + String (isWaterTurnedOn) + " ]");
-		printeach_1secWhenButtonNotSet("No water: " + String(value_FlowWaterOwerworkTimer));
-		
-		
-
+		///////////////////////////////////////////////////
 		if (value_FlowWaterOwerworkTimer == 0) // protect pump from not sucking water from the well to long.
 		{
-				
-			isWaterTurnedOn = false;
+
+			isWaterTurnedOn = false; // no flow of the water rezult no more 
+			printeach_1secWhenButtonNotSet(String(isPossibleWaterTurnOn) + ":No flow: " + String(value_FlowWaterOwerworkTimer) + " min");
+		}
+		else {
+			printeach_1secWhenButtonNotSet(String(isPossibleWaterTurnOn) + ":Is flow: " + String(value_FlowWaterOwerworkTimer) + " min");
 		}
 
 
@@ -399,21 +396,28 @@ void loop() {
 			}
 		}
 
+
+
+		///////////////////////////////////////////////////////
+		printeach_1secWhenButtonNotSet("");
+		display.set2X();
 		if (value_SourceCityWaterTimeout > 0) {
-			printeach_1secWhenButtonNotSet("On City:" + String (value_SourceCityWaterTimeout));
+			printeach_1secWhenButtonNotSet("City " + String(value_SourceCityWaterTimeout) + "s");
+
 			digitalWrite(RELAY_To_a_Solenoid_Valve_Output, HIGH);
 		}
-			else
+		else
 			digitalWrite(RELAY_To_a_Solenoid_Valve_Output, LOW);
 
 
 		if (value_SourceWellWaterTimeout > 0)
 		{
-			printeach_1secWhenButtonNotSet("On Well:"+String (value_SourceWellWaterTimeout));
+			printeach_1secWhenButtonNotSet("Well " + String(value_SourceWellWaterTimeout) + "s");
 			digitalWrite(RELAY_To_a_Pump_Output, HIGH);
 		}
 		else
 			digitalWrite(RELAY_To_a_Pump_Output, LOW);
+		display.set1X();
 
 		//print("");
 		//print("");
@@ -421,53 +425,20 @@ void loop() {
 		printeach_1sec("");
 		printeach_1sec("");
 		printeach_1sec("");
-		
+
 		// end of InterfaceDinamic()
-	}
 	
 
 
-//-------------------------------- resets 
+
+	//-------------------------------- resets 
 	manualReapetEach1sec = false; // reset after everything  was done before this statement
+
+
+
 
 }
 
 
 
 
-
-
-
-
-
-
-
-// interup rotary encoder not workiyng proietly at all!
-void INTSignalLeft() {
-	 
-	//buttonDOWN = digitalRead(BUTTON_DOWN);
-	//buttonUP = digitalRead(BUTTON_UP);
-	/*
-	
-	INTERUPT_UP = true;
-	if (INTERUPT_DOWN)
-		INTERUPT_SIDE = 1;
-	INTERUPT_DOWN = false;
-
-	*/
-	
-};
-
-// interup rotary encoder not workiyng proietly at all!
-void INTSignalRight() {
-
-	//buttonDOWN = digitalRead(BUTTON_DOWN);
-	//buttonUP = digitalRead(BUTTON_UP);
-
-	/*
-	INTERUPT_DOWN = true;
-	if (INTERUPT_UP)
-		INTERUPT_SIDE = 2;
-	INTERUPT_UP = false;
-	*/
-};

@@ -27,6 +27,37 @@ SSD1306AsciiWire display;
 
 
 
+
+
+byte spinSide = 0;
+byte rotaryEncoderDirection(bool* sideUp, bool* sideDown) {
+
+	String side = "";
+	if (spinSide == 0)
+	{
+		if (*sideUp && !*sideDown)
+			spinSide = 1;
+
+		else if (*sideDown && !*sideUp)
+			spinSide = 2;
+	}
+
+
+
+
+	if (!*sideUp && !*sideDown)
+	{
+		byte xspin = spinSide;
+		spinSide = 0;
+		return xspin;
+
+	}
+	return 0;
+}
+
+
+
+// no control when menu exist
 String SPACE = "                        ";
 void print(String txt) {
 	display.print(txt);
@@ -73,37 +104,6 @@ void clearinDisplay() {
 	print("");
 	print("");
 }
-
-
-byte spinSide = 0;
-byte rotaryEncoderDirection(bool* sideUp, bool* sideDown) {
-
-	String side = "";
-	if (spinSide == 0)
-	{
-		if (*sideUp && !*sideDown)
-			spinSide = 1;
-
-		else if (*sideDown && !*sideUp)
-			spinSide = 2;
-	}
-
-
-
-
-	if (!*sideUp && !*sideDown)
-	{
-		byte xspin = spinSide;
-		spinSide = 0;
-		return xspin;
-
-	}
-	return 0;
-}
-
-
-
-
 
 
 
@@ -169,7 +169,7 @@ class lib_meniuInterface128x64OLEDSSD1306AsciiWire
 	unsigned long startedWaiting;
 	unsigned long startedWaitingmeniuOptionSelected;
 	byte toggleDisplay = 0;
-
+	bool isMenuOpened = false; // know about menu when is opened and when is not. To avoid printing on menu with other uncontroled 'Print' functions
 	// less inportant
 	//bool isDisplayCleared = false; // track if display was cleared when exitind from meniuOptionIsSelected
 public:bool isclearedDisplayCommon = false; // comontry use to clear once when enter in a option 
@@ -227,6 +227,62 @@ public:
 	}
 
 
+
+public:void print(String txt) {
+	if (!isMenuOpened) {
+		display.print(txt);
+		display.println(SPACE);
+	}
+
+	}
+
+
+public:void print(int txt) { // also works with bytes, no casting needed
+	
+	if (!isMenuOpened) {
+		display.print(txt);
+		display.println(SPACE);
+	}
+
+	}
+
+
+public:void println(byte txt) {
+	if (!isMenuOpened)
+		display.print(txt);
+		//display.println(SPACE);Ftext
+
+	}
+
+public:void println(int txt) {
+	if (!isMenuOpened)
+		display.print(txt);
+		//display.println(SPACE);Ftext
+
+	}
+
+public:void println(String txt) {
+	if (!isMenuOpened)
+		display.print(txt);
+		//display.println(SPACE);
+
+	}
+
+	// clear start at where was last print end.
+public:void clearinDisplay() {
+
+	if (!isMenuOpened) {
+		print("");
+		print("");
+		print("");
+		print("");
+		print("");
+		print("");
+		print("");
+		print("");
+		print("");
+	}
+	}
 
 
 	// access menu by long pressed a Set button
@@ -735,7 +791,7 @@ public:bool InterfaceDinamic() {
 
 			// exit from tight loops!
 			// event trigger if after some time will react to button set
-			if ( /*Wait while user realesing a button*/(millis() > (long)(startedWaiting + 230UL)) && *buttonSET || /*or timeout for 45s*/(millis() > (long)(startedWaiting + 45100UL))) {
+			if ( /*Wait while user realesing a button*/(millis() > (long)(startedWaiting + 730UL)) && *buttonSET || /*or timeout for 45s*/(millis() > (long)(startedWaiting + 45100UL))) {
 				// reset whole set loop
 				boolQuicklyChange = false;
 				boolSetButton = false;
@@ -782,7 +838,11 @@ public:bool InterfaceDinamic() {
 
 
 	if (boolSetMenu || boolQuicklyChange) { // when exit from any option, reset a clearing display ones a  boolean.
-
+		isMenuOpened = true;
+	}
+	else
+	{
+		isMenuOpened = false;
 	};
 
 	return boolSetMenu || boolQuicklyChange; // if any selected , give true.
@@ -840,21 +900,23 @@ public:void userGetValues() {
 
 			  byte val = readMemoryByte(count + includeStartingPointMem); //save all values to memory EEPROM 
 
-			  print(func_stored[count].__functionName.substring(0, 8) + "," + func_stored[count].__printfunctionValue + ":" + String(*func_stored[count].__functionValueAddress) + " " + func_stored[count].__functionValueAbbreviation);
+			  this->print(func_stored[count].__functionName.substring(0, 8) + "," + func_stored[count].__printfunctionValue + ":" + String(*func_stored[count].__functionValueAddress) + " " + func_stored[count].__functionValueAbbreviation);
 		  }
 	  }
 
 	  void displayButtonsValue() {
 
-		  print("buttonSET:" + String(*buttonSET)); // getting value of the pointer
-		  print("buttonUP:" + String(*buttonUP)); // value of the pointer
-		  print("buttonDOWN:" + String(*buttonDOWN)); // value of the pointer
+		  this->print("buttonSET:" + String(*buttonSET)); // getting value of the pointer
+		  this->print("buttonUP:" + String(*buttonUP)); // value of the pointer
+		  this->print("buttonDOWN:" + String(*buttonDOWN)); // value of the pointer
 	  };
 
 
 	  void displayRotaryValues() {
-		  print("buttonSET:" + String(*buttonSET)); // value of the pointer
-		  print("rotarySpinedSIDE:" + String(*rotarySpinedSIDE)); // value of the pointer
+		  this->print("buttonSET:" + String(*buttonSET)); // value of the pointer
+		  this->print("rotarySpinedSIDE:" + String(*rotarySpinedSIDE)); // value of the pointer
+		  
+		  
 	  }
 };
 

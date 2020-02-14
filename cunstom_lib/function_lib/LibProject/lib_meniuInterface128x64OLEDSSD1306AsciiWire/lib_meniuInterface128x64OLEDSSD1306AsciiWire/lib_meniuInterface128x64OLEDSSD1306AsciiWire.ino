@@ -22,6 +22,7 @@ byte var_six;
 
 //Clock variables
 unsigned long clock_1min = 0;
+unsigned long clock_1sec = 0;
 
 // buttons variables
 bool buttonUP;
@@ -66,24 +67,36 @@ void loop() {
 	if (((long)clock_1min + 60000UL) < millis()) // 120000UL a double clock speed by
 	{
 		clock_1min = millis(); // reset each  60 seconds  time
-		//display.clear();
+		display.clear();
+		manualReapetEach1sec = true; // reset for fast print 
+	}
+
+
+	if (((long)clock_1sec + 1000UL) < millis()) 
+	{
+		clock_1sec = millis(); // reset each  60 seconds  time
+		manualReapetEach1sec = true; // reset each second to print one time 
 	}
 
 	
 
 	// return condition about opened menu
-	if (!menu.InterfaceDinamic()) {
+	isMenuActive = menu.InterfaceDinamic();// save condition about usage of menu.
 		//menu.displayButtonsValue();
 		
-		menu.displayStoredMemoryValues();
-		print("");
-		print("");
-		print("");
-		print("");
+	// everything is as open loop  method
+	 // if (manualReapetEach1sec)
+			menu.displayStoredMemoryValues();
+		
+		printeach_1sec(String (clock_1sec)); //allow to print each second
+		printeach_1sec("");
+		printeach_1sec("");
+		printeach_1sec("");
+		
 //		print("::" + String (menu.isclearedDisplayCommon));
 
 		
 
-	}
 
+	manualReapetEach1sec = false;
 }
