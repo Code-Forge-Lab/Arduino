@@ -5,12 +5,26 @@ byte Sensor_WaterFlowPerTimeSaved = 0; // save each second a value in here
 bool isWaterFlowPerTimePassed = false;; // void alway on state
 
 
+
+
+
+int funFillingWaterOvertime(byte setNewValue = 0) {
+
+	if (setNewValue > 0)
+		var_FillingWaterOvertime = setNewValue;
+	return  var_FillingWaterOvertime * 10;
+}
+
+
+
+
 void userSetDefault() {
-	var_Water_Preasure_Minimum = 90;  // minimum of water preasure to turn on a water source unit
-	var_Water_Preasure_Maximum = 104;  // Maximum of water preasure to turn on a water source unit
-	var_Water_Flow_Sensor_Minimum = 7; //  minimum of water flow to turn on a water source unit
-	var_Allow_External_Button = 8; // react to external button
-	var_Allow_Exeption_Source_Vin = 9; // react to when  heater  is on to turn on a water source unit
+	var_Water_Preasure_Minimum = 40;  // minimum of water preasure to turn on a water source unit
+	var_Water_Preasure_Maximum = 42;  // Maximum of water preasure to turn on a water source unit
+	var_Water_Flow_Sensor_Minimum = 25; //  minimum of water flow to turn on a water source unit
+	var_Allow_External_Button = 1; // 0= no react, 1=when button reset all errors, 2=when pressed-turn on water
+	funFillingWaterOvertime(30);//  (multiplier)10 * 30min = 300min = 5h
+	//var_Allow_Exeption_Source_Vin = 1; // react to when  heater  is on to turn on a water source unit
 	
 	var_Mode = 1; // takes city water
 	var_TurnOnDelaySec = 5; //seconds, // Turn on a motor/solenoid(water source available) for some time to equalize a fliquating sensors inputs
@@ -26,6 +40,34 @@ void printBigthenSmallLetters(String Bigtext, String Smalltext) {
 	print(Smalltext);
 
 }
+
+
+void errorCachingTimersIn1min() {
+
+
+	//////////////////////////////// Error Level Timers///////////////////////////
+		// then working too long time, counter 
+	if (value_SourceCityWaterTimeout > 0 || value_SourceWellWaterTimeout > 0) { // any of this timer that turn on a water flow works very long time then 
+
+		if (value_FillingWaterOvertime > 0)
+			value_FillingWaterOvertime = value_FillingWaterOvertime - 1; // too long working time decrease each minute.
+
+		if (value_FillingWaterOvertime == 0)
+			isFillingWaterOvertime = true; // if reached a value_SourceCityWaterTimeout == 0 then rezult is equal to overwoked too long.
+
+	}
+	else if (value_FillingWaterOvertime < funFillingWaterOvertime() && !isFillingWaterOvertime)
+	{//							         double rate for 
+		value_FillingWaterOvertime = value_FillingWaterOvertime + 2; // increase each time when  not water is turned on 
+	}
+
+	//overwork/emty load protetion counter then no flow of water for a to long time 
+	if (!isPossibleWaterTurnOn && value_FlowWaterOwerworkTimer > 0 && !isFillingWaterOvertime) // if even flow rate is less then expeted then do countdown protection
+		value_FlowWaterOwerworkTimer = value_FlowWaterOwerworkTimer - 1; // isFillingWaterOvertime for see  clearly original error level only
+
+
+}
+
 
 void func0() { 
 
@@ -47,6 +89,8 @@ void func0() {
 }
 
 void func1() {
+	//print("When lower, always");
+	//print("request water.");
 	if (var_Water_Preasure_Maximum  <= var_Water_Preasure_Minimum ) // if minimum value is greater then hight value then reset to minimum
 		var_Water_Preasure_Minimum = var_Water_Preasure_Maximum  - 1;
 	
@@ -54,25 +98,54 @@ void func1() {
 	menu.menuPrintManuallyValue(map(var_Water_Preasure_Minimum,0,255,0,1023));
 };
 void func2() { 
+	//print("Stop getting a water");
+	//print("source");
+
 	if (var_Water_Preasure_Minimum  >= var_Water_Preasure_Maximum  ) // if minimum value is greater then hight value then reset to minimum
 		var_Water_Preasure_Maximum = var_Water_Preasure_Minimum + 1; // reset.
 	
 	print(String(map(var_Water_Preasure_Minimum, 0, 255, 0, 1023))  ); // + "/" + String (value_FlowWaterOwerworkTimer) + " " +String (Sensor_WaterFlowPerTimeSaved)
 	menu.menuPrintManuallyValue(map(var_Water_Preasure_Maximum, 0, 255, 0, 1023));
 };
-void func3() { print("func3"); };
-void func4() { if (var_Allow_External_Button <= 1) var_Allow_External_Button = 1; };
-void func5() {};
+void func3() {
+	//print("Trigger when turn on");
+	//print("water source.");
+};
+
+void func4() { 
+	if (var_Allow_External_Button >= 2)
+	{
+		var_Allow_External_Button = 2;
+	}
+
+	if (var_Allow_External_Button == 0)
+		print("Ignore.");
+	else if (var_Allow_External_Button == 1)
+		print("Reset errors.");
+	else if (var_Allow_External_Button == 2)
+		print("Turn on water.");
+};
+void func5()
+{
+
+	print("Filter false sensors");
+	print("flickering");
+};
 void func6() { 
 			  // menu.menuPrintManuallyValue(var_FlowWaterOwerworkTimer);
 			   //display.setCursor(0, 45);
 			   print("If not see flow water");
-			   print("then need,timeout.");
+			   print("then on,timeout.");
 			  // print("See by flow sensor");
 };
 
 void func7() {//display.println("[R5]");
-	
+	if (var_FillingWaterOvertime < 1)
+		var_FillingWaterOvertime = 1;
+
+	print("Timer when something");
+	print ("take to long to fill.");
+		menu.menuPrintManuallyValue(funFillingWaterOvertime());
 	};
 
 void func8() {};
@@ -118,6 +191,11 @@ void printeach_1secWhenButtonNotSet(String text) { // if button right  is unset 
 		menu.print__(text);
 }
 
+void printlneach_1secWhenButtonNotSet(String text) { // if button right  is unset then not print this 
+
+	if (manualReapetEach1sec && !allowPrintWhenRightButton)
+		menu.println__(text);
+}
 
 
 /////////////Water Flow Sencor Counter Per Seconds///////////////////////

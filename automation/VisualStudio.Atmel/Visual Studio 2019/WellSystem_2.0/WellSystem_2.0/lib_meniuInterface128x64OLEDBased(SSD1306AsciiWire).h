@@ -3,7 +3,7 @@
 
 // const Varables
 
-#define CONST_TOTALMENUELEMENTS  15 // maximum ammount of elemtents(functions) in meniu 
+#define CONST_TOTALMENUELEMENTS  10 // maximum ammount of elemtents(functions) in meniu 
 
 //Structure
 #include<stdlib.h>

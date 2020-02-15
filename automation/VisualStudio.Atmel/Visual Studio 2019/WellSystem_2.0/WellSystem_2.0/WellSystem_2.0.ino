@@ -66,7 +66,7 @@ byte var_Allow_External_Button = 0; // react to external button
 byte var_Allow_Exeption_Source_Vin; // react to when  heater  is on to turn on a water source unit
 byte var_TurnOnDelaySec; // how much seconds wait (on) unti values are reached for a well or city water relays
 byte var_FlowWaterOwerworkTimer; // protection against a unpumped water that in rezult doesnt build a preasure and a any flow rate 
-
+byte var_FillingWaterOvertime; // if water works more then 5h then somethins is wrong with leaking or toilet water level conduct a water all the time.
 // casual
 
 
@@ -88,7 +88,7 @@ bool manualReapetEach1sec = false; // allow to print at 1 second rate on the scr
 bool allowPrintWhenRightButton = false; // if right button was pressed then allow to show extra menu 
 bool isWaterTurnedOn = false; // when reached minimu water preasure, this condition allow to wait until get maximum preasure.
 bool isPossibleWaterTurnOn = true; // if flow sensor are in sincronicly working together with preasure sensor.
-
+bool isFillingWaterOvertime = false; // remember state about working to long time with water filling problem.
 byte WaterSourcePreasureRequest = 0;
 byte WaterSourcePreasure = 0;
 
@@ -104,7 +104,7 @@ byte value_SourceCityWaterTimeout;	// Turn on a motor/solenoid(water source avai
 byte value_SourceWellWaterTimeout;   // Turn on a motor/solenoid(water source available) for some time to equalize a fliquating sensors inputs
 byte value_FlowWaterOwerworkTimer; // protection against a unpumped water that in rezult doesnt build a preasure and a any flow rate 
 bool bool_FlowWaterOverwork = false;  // protection against a unpumped water that in rezult doesnt build a preasure and a any flow rate( condition trigering timeout protetion) 
-
+int value_FillingWaterOvertime; // protect agents turned water on for to long like 5h or more. 
 
 //raw sensor rezult 
 bool raw_SENSOR_Well_System_Minimum_Water_Sensor;
@@ -146,13 +146,13 @@ void setup() {
 	// add function to menu 
 	
 	//menu.IncludeFunction(&func0, var_Mode, "Do Modes", "mode" , false);
-	menu.IncludeFunction(&func1, var_Water_Preasure_Minimum, "Water pressure minimum","presure",false);
-	menu.IncludeFunction(&func2, var_Water_Preasure_Maximum, "Water pressure maximum","presure",false);
+	menu.IncludeFunction(&func1, var_Water_Preasure_Minimum, "Water pressure minimum","psi",false);
+	menu.IncludeFunction(&func2, var_Water_Preasure_Maximum, "Water pressure maximum","psi",false);
 	menu.IncludeFunction(&func3, var_Water_Flow_Sensor_Minimum, "Flow minimum rate","u/sec");
-	menu.IncludeFunction(&func4, var_Allow_External_Button, "Allow External Button", "");
-	menu.IncludeFunction(&func4, var_Allow_Exeption_Source_Vin, "Exeption Source Vin","");
+	menu.IncludeFunction(&func4, var_Allow_External_Button, "Then External Button", "");
 	menu.IncludeFunction(&func5, var_TurnOnDelaySec, "Delay On Water", "sec");
 	menu.IncludeFunction(&func6, var_FlowWaterOwerworkTimer, "Not Sucking Water", "min",true);
+	menu.IncludeFunction(&func7, var_FillingWaterOvertime, "Working to long", "min", false);
 
 	menu.IncludeQuckAccessFunction(&func0, var_Mode, "Modes","",false);
 	menu.IncludeFunctionSetDefault(&userSetDefault); 
@@ -197,6 +197,7 @@ void setup() {
 	menu.userGetValues();
 
 	value_FlowWaterOwerworkTimer = var_FlowWaterOwerworkTimer;// set timer to default
+	value_FillingWaterOvertime = funFillingWaterOvertime();
 };
 
 
@@ -232,6 +233,9 @@ void loop() {
 		clock_1min = millis(); // reset each  60 seconds  time
 		display.clear();
 		manualReapetEach1sec = true; // for fast print a printeach_1sec("")
+		allowPrintWhenRightButton = false ;
+
+		errorCachingTimersIn1min();
 	}
 
 
@@ -241,10 +245,12 @@ void loop() {
 	{
 
 		clock_1sec = millis(); // reset each  1 seconds  time
-		manualReapetEach1sec = true;
+		manualReapetEach1sec = true;// allow to print values on one time per minute
 
 		if (buttonUP) // if button right was pressed
+		{
 			allowPrintWhenRightButton = !allowPrintWhenRightButton; // enter to extra menu state
+		}
 
 		// timeouts
 		if (value_SourceWellWaterTimeout > 0)
@@ -254,14 +260,15 @@ void loop() {
 			value_SourceCityWaterTimeout = value_SourceCityWaterTimeout - 1; // timeout countdown
 			//
 
-			//overwork/emty load protetion counter then no flow of water for a to long time 
-		if (!isPossibleWaterTurnOn && value_FlowWaterOwerworkTimer > 0) // if even flow rate is less then expeted then do countdown protection
-			value_FlowWaterOwerworkTimer = value_FlowWaterOwerworkTimer - 1;
+		
 
 
 		//programe variables 
 		Sensor_WaterFlowPerTimeSaved = Sensor_WaterFlowTime; // save progress value in here for another time 
 		Sensor_WaterFlowTime = 0; // then progress value will be returned to new start
+		
+
+		
 	}
 
 
@@ -297,6 +304,8 @@ void loop() {
 		printeach_1secWhenButtonSet("Button_External " + String(raw_SENSOR_Button_External));
 		printeach_1secWhenButtonSet("W_FLOW:" + String(Sensor_WaterFlowPerTimeSaved) + " (" + String(raw_SENSOR_WATER_FLOW) + ")");
 		printeach_1secWhenButtonSet("W_PREASURE:" + String(raw_SENSOR_WATER_PREASURE) + "[ " + String(isWaterTurnedOn) + " ]");
+		printeach_1secWhenButtonSet(String(isPossibleWaterTurnOn) + "Flow time left: " + String(value_FlowWaterOwerworkTimer) + " min");
+		printeach_1secWhenButtonSet(String(isFillingWaterOvertime) + "Fill can:" + String(value_FillingWaterOvertime) + "/" + String(funFillingWaterOvertime()) + "m");
 		/*
 
 				}
@@ -304,8 +313,8 @@ void loop() {
 			*/
 
 
-
-		if (var_Water_Flow_Sensor_Minimum < Sensor_WaterFlowPerTimeSaved) // or flow of water is greater then turn on a water!
+		// flow sensor condition 
+		if (var_Water_Flow_Sensor_Minimum < Sensor_WaterFlowPerTimeSaved && !isPossibleWaterTurnOn) // or flow of water is greater then turn on a water!
 		{
 			isWaterTurnedOn = true;
 			value_FlowWaterOwerworkTimer = var_FlowWaterOwerworkTimer;  // if flow exist, reset protection timer
@@ -347,30 +356,73 @@ void loop() {
 		///////////////////////////////////////////////////
 
 
+		// sourcing external voltage button 
+
 		if (!raw_SENSOR_Exeption_Source_Vin) // always 1 if true then 0
 		{
 			isWaterTurnedOn = true;
+			printeach_1secWhenButtonNotSet("Source button:On");
 		}
 
 
+		// external button
+		if (raw_SENSOR_Button_External) {
+			printlneach_1secWhenButtonNotSet("Button:");
+			if (var_Allow_External_Button == 0)
+				//print("Ignore.");
+			{
+				printeach_1secWhenButtonNotSet("ignore.");
+			}
+			else if (var_Allow_External_Button == 1)
+			{
+				printeach_1secWhenButtonNotSet("reset all errors.");
+				
+				// working with no water because waiting to long time to get water from the well or city.
+				value_FlowWaterOwerworkTimer = var_FlowWaterOwerworkTimer;
+				isPossibleWaterTurnOn = true;
 
+				// overwoking to long as example 5h, only can be reseted in here.
+				value_FillingWaterOvertime = funFillingWaterOvertime();
+				isFillingWaterOvertime = false; // reset as not worked to long time.
+			}
+
+			else if (var_Allow_External_Button == 2)
+			{
+				printeach_1secWhenButtonNotSet("on water.");
+				isWaterTurnedOn = true;
+			}
+
+		}
 
 
 
 
 		///////////////////////////////////////////////////
+		///////////////Protection
 		if (value_FlowWaterOwerworkTimer == 0) // protect pump from not sucking water from the well to long.
 		{
 
 			isWaterTurnedOn = false; // no flow of the water rezult no more 
-			printeach_1secWhenButtonNotSet(String(isPossibleWaterTurnOn) + ":No flow: " + String(value_FlowWaterOwerworkTimer) + " min");
+			printeach_1secWhenButtonNotSet( "Error no flowing water");
 		}
 		else {
-			printeach_1secWhenButtonNotSet(String(isPossibleWaterTurnOn) + ":Is flow: " + String(value_FlowWaterOwerworkTimer) + " min");
+			printeach_1secWhenButtonNotSet( String(!isPossibleWaterTurnOn ?"?>":"") + "Is flow: " + String(value_FlowWaterOwerworkTimer) + " min");
 		}
 
 
-		// Everything before start working 
+		if (value_FillingWaterOvertime > 0)
+		{
+			printeach_1secWhenButtonNotSet( String (isFillingWaterOvertime ?"!!>":"")+"Filling: " +String(funFillingWaterOvertime()-value_FillingWaterOvertime) + "min");
+		}
+		else
+		{
+			printeach_1secWhenButtonNotSet("Error Filling to long");
+			isWaterTurnedOn = false; // if end overtime timeout protection then turn off a water 
+		}
+
+
+	
+		// Select city or well water to turn on.
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 		if (isWaterTurnedOn) // condition that turn on a timers of water to turn on 
 		{
@@ -399,7 +451,7 @@ void loop() {
 
 
 		///////////////////////////////////////////////////////
-		printeach_1secWhenButtonNotSet("");
+		//printeach_1secWhenButtonNotSet("");
 		display.set2X();
 		if (value_SourceCityWaterTimeout > 0) {
 			printeach_1secWhenButtonNotSet("City " + String(value_SourceCityWaterTimeout) + "s");
@@ -418,6 +470,16 @@ void loop() {
 		else
 			digitalWrite(RELAY_To_a_Pump_Output, LOW);
 		display.set1X();
+
+
+		// error reports in big letters
+		if ((value_FillingWaterOvertime == 0 || value_FlowWaterOwerworkTimer == 0) && (value_SourceWellWaterTimeout == 0 && value_SourceCityWaterTimeout == 0) )
+		{
+			printeach_1secWhenButtonNotSet("");
+			display.set2X();
+			printeach_1secWhenButtonNotSet("KLAIDA!");
+			display.set1X();
+		}
 
 		//print("");
 		//print("");
