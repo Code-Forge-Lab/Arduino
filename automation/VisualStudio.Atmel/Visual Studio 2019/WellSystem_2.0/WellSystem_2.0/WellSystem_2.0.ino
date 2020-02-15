@@ -487,6 +487,7 @@ void loop() {
 		printeach_1sec("");
 		printeach_1sec("");
 		printeach_1sec("");
+   printeach_1sec("");
 
 		// end of InterfaceDinamic()
 	
@@ -500,7 +501,3 @@ void loop() {
 
 
 }
-
-
-
-
