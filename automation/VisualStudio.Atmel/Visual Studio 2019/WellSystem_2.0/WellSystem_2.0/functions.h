@@ -1,4 +1,5 @@
 bool isMenuActive; // menu is active 
+bool isMenuActiveLag; // menu is active lag with once cycle of the program
 /////////////Water Flow Sencor Counter Per Seconds///////////////////////
 byte Sensor_WaterFlowTime = 0;
 byte Sensor_WaterFlowPerTimeSaved = 0; // save each second a value in here 
@@ -142,6 +143,7 @@ void func6() {
 void func7() {//display.println("[R5]");
 	if (var_FillingWaterOvertime < 1)
 		var_FillingWaterOvertime = 1;
+	   value_FillingWaterOvertime = funFillingWaterOvertime(); // update program counter
 
 	print("Timer when something");
 	print ("take to long to fill.");

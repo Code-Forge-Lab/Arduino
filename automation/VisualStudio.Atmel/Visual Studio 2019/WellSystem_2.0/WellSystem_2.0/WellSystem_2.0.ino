@@ -247,7 +247,7 @@ void loop() {
 		clock_1sec = millis(); // reset each  1 seconds  time
 		manualReapetEach1sec = true;// allow to print values on one time per minute
 
-		if (buttonUP) // if button right was pressed
+		if (buttonUP && !isMenuActive) // if button right was pressed
 		{
 			allowPrintWhenRightButton = !allowPrintWhenRightButton; // enter to extra menu state
 		}
@@ -292,9 +292,21 @@ void loop() {
 	}
 
 
-
+	isMenuActiveLag = isMenuActive;
 	//print(meniuOption[meniuIndex]);
 	isMenuActive = menu.InterfaceDinamic(); // get condition when to print a not menu unints
+
+	if (!isMenuActive && isMenuActiveLag) // when menu freshly exited, then print all units instantly!.
+		{
+		manualReapetEach1sec = true; 
+		print("");
+		print("");
+		print("");
+		print("");
+		print("");
+		display.setCursor(0,0);
+
+	   }
 
 		//menu.displayButtonsValue();
 
@@ -481,13 +493,17 @@ void loop() {
 			display.set1X();
 		}
 
+
+if (!allowPrintWhenRightButton) { // last print is flickering
 		//print("");
 		//print("");
 		printeach_1sec("");
 		printeach_1sec("");
 		printeach_1sec("");
 		printeach_1sec("");
-   printeach_1sec("");
+    printeach_1sec("");
+    printeach_1sec("");
+}
 
 		// end of InterfaceDinamic()
 	

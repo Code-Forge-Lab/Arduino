@@ -747,6 +747,8 @@ public:bool InterfaceDinamic() {
 						isclearedDisplayCommon = false; // reset a clearing system
 						display.clear();
 						display.setCursor(0, 0);
+						
+						
 
 					}
 
