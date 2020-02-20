@@ -42,7 +42,8 @@ Bepper if out of water
 //  Swithing signals relays
 #define RELAY_To_a_Pump_Output 9
 #define RELAY_To_a_Solenoid_Valve_Output 8
-
+//LED Error Show
+#define LED_ERROR_NoWaterOrToMuchWater 13
 // sensors
 #define SENSOR_Well_System_Minimum_Water_Sensor 12
 #define SENSOR_Exeption_Source_Vin 11   // Read Heater On condition , also source a own power to a board of Uno
@@ -84,8 +85,10 @@ bool timerMotorWorkBool = false;
 //
 bool button_SET_PRESSED = false;
 //
+bool error_ReachedFatal = false; //save condition about not allowing to work water solenoids
+//
 bool manualReapetEach1sec = false; // allow to print at 1 second rate on the screen
-bool allowPrintWhenRightButton = false; // if right button was pressed then allow to show extra menu 
+byte allowPrintWhenRightButton = 0; // if right button was pressed then allow to show extra menu 
 bool isWaterTurnedOn = false; // when reached minimu water preasure, this condition allow to wait until get maximum preasure.
 bool isPossibleWaterTurnOn = true; // if flow sensor are in sincronicly working together with preasure sensor.
 bool isFillingWaterOvertime = false; // remember state about working to long time with water filling problem.
@@ -119,9 +122,10 @@ byte INTERUPT_SIDE = 0;
 
 
 volatile int virtualPosition = 50;
-//------------------------------------------------------------------------------
+//TEST Root------------------------------------------------------------------------------
 
-
+byte testingMode = 0; // here can make program counter run faster for testing purpose
+//
 
 // functions  
 bool buttonUP;
@@ -140,7 +144,6 @@ byte  rotory;
 
 
 
-
 void setup() {
 	
 	// add function to menu 
@@ -153,6 +156,7 @@ void setup() {
 	menu.IncludeFunction(&func5, var_TurnOnDelaySec, "Delay On Water", "sec");
 	menu.IncludeFunction(&func6, var_FlowWaterOwerworkTimer, "Not Sucking Water", "min",true);
 	menu.IncludeFunction(&func7, var_FillingWaterOvertime, "Working to long", "min", false);
+	menu.IncludeFunction(&func8, testingMode, "Testing Mode", "", false);
 
 	menu.IncludeQuckAccessFunction(&func0, var_Mode, "Modes","",false);
 	menu.IncludeFunctionSetDefault(&userSetDefault); 
@@ -167,6 +171,8 @@ void setup() {
 	pinMode(INTERRUPT_SignalLeft, INPUT);
 	pinMode(INTERRUPT_SignalRight, INPUT);
 
+	pinMode(LED_ERROR_NoWaterOrToMuchWater, OUTPUT);
+
 	pinMode(RELAY_To_a_Pump_Output, OUTPUT);
 	pinMode(RELAY_To_a_Solenoid_Valve_Output, OUTPUT);
 	pinMode(SENSOR_Exeption_Source_Vin, INPUT);
@@ -175,6 +181,8 @@ void setup() {
 	pinMode(SENSOR_Well_System_Minimum_Water_Sensor, INPUT);
 	pinMode(SENSOR_Button_External, INPUT);
 	
+
+
 	pinMode(LED_BUILTIN, OUTPUT);// chost glow of led bug
 	digitalWrite(LED_BUILTIN, LOW);
 	//pinMode(2, INPUT);
@@ -202,7 +210,7 @@ void setup() {
 
 
 
-bool setButtonPressed = false;
+bool setButtonPressed = true;
 void loop() {
 
 
@@ -233,9 +241,12 @@ void loop() {
 		clock_1min = millis(); // reset each  60 seconds  time
 		display.clear();
 		manualReapetEach1sec = true; // for fast print a printeach_1sec("")
-		allowPrintWhenRightButton = false ;
+		allowPrintWhenRightButton = 0 ;
 
-		errorCachingTimersIn1min();
+		if (testingMode == 0)
+		{
+			errorCachingTimersIn1min();
+		}
 	}
 
 
@@ -249,7 +260,13 @@ void loop() {
 
 		if (buttonUP && !isMenuActive) // if button right was pressed
 		{
-			allowPrintWhenRightButton = !allowPrintWhenRightButton; // enter to extra menu state
+			if (allowPrintWhenRightButton < 2)// total showing pages
+			{
+				allowPrintWhenRightButton = allowPrintWhenRightButton + 1; // enter to extra menu state
+				display.clear();
+			}
+			else
+				allowPrintWhenRightButton = 0;
 		}
 
 		// timeouts
@@ -274,7 +291,10 @@ void loop() {
 
 	if (((long)clock_manual + 1000L) < millis())
 	{
-
+		if (testingMode == 1)
+		{
+			errorCachingTimersIn1min(); // for testing purpose
+		}
 		clock_manual = millis(); // reset each  1 seconds  time
 
 
@@ -310,14 +330,21 @@ void loop() {
 
 		//menu.displayButtonsValue();
 
-
-		printeach_1secWhenButtonSet("Minimum Well Water " + String(raw_SENSOR_Well_System_Minimum_Water_Sensor));
-		printeach_1secWhenButtonSet("Exeption_Source_Vin " + String(raw_SENSOR_Exeption_Source_Vin));
-		printeach_1secWhenButtonSet("Button_External " + String(raw_SENSOR_Button_External));
-		printeach_1secWhenButtonSet("W_FLOW:" + String(Sensor_WaterFlowPerTimeSaved) + " (" + String(raw_SENSOR_WATER_FLOW) + ")");
-		printeach_1secWhenButtonSet("W_PREASURE:" + String(raw_SENSOR_WATER_PREASURE) + "[ " + String(isWaterTurnedOn) + " ]");
-		printeach_1secWhenButtonSet(String(isPossibleWaterTurnOn) + "Flow time left: " + String(value_FlowWaterOwerworkTimer) + " min");
-		printeach_1secWhenButtonSet(String(isFillingWaterOvertime) + "Fill can:" + String(value_FillingWaterOvertime) + "/" + String(funFillingWaterOvertime()) + "m");
+	if (manualReapetEach1sec && allowPrintWhenRightButton == 1) {
+		printeach_1secWhenButtonSetPage1("Minimum Well Water " + String(raw_SENSOR_Well_System_Minimum_Water_Sensor));
+		printeach_1secWhenButtonSetPage1("Exeption_Source_Vin " + String(raw_SENSOR_Exeption_Source_Vin));
+		printeach_1secWhenButtonSetPage1("Button_External " + String(raw_SENSOR_Button_External));
+		printeach_1secWhenButtonSetPage1("W_FLOW:" + String(Sensor_WaterFlowPerTimeSaved) + " (" + String(raw_SENSOR_WATER_FLOW) + ")");
+		printeach_1secWhenButtonSetPage1("W_PREASURE:" + String(raw_SENSOR_WATER_PREASURE) + "[ " + String(isWaterTurnedOn) + " ]");
+		printeach_1secWhenButtonSetPage1(String(isPossibleWaterTurnOn) + "Flow time left: " + String(value_FlowWaterOwerworkTimer) + " min");
+		printeach_1secWhenButtonSetPage1(String(isFillingWaterOvertime) + "Fill can:" + String(value_FillingWaterOvertime) + "/" + String(funFillingWaterOvertime()) + "m");
+	}
+	else if (manualReapetEach1sec && allowPrintWhenRightButton == 2) {
+		// page 2
+		printeach_1secWhenButtonSetPage2("USE:" + modeStateRezult()); 
+	    printeach_1secWhenButtonSetPage2("canWaterTurnOn:" + booltoText(isPossibleWaterTurnOn)); 
+		printeach_1secWhenButtonSetPage2("testMode:" + booltoText(testingMode) );
+	}
 		/*
 
 				}
@@ -341,6 +368,7 @@ void loop() {
 		if (raw_SENSOR_WATER_PREASURE > 50) {// if greater pressure as usual ( 99 of 1024) when do filling water process 
 
 
+			printeach_1secWhenButtonSetPage1(""); // clear : Nera Slegio sensoriaus!
 
 			// cach a preasure condition then 
 			if (!isWaterTurnedOn && raw_SENSOR_WATER_PREASURE <= map(var_Water_Preasure_Minimum, 0, 255, 0, 1023)) // map(var_Water_Preasure_Minimum, 0, 255, 0, 1023)
@@ -361,7 +389,8 @@ void loop() {
 
 		}
 		else {
-			printeach_1secWhenButtonSet("Nera Slegio sensoriaus!");
+			printeach_1secWhenButtonSetPage1("Nera Slegio sensoriaus!");
+			
 			isWaterTurnedOn = false;
 		}
 		////////////////External Statements////////////////
@@ -373,7 +402,10 @@ void loop() {
 		if (!raw_SENSOR_Exeption_Source_Vin) // always 1 if true then 0
 		{
 			isWaterTurnedOn = true;
-			printeach_1secWhenButtonNotSet("Source button:On");
+			isPossibleWaterTurnOn = false; // activate flowing water error detection
+			
+			if (!error_ReachedFatal)
+				printlneach_1secWhenButtonNotSet("Source button:On     ");
 		}
 
 
@@ -402,6 +434,7 @@ void loop() {
 			{
 				printeach_1secWhenButtonNotSet("on water.");
 				isWaterTurnedOn = true;
+				isPossibleWaterTurnOn = false; // activate flowing water error detection
 			}
 
 		}
@@ -487,22 +520,31 @@ void loop() {
 		// error reports in big letters
 		if ((value_FillingWaterOvertime == 0 || value_FlowWaterOwerworkTimer == 0) && (value_SourceWellWaterTimeout == 0 && value_SourceCityWaterTimeout == 0) )
 		{
-			printeach_1secWhenButtonNotSet("");
+			printeach_1secWhenButtonNotSet("");// give vert space 
 			display.set2X();
 			printeach_1secWhenButtonNotSet("KLAIDA!");
 			display.set1X();
+			digitalWrite(LED_ERROR_NoWaterOrToMuchWater, true);
+			error_ReachedFatal = true;
+		}
+		else
+		{
+			error_ReachedFatal = false;
+			digitalWrite(LED_ERROR_NoWaterOrToMuchWater, false);
+
 		}
 
 
-if (!allowPrintWhenRightButton) { // last print is flickering
+
+if (allowPrintWhenRightButton == 0) { // last print is flickering
 		//print("");
 		//print("");
 		printeach_1sec("");
 		printeach_1sec("");
 		printeach_1sec("");
 		printeach_1sec("");
-    printeach_1sec("");
-    printeach_1sec("");
+	    printeach_1sec("");
+		printeach_1sec("");
 }
 
 		// end of InterfaceDinamic()

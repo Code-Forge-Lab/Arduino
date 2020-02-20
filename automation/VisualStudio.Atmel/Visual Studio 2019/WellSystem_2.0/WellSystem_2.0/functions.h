@@ -30,7 +30,23 @@ void userSetDefault() {
 	var_Mode = 1; // takes city water
 	var_TurnOnDelaySec = 5; //seconds, // Turn on a motor/solenoid(water source available) for some time to equalize a fliquating sensors inputs
 	var_FlowWaterOwerworkTimer = 20; // mins not working rezult in 
+	testingMode = 0;
 };
+
+String modeStateRezult() {
+
+	switch (var_Mode) {
+	case 0:
+		return ("Auto");
+		break;
+	case 1:
+		return ("City Water");
+		break;
+	case 2:
+		return ("Well Water");
+	}
+
+}
 
 
 void printBigthenSmallLetters(String Bigtext, String Smalltext) {
@@ -70,22 +86,22 @@ void errorCachingTimersIn1min() {
 }
 
 
+String booltoText(bool cond) {
+
+	if (cond)
+		return "true";
+	else
+		return "false";
+}
+
+
 void func0() { 
 
 	if (var_Mode > 2)
 		var_Mode = 2;
 
 	display.set2X();
-	switch (var_Mode) {
-	case 0:
-		print("Auto");
-		break; 
-	case 1:
-		print("City Water");
-		break; 
-	case 2:
-		print("Well Water");
-	}
+	print(modeStateRezult());
 	display.set1X();
 }
 
@@ -150,7 +166,18 @@ void func7() {//display.println("[R5]");
 		menu.menuPrintManuallyValue(funFillingWaterOvertime());
 	};
 
-void func8() {};
+void func8() {
+
+	print("Timers works shorter");
+	if (testingMode > 1) 
+		testingMode = 1;
+
+	display.set2X();
+	print(booltoText(testingMode));
+	display.set1X();
+	
+		//menu.menuPrintManuallyValue(testingMode);
+};
 
 
 
@@ -181,21 +208,27 @@ void printeach_1sec(byte text) { // allow to print a only each second.
 };
 
 
-void printeach_1secWhenButtonSet(String text) { // if button right  is set then print this 
+void printeach_1secWhenButtonSetPage1(String text) { // if button right  is set then print this 
 
-	if ( manualReapetEach1sec && allowPrintWhenRightButton )
+	if ( manualReapetEach1sec && allowPrintWhenRightButton == 1 )
+		menu.print__(text);
+}
+
+void printeach_1secWhenButtonSetPage2(String text) { // if button right  is set then print this 
+
+	if (manualReapetEach1sec && allowPrintWhenRightButton == 2)
 		menu.print__(text);
 }
 
 void printeach_1secWhenButtonNotSet(String text) { // if button right  is unset then not print this 
 
-	if (manualReapetEach1sec && !allowPrintWhenRightButton)
+	if (manualReapetEach1sec && allowPrintWhenRightButton == 0)
 		menu.print__(text);
 }
 
 void printlneach_1secWhenButtonNotSet(String text) { // if button right  is unset then not print this 
 
-	if (manualReapetEach1sec && !allowPrintWhenRightButton)
+	if (manualReapetEach1sec && allowPrintWhenRightButton == 0)
 		menu.println__(text);
 }
 
