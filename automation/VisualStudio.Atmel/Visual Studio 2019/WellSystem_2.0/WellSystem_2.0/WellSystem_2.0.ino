@@ -36,7 +36,7 @@ Bepper if out of water
 
 
 // buttons
-#define BUTTON_DOWN 5
+#define BUTTON_DOWN 2
 #define BUTTON_SET 6
 #define BUTTON_UP 4
 //  Swithing signals relays
@@ -49,7 +49,10 @@ Bepper if out of water
 #define SENSOR_Exeption_Source_Vin 11   // Read Heater On condition , also source a own power to a board of Uno
 #define SENSOR_Button_External 10 // power out 
 #define SENSOR_WATER_PREASURE A3
-#define SENSOR_WATER_FLOW A2
+#define SENSOR_WATER_FLOW A2 // not wery accurant if using simple program rutine
+#define SENSOR_INTERRUPT_WATER_FLOW 2  //  pin = ~3. but with interrupt, possible capture all se passing hall effect signals when spinning blades in the water
+
+
 
 // Interrupts
 const int   INTERRUPT_SignalRight = 2; // Rotary Encoder 0
@@ -76,9 +79,7 @@ byte var_FillingWaterOvertime; // if water works more then 5h then somethins is 
 
 //Clock variables
 unsigned long clock_1min = 0;
-unsigned long clock_manual = 0;
 unsigned long clock_1sec = 0;
-unsigned long clock_1mlsec = 0;
 // timer variabls
 byte timerMotorWork = 0; // timer for reapeting 
 bool timerMotorWorkBool = false;
@@ -116,12 +117,8 @@ bool raw_SENSOR_Button_External;
 int_fast16_t raw_SENSOR_WATER_PREASURE;
 int_fast16_t raw_SENSOR_WATER_FLOW; // but option to read analog
 
-bool INTERUPT_UP = false;
-bool INTERUPT_DOWN = false;
-byte INTERUPT_SIDE = 0;
 
 
-volatile int virtualPosition = 50;
 //TEST Root------------------------------------------------------------------------------
 
 byte testingMode = 0; // here can make program counter run faster for testing purpose
@@ -136,8 +133,6 @@ lib_meniuInterface128x64OLEDSSD1306AsciiWire menu(buttonUP, buttonDOWN, buttonSE
 
 #include "EEPROM32.h"
 #include "functions.h"
-
-byte  rotory;
 
 
 //------------------------------------------------------------------------------
@@ -156,7 +151,7 @@ void setup() {
 	menu.IncludeFunction(&func5, var_TurnOnDelaySec, "Delay On Water", "sec");
 	menu.IncludeFunction(&func6, var_FlowWaterOwerworkTimer, "Not Sucking Water", "min",true);
 	menu.IncludeFunction(&func7, var_FillingWaterOvertime, "Working to long", "min", false);
-	menu.IncludeFunction(&func8, testingMode, "Testing Mode", "", false);
+	//menu.IncludeFunction(&func8, testingMode, "Testing Mode", "", false);
 
 	menu.IncludeQuckAccessFunction(&func0, var_Mode, "Modes","",false);
 	menu.IncludeFunctionSetDefault(&userSetDefault); 
@@ -186,6 +181,7 @@ void setup() {
 	pinMode(LED_BUILTIN, OUTPUT);// chost glow of led bug
 	digitalWrite(LED_BUILTIN, LOW);
 	//pinMode(2, INPUT);
+	attachInterrupt(digitalPinToInterrupt(SENSOR_INTERRUPT_WATER_FLOW), SensorFun_WaterFlowPerSec, RISING);
 	//attachInterrupt(digitalPinToInterrupt(INTERRUPT_SignalLeft), INTSignalLeft, FALLING);
 
 	//attachInterrupt(digitalPinToInterrupt(INTERRUPT_SignalRight), INTSignalRight, FALLING);
@@ -210,7 +206,6 @@ void setup() {
 
 
 
-bool setButtonPressed = true;
 void loop() {
 
 
@@ -228,7 +223,7 @@ void loop() {
 	raw_SENSOR_Exeption_Source_Vin = digitalRead(SENSOR_Exeption_Source_Vin);
 	raw_SENSOR_Button_External = digitalRead(SENSOR_Button_External);
 	raw_SENSOR_WATER_PREASURE = analogRead(SENSOR_WATER_PREASURE);
-	raw_SENSOR_WATER_FLOW = analogRead(SENSOR_WATER_FLOW);
+	
 
 
 
@@ -285,20 +280,15 @@ void loop() {
 		Sensor_WaterFlowTime = 0; // then progress value will be returned to new start
 		
 
-		
-	}
 
-
-	if (((long)clock_manual + 1000L) < millis())
-	{
 		if (testingMode == 1)
 		{
 			errorCachingTimersIn1min(); // for testing purpose
 		}
-		clock_manual = millis(); // reset each  1 seconds  time
-
-
+		
 	}
+
+
 
 
 
@@ -336,7 +326,8 @@ void loop() {
 		printeach_1secWhenButtonSetPage1("Button_External " + String(raw_SENSOR_Button_External));
 		printeach_1secWhenButtonSetPage1("W_FLOW:" + String(Sensor_WaterFlowPerTimeSaved) + " (" + String(raw_SENSOR_WATER_FLOW) + ")");
 		printeach_1secWhenButtonSetPage1("W_PREASURE:" + String(raw_SENSOR_WATER_PREASURE) + "[ " + String(isWaterTurnedOn) + " ]");
-		printeach_1secWhenButtonSetPage1(String(isPossibleWaterTurnOn) + "Flow time left: " + String(value_FlowWaterOwerworkTimer) + " min");
+		printeach_1secWhenButtonSetPage1("Flow time left: " + String(value_FlowWaterOwerworkTimer));
+		//printeach_1secWhenButtonSetPage1("WTF??");
 		printeach_1secWhenButtonSetPage1(String(isFillingWaterOvertime) + "Fill can:" + String(value_FillingWaterOvertime) + "/" + String(funFillingWaterOvertime()) + "m");
 	}
 	else if (manualReapetEach1sec && allowPrintWhenRightButton == 2) {

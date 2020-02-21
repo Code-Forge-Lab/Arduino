@@ -166,6 +166,7 @@ void func7() {//display.println("[R5]");
 		menu.menuPrintManuallyValue(funFillingWaterOvertime());
 	};
 
+/*
 void func8() {
 
 	print("Timers works shorter");
@@ -178,7 +179,7 @@ void func8() {
 	
 		//menu.menuPrintManuallyValue(testingMode);
 };
-
+*/
 
 
 
@@ -234,7 +235,11 @@ void printlneach_1secWhenButtonNotSet(String text) { // if button right  is unse
 
 
 /////////////Water Flow Sencor Counter Per Seconds///////////////////////
+
+
 void SensorFun_WaterFlowPerSec() {
+
+	raw_SENSOR_WATER_FLOW = analogRead(SENSOR_WATER_FLOW);
 
 	if (raw_SENSOR_WATER_FLOW > 80 && !isWaterFlowPerTimePassed)
 	{
@@ -246,3 +251,8 @@ void SensorFun_WaterFlowPerSec() {
 	}
 }
 
+
+
+//void SensorFun_WaterFlowPerSec() {
+//		Sensor_WaterFlowTime++;
+//}

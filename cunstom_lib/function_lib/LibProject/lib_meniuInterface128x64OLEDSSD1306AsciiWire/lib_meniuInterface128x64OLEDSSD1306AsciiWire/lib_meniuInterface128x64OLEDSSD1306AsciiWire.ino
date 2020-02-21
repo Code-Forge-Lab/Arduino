@@ -7,7 +7,7 @@
 #include "lib_meniuInterface128x64OLEDBased(SSD1306AsciiWire).h"
 
 // buttons
-#define BUTTON_DOWN 5
+#define BUTTON_DOWN 2
 #define BUTTON_SET 6
 #define BUTTON_UP 4
 
@@ -82,11 +82,11 @@ void loop() {
 
 	// return condition about opened menu
 	isMenuActive = menu.InterfaceDinamic();// save condition about usage of menu.
-		//menu.displayButtonsValue();
+		menu.displayButtonsValue();
 		
 	// everything is as open loop  method
 	 // if (manualReapetEach1sec)
-			menu.displayStoredMemoryValues();
+			//menu.displayStoredMemoryValues();
 		
 		printeach_1sec(String (clock_1sec)); //allow to print each second
 		printeach_1sec("");
