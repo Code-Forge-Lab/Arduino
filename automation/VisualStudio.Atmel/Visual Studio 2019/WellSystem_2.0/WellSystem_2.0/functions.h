@@ -20,22 +20,26 @@ int funFillingWaterOvertime(byte setNewValue = 0) {
 
 
 void userSetDefault() {
-	var_Water_Preasure_Minimum = 40;  // minimum of water preasure to turn on a water source unit
-	var_Water_Preasure_Maximum = 42;  // Maximum of water preasure to turn on a water source unit
-	var_Water_Flow_Sensor_Minimum = 25; //  minimum of water flow to turn on a water source unit
+	var_Water_Pressure_Minimum = 40;  // minimum of water preasure to turn on a water source unit -> map(254,1024)
+	var_Water_Pressure_Maximum = 54;  // Maximum of water preasure to turn on a water source unit -> map(254,1024)
+	var_Water_Flow_Sensor_Minimum = 5; //  minimum of water flow to turn on a water source unit
 	var_Allow_External_Button = 1; // 0= no react, 1=when button reset all errors, 2=when pressed-turn on water
-	funFillingWaterOvertime(30);//  (multiplier)10 * 30min = 300min = 5h
+	funFillingWaterOvertime(12);//  (multiplier)10 * 12min = 120min = 2h
 	//var_Allow_Exeption_Source_Vin = 1; // react to when  heater  is on to turn on a water source unit
 	
 	var_Mode = 1; // takes city water
 	var_TurnOnDelaySec = 5; //seconds, // Turn on a motor/solenoid(water source available) for some time to equalize a fliquating sensors inputs
 	var_FlowWaterOwerworkTimer = 20; // mins not working rezult in 
 	testingMode = 0;
+	var_Allow_Work_WaterPumpWhenReachedMaximumPressure = false;
 };
 
-String modeStateRezult() {
+String modeStateRezult(byte val = 255) {
+	
+	if (val== 255) // if no default then var_Mode
+		val = var_Mode;
 
-	switch (var_Mode) {
+	switch (val) {
 	case 0:
 		return ("Auto");
 		break;
@@ -108,21 +112,21 @@ void func0() {
 void func1() {
 	//print("When lower, always");
 	//print("request water.");
-	if (var_Water_Preasure_Maximum  <= var_Water_Preasure_Minimum ) // if minimum value is greater then hight value then reset to minimum
-		var_Water_Preasure_Minimum = var_Water_Preasure_Maximum  - 1;
+	if (var_Water_Pressure_Maximum  <= var_Water_Pressure_Minimum ) // if minimum value is greater then hight value then reset to minimum
+		var_Water_Pressure_Minimum = var_Water_Pressure_Maximum  - 1;
 	
-	print(String (map(var_Water_Preasure_Maximum, 0, 255, 0, 1023)) ); //  + "/" + String (value_FlowWaterOwerworkTimer) + " " + String (Sensor_WaterFlowPerTimeSaved)
-	menu.menuPrintManuallyValue(map(var_Water_Preasure_Minimum,0,255,0,1023));
+	print(String (map(var_Water_Pressure_Maximum, 0, 255, 0, 1023)) ); //  + "/" + String (value_FlowWaterOwerworkTimer) + " " + String (Sensor_WaterFlowPerTimeSaved)
+	menu.menuPrintManuallyValue(map(var_Water_Pressure_Minimum,0,255,0,1023));
 };
 void func2() { 
 	//print("Stop getting a water");
 	//print("source");
 
-	if (var_Water_Preasure_Minimum  >= var_Water_Preasure_Maximum  ) // if minimum value is greater then hight value then reset to minimum
-		var_Water_Preasure_Maximum = var_Water_Preasure_Minimum + 1; // reset.
+	if (var_Water_Pressure_Minimum  >= var_Water_Pressure_Maximum  ) // if minimum value is greater then hight value then reset to minimum
+		var_Water_Pressure_Maximum = var_Water_Pressure_Minimum + 1; // reset.
 	
-	print(String(map(var_Water_Preasure_Minimum, 0, 255, 0, 1023))  ); // + "/" + String (value_FlowWaterOwerworkTimer) + " " +String (Sensor_WaterFlowPerTimeSaved)
-	menu.menuPrintManuallyValue(map(var_Water_Preasure_Maximum, 0, 255, 0, 1023));
+	print(String(map(var_Water_Pressure_Minimum, 0, 255, 0, 1023))  ); // + "/" + String (value_FlowWaterOwerworkTimer) + " " +String (Sensor_WaterFlowPerTimeSaved)
+	menu.menuPrintManuallyValue(map(var_Water_Pressure_Maximum, 0, 255, 0, 1023));
 };
 void func3() {
 	//print("Trigger when turn on");
@@ -169,7 +173,7 @@ void func7() {//display.println("[R5]");
 /*
 void func8() {
 
-	print("Timers works shorter");
+	//print("Timers works shorter");
 	if (testingMode > 1) 
 		testingMode = 1;
 
@@ -181,7 +185,16 @@ void func8() {
 };
 */
 
+void func9() {
 
+	if (var_Allow_Work_WaterPumpWhenReachedMaximumPressure > 1)
+		var_Allow_Work_WaterPumpWhenReachedMaximumPressure = 1;
+	print("Any flow work");
+
+	display.set2X();
+	print(booltoText(var_Allow_Work_WaterPumpWhenReachedMaximumPressure));
+	display.set1X();
+}
 
 
 
@@ -236,6 +249,15 @@ void printlneach_1secWhenButtonNotSet(String text) { // if button right  is unse
 
 /////////////Water Flow Sencor Counter Per Seconds///////////////////////
 
+bool byteToBool(byte val_0_1) {
+
+	if (val_0_1 >= 1)
+		return true;
+	else
+	{
+		return false;
+	}
+}
 
 void SensorFun_WaterFlowPerSec() {
 

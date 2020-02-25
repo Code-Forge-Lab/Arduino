@@ -48,7 +48,7 @@ Bepper if out of water
 #define SENSOR_Well_System_Minimum_Water_Sensor 12
 #define SENSOR_Exeption_Source_Vin 11   // Read Heater On condition , also source a own power to a board of Uno
 #define SENSOR_Button_External 10 // power out 
-#define SENSOR_WATER_PREASURE A3
+#define SENSOR_WATER_PRESSURE A3
 #define SENSOR_WATER_FLOW A2 // not wery accurant if using simple program rutine
 #define SENSOR_INTERRUPT_WATER_FLOW 2  //  pin = ~3. but with interrupt, possible capture all se passing hall effect signals when spinning blades in the water
 
@@ -61,16 +61,17 @@ const int   INTERRUPT_SignalLeft = 3; // Rotary Encoder 1
 
 
 // Variables
-// to memory
+// to memory eeprom
 byte var_Mode = 1; //0 = auto (select well or city water),1 = city water only, 2 = well water only.
-byte var_Water_Preasure_Minimum ;  // minimum of water preasure to turn on a water source unit
-byte var_Water_Preasure_Maximum ;  // Maximum of water preasure to turn on a water source unit
+byte var_Water_Pressure_Minimum ;  // minimum of water preasure to turn on a water source unit
+byte var_Water_Pressure_Maximum ;  // Maximum of water preasure to turn on a water source unit
 byte var_Water_Flow_Sensor_Minimum ; //  minimum of water flow to turn on a water source unit
 byte var_Allow_External_Button = 0; // react to external button
 byte var_Allow_Exeption_Source_Vin; // react to when  heater  is on to turn on a water source unit
 byte var_TurnOnDelaySec; // how much seconds wait (on) unti values are reached for a well or city water relays
 byte var_FlowWaterOwerworkTimer; // protection against a unpumped water that in rezult doesnt build a preasure and a any flow rate 
 byte var_FillingWaterOvertime; // if water works more then 5h then somethins is wrong with leaking or toilet water level conduct a water all the time.
+byte var_Allow_Work_WaterPumpWhenReachedMaximumPressure; // Work or not Work when reack requared maximum Pressure of watter
 // casual
 
 
@@ -90,31 +91,31 @@ bool error_ReachedFatal = false; //save condition about not allowing to work wat
 //
 bool manualReapetEach1sec = false; // allow to print at 1 second rate on the screen
 byte allowPrintWhenRightButton = 0; // if right button was pressed then allow to show extra menu 
-bool isWaterTurnedOn = false; // when reached minimu water preasure, this condition allow to wait until get maximum preasure.
-bool isPossibleWaterTurnOn = true; // if flow sensor are in sincronicly working together with preasure sensor.
+bool isWaterTurnedOn = false; // when reached minimu water Pressure, this condition allow to wait until get maximum Pressure.Or Minimum Flor Rate
+bool isPossibleWaterTurnOn = true; // if flow sensor are in sincronicly working together with Pressure sensor.
 bool isFillingWaterOvertime = false; // remember state about working to long time with water filling problem.
-byte WaterSourcePreasureRequest = 0;
-byte WaterSourcePreasure = 0;
+byte WaterSourcePressureRequest = 0;
+byte WaterSourcePressure = 0;
 
 byte meniuIndex = 0;
 byte meniuValue = 0;
 
 //memory temporery stored values
-//byte value_Water_Preasure_Minimum;
-//byte value_Water_Preasure_Maximum;
+//byte value_Water_Pressure_Minimum;
+//byte value_Water_Pressure_Maximum;
 //byte value_Water_Flow_Sensor_Minimum;
 //byte value_Allow_External_Button;
 byte value_SourceCityWaterTimeout;	// Turn on a motor/solenoid(water source available) for some time to equalize a fliquating sensors inputs
 byte value_SourceWellWaterTimeout;   // Turn on a motor/solenoid(water source available) for some time to equalize a fliquating sensors inputs
-byte value_FlowWaterOwerworkTimer; // protection against a unpumped water that in rezult doesnt build a preasure and a any flow rate 
-bool bool_FlowWaterOverwork = false;  // protection against a unpumped water that in rezult doesnt build a preasure and a any flow rate( condition trigering timeout protetion) 
+byte value_FlowWaterOwerworkTimer; // protection against a unpumped water that in rezult doesnt build a Pressure and a any flow rate 
+bool bool_FlowWaterOverwork = false;  // protection against a unpumped water that in rezult doesnt build a Pressure and a any flow rate( condition trigering timeout protetion) 
 int value_FillingWaterOvertime; // protect agents turned water on for to long like 5h or more. 
 
 //raw sensor rezult 
 bool raw_SENSOR_Well_System_Minimum_Water_Sensor;
 bool raw_SENSOR_Exeption_Source_Vin;
 bool raw_SENSOR_Button_External;
-int_fast16_t raw_SENSOR_WATER_PREASURE;
+int_fast16_t raw_SENSOR_WATER_PRESSURE;
 int_fast16_t raw_SENSOR_WATER_FLOW; // but option to read analog
 
 
@@ -144,14 +145,16 @@ void setup() {
 	// add function to menu 
 	
 	//menu.IncludeFunction(&func0, var_Mode, "Do Modes", "mode" , false);
-	menu.IncludeFunction(&func1, var_Water_Preasure_Minimum, "Water pressure minimum","psi",false);
-	menu.IncludeFunction(&func2, var_Water_Preasure_Maximum, "Water pressure maximum","psi",false);
+	menu.IncludeFunction(&func1, var_Water_Pressure_Minimum, "Water pressure minimum","psi",false);
+	menu.IncludeFunction(&func2, var_Water_Pressure_Maximum, "Water pressure maximum","psi",false);
 	menu.IncludeFunction(&func3, var_Water_Flow_Sensor_Minimum, "Flow minimum rate","u/sec");
 	menu.IncludeFunction(&func4, var_Allow_External_Button, "Then External Button", "");
 	menu.IncludeFunction(&func5, var_TurnOnDelaySec, "Delay On Water", "sec");
 	menu.IncludeFunction(&func6, var_FlowWaterOwerworkTimer, "Not Sucking Water", "min",true);
 	menu.IncludeFunction(&func7, var_FillingWaterOvertime, "Working to long", "min", false);
 	//menu.IncludeFunction(&func8, testingMode, "Testing Mode", "", false);
+	menu.IncludeFunction(&func9, var_Allow_Work_WaterPumpWhenReachedMaximumPressure, "Work Then Max PSI", "", false);
+	
 
 	menu.IncludeQuckAccessFunction(&func0, var_Mode, "Modes","",false);
 	menu.IncludeFunctionSetDefault(&userSetDefault); 
@@ -172,7 +175,7 @@ void setup() {
 	pinMode(RELAY_To_a_Solenoid_Valve_Output, OUTPUT);
 	pinMode(SENSOR_Exeption_Source_Vin, INPUT);
 	pinMode(SENSOR_WATER_FLOW, INPUT);
-	pinMode(SENSOR_WATER_PREASURE, INPUT);
+	pinMode(SENSOR_WATER_PRESSURE, INPUT);
 	pinMode(SENSOR_Well_System_Minimum_Water_Sensor, INPUT);
 	pinMode(SENSOR_Button_External, INPUT);
 	
@@ -222,7 +225,7 @@ void loop() {
 	raw_SENSOR_Well_System_Minimum_Water_Sensor = digitalRead(SENSOR_Well_System_Minimum_Water_Sensor);
 	raw_SENSOR_Exeption_Source_Vin = digitalRead(SENSOR_Exeption_Source_Vin);
 	raw_SENSOR_Button_External = digitalRead(SENSOR_Button_External);
-	raw_SENSOR_WATER_PREASURE = analogRead(SENSOR_WATER_PREASURE);
+	raw_SENSOR_WATER_PRESSURE = analogRead(SENSOR_WATER_PRESSURE);
 	
 
 
@@ -325,16 +328,17 @@ void loop() {
 		printeach_1secWhenButtonSetPage1("Exeption_Source_Vin " + String(raw_SENSOR_Exeption_Source_Vin));
 		printeach_1secWhenButtonSetPage1("Button_External " + String(raw_SENSOR_Button_External));
 		printeach_1secWhenButtonSetPage1("W_FLOW:" + String(Sensor_WaterFlowPerTimeSaved) + " (" + String(raw_SENSOR_WATER_FLOW) + ")");
-		printeach_1secWhenButtonSetPage1("W_PREASURE:" + String(raw_SENSOR_WATER_PREASURE) + "[ " + String(isWaterTurnedOn) + " ]");
+		printeach_1secWhenButtonSetPage1("W_PRESSURE:" + String(raw_SENSOR_WATER_PRESSURE) + "[ " + String(isWaterTurnedOn) + " ]");
 		printeach_1secWhenButtonSetPage1("Flow time left: " + String(value_FlowWaterOwerworkTimer));
 		//printeach_1secWhenButtonSetPage1("WTF??");
 		printeach_1secWhenButtonSetPage1(String(isFillingWaterOvertime) + "Fill can:" + String(value_FillingWaterOvertime) + "/" + String(funFillingWaterOvertime()) + "m");
 	}
 	else if (manualReapetEach1sec && allowPrintWhenRightButton == 2) {
 		// page 2
-		printeach_1secWhenButtonSetPage2("USE:" + modeStateRezult()); 
-	    printeach_1secWhenButtonSetPage2("canWaterTurnOn:" + booltoText(isPossibleWaterTurnOn)); 
-		printeach_1secWhenButtonSetPage2("testMode:" + booltoText(testingMode) );
+		printeach_1secWhenButtonSetPage2("USE:" + modeStateRezult(raw_SENSOR_Well_System_Minimum_Water_Sensor + 1));
+	    printeach_1secWhenButtonSetPage2("canWaterTurnOn:" + booltoText(isPossibleWaterTurnOn));  
+		printeach_1secWhenButtonSetPage2("Any flow work:" + booltoText(var_Allow_Work_WaterPumpWhenReachedMaximumPressure) );
+			//	printeach_1secWhenButtonSetPage2("testMode:" + booltoText(testingMode) );
 	}
 		/*
 
@@ -342,37 +346,45 @@ void loop() {
 
 			*/
 
+			//menu.func_stored[8].__functionName // get name of the function
 
 		// flow sensor condition 
-		if (var_Water_Flow_Sensor_Minimum < Sensor_WaterFlowPerTimeSaved && !isPossibleWaterTurnOn) // or flow of water is greater then turn on a water!
+		if (var_Water_Flow_Sensor_Minimum < Sensor_WaterFlowPerTimeSaved && (byteToBool(var_Allow_Work_WaterPumpWhenReachedMaximumPressure || !isPossibleWaterTurnOn))) // or flow of water is greater then turn on a water! or any minimum flowing water allow to turn on watter by user preferences
 		{
-			isWaterTurnedOn = true;
-			value_FlowWaterOwerworkTimer = var_FlowWaterOwerworkTimer;  // if flow exist, reset protection timer
-			printeach_1secWhenButtonNotSet("FLow ON");
-		}
+			printeach_1secWhenButtonNotSet("Flow On");
+
+				isWaterTurnedOn = true;
+				value_FlowWaterOwerworkTimer = var_FlowWaterOwerworkTimer;  // if flow exist, reset protection timer
+
+				if (byteToBool(var_Allow_Work_WaterPumpWhenReachedMaximumPressure)) //  also its good idea to turn on monitoring a errors for thins strange exeption
+					isPossibleWaterTurnOn = false; // errors enabled
+		}	
 		else
 		{
 			isWaterTurnedOn = false;
 		}
 
 
-		if (raw_SENSOR_WATER_PREASURE > 50) {// if greater pressure as usual ( 99 of 1024) when do filling water process 
+		if (raw_SENSOR_WATER_PRESSURE > 50) {// if greater pressure as usual ( 99 of 1024) when do filling water process 
 
 
 			printeach_1secWhenButtonSetPage1(""); // clear : Nera Slegio sensoriaus!
 
-			// cach a preasure condition then 
-			if (!isWaterTurnedOn && raw_SENSOR_WATER_PREASURE <= map(var_Water_Preasure_Minimum, 0, 255, 0, 1023)) // map(var_Water_Preasure_Minimum, 0, 255, 0, 1023)
+			// cach a pressure condition then 
+			if (!isWaterTurnedOn && raw_SENSOR_WATER_PRESSURE <= map(var_Water_Pressure_Minimum, 0, 255, 0, 1023)) // map(var_Water_Pressure_Minimum, 0, 255, 0, 1023)
 			{
 				printeach_1secWhenButtonNotSet("Pressure Low"); // on
 				isWaterTurnedOn = true;
 				isPossibleWaterTurnOn = false;
 
 			}
-			else if (/*isWaterTurnedOn &&*/ raw_SENSOR_WATER_PREASURE >= map(var_Water_Preasure_Maximum, 0, 255, 0, 1023)) // map(var_Water_Preasure_Maximum, 0, 255, 0, 1023)
+			else if (/*isWaterTurnedOn &&*/ raw_SENSOR_WATER_PRESSURE >= map(var_Water_Pressure_Maximum, 0, 255, 0, 1023)) // map(var_Water_Pressure_Maximum, 0, 255, 0, 1023)
 			{
 				printeach_1secWhenButtonNotSet("Pressure Reached"); // off 
-				isWaterTurnedOn = false;
+				
+				//if (byteToBool( var_Allow_Work_WaterPumpWhenReachedMaximumPressure) ) // from the option, user can make desision in here about efficiency stand
+					//isWaterTurnedOn = false; // allow to turn off water  for sourcing when reached a maximum pressure
+				
 				isPossibleWaterTurnOn = true;
 
 				value_FlowWaterOwerworkTimer = var_FlowWaterOwerworkTimer; // if pressure is reached then no point to countdown. Reset to original state 
@@ -442,13 +454,13 @@ void loop() {
 			printeach_1secWhenButtonNotSet( "Error no flowing water");
 		}
 		else {
-			printeach_1secWhenButtonNotSet( String(!isPossibleWaterTurnOn ?"?>":"") + "Is flow: " + String(value_FlowWaterOwerworkTimer) + " min");
+			printeach_1secWhenButtonNotSet( String(!isPossibleWaterTurnOn ?"!>:":"") + "Flow: " + String(value_FlowWaterOwerworkTimer) + " min");
 		}
 
 
 		if (value_FillingWaterOvertime > 0)
 		{
-			printeach_1secWhenButtonNotSet( String (isFillingWaterOvertime ?"!!>":"")+"Filling: " +String(funFillingWaterOvertime()-value_FillingWaterOvertime) + "min");
+			printeach_1secWhenButtonNotSet( String (isFillingWaterOvertime ?"!!>":"")+"Filling: " +String(funFillingWaterOvertime()-value_FillingWaterOvertime) + " min");
 		}
 		else
 		{
