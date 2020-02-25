@@ -134,9 +134,9 @@ void func3() {
 };
 
 void func4() { 
-	if (var_Allow_External_Button >= 2)
+	if (var_Allow_External_Button >= 3)
 	{
-		var_Allow_External_Button = 2;
+		var_Allow_External_Button = 3;
 	}
 
 	if (var_Allow_External_Button == 0)
@@ -145,6 +145,8 @@ void func4() {
 		print("Reset errors.");
 	else if (var_Allow_External_Button == 2)
 		print("Turn on water.");
+	else if (var_Allow_External_Button == 3)
+		print("Turn off water.");
 };
 void func5()
 {

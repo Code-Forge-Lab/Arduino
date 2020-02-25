@@ -55,8 +55,7 @@ Bepper if out of water
 
 
 // Interrupts
-const int   INTERRUPT_SignalRight = 2; // Rotary Encoder 0
-const int   INTERRUPT_SignalLeft = 3; // Rotary Encoder 1
+
 
 
 
@@ -97,8 +96,7 @@ bool isFillingWaterOvertime = false; // remember state about working to long tim
 byte WaterSourcePressureRequest = 0;
 byte WaterSourcePressure = 0;
 
-byte meniuIndex = 0;
-byte meniuValue = 0;
+bool allowFlowThenWasLowPressure = false;// water can flow while see greater minimum threshold until that is over. To begin, requare to reach low pressure from the other sensor
 
 //memory temporery stored values
 //byte value_Water_Pressure_Minimum;
@@ -166,8 +164,6 @@ void setup() {
 	pinMode(BUTTON_SET, INPUT);
 	pinMode(BUTTON_UP, INPUT);
 
-	pinMode(INTERRUPT_SignalLeft, INPUT);
-	pinMode(INTERRUPT_SignalRight, INPUT);
 
 	pinMode(LED_ERROR_NoWaterOrToMuchWater, OUTPUT);
 
@@ -349,7 +345,7 @@ void loop() {
 			//menu.func_stored[8].__functionName // get name of the function
 
 		// flow sensor condition 
-		if (var_Water_Flow_Sensor_Minimum < Sensor_WaterFlowPerTimeSaved && (byteToBool(var_Allow_Work_WaterPumpWhenReachedMaximumPressure || !isPossibleWaterTurnOn))) // or flow of water is greater then turn on a water! or any minimum flowing water allow to turn on watter by user preferences
+		if (var_Water_Flow_Sensor_Minimum < Sensor_WaterFlowPerTimeSaved && (byteToBool(var_Allow_Work_WaterPumpWhenReachedMaximumPressure || !isPossibleWaterTurnOn) && allowFlowThenWasLowPressure)) // or flow of water is greater then turn on a water! or any minimum flowing water allow to turn on watter by user preferences
 		{
 			printeach_1secWhenButtonNotSet("Flow On");
 
@@ -362,6 +358,9 @@ void loop() {
 		else
 		{
 			isWaterTurnedOn = false;
+
+			if (value_SourceCityWaterTimeout == 0 && value_SourceWellWaterTimeout == 0) // if no timer is running then 
+				allowFlowThenWasLowPressure = false; // reset, when no  requare water is flowing
 		}
 
 
@@ -376,14 +375,12 @@ void loop() {
 				printeach_1secWhenButtonNotSet("Pressure Low"); // on
 				isWaterTurnedOn = true;
 				isPossibleWaterTurnOn = false;
+				allowFlowThenWasLowPressure = true;
 
 			}
 			else if (/*isWaterTurnedOn &&*/ raw_SENSOR_WATER_PRESSURE >= map(var_Water_Pressure_Maximum, 0, 255, 0, 1023)) // map(var_Water_Pressure_Maximum, 0, 255, 0, 1023)
 			{
 				printeach_1secWhenButtonNotSet("Pressure Reached"); // off 
-				
-				//if (byteToBool( var_Allow_Work_WaterPumpWhenReachedMaximumPressure) ) // from the option, user can make desision in here about efficiency stand
-					//isWaterTurnedOn = false; // allow to turn off water  for sourcing when reached a maximum pressure
 				
 				isPossibleWaterTurnOn = true;
 
@@ -439,7 +436,22 @@ void loop() {
 				isWaterTurnedOn = true;
 				isPossibleWaterTurnOn = false; // activate flowing water error detection
 			}
+			else if (var_Allow_External_Button == 3)
+			{
+				printeach_1secWhenButtonNotSet("off water.");
+				isWaterTurnedOn = false; // turn off water
+				isPossibleWaterTurnOn = true; // turn off error detection
+			}
+			
 
+		}
+		else {
+			if (var_Allow_External_Button == 3)
+			{
+				isWaterTurnedOn = true;
+				isPossibleWaterTurnOn = false; // activate flowing water error detection 
+			}
+			
 		}
 
 
