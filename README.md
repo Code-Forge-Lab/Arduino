@@ -234,7 +234,8 @@ void clearChar ( char *characters , int size ){
  >- IDE [java based](https://winder.github.io/ugs_website/download/), [here](https://github.com/grbl/grbl/wiki/Using-Grbl)
  >- [Xloader](https://github.com/xinabox/xLoader/releases/tag/v1.339) or [else](http://www.mikrodb.com/index.php/85-arduino/85-emdebe-hex-loader-load-hex-to-arduino-board) or upluad hex's with [arduino IDE](https://www.youtube.com/watch?v=dAwmZDIUeuU)
  >- Clear [EEPROM](https://www.youtube.com/watch?v=zlRCzGwHft0) Memory 
-
+ ## CNC Arduino Pinouts
+	![DRV8825 Driver](https://github.com/Code-Forge-Lab/Arduino/blob/master/images/ArduinoCNC.png)  
 ## GRBL frimware with Servo ##
  * Get grbl + servo frimware for [arduino](https://github.com/robottini/grbl-servo) controller.
  * Control function up and down M3 and M5
@@ -322,6 +323,43 @@ void clearChar ( char *characters , int size ){
 * $120=10.000 (x accel, mm/sec^2) <-Important for Steppers
 * $121=10.000 (y accel, mm/sec^2) <-Important for Steppers
 * $122=20.000 (z accel, mm/sec^2) <-Important for Steppers
+* $130=200.000 (x max travel, mm)
+* $131=200.000 (y max travel, mm)
+* $132=200.000 (z max travel, mm)
+
+## 1.1GRBL, Motor **Nema17** CNC v3 shield, [ ((360 / 1.8) x 16) == ||| ] Microsteping pins conected
+###### **Half-Step** working option 
+* $0=10 (step pulse, usec)
+* $1=25 (step idle delay, msec)
+* $2=0 (step port invert mask:00000000)
+* $3=0 (dir port invert mask:00000000)
+* $4=0 (step enable invert, bool)
+* $5=0 (limit pins invert, bool)
+* $6=0 (probe pin invert, bool)
+* $10=3 (status report mask:00000011)
+* $11=0.010 (junction deviation, mm)
+* $12=0.002 (arc tolerance, mm)
+* $13=0 (report inches, bool)
+* $20=0 (soft limits, bool)
+* $21=0 (hard limits, bool)
+* $22=0 (homing cycle, bool)
+* $23=0 (homing dir invert mask:00000000)
+* $24=50.000 (homing feed, mm/min)
+* $25=500.000 (homing seek, mm/min)
+* $26=250 (homing debounce, msec)
+* $27=1.000 (homing pull-off, mm)
+* $30=5000 (Maximum spindle speed)
+* $31=0 (Minimum spindle speed)
+* $32=0 (Laser Mode Enable)
+* $100=800.000 (x, step/mm) <-Important for Steppers
+* $101=800.000 (y, step/mm) <-Important for Steppers
+* $102=800.000 (z, step/mm) <-Important for Steppers
+* $110=900.000 (x max rate, mm/min) <- Maximum cycle per second can go(more == faster)
+* $111=900.000 (y max rate, mm/min) <- Maximum cycle per second can go(more == faster)
+* $112=900.000 (z max rate, mm/min) <- Maximum cycle per second can go(more == faster)
+* $120=20.000 (x accel, mm/sec^2) <-Important for Steppers
+* $121=20.000 (y accel, mm/sec^2) <-Important for Steppers
+* $122=14.000 (z accel, mm/sec^2) <-Important for Steppers
 * $130=200.000 (x max travel, mm)
 * $131=200.000 (y max travel, mm)
 * $132=200.000 (z max travel, mm)
