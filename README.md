@@ -247,8 +247,11 @@ void clearChar ( char *characters , int size ){
   ![DRV8825 Driver](https://github.com/Code-Forge-Lab/Arduino/blob/master/images/DRV8825%20.png)  
   >- Pin out a GRBL with Arduino Uno or atmel328p chip.
 ![pin out](https://github.com/Code-Forge-Lab/Arduino/blob/master/images/CNC%20Shield%20V3.0%20pinout.jpg)
-# CNC Arduino Pinouts
-	![CNCArduino](https://github.com/Code-Forge-Lab/Arduino/blob/master/images/CNC%20Shield%20V3.0%20pinout.jpg) 
+
+## CNC Arduino Pinouts
+![CNCArduino](https://github.com/Code-Forge-Lab/Arduino/blob/master/images/CNC%20Shield%20V3.0%20pinout.jpg) 
+![DRV8825 Driver](https://github.com/Code-Forge-Lab/Arduino/blob/master/images/DRV8825%20.png) 
+	
 # Parameters of GRBL 0.8-0.9 version #
  Sum information are [here](http://forum.arduino.cc/index.php?topic=576107.0) and [here with math https://stackoverflow.com/questions/7818811/import-error-no-module-named-numpyas bonus](https://www.instructables.com/id/3020-CNC-Arduino-GRBL-CNC-Shield-V3/)
  
