@@ -235,7 +235,7 @@ void clearChar ( char *characters , int size ){
  >- [Xloader](https://github.com/xinabox/xLoader/releases/tag/v1.339) or [else](http://www.mikrodb.com/index.php/85-arduino/85-emdebe-hex-loader-load-hex-to-arduino-board) or upluad hex's with [arduino IDE](https://www.youtube.com/watch?v=dAwmZDIUeuU)
  >- Clear [EEPROM](https://www.youtube.com/watch?v=zlRCzGwHft0) Memory 
  ## CNC Arduino Pinouts
-	![DRV8825 Driver](https://github.com/Code-Forge-Lab/Arduino/blob/master/images/ArduinoCNC.png)  
+	![CNC Arduino](https://github.com/Code-Forge-Lab/Arduino/blob/master/images/ArduinoCNC.png)  
 ## GRBL frimware with Servo ##
  * Get grbl + servo frimware for [arduino](https://github.com/robottini/grbl-servo) controller.
  * Control function up and down M3 and M5
