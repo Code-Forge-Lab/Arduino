@@ -353,7 +353,7 @@ void clearChar ( char *characters , int size ){
 * $30=5000 (Maximum spindle speed)
 * $31=0 (Minimum spindle speed)
 * $32=0 (Laser Mode Enable)
-* $100=800.000 (x, step/mm) <-Important for Steppers
+* $100=1600.000 (x, step/mm) <-Important for Steppers // Made Mpre MicroSteping!
 * $101=800.000 (y, step/mm) <-Important for Steppers
 * $102=800.000 (z, step/mm) <-Important for Steppers
 * $110=900.000 (x max rate, mm/min) <- Maximum cycle per second can go(more == faster)
