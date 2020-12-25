@@ -392,7 +392,7 @@ private:byte meniuOptionSelectFun() {
 
 
 	// if pressing a button and meniu where are selected are not to big then...
-	if ((*buttonUP && meniuOptionSelected < includedMenuCount + 1) && meniuOptionIsPressing && !meniuOptionIsSelected) {
+	if ((*buttonUP && meniuOptionSelected < includedMenuCount /*+ 1 <Error, out of menu bounderies*/) && meniuOptionIsPressing && !meniuOptionIsSelected) {
 
 		++meniuOptionSelected;
 		startedWaitingmeniuOptionSelected = millis();// time out start point

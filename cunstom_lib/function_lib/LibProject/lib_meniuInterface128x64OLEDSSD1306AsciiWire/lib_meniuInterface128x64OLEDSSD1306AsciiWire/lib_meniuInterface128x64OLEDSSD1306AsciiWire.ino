@@ -7,9 +7,9 @@
 #include "lib_meniuInterface128x64OLEDBased(SSD1306AsciiWire).h"
 
 // buttons
-#define BUTTON_DOWN 2
-#define BUTTON_SET 6
-#define BUTTON_UP 4
+#define BUTTON_DOWN 5
+#define BUTTON_SET 4
+#define BUTTON_UP 6
 
 //variables
 byte var_one; 
@@ -58,9 +58,9 @@ void loop() {
 
 
 	// read buttons values 
-	buttonSET = digitalRead(BUTTON_SET);
-	buttonDOWN = digitalRead(BUTTON_DOWN);
-	buttonUP = digitalRead(BUTTON_UP);
+	buttonSET = !digitalRead(BUTTON_SET);
+	buttonDOWN = !digitalRead(BUTTON_DOWN);
+	buttonUP = !digitalRead(BUTTON_UP);
 
 
 	/// CLOCK 1 min			60000UL  120000UL  x 2 clock speed 
