@@ -8,7 +8,7 @@
 //Structure
 #include "Arduino.h"
 #include <Wire.h>
-#include <LiquidCrystal_I2C.h> //0x3F mine or 0x27 need to find out with :LINK:http://playground.arduino.cc/Main/I2cScanner
+#include <LiquidCrystal_I2C.h> //0x3F mine or 0x27 need to find out with :LINK:http://playground.arduino.cc/main/i2cscanner
 #include<stdlib.h>
 #include <stdio.h>
 #include "EEPROM32.h"
@@ -28,7 +28,7 @@ LiquidCrystal_I2C display(I2C_ADDRESS, 2, 1, 0, 4, 5, 6, 7, 3, POSITIVE); //was 
 
 
 
-String SPACE = "                ";
+//String SPACE = "                ";
 void print(String txt) {
 	display.print(txt);
 //	display.println(SPACE);
@@ -95,9 +95,9 @@ public:	 // Only works in public , private throw error
 	void (*fnc_)(); // whiout bracket not working , looks like try to use casting method
 	String __functionName;// function abroviation what are doing 
 	byte *__functionValueAddress;// this variable Address are stored in here to change or read a value. Also use as direct data to save in EEPROM or save back to.
-	String __functionValueAbbreviation;// are for desribe a "functionValueAddress" point what that mean:celcius,fahrenheit ect...
+	String __functionValueAbbreviation;// are for describe a "functionValueAddress" point what that mean:celcius,fahrenheit etc...
 	bool __printfunctionValue; // allow to print a numeric/rest value of  this function
-	int __funcAddress; // address of avalue that are addresed in to EEPROM 
+	int __funcAddress; // address of a value that are addressed in to EEPROM 
 	
 	
 					   
@@ -109,7 +109,7 @@ public:	 // Only works in public , private throw error
 	};
 
 
-	void IncludeFunction(void (*functionPointer)(), byte &functionValueAddress , String functionName = "Uknown" , String functionValueAbbreviation = "",  bool printfunctionValue = true ) { // where magic on
+	void IncludeFunction(void (*functionPointer)(), byte &functionValueAddress , String functionName = "unknown" , String functionValueAbbreviation = "",  bool printfunctionValue = true ) { // where magic on
 		fnc_ = functionPointer;
 		__functionName = functionName;
 		__functionValueAddress = &functionValueAddress;
@@ -140,17 +140,18 @@ class lib_meniuInterface16x2_LiquidCrystal_I2C
 	bool boolSetButton = false;
 	bool boolSetMenu = false;
 	bool boolQuicklyChange = false;
+	private:bool boolClearAfterSetBtn = false;	  // clear display after entering or exiting menu
 	byte meniuOptionSelected = 1;
 	
-	bool meniuOptionIsPressing = false;// detect when button no longer is press
-    bool meniuOptionIsSelected = false; // When eventualy are at P0-P3 option then time to select what specificly are changing a values that are included in the statement.
-	bool meniuOptionWhenSelected = false;// for clearing one time a meniu option are change
+	private:bool meniuOptionIsPressing = false;// detect when button no longer is press
+    private:bool meniuOptionIsSelected = false; // When eventually are at P0-P3 option then time to select what specificity are changing a values that are included in the statement.
+	private:bool meniuOptionWhenSelected = false;// for clearing one time a menu option are change
 	unsigned long startedWaiting;
 	unsigned long startedWaitingmeniuOptionSelected;
 	byte toggleDisplay = 0;
 	
-	// less inportant
-	bool isDisplayCleared = false; // track if display was cleared when exitind from meniuOptionIsSelected
+	// less important
+	bool isDisplayCleared = false; // track if display was cleared when exiting from meniuOptionIsSelected
 
 		
 	//////
@@ -160,7 +161,7 @@ class lib_meniuInterface16x2_LiquidCrystal_I2C
 	byte *rotarySpinedSIDE;
 	bool isRoatry = false; // detect where is a rotary encoder
 
-	// if default function exsist then use in menu to set a new default
+	// if default function exist then use in menu to set a new default
 public:void (*defaultFunc)();
 	bool defaultIsFunc = false;
 
@@ -168,7 +169,7 @@ public:void (*defaultFunc)();
 	int_fast16_t includedMenuCount = 2; // start generate by a count a slow access menu position in memory EEPROM
 	int_fast16_t includeQuckAccessMenu = 1; // always first positioning
 
-	//ADDRESS STORED Stored memory managment
+	//ADDRESS STORED Stored memory management
 	//void (*userSetValuesToMemory)(); // 
 	//void (*userSetDefault)();
 	//void (*userSetValuesToMemory)();
@@ -226,7 +227,7 @@ public:void IncludeFunctionSetDefault(void (*functionPointer)() )
 }
 
 	// access menu by  short pressed a Set button
-public:void IncludeQuckAccessFunction( void (*functionPointer)(), byte & functionValue , String functionName = "Uknown"   , String functionValueAbbreviation = "", bool printfunctionValue = true)
+public:void IncludeQuckAccessFunction( void (*functionPointer)(), byte & functionValue , String functionName = "unknown"   , String functionValueAbbreviation = "", bool printfunctionValue = true)
 	{
 		func_stored[includeQuckAccessMenu].IncludeFunction((functionPointer), functionValue, functionName, functionValueAbbreviation,   printfunctionValue );
 	}
@@ -288,7 +289,7 @@ public:void IncludeQuckAccessFunction( void (*functionPointer)(), byte & functio
 		  display.begin(16, 2);
 		  delay(500);
 		  display.setBacklight(HIGH);
-
+		  //	  
 		  userGetValues();// load values from EEPROM memory!
 	  }
 
@@ -305,11 +306,11 @@ private:void meniuDescribeOptionDisplay(String txt) {
 		print(txt);
 	}
 
-	   // only for a buttos/ badly on rotary encoder
+	   // only for a buttons/ badly on rotary encoder
 private:byte meniuOptionSelectFun() {
 
 
-		// if pressing a button and meniu where are selected and not are to big then...
+		// if pressing a button and menu where are selected and not are to big then...
 		if ((*buttonUP && meniuOptionSelected < includedMenuCount /*+ 1 <Error out of menu bounderies*/) && meniuOptionIsPressing && !meniuOptionIsSelected) {
 
 			++meniuOptionSelected;
@@ -317,7 +318,7 @@ private:byte meniuOptionSelectFun() {
 			display.clear();
 
 		}
-		// if pressing a button and meniu where are selected and are not  smaller then...
+		// if pressing a button and menu where are selected and are not  smaller then...
 		if ((*buttonDOWN && meniuOptionSelected > 1) && meniuOptionIsPressing && !meniuOptionIsSelected) {
 
 			--meniuOptionSelected;
@@ -326,18 +327,21 @@ private:byte meniuOptionSelectFun() {
 
 		}
 
-		// Give new timeout and starting point for menu fuctions to work
+		// Give new timeout and starting point for menu functions to work
 		if (*buttonSET && !meniuOptionIsSelected) {
 			//meniuOptionIsPressing = true;
 			startedWaitingmeniuOptionSelected = millis();// time out start point
 		}
 
-		// if user do not do for a while , accures a time out.
+		// if user do not do for a while , occurs a time out.
 		if ((millis() > (long)(startedWaitingmeniuOptionSelected + 45000UL)) && !meniuOptionIsSelected)
 		{
 			boolSetButton = false; // exit from boolSetButton statement
 			boolSetMenu = false; // exit from boolSetMenu statement
-			meniuOptionSelected = 1; //reset meniu position to P0
+			meniuOptionSelected = 1; //reset menu position to P0
+			delay(10);
+			display.clear(); // works as timeout display cleaner
+			delay(10);
 		}
 
 		// capture when button is pressing and set a one time button push
@@ -358,7 +362,7 @@ private:byte meniuOptionSelectFun() {
 	// user when changing something in meniu options, doest trow here 
 private:void userChangeMeniuValue(byte* userPx, byte __delay = 10, byte minValue = 0, byte maxValue = 255) {
 
-		// incrament
+		// increment
 		if (*buttonUP && *userPx < maxValue)
 		{
 			*userPx = *userPx + 1;
@@ -367,7 +371,7 @@ private:void userChangeMeniuValue(byte* userPx, byte __delay = 10, byte minValue
 			//startedWaiting = millis(); //reset meniu delay counter // LAG When  push SET Button // Start to  wait from begining
 		}
 
-		// substract 
+		// subtract 
 		if (*buttonDOWN && *userPx > minValue)
 		{
 			*userPx = *userPx - 1;
@@ -381,7 +385,7 @@ private:void userChangeMeniuValue(byte* userPx, byte __delay = 10, byte minValue
 /*
 private:void userChangeMeniuValue(bool* userPx, byte __delay = 10) {
 
-		// incrament
+		// increment
 		if ((*buttonDOWN ||* buttonUP) && *userPx)
 		{
 			*userPx != *userPx;
@@ -395,20 +399,38 @@ private:void userChangeMeniuValue(bool* userPx, byte __delay = 10) {
 	}
 	*/
 
+//clear display one time before menu and after 
+private:void funClearAfterSetButton (bool statement/*of how to react*/, bool saveCondition/*how to save after codition for not reapeting inself*/) {
+	
+	if (boolClearAfterSetBtn == statement)
+	{
+		
+		boolClearAfterSetBtn = saveCondition;
+		Serial.print("boolClearAfterSetBtn:" + String (boolClearAfterSetBtn) + "\n");
+		display.clear();
+		delay(10);
+		
+	}
+	
+}
 
 private:void menuSelectedPrint() {
 
 	byte spacer;
-
-// when menu option P1-P3 is  selected and avoid ovelaping with functionvalue name and menu index value in square brackets (( [P3] with var3 ( [vP3a]r3 ) ))
+	
+	funClearAfterSetButton (true,false);
+	
+// when menu option P1-P3 is  selected and avoid overlapping with functionvalue name and menu index value in square brackets (( [P3] with var3 ( [vP3a]r3 ) ))
+	
+	/*
 	if (meniuOptionSelectFun() < 10)
 		spacer = 7;
 	else
 	{
 		spacer = 4;
 	}
-
-
+*/
+	
 	display.setCursor(spacer, 0);
 
 	// print something specific  about a this function out frtom this scope 
@@ -423,7 +445,7 @@ private:void menuSelectedPrint() {
 
 		display.setCursor(0, 1);
 		//print stored values from a memory 
-		print(func_stored[meniuOptionSelectFun() + 1].__functionValueAbbreviation +":"+ *func_stored[meniuOptionSelectFun() + 1].__functionValueAddress  + "  ");
+		print(func_stored[meniuOptionSelectFun() + 1].__functionValueAbbreviation +":"+ *func_stored[meniuOptionSelectFun() + 1].__functionValueAddress  + " ");
 
 		//		display.set1X();
 		//print(" " + func_stored[meniuOptionSelectFun() + 1].__functionValueAbbreviation);
@@ -438,11 +460,13 @@ private:void menuQuckAccesPrint() {
 
 	//display.set2X();
 	
+	funClearAfterSetButton (true,false);
+	
 	display.setCursor(0, 0);
 
 	// print name of the function 
 	print("[-]" +func_stored[includeQuckAccessMenu].__functionName);
-	// print something specific  about a this function out frtom this scope 
+	// print something specific  about a this function out from this scope 
 	// specific function to call outside this class
 	func_stored[includeQuckAccessMenu].fnc_();
 
@@ -457,7 +481,7 @@ private:void menuQuckAccesPrint() {
 //		display.set2X(); 
 		display.setCursor(0, 1);
 
-		print(String(*func_stored[includeQuckAccessMenu].__functionValueAddress)  + " " + func_stored[includeQuckAccessMenu].__functionValueAbbreviation);
+		print(func_stored[includeQuckAccessMenu].__functionValueAbbreviation + ":" + *func_stored[includeQuckAccessMenu].__functionValueAddress + " ");
 
 	}
 
@@ -472,14 +496,16 @@ public:bool InterfaceDinamic() {
 		
 	// Slow access options
 		if (*buttonSET || boolSetButton) {
-
-				boolSetButton = true;
-
+									 
+						
+					 boolSetButton = true;
+				
+				
 			// Set menu for more options
 			/*Is on timer when boolSetButton was passed and user must pressing a button for a 5 seconds*/
 			if (*buttonSET && (millis() > (long)(startedWaiting + 5000UL) && !boolQuicklyChange) || boolSetMenu) {
 				// set loop from boolean
-				// BEFORE meniu option was selected and exiting out
+				// BEFORE menu option was selected and exiting out
 
 				if (!boolSetMenu && !boolQuicklyChange) // clear text noise from main program
 					display.clear();
@@ -490,11 +516,11 @@ public:bool InterfaceDinamic() {
 				//                                              Extra timer for not hit a first option
 				if ((millis() > (long)(startedWaiting + 5000UL + 1500UL)) && *buttonSET) {
 					
-					// BEFORE meniu option was selected and exiting out
+					// BEFORE menu option was selected and exiting out
 					//if (!isDisplayCleared) { display.clear(); }; // clear
 					//isDisplayCleared = true;
 
-					// After meniu option was selected and exiting out
+					// After menu option was selected and exiting out
 					if (meniuOptionIsSelected) {
 						userSetValuesToMemory(meniuOptionSelectFun());
 							
@@ -505,25 +531,25 @@ public:bool InterfaceDinamic() {
 					else
 						isDisplayCleared = false; //reset status about cleared display
 
-					//  if meniu option selected and need change a values to EEPROM
+					//  if menu option selected and need change a values to EEPROM
 					meniuOptionIsSelected = !meniuOptionIsSelected;
 
-					// Exit from progra  and main boolSetButton loop...if meniu not selected
+					// Exit from progra  and main boolSetButton loop...if menu not selected
 					if (meniuOptionSelectFun() == includedMenuCount) { // Exit
 
 						boolSetButton = false; // exit from boolSetButton statement
 						boolSetMenu = false; // exit from boolSetMenu statement
-						meniuOptionSelected = 1; //reset meniu position to P0
-						meniuOptionIsSelected = false; // when user exit from meniu set to default 
+						meniuOptionSelected = 1; //reset menu position to P0
+						meniuOptionIsSelected = false; // when user exit from menu set to default 
 	//					display.set1X();
 					}
 					//userSetValuesToMemory();
 					//while (*buttonSET == true)
-						delay(230);// wait until set button not realesed
+						delay(230);// wait until set button not resealed
 				}
 				else
 				{
-					// set whole set loop by default if no buttons event accures
+					// set whole set loop by default if no buttons event occurs
 					boolSetMenu = true;
 					boolSetButton = true;
 
@@ -537,7 +563,7 @@ public:bool InterfaceDinamic() {
 					display.setCursor(0, 0);
 //					display.set1X();
 
-					if (meniuOptionSelectFun()  < includedMenuCount ) // only display meniu option values exept on 'EXIT'
+					if (meniuOptionSelectFun()  < includedMenuCount ) // only display menu option values except on 'EXIT'
 						
 						if (meniuOptionWhenSelected)
 							print("P" + String(meniuOptionSelectFun()) + "]");
@@ -546,13 +572,13 @@ public:bool InterfaceDinamic() {
 
 
 
-					// if meniu option not selected print about meniu abbreviation
+					// if menu option not selected print about menu abbreviation
 
 					if (meniuOptionWhenSelected) {
 						//print("-");
 						//print("");
 					}
-					// if not meniu option selected and meniu are not at EXIT point
+					// if not menu option selected and menu are not at EXIT point
 					if (!meniuOptionIsSelected && meniuOptionSelectFun()   < includedMenuCount) {
 						meniuOptionWhenSelected = true;
 
@@ -587,7 +613,7 @@ public:bool InterfaceDinamic() {
 								defaultFunc();
 
 								delay(2000);
-								meniuOptionIsSelected = !meniuOptionIsSelected; // back to meniu options
+								meniuOptionIsSelected = !meniuOptionIsSelected; // back to menu options
 								display.clear();
 							}
 						}
@@ -596,7 +622,7 @@ public:bool InterfaceDinamic() {
 						// ----------------------do rest of options------------------------------------
 
 						// print about  menu  what it's doing
-						print(func_stored[meniuOptionSelectFun() + 1].__functionName); // + 1 to avoid to stuble a Quck access menu option
+						print(func_stored[meniuOptionSelectFun() + 1].__functionName); // + 1 to avoid to stumble a Quick access menu option
 
 						// if user select a desire function, then change his value
 						if (meniuOptionIsSelected && boolSetMenu) {
@@ -609,17 +635,17 @@ public:bool InterfaceDinamic() {
 
 					
 					//  EXIT-----------------------------------------
-					 if (meniuOptionSelectFun()  >= includedMenuCount  ) { // Exit
+					 if (meniuOptionSelectFun()  >=/*if '==' then crashes*/ includedMenuCount  ) { // Exit
 
-						print(" [EXIT] ");
+						print("    [EXIT] ");
 
 						if (meniuOptionIsSelected) {
 
 							//boolSetMenu = false;
 							//boolQuicklyChange = false;
-						//	delay(1200);
-							//display.clear(); // somewhere crashes
-							//delay(2220);
+							delay(10);
+							display.clear(); // somewhere crashes
+							delay(10);
 						}
 					
 
@@ -644,7 +670,7 @@ public:bool InterfaceDinamic() {
 						 isDisplayCleared = true; // display was cleared 
 					 }
 					 else
-						 isDisplayCleared = false; //reset status about cleard display
+						 isDisplayCleared = false; //reset status about cleared display
 
 
 	//				 display.set1X(); 
@@ -699,9 +725,13 @@ public:bool InterfaceDinamic() {
 		else
 		{
 			startedWaiting = millis(); //by default will register values until condition
-			boolQuicklyChange = false; //activate condition ones until event is trigered
-			boolSetMenu = false; // set default to meniu option
+			boolQuicklyChange = false; //activate condition ones until event is triggered
+			boolSetMenu = false; // set default to menu option
 			//display.clear(); // blinking...
+			
+			
+			
+			funClearAfterSetButton (false,true);
 		}
 
 
@@ -710,7 +740,7 @@ public:bool InterfaceDinamic() {
 	
 
 
-	// address automaticly by 1 byte each time 
+	// address automatically by 1 byte each time 
 public:void userSetValuesToMemory(int index = -1) { // plus quick access function
 	if (index > -1) {
 		for (int_fast16_t count = 1; count < (includedMenuCount); count++) {
@@ -725,7 +755,7 @@ public:void userSetValuesToMemory(int index = -1) { // plus quick access functio
 	};
 
 	
-	// address automaticly by 1 byte each time 
+	// address automatically by 1 byte each time 
 public:void userGetValues() {
 								// plus quick access function
 		for (int count = 1; count < (includedMenuCount)  ; count++) {
@@ -741,16 +771,16 @@ public:void userGetValues() {
 
 
 	void displayButtonsValue() {
-
-		print("buttonSET:" + String(*buttonSET)); // getting value of the pointer
-		print("buttonUP:" + String(*buttonUP)); // value of the pointer
-		print("buttonDOWN:" + String(*buttonDOWN)); // value of the pointer
+	String btn="btn";
+		print(btn+"SET:" + String(*buttonSET)); // getting value of the pointer
+		print(btn+"UP:" + String(*buttonUP)); // value of the pointer
+		print(btn+"DOWN:" + String(*buttonDOWN)); // value of the pointer
 	};
 	
 	
 	void displayRotaryValues() {
-		print("buttonSET:" + String(*buttonSET)); // value of the pointer
-		print("rotarySpinedSIDE:" + String(*rotarySpinedSIDE)); // value of the pointer
+		print("btnSET:" + String(*buttonSET)); // value of the pointer
+		print("rotarySIDE:" + String(*rotarySpinedSIDE)); // value of the pointer
 	}
 };
 
