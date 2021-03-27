@@ -51,7 +51,7 @@ void setup() {
 
     menu.userGetValues();
 	
-	Serial.begin(115200);
+	
 
 }
 
@@ -70,7 +70,7 @@ void loop() {
 
        // print(menu.func_stored[1].__functionName); // access a unit from menu memory 
        
-        print("are we there"+String (inc));
+        print("LOOT"+String (inc));
 
         
     }

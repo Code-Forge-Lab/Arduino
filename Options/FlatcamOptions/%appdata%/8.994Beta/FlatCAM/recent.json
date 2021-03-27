@@ -1,0 +1,42 @@
+[
+  {
+    "filename": "C:/Users/zilvi/Documents/FlatCam8.5/ButtonAndRotary/GRBL/Gerber_Drill_PTH.DRL",
+    "kind": "excellon"
+  },
+  {
+    "filename": "C:/Users/zilvi/Documents/FlatCam8.5/ButtonAndRotary/GRBL/Gerber_TopLayer.GTL",
+    "kind": "gerber"
+  },
+  {
+    "filename": "C:/Users/zilvi/Documents/FlatCam8.5/ButtonAndRotary/GRBL/Gerber_PCB_ButtonAndRotaryEncoder_2021-03-18/Gerber_TopLayer.GTL",
+    "kind": "gerber"
+  },
+  {
+    "filename": "C:/Users/zick/Documents/Flatcam8.5/WellSystemTTL/GRBL/Gerber_TopLayer.GTL",
+    "kind": "gerber"
+  },
+  {
+    "filename": "C:/Users/zick/Documents/Flatcam8.5/WellSystem2.0/GRBL/Gerber_Drill_PTH.DRL",
+    "kind": "excellon"
+  },
+  {
+    "filename": "C:/Users/zick/Documents/Flatcam8.5/WellSystem2.0/GRBL/Gerber_TopLayer.GTL",
+    "kind": "gerber"
+  },
+  {
+    "filename": "C:/Users/zick/OneDrive/Documents/myFlatcam8.5/BMS_Balancer/GRBL/Gerber_Drill_PTH.DRL",
+    "kind": "excellon"
+  },
+  {
+    "filename": "C:/Users/zick/OneDrive/Documents/myFlatcam8.5/BMS_Balancer/GRBL/Gerber_TopLayer.GTL",
+    "kind": "gerber"
+  },
+  {
+    "filename": "C:/Users/zick/OneDrive/Documents/myFlatcam8.5/SensorFanOnShunt/GRBL/THC/Gerber_Drill_PTH.DRL",
+    "kind": "excellon"
+  },
+  {
+    "filename": "C:/Users/zick/OneDrive/Documents/myFlatcam8.5/SensorFanOnShunt/GRBL/THC/Gerber_TopLayer.GTL",
+    "kind": "gerber"
+  }
+]
