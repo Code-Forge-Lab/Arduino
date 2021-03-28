@@ -60,15 +60,15 @@ byte rotaryEncoderDirection(bool* sideUp, bool* sideDown) {
 // no control when menu exist
 String SPACE = "                        ";
 void print(String txt) {
-	display.print(txt);
-	display.println(SPACE);
+	display.print(txt + "         \n");
+	//display.println(SPACE);
 
 }
 
 
 void print(int txt) {
-	display.print(txt);
-	display.println(SPACE);
+	display.print(String (txt) + "        \n");
+	//display.println(SPACE);
 
 }
 

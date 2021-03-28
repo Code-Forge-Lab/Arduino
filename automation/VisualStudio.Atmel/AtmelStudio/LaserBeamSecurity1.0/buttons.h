@@ -23,6 +23,8 @@ public:
 	clock_01sec = 0;
    }
 
+String statement (bool val) { if (val) return "true"; else return "false";     };
+
 public:void scaning (){
 	
 	//unsigned long now;   

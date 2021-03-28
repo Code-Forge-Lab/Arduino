@@ -1,4 +1,7 @@
-/*
+
+//	This program was made for ESP8266
+
+/* 
 
 Some of the GPIO pins are used while booting, so Pulling this pin HIGH or LOW can prevent NODEMCU from booting
 
@@ -144,7 +147,8 @@ static const uint8_t D14 = 6; //SDCLK             NO,   Reason[3]               
  byte BUTTON_SET =  D0;
  byte BUTTON_DOWN = D3;
  byte BUTTON_UP = D4;
-
+ byte OUTPUT_ALARMSOUND = D5;
+ 
 //variables
 byte var_one; 
 byte var_two;  
@@ -152,6 +156,21 @@ byte var_three;
 byte var_four; 
 byte var_five; 
 byte var_six;	
+
+bool  bool_pswdPassed = false;	
+
+byte alarm_totalTime = 60; // 1s*60 = 60s 
+byte alarm_strenght;                   // pulse width modulated strength of alarm sound
+byte alarm_strenghtWarning	= 50	;  // when password doesn't inputed correctly
+byte alarm_strenghFullBlast	= 255	;  // when someone passed throw laser or password was incorrect to many times
+byte alarm_delay = 10;				   //  delay to alarm to turn on with laser
+byte alarm_timer; // 				   // this timer depends only from input password buttons and works as timeout to turn on alarm
+byte alarm_timerLaser;				   // react only laser input and are to store time how much should be on a alarm
+byte alarm_countLaser;				   // count laser interrupts
+byte alarm_incorrectScoreChanged=0;
+
+byte relay_lamp_totalTime = 80; // store value how much time should work a relay
+byte relay_lamp_timer;         // timer for turn on relay for a lamps
 
 
 //Clock variables
@@ -175,10 +194,13 @@ lib_meniuInterface128x64OLEDSSD1306AsciiWire menu(buttonUP, buttonDOWN, buttonSE
 void setup() {
 	Serial.begin (115200);
 	//EEPROM.begin(512);
-	menu.IncludeFunction(&func1, var_one, "var_one", "psi", false);
-	menu.IncludeFunction(&func2, var_two, "var_two", "psi");
-	menu.IncludeFunction(&func3, var_three, "var_three", "l/min",true);
-	menu.IncludeFunction(&func4, var_four, "var_four", "val");
+	menu.IncludeFunction(&func1, alarm_totalTime, "Alarm Total Time", "sec");
+	menu.IncludeFunction(&func2, alarm_strenghtWarning, "Alarm  Warning", "pwm%" );
+	menu.IncludeFunction(&func3, alarm_strenghFullBlast, "Alarm Full Blast", "pwm%");
+	menu.IncludeFunction(&func4, alarm_delay, "Alarm Start Delay", "sec");
+	menu.IncludeFunction(&func5, alarm_countLaser, "Alarm Laser Count", "count");
+	menu.IncludeFunction(&func6, relay_lamp_totalTime, "Lamp Total Time", "sec");
+	
 	menu.IncludeQuckAccessFunction(&func5, var_five, "Quick Access", "psi", false);
 	// a default function are saved in here.
 	menu.IncludeFunctionSetDefault(&userSetDefault);
@@ -199,6 +221,8 @@ void setup() {
 	pinMode(BUTTON_SET, INPUT);
 	pinMode(BUTTON_UP, INPUT);
 	
+	pinMode(OUTPUT_ALARMSOUND,OUTPUT);
+	
 	Serial.print("Complete Loading");
 	delay(50);
 	//print("Laser Security Ready.");
@@ -207,214 +231,108 @@ void setup() {
 	display.setCursor(1,1);
 }
 
-// the loop function runs over and over again until power down or reset
-byte count_buttonUp = 0;
-byte count_buttonDown = 0;
-byte count_buttonDownUp = 0;
 
-byte state_btnPswrd = 0;
-const  byte pswdLenght = 4;
-const  byte		   array_pswd[pswdLenght] = {2, 2, 1, 2};
-       byte array_inputedpswd[pswdLenght] = {0, 0, 0, 0} ; //  // buggy stuff, worked simple vars BELOW. Reason, cant add count_buttonDownUp, always give random result
-		   
-// store values from the user to compare with array_pswd
-		   
-	   byte arr0 = 0;  
-	   byte arr1 = 0;
-	   byte arr2 = 0;
-	   byte arr3 = 0; 
-	   
-String p1;
-String p2;
 
-bool  bool_pswdPassed = false;	
 
-bool prsUp;
-bool prsDown;
 void loop() {
 
 
 	// read buttons values 
 	buttonSET = !digitalRead(BUTTON_SET);
-	btnUp.scaning();
-	btnDown.scaning();
-
-	/// CLOCK 1 min			60000UL  120000UL  x 2 clock speed 
+	
+	
+	
+	
+	/// CLOCK 1 min			60000UL  120000UL  x 2 clock speed
 	if (((long)clock_1min + 60000UL) < millis()) // 120000UL a double clock speed by
 	{
 		clock_1min = millis(); // reset each  60 seconds  time
 		display.clear();
-		manualReapetEach1sec = true; // reset for fast print 
+		manualReapetEach1sec = true; // reset for fast print
 	}
 
 
-	if (((long)clock_1sec + 1000UL) < millis()) 
+	if (((long)clock_1sec + 1000UL) < millis())
 	{
 		clock_1sec = millis(); // reset each  60 seconds  time
-		manualReapetEach1sec = true; // reset each second to print one time 
+		manualReapetEach1sec = true; // reset each second to print one time
+		
+		if (alarm_timer > 0)
+			 {
+				  analogWrite(OUTPUT_ALARMSOUND,alarm_strenght);
+				  //Serial.println("A alrm:" + String (alarm_timer)+ " pswIncorrect: "+String(psw_incorrectScore));
+				 
+				 
+				 display.setCursor(0,7);
+				 display.print ("Alarm on:"+ String (alarm_timer)+ "  ");
+					 alarm_timer--;
+			 } else {
+				  analogWrite(OUTPUT_ALARMSOUND,0);
+				  //Serial.println("B");
+				 
+			 }
+			
+			 
+			 
 	}
+
+	
+	
+	
+	
+	
+	
+	btnUp.scaning();
+	btnDown.scaning();
+	
+	
+	
 
 	
 
 	// return condition about opened menu
 		if (! menu.InterfaceDinamic() ) 
-{
-	    
-
-			
-			if (  ( btnUp.onlyReadPressedSignleTime() || btnDown.onlyReadPressedSignleTime()) ) //  // if button up or down then activate timer to work and while pressing, reset with millis()
-			{
-				clock_btnPswTimeout = millis() + 5000UL; // reset each  10 seconds  time
-				  //Serial.println( millis() < (long)clock_btnPswTimeout );
-				
+	{
 			
 			
-
-				if ( 	 millis() < (long)clock_btnPswTimeout ) // timer when to work
-				
-					{
-						
-						if (btnUp.onlyReadPressedSignleTime()) {
-							//array_inputedpswd[count_buttonDownUp] = 2;
-							set_inputedpswd (count_buttonDownUp, 2);
-							Serial.println("[]btnUp:"+String(count_buttonDownUp));
-							
-						}
-						
-						if (btnDown.onlyReadPressedSignleTime()){
-							//array_inputedpswd[count_buttonDownUp] = 1;
-							set_inputedpswd (count_buttonDownUp, 1);
-							Serial.println("[]btnDown:"+String(count_buttonDownUp));
-							
-						}
-							
-								
-					
-						
-
-								
-									for (byte i = 0; i < pswdLenght; i++) // prining out
-									{
-											 p1 +=String (array_pswd[i])+",";
-									}
-										display.print ("Paswd:" + p1 +"\n");
-								
-							
-									for (byte i = 0; i < pswdLenght; i++)
-									{
-										p2 +=String (get_inputedpswd(i))+",";
-									}
-									display.print ("Input:" + p2 +"\n");	
-								
-
-
-							
-							
-									
-							
-									p1.clear();
-									p2.clear();
-									countInputs ();
+			collectPasswordRuntime ();
 			
-					}
+			
 		
-			} 
-			
-			
-			if ( millis() > (long)clock_btnPswTimeout )
+
+
+
+
+   
+	}
+	
+	
+	if (psw_incorrectScore > 19) // 5 incorrect times then alarm
+		{	
+			alarm_timer = alarm_totalTime;
+			psw_incorrectScore = 0; // reset for non repeating all the time
+			alarm_strenght = alarm_strenghFullBlast;
+		}
+	else if (alarm_timer ==0 && psw_incorrectScore > 0  && alarm_incorrectScoreChanged != psw_incorrectScore)	// 
 			{
-				
-				clearInputArray ();
-				count_buttonDownUp = 0;
-				display.clear();
+				alarm_incorrectScoreChanged = psw_incorrectScore;
+				alarm_timer = 1; // short alarm signal to alarm bugler from touching this buttons
+				alarm_strenght=alarm_strenghtWarning;
 			}
 		
-		
-}
-
-
-
- 
- 
+	
+	if (pswMatching) // if alarm is on, but later inputed correct to disable siren noise as soon as possible
+	{
+			alarm_timer = 0; 
+	}
+	
+	
+	
+	
+	
+	
 	manualReapetEach1sec = false;
-	prsDown= false;
-	prsUp= false;
 	btnUp.endScaning();
 	btnDown.endScaning();
-}
-
-
-void clearInputArray (){
-	for (byte i = 0; i < pswdLenght; i++) //clear user input array
-	{
-		set_inputedpswd(i,0);
-		Serial.print(String (i)+"]clear:"+String (array_inputedpswd[i]) );
-	}
 	
-}
-
-void countInputs () {
-		//Serial.println("+++add:count_buttonDownUp" + String(count_buttonDownUp));
-		count_buttonDownUp = count_buttonDownUp + byte(1); // count each pressed buttons; //bugg reacted
-		
-		if (count_buttonDownUp > count_buttonDownUp)  { // detect when user pushed time to high
-			clearInputArray ();
-			count_buttonDownUp = 0;
-			Serial.print("===Clear:count_buttonDownUp");
-		}
-		
-}
-
-void set_inputedpswd (byte index, byte value) {
-	
-	
-	switch (index) {
-		
-		case 0:
-		arr0 = value;
-		break;
-		
-		
-		case 1:
-		arr1=value;
-		break;
-		
-		
-		case 2:
-		arr2=value;
-		break;
-		
-		
-		case 3:
-		arr3=value;
-		break;
-		
-	}	
-}
-
-byte get_inputedpswd (byte index) {
-	
-	
-	switch (index) {
-		
-		case 0:
-		return arr0 ;
-		break;
-		
-		
-		case 1:
-		return arr1;
-		break;
-		
-		
-		case 2:
-		return arr2;
-		break;
-		
-		
-		case 3:
-		return arr3;
-		break;
-		
-	}
 }
