@@ -1,6 +1,7 @@
 bool isMenuActive; // save menu is active 
 bool manualReapetEach1sec; // allow print each second
-
+bool manualReapetEach01sec; // allow print each 1/10 of the second
+byte quickAccesModes;
 
 bool b1=false;
 
@@ -12,7 +13,9 @@ byte count_buttonDownUp = 255; // first time in booting, glitch push button?
 byte state_btnPswrd = 0;
 const  byte pswdLenght = 4;
 const  byte	array_pswd[pswdLenght] = {2, 2, 1, 2};  //matching
+bool  pswisActivePrint; // to avoid printing in same time with other diplayed units	
 bool pswMatching = false; // 0 = unfinished tipping a password, 1= correct
+bool pswMatchingPulse = false; // one cycle live,  0 = unfinished tipping a password, 1= correct
 byte psw_correctScore = 0; // counts how much was matching points in user inputed password, compared as from array_pswd staticly saved one;
 byte psw_incorrectScore = 0; // count how much was incorrectly inputed a password for later turn on short alarm
 // byte array_inputedpswd[pswdLenght] = {0, 0, 0, 0} ; //  // buggy stuff, worked simple vars BELOW. Reason, cant add count_buttonDownUp, always give random result
@@ -38,7 +41,8 @@ void userSetDefault() {
 	  alarm_totalTime = 60; // 1s*60 = 60s
 	  alarm_strenghtWarning	= 50	;  // when password doesn't inputed correctly
 	  alarm_strenghFullBlast	= 255	;  // when someone passed throw laser or password was incorrect to many times
-	  alarm_delay = 10;
+	  alarm_delayTotal = 10;
+	  relay_lamp_totalTime = 80;
 	
 };
 
@@ -60,10 +64,36 @@ void func5() { print("func5 " + String(var_five)); menu.menuQuckAccesPrintManual
 void func1() { print("how long alarm  \nwill work "); };
 void func2() { print("gives strength turn\non alarm for 1 second"); };
 void func3() { print("gives strength turn on\nalarm but\npowerfully "+ String (alarm_totalTime)+"sec");};
-void func4() { print ("wait to turn on alarm \n in beginning from \nlaser"); }; // map(var_four, 0, 255, 0, 1024)
-void func5() { print("func5 " + String(var_five)); menu.menuQuckAccesPrintManuallyValue(map(var_five, 0, 255, 0, 1024)); };
+void func4() { print ("wait to turn on alarm \n in beginning from \nlaser disturbtion"); }; // map(var_four, 0, 255, 0, 1024)
+void func5() { print("func"); };
 void func6() {print("time where be on light\n after laser passed");};
 
+void funcQc () 
+	{
+	      
+	  if (quickAccesModes == 0)
+	  {
+		   print("Isjungta ");
+	  }
+	  else if (quickAccesModes == 1)
+	  {
+		   print("Saugo   ");
+
+		   
+	  }
+	  else if (quickAccesModes == 2)
+	  {
+		   print("Testavimas ");
+		   
+	  }
+	  else if ( quickAccesModes > 2){
+						quickAccesModes = 0;
+			print("-->");
+	  }
+	  
+		  print("\n\n\nBus naudojama\nperkrovus");	
+	};
+									   
 void func6Default() {
 	userSetDefault();
 	print("HEY DEFAULT");
@@ -209,9 +239,15 @@ void clearRuntimeVars () {
 
 void collectPasswordRuntime () {
 	
+	  pswMatchingPulse = false;
+	 
 	 if ( b1 && millis() > (long)clock_btnPswTimeout  ) // reset to state zero 
 	 {
 		 clearRuntimeVars ();
+		 if (pswisActivePrint)
+				manualReapetEach1sec = true; // after exit, reset to print instantly
+				
+		 pswisActivePrint = false;
 	 }
 	 
 	 
@@ -221,7 +257,7 @@ void collectPasswordRuntime () {
 		 clock_btnPswTimeout = millis() + 5000UL; // reset each  10 seconds  time
 		 //Serial.println( millis() < (long)clock_btnPswTimeout );
 		 countInputs ();
-		 manualReapetEach1sec = true;
+		 manualReapetEach1sec = true; // to work faster when pressed a buttons
 	 }
 
 	 if ( 	 millis() < (long)clock_btnPswTimeout ) // timer when to work
@@ -264,7 +300,8 @@ void collectPasswordRuntime () {
 							
 							
 						if (psw_correctScore == pswdLenght ) // if score correct, they should be the same as required combination of length of the password ~4
-							{pswMatching = true;
+							{  pswMatching = true;
+							   pswMatchingPulse = true;	
 							 psw_incorrectScore = 0; // reset incorrect attempts	
 							} else {
 								psw_incorrectScore++;
@@ -274,7 +311,7 @@ void collectPasswordRuntime () {
 				 
 			 }
 			 
-						
+			 pswisActivePrint = true;			
 				
 			 display.print ("Input:" + p2 +"\n");
 			 display.print ("pwd score: "+ String (psw_correctScore) + " of "+ String (pswdLenght) + " \n");
