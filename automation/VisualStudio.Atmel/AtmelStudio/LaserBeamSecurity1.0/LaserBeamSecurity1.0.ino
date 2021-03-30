@@ -210,12 +210,12 @@ lib_meniuInterface128x64OLEDSSD1306AsciiWire menu(buttonUP, buttonDOWN, buttonSE
 // the setup function runs once when you press reset or power the board
 void setup() {
 	//Serial.begin (115200);
-	menu.IncludeFunction(&func1, alarm_totalTime, "Alarm Total Time", "sec");
+	menu.IncludeFunction(&func1, alarm_totalTime, "Alarm Sound Time", "sec");
 	menu.IncludeFunction(&func2, alarm_strenghtWarning, "Alarm  Warning", "pwm%" );
 	menu.IncludeFunction(&func3, alarm_strenghFullBlast, "Alarm Full Blast", "pwm%");
-	menu.IncludeFunction(&func4, alarm_delayTotal, "Alarm Start Delay", "sec");
+	menu.IncludeFunction(&func4, alarm_delayTotal, "Alarm Bugler Delay", "sec");
 	menu.IncludeFunction(&func5, alarm_countLaser, "Alarm Laser Count", "count");
-	menu.IncludeFunction(&func6, relay_lamp_totalTime, "Lamp Total Time", "sec");
+	menu.IncludeFunction(&func6, relay_lamp_totalTime, "Lamp Shine Time", "sec");
 	menu.IncludeFunction(&func7, user_turnOnBeforeSystemTotal, "Laser non react time", "sec");
 	
 	menu.IncludeQuckAccessFunction(&funcQc, quickAccesModes, "Alarmas", "mode", false);

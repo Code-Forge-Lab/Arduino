@@ -14497,7 +14497,7 @@ END GROUP
                 0x40106e94                _text_end = ABSOLUTE (.)
                 0x40106e94                _etext = .
 
-.rodata         0x3ffe8510      0x998
+.rodata         0x3ffe8510      0x9a0
                 0x3ffe8510                _rodata_start = ABSOLUTE (.)
  *(.sdk.version)
  .sdk.version   0x3ffe8510       0x13 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib/NONOSDK22x_190703\libmain.a(app_main.o)
@@ -14518,206 +14518,205 @@ END GROUP
  .rodata        0x3ffe8620        0xc C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib/NONOSDK22x_190703\libphy.a(phy_sleep.o)
  *(.rodata.*)
  .rodata.str1.1
-                0x3ffe862c      0x49d C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LaserBeamSecurity1.0\esp8266_generic\Release\LaserBeamSecurity1.0.cpp.o
-                                0x4bf (size before relaxing)
+                0x3ffe862c      0x4a6 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LaserBeamSecurity1.0\esp8266_generic\Release\LaserBeamSecurity1.0.cpp.o
+                                0x4c8 (size before relaxing)
  .rodata._ZL10array_pswd
-                0x3ffe8ac9        0x4 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LaserBeamSecurity1.0\esp8266_generic\Release\LaserBeamSecurity1.0.cpp.o
+                0x3ffe8ad2        0x4 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LaserBeamSecurity1.0\esp8266_generic\Release\LaserBeamSecurity1.0.cpp.o
  .rodata._ZL11Adafruit5x7
-                0x3ffe8acd      0x1e6 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LaserBeamSecurity1.0\esp8266_generic\Release\LaserBeamSecurity1.0.cpp.o
- *fill*         0x3ffe8cb3        0x1 
+                0x3ffe8ad6      0x1e6 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LaserBeamSecurity1.0\esp8266_generic\Release\LaserBeamSecurity1.0.cpp.o
  .rodata._ZL14Adafruit128x64
-                0x3ffe8cb4        0x8 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LaserBeamSecurity1.0\esp8266_generic\Release\LaserBeamSecurity1.0.cpp.o
+                0x3ffe8cbc        0x8 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LaserBeamSecurity1.0\esp8266_generic\Release\LaserBeamSecurity1.0.cpp.o
  .rodata._ZL18Adafruit128x64init
-                0x3ffe8cbc       0x19 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LaserBeamSecurity1.0\esp8266_generic\Release\LaserBeamSecurity1.0.cpp.o
+                0x3ffe8cc4       0x19 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LaserBeamSecurity1.0\esp8266_generic\Release\LaserBeamSecurity1.0.cpp.o
  .rodata._ZL12scaledNibble
-                0x3ffe8cd5       0x10 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LaserBeamSecurity1.0\esp8266_generic\Release\SSD1306Ascii-SmallSize10\SSD1306Ascii.cpp.o
+                0x3ffe8cdd       0x10 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LaserBeamSecurity1.0\esp8266_generic\Release\SSD1306Ascii-SmallSize10\SSD1306Ascii.cpp.o
  .rodata.str1.1
-                0x3ffe8ce5        0x3 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(Print.cpp.o)
+                0x3ffe8ced        0x3 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(Print.cpp.o)
  .rodata.str1.1
-                0x3ffe8ce8        0x3 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(WString.cpp.o)
+                0x3ffe8cf0        0x3 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(WString.cpp.o)
                                   0x7 (size before relaxing)
  .rodata.CSWTCH$9
-                0x3ffe8ceb       0x10 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_flash_quirks.cpp.o)
- *fill*         0x3ffe8cfb        0x1 
+                0x3ffe8cf3       0x10 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_flash_quirks.cpp.o)
+ *fill*         0x3ffe8d03        0x1 
  .rodata.str1.4
-                0x3ffe8cfc       0x10 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib/NONOSDK22x_190703\libpp.a(pp.o)
+                0x3ffe8d04       0x10 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib/NONOSDK22x_190703\libpp.a(pp.o)
  .rodata.str1.4
-                0x3ffe8d0c        0x4 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib/NONOSDK22x_190703\libpp.a(wdev.o)
+                0x3ffe8d14        0x4 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib/NONOSDK22x_190703\libpp.a(wdev.o)
                                   0xc (size before relaxing)
  .rodata.str1.4
-                0x3ffe8d10        0x4 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib/NONOSDK22x_190703\libpp.a(lmac.o)
+                0x3ffe8d18        0x4 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib/NONOSDK22x_190703\libpp.a(lmac.o)
                                   0xc (size before relaxing)
  .rodata.str1.4
-                0x3ffe8d14        0x3 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib/NONOSDK22x_190703\libpp.a(pm.o)
+                0x3ffe8d1c        0x3 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib/NONOSDK22x_190703\libpp.a(pm.o)
                                   0xb (size before relaxing)
- *fill*         0x3ffe8d17        0x1 
+ *fill*         0x3ffe8d1f        0x1 
  .rodata.str1.4
-                0x3ffe8d18        0x4 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib/NONOSDK22x_190703\libpp.a(pm_for_bcn_only_mode.o)
+                0x3ffe8d20        0x4 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib/NONOSDK22x_190703\libpp.a(pm_for_bcn_only_mode.o)
                                   0xc (size before relaxing)
  .rodata.str1.4
-                0x3ffe8d1c        0x3 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib/NONOSDK22x_190703\libnet80211.a(ieee80211_hostap.o)
+                0x3ffe8d24        0x3 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib/NONOSDK22x_190703\libnet80211.a(ieee80211_hostap.o)
                                   0x8 (size before relaxing)
  .rodata.str1.4
-                0x3ffe8d1f        0x4 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib/NONOSDK22x_190703\libnet80211.a(ieee80211_sta.o)
+                0x3ffe8d27        0x4 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib/NONOSDK22x_190703\libnet80211.a(ieee80211_sta.o)
  .rodata.str1.4
-                0x3ffe8d1f        0x4 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib/NONOSDK22x_190703\libnet80211.a(ieee80211_ie_vendor.o)
+                0x3ffe8d27        0x4 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib/NONOSDK22x_190703\libnet80211.a(ieee80211_ie_vendor.o)
  .rodata.str1.1
-                0x3ffe8d1f        0x1 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(lwip-esp.o)
+                0x3ffe8d27        0x1 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(lwip-esp.o)
  .rodata.CSWTCH$19
-                0x3ffe8d1f       0x10 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(lwip-esp.o)
+                0x3ffe8d27       0x10 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(lwip-esp.o)
  .rodata.CSWTCH$17
-                0x3ffe8d2f       0x11 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(lwip-esp.o)
+                0x3ffe8d37       0x11 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(lwip-esp.o)
  .rodata.ethbroadcast
-                0x3ffe8d40        0x6 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(lwip-esp.o)
-                0x3ffe8d40                ethbroadcast
+                0x3ffe8d48        0x6 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(lwip-esp.o)
+                0x3ffe8d48                ethbroadcast
  .rodata.CSWTCH$14
-                0x3ffe8d46       0x11 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(lwip-git.o)
+                0x3ffe8d4e       0x11 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(lwip-git.o)
  .rodata.CSWTCH$11
-                0x3ffe8d57       0x11 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(lwip-git.o)
+                0x3ffe8d5f       0x11 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(lwip-git.o)
  .rodata.str1.1
-                0x3ffe8d68       0x29 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(esp-dhcpserver.o)
+                0x3ffe8d70       0x29 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(esp-dhcpserver.o)
  .rodata.ethzero
-                0x3ffe8d91        0x6 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(ethernet.o)
-                0x3ffe8d91                ethzero
+                0x3ffe8d99        0x6 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(ethernet.o)
+                0x3ffe8d99                ethzero
  .rodata.ethbroadcast_LWIP2
-                0x3ffe8d97        0x6 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(ethernet.o)
-                0x3ffe8d97                ethbroadcast_LWIP2
- *fill*         0x3ffe8d9d        0x3 
+                0x3ffe8d9f        0x6 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(ethernet.o)
+                0x3ffe8d9f                ethbroadcast_LWIP2
+ *fill*         0x3ffe8da5        0x3 
  .rodata.memp_pools
-                0x3ffe8da0       0x2c C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(memp.o)
-                0x3ffe8da0                memp_pools
+                0x3ffe8da8       0x2c C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(memp.o)
+                0x3ffe8da8                memp_pools
  .rodata.memp_PBUF_POOL
-                0x3ffe8dcc        0x2 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(memp.o)
-                0x3ffe8dcc                memp_PBUF_POOL
- .rodata.memp_PBUF
-                0x3ffe8dce        0x2 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(memp.o)
-                0x3ffe8dce                memp_PBUF
- .rodata.memp_SYS_TIMEOUT
-                0x3ffe8dd0        0x2 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(memp.o)
-                0x3ffe8dd0                memp_SYS_TIMEOUT
- .rodata.memp_IGMP_GROUP
-                0x3ffe8dd2        0x2 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(memp.o)
-                0x3ffe8dd2                memp_IGMP_GROUP
- .rodata.memp_ARP_QUEUE
                 0x3ffe8dd4        0x2 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(memp.o)
-                0x3ffe8dd4                memp_ARP_QUEUE
- .rodata.memp_REASSDATA
+                0x3ffe8dd4                memp_PBUF_POOL
+ .rodata.memp_PBUF
                 0x3ffe8dd6        0x2 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(memp.o)
-                0x3ffe8dd6                memp_REASSDATA
- .rodata.memp_TCP_SEG
+                0x3ffe8dd6                memp_PBUF
+ .rodata.memp_SYS_TIMEOUT
                 0x3ffe8dd8        0x2 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(memp.o)
-                0x3ffe8dd8                memp_TCP_SEG
- .rodata.memp_TCP_PCB_LISTEN
+                0x3ffe8dd8                memp_SYS_TIMEOUT
+ .rodata.memp_IGMP_GROUP
                 0x3ffe8dda        0x2 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(memp.o)
-                0x3ffe8dda                memp_TCP_PCB_LISTEN
- .rodata.memp_TCP_PCB
+                0x3ffe8dda                memp_IGMP_GROUP
+ .rodata.memp_ARP_QUEUE
                 0x3ffe8ddc        0x2 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(memp.o)
-                0x3ffe8ddc                memp_TCP_PCB
- .rodata.memp_UDP_PCB
+                0x3ffe8ddc                memp_ARP_QUEUE
+ .rodata.memp_REASSDATA
                 0x3ffe8dde        0x2 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(memp.o)
-                0x3ffe8dde                memp_UDP_PCB
- .rodata.memp_RAW_PCB
+                0x3ffe8dde                memp_REASSDATA
+ .rodata.memp_TCP_SEG
                 0x3ffe8de0        0x2 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(memp.o)
-                0x3ffe8de0                memp_RAW_PCB
- *fill*         0x3ffe8de2        0x2 
+                0x3ffe8de0                memp_TCP_SEG
+ .rodata.memp_TCP_PCB_LISTEN
+                0x3ffe8de2        0x2 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(memp.o)
+                0x3ffe8de2                memp_TCP_PCB_LISTEN
+ .rodata.memp_TCP_PCB
+                0x3ffe8de4        0x2 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(memp.o)
+                0x3ffe8de4                memp_TCP_PCB
+ .rodata.memp_UDP_PCB
+                0x3ffe8de6        0x2 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(memp.o)
+                0x3ffe8de6                memp_UDP_PCB
+ .rodata.memp_RAW_PCB
+                0x3ffe8de8        0x2 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(memp.o)
+                0x3ffe8de8                memp_RAW_PCB
+ *fill*         0x3ffe8dea        0x2 
  .rodata.tcp_pcb_lists
-                0x3ffe8de4       0x10 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(tcp.o)
-                0x3ffe8de4                tcp_pcb_lists
+                0x3ffe8dec       0x10 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(tcp.o)
+                0x3ffe8dec                tcp_pcb_lists
  .rodata.tcp_persist_backoff
-                0x3ffe8df4        0x7 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(tcp.o)
+                0x3ffe8dfc        0x7 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(tcp.o)
  .rodata.tcp_backoff
-                0x3ffe8dfb        0xd C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(tcp.o)
+                0x3ffe8e03        0xd C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(tcp.o)
  .rodata.str1.1
-                0x3ffe8e08        0x7 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(dns.o)
- *fill*         0x3ffe8e0f        0x1 
+                0x3ffe8e10        0x7 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(dns.o)
+ *fill*         0x3ffe8e17        0x1 
  .rodata.dns_mquery_v4group
-                0x3ffe8e10        0x4 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(dns.o)
-                0x3ffe8e10                dns_mquery_v4group
+                0x3ffe8e18        0x4 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(dns.o)
+                0x3ffe8e18                dns_mquery_v4group
  .rodata.dhcp_discover_request_options
-                0x3ffe8e14        0x5 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(dhcp.o)
- *fill*         0x3ffe8e19        0x3 
+                0x3ffe8e1c        0x5 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(dhcp.o)
+ *fill*         0x3ffe8e21        0x3 
  .rodata.ip_addr_broadcast
-                0x3ffe8e1c        0x4 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(ip4_addr.o)
-                0x3ffe8e1c                ip_addr_broadcast
+                0x3ffe8e24        0x4 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(ip4_addr.o)
+                0x3ffe8e24                ip_addr_broadcast
  .rodata.ip_addr_any
-                0x3ffe8e20        0x4 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(ip4_addr.o)
-                0x3ffe8e20                ip_addr_any
+                0x3ffe8e28        0x4 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(ip4_addr.o)
+                0x3ffe8e28                ip_addr_any
  .rodata.str1.4
-                0x3ffe8e24        0x4 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib/NONOSDK22x_190703\libmain.a(app_main.o)
+                0x3ffe8e2c        0x4 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib/NONOSDK22x_190703\libmain.a(app_main.o)
                                   0xc (size before relaxing)
  .rodata.str1.4
-                0x3ffe8e28        0x4 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib/NONOSDK22x_190703\libmain.a(ets_timer.o)
+                0x3ffe8e30        0x4 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib/NONOSDK22x_190703\libmain.a(ets_timer.o)
                                   0xc (size before relaxing)
  .rodata._ZSt7nothrow
-                0x3ffe8e2c        0x1 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\libstdc++.a(new_handler.o)
-                0x3ffe8e2c                _ZSt7nothrow
+                0x3ffe8e34        0x1 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\libstdc++.a(new_handler.o)
+                0x3ffe8e34                _ZSt7nothrow
  .rodata.str1.1
-                0x3ffe8e2d       0x12 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/libc/xtensa-lx106-elf/lib\libc.a(lib_a-nano-vfprintf_float.o)
+                0x3ffe8e35       0x12 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/libc/xtensa-lx106-elf/lib\libc.a(lib_a-nano-vfprintf_float.o)
  .rodata.str1.1
-                0x3ffe8e3f        0x5 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/libc/xtensa-lx106-elf/lib\libc.a(lib_a-nano-vfscanf_float.o)
+                0x3ffe8e47        0x5 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/libc/xtensa-lx106-elf/lib\libc.a(lib_a-nano-vfscanf_float.o)
  .rodata.str1.1
-                0x3ffe8e44        0x5 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/libc/xtensa-lx106-elf/lib\libc.a(lib_a-strtod.o)
+                0x3ffe8e4c        0x5 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/libc/xtensa-lx106-elf/lib\libc.a(lib_a-strtod.o)
                                   0xc (size before relaxing)
  .rodata.str1.1
-                0x3ffe8e44        0xd C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/libc/xtensa-lx106-elf/lib\libc.a(lib_a-dtoa.o)
+                0x3ffe8e4c        0xd C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/libc/xtensa-lx106-elf/lib\libc.a(lib_a-dtoa.o)
                                   0xf (size before relaxing)
  .rodata.str1.1
-                0x3ffe8e51        0x2 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/libc/xtensa-lx106-elf/lib\libc.a(lib_a-impure.o)
+                0x3ffe8e59        0x2 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/libc/xtensa-lx106-elf/lib\libc.a(lib_a-impure.o)
  .rodata.str1.1
-                0x3ffe8e53        0x6 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/libc/xtensa-lx106-elf/lib\libc.a(lib_a-locale.o)
+                0x3ffe8e5b        0x6 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/libc/xtensa-lx106-elf/lib\libc.a(lib_a-locale.o)
                                   0xb (size before relaxing)
  .rodata.str1.1
-                0x3ffe8e59       0x11 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/libc/xtensa-lx106-elf/lib\libc.a(lib_a-nano-svfprintf.o)
+                0x3ffe8e61       0x11 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/libc/xtensa-lx106-elf/lib\libc.a(lib_a-nano-svfprintf.o)
  *(.gnu.linkonce.r.*)
  *(.rodata1)
-                0x3ffe8e6a                __XT_EXCEPTION_TABLE__ = ABSOLUTE (.)
+                0x3ffe8e72                __XT_EXCEPTION_TABLE__ = ABSOLUTE (.)
  *(.xt_except_table)
  *(.gcc_except_table)
  *(.gnu.linkonce.e.*)
  *(.gnu.version_r)
  *(.eh_frame)
-                0x3ffe8e6c                . = ((. + 0x3) & 0xfffffffc)
- *fill*         0x3ffe8e6a        0x2 
-                0x3ffe8e6c                __init_array_start = ABSOLUTE (.)
+                0x3ffe8e74                . = ((. + 0x3) & 0xfffffffc)
+ *fill*         0x3ffe8e72        0x2 
+                0x3ffe8e74                __init_array_start = ABSOLUTE (.)
  *crtbegin.o(.ctors)
  *(EXCLUDE_FILE(*crtend.o) .ctors)
- .ctors         0x3ffe8e6c        0x4 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LaserBeamSecurity1.0\esp8266_generic\Release\LaserBeamSecurity1.0.cpp.o
- .ctors         0x3ffe8e70        0x4 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LaserBeamSecurity1.0\esp8266_generic\Release\EEPROM\EEPROM.cpp.o
- .ctors         0x3ffe8e74        0x4 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LaserBeamSecurity1.0\esp8266_generic\Release\Wire\Wire.cpp.o
- .ctors         0x3ffe8e78        0x4 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_si2c.cpp.o)
- .ctors         0x3ffe8e7c        0x4 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(HardwareSerial.cpp.o)
- .ctors         0x3ffe8e80        0x4 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(Updater.cpp.o)
- .ctors         0x3ffe8e84        0x4 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(WString.cpp.o)
- .ctors         0x3ffe8e88        0x4 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(sntp-lwip2.cpp.o)
+ .ctors         0x3ffe8e74        0x4 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LaserBeamSecurity1.0\esp8266_generic\Release\LaserBeamSecurity1.0.cpp.o
+ .ctors         0x3ffe8e78        0x4 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LaserBeamSecurity1.0\esp8266_generic\Release\EEPROM\EEPROM.cpp.o
+ .ctors         0x3ffe8e7c        0x4 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LaserBeamSecurity1.0\esp8266_generic\Release\Wire\Wire.cpp.o
+ .ctors         0x3ffe8e80        0x4 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_si2c.cpp.o)
+ .ctors         0x3ffe8e84        0x4 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(HardwareSerial.cpp.o)
+ .ctors         0x3ffe8e88        0x4 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(Updater.cpp.o)
+ .ctors         0x3ffe8e8c        0x4 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(WString.cpp.o)
+ .ctors         0x3ffe8e90        0x4 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(sntp-lwip2.cpp.o)
  *(SORT_BY_NAME(.ctors.*))
  *(.ctors)
-                0x3ffe8e8c                __init_array_end = ABSOLUTE (.)
+                0x3ffe8e94                __init_array_end = ABSOLUTE (.)
  *crtbegin.o(.dtors)
  *(EXCLUDE_FILE(*crtend.o) .dtors)
- .dtors         0x3ffe8e8c        0x4 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LaserBeamSecurity1.0\esp8266_generic\Release\LaserBeamSecurity1.0.cpp.o
- .dtors         0x3ffe8e90        0x4 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(HardwareSerial.cpp.o)
- .dtors         0x3ffe8e94        0x4 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(Updater.cpp.o)
- .dtors         0x3ffe8e98        0x4 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(WString.cpp.o)
- .dtors         0x3ffe8e9c        0x4 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(sntp-lwip2.cpp.o)
+ .dtors         0x3ffe8e94        0x4 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LaserBeamSecurity1.0\esp8266_generic\Release\LaserBeamSecurity1.0.cpp.o
+ .dtors         0x3ffe8e98        0x4 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(HardwareSerial.cpp.o)
+ .dtors         0x3ffe8e9c        0x4 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(Updater.cpp.o)
+ .dtors         0x3ffe8ea0        0x4 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(WString.cpp.o)
+ .dtors         0x3ffe8ea4        0x4 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(sntp-lwip2.cpp.o)
  *(SORT_BY_NAME(.dtors.*))
  *(.dtors)
-                0x3ffe8ea0                __XT_EXCEPTION_DESCS__ = ABSOLUTE (.)
+                0x3ffe8ea8                __XT_EXCEPTION_DESCS__ = ABSOLUTE (.)
  *(.xt_except_desc)
  *(.gnu.linkonce.h.*)
-                0x3ffe8ea0                __XT_EXCEPTION_DESCS_END__ = ABSOLUTE (.)
+                0x3ffe8ea8                __XT_EXCEPTION_DESCS_END__ = ABSOLUTE (.)
  *(.xt_except_desc_end)
  *(.dynamic)
  *(.gnu.version_d)
-                0x3ffe8ea0                . = ALIGN (0x4)
-                0x3ffe8ea0                _bss_table_start = ABSOLUTE (.)
-                0x3ffe8ea0        0x4 LONG 0x3ffe8ea8 _bss_start
-                0x3ffe8ea4        0x4 LONG 0x3ffef720 _bss_end
-                0x3ffe8ea8                _bss_table_end = ABSOLUTE (.)
-                0x3ffe8ea8                _rodata_end = ABSOLUTE (.)
+                0x3ffe8ea8                . = ALIGN (0x4)
+                0x3ffe8ea8                _bss_table_start = ABSOLUTE (.)
+                0x3ffe8ea8        0x4 LONG 0x3ffe8eb0 _bss_start
+                0x3ffe8eac        0x4 LONG 0x3ffef720 _bss_end
+                0x3ffe8eb0                _bss_table_end = ABSOLUTE (.)
+                0x3ffe8eb0                _rodata_end = ABSOLUTE (.)
 
-.bss            0x3ffe8ea8     0x6878
-                0x3ffe8ea8                . = ALIGN (0x8)
-                0x3ffe8ea8                _bss_start = ABSOLUTE (.)
+.bss            0x3ffe8eb0     0x6870
+                0x3ffe8eb0                . = ALIGN (0x8)
+                0x3ffe8eb0                _bss_start = ABSOLUTE (.)
  *(.dynsbss)
  *(.sbss)
  *(.sbss.*)
@@ -14728,7 +14727,6 @@ END GROUP
  *(.gnu.linkonce.sb2.*)
  *(.dynbss)
  *(.bss)
- *fill*         0x3ffe8ea8        0x8 
  .bss           0x3ffe8eb0      0x342 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib/NONOSDK22x_190703\libpp.a(pp.o)
                 0x3ffe8ec8                pend_flag_noise_check
                 0x3ffe8ed0                pend_flag_periodic_cal

@@ -67,10 +67,10 @@ void func5() { print("func5 " + String(var_five)); menu.menuQuckAccesPrintManual
 void func1() { print("how long alarm  \nwill work "); };
 void func2() { print("gives strength turn\non alarm for 1 second"); };
 void func3() { print("gives strength turn on\nalarm but\npowerfully "+ String (alarm_totalTime)+"sec");};
-void func4() { print ("wait to turn on alarm \n in beginning from \nlaser disturbtion"); }; // map(var_four, 0, 255, 0, 1024)
+void func4() { print ("wait to turn on alarm \n in beginning from \nlaser disturbed bugler"); }; // map(var_four, 0, 255, 0, 1024)
 void func5() { print("func"); };
 void func6() {print("time where be on light\n after laser passed");};
-void func7 () {print("to avoid laser react\n imidietly, give time \nexit,fom laser range");};
+void func7 () {print("to avoid laser react\n immediately, give time \nexit,from laser range");};
 
 
 void funcQc () 
