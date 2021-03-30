@@ -148,7 +148,7 @@ void oneMinTimer ();
  byte BUTTON_SET =  D0;  // pull up
  byte BUTTON_DOWN = D3; // pull up
  byte BUTTON_UP = D4;   // pull up
- byte OUTPUT_ALARMSOUND = D5; // output positive when true
+ byte OUTPUT_ALARMSOUND = D5; //pull down output positive when true
  byte INPUT_LASERBEAM = D6;   //pull down if some one cut laser beam with body, give positive signal for 2sec
  byte INPUT_LASERWCASE = D7;  //pull down if case are removed , not return signal meaning, some try to remove it
  byte OUTPUT_RELAY_LAMP = D8; // pull down
@@ -184,8 +184,10 @@ byte laser_beamChanged;			// not react multiple times if laser was passed
 byte laser_case;				// if case are removed , not return signal meaning, some try to remove it
 byte laser_caseChanged;			// not react multiple times if case was removed
 
-byte user_turnOnBeforeSystemTime;      // if password is correct and then was armed with buttons, first time , give time to ignore laser friendly fire on owner about 30sec to avoid instatly working sound
+byte user_turnOnBeforeSystemTime;      // if password is correct and then was armed with buttons, first time , give time to ignore laser friendly fire on owner about 30sec to avoid instantly working sound
 byte user_turnOnBeforeSystemTotal = 30;
+
+bool short_signal = false;
 
 //Clock variables
 unsigned long clock_1min = 0;
@@ -208,7 +210,6 @@ lib_meniuInterface128x64OLEDSSD1306AsciiWire menu(buttonUP, buttonDOWN, buttonSE
 // the setup function runs once when you press reset or power the board
 void setup() {
 	//Serial.begin (115200);
-	//EEPROM.begin(512);
 	menu.IncludeFunction(&func1, alarm_totalTime, "Alarm Total Time", "sec");
 	menu.IncludeFunction(&func2, alarm_strenghtWarning, "Alarm  Warning", "pwm%" );
 	menu.IncludeFunction(&func3, alarm_strenghFullBlast, "Alarm Full Blast", "pwm%");
@@ -265,6 +266,9 @@ void setup() {
 	analogWriteFreq(1000);
 	analogWriteRange(255);
 	
+	// when system turn on , give time to ignore laser booting
+	user_turnOnBeforeSystemTime = user_turnOnBeforeSystemTotal;
+	
 	Serial.print("Complete Loading");
 	delay(50);
 	//print("Laser Security Ready.");
@@ -280,7 +284,7 @@ void setup() {
 
 // odd even boolean
 bool odd_even_01=false;;
-bool short_signal = false;
+
 
 void loop() {
 
@@ -346,7 +350,7 @@ void loop() {
 									
 								if (!short_signal) // if not ever was armed , then give initiation's time for laser to react
 								
-									user_turnOnBeforeSystemTime=user_turnOnBeforeSystemTotal; // turn on timer for later laser start to react 
+									user_turnOnBeforeSystemTime=user_turnOnBeforeSystemTotal; // turn on timer for later laser start to react later
 									
 									alarm_armed_disarmed_system = true; // arm system
 									
@@ -386,7 +390,7 @@ void loop() {
 	
 						if (alarm_armed_disarmed_system ) // if system is armed and ready to react with laser beam 100m sensor
 						{
-							laser_case = digitalRead(INPUT_LASERWCASE);
+							laser_case = !digitalRead(INPUT_LASERWCASE); // should always give positive while wire connected
 							laser_beam = digitalRead(INPUT_LASERBEAM);
 		
 		
