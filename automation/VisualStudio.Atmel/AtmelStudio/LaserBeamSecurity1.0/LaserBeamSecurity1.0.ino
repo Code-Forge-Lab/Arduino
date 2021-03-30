@@ -90,8 +90,8 @@ A0     ADC0            Analog Input      NO
 
 
 //Reasons
-// [1]  When pullup, wont let upload a program , better use pulldown 
-// [2]  Always pullup by default internal resistor
+// [1]  When pull up, wont let upload a program , better use pull down 
+// [2]  Always pull up by default internal resistor
 // [3] Fail to boot up, wdt reset when pinMode (input)
 
 //    Warning
@@ -145,12 +145,13 @@ static const uint8_t D14 = 6; //SDCLK             NO,   Reason[3]               
 void oneSecTimer ();
 void oneMinTimer ();
 // buttons
- byte BUTTON_SET =  D0;
- byte BUTTON_DOWN = D3;
- byte BUTTON_UP = D4;
- byte OUTPUT_ALARMSOUND = D5;
- byte INPUT_LASERBEAM = D6;   // if some one cut laser beam with body, give positive signal for 2sec
- byte INPUT_LASERWCASE = D7;  // if case are removed , not return signal meaning, some try to remove it
+ byte BUTTON_SET =  D0;  // pull up
+ byte BUTTON_DOWN = D3; // pull up
+ byte BUTTON_UP = D4;   // pull up
+ byte OUTPUT_ALARMSOUND = D5; // output positive when true
+ byte INPUT_LASERBEAM = D6;   //pull down if some one cut laser beam with body, give positive signal for 2sec
+ byte INPUT_LASERWCASE = D7;  //pull down if case are removed , not return signal meaning, some try to remove it
+ byte OUTPUT_RELAY_LAMP = D8; // pull down
  
 //variables
 byte var_one; 
@@ -171,8 +172,8 @@ byte alarm_delayTotal = 10;			   // delay to alarm to turn on with laser at the 
 byte alarm_timer; // 				   // this timer depends only from input password buttons and works as timeout to turn on alarm
 byte alarm_timerLaser;				   // react only laser input and are to store time how much should be on a alarm
 byte alarm_countLaser;				   // count laser interrupts
-byte alarm_incorrectScoreChanged;      // =0
-byte alarm_arm_disarm_timer;           // for representative's that user are armed a system with alarm unit sound 
+byte alarm_incorrectScoreChanged;      // =0 // for no repeating multiple times
+byte alarm_arm_disarm_timer;           // for representative's that user are armed a system with alarm short pulse alarm sound 
 bool alarm_armed_disarmed_system=0;	   // enable or disable armed or disarmed to work with laser
 
 byte relay_lamp_totalTime = 80; // store value how much time should work a relay
@@ -183,6 +184,8 @@ byte laser_beamChanged;			// not react multiple times if laser was passed
 byte laser_case;				// if case are removed , not return signal meaning, some try to remove it
 byte laser_caseChanged;			// not react multiple times if case was removed
 
+byte user_turnOnBeforeSystemTime;      // if password is correct and then was armed with buttons, first time , give time to ignore laser friendly fire on owner about 30sec to avoid instatly working sound
+byte user_turnOnBeforeSystemTotal = 30;
 
 //Clock variables
 unsigned long clock_1min = 0;
@@ -204,7 +207,7 @@ lib_meniuInterface128x64OLEDSSD1306AsciiWire menu(buttonUP, buttonDOWN, buttonSE
 
 // the setup function runs once when you press reset or power the board
 void setup() {
-	Serial.begin (115200);
+	//Serial.begin (115200);
 	//EEPROM.begin(512);
 	menu.IncludeFunction(&func1, alarm_totalTime, "Alarm Total Time", "sec");
 	menu.IncludeFunction(&func2, alarm_strenghtWarning, "Alarm  Warning", "pwm%" );
@@ -212,6 +215,7 @@ void setup() {
 	menu.IncludeFunction(&func4, alarm_delayTotal, "Alarm Start Delay", "sec");
 	menu.IncludeFunction(&func5, alarm_countLaser, "Alarm Laser Count", "count");
 	menu.IncludeFunction(&func6, relay_lamp_totalTime, "Lamp Total Time", "sec");
+	menu.IncludeFunction(&func7, user_turnOnBeforeSystemTotal, "Laser non react time", "sec");
 	
 	menu.IncludeQuckAccessFunction(&funcQc, quickAccesModes, "Alarmas", "mode", false);
 	// a default function are saved in here.
@@ -255,6 +259,11 @@ void setup() {
 	pinMode(INPUT_LASERBEAM,INPUT);
 	pinMode(INPUT_LASERWCASE,INPUT);
 	
+	pinMode( OUTPUT_RELAY_LAMP, OUTPUT);
+	
+	
+	analogWriteFreq(1000);
+	analogWriteRange(255);
 	
 	Serial.print("Complete Loading");
 	delay(50);
@@ -271,6 +280,7 @@ void setup() {
 
 // odd even boolean
 bool odd_even_01=false;;
+bool short_signal = false;
 
 void loop() {
 
@@ -287,40 +297,8 @@ void loop() {
 	
 
 	
-	if (((long)clock_01sec + 100UL) < millis())
-		{
-			
-			clock_01sec = millis(); // reset each  60 seconds  time
-			
-			if (alarm_arm_disarm_timer > 0 )
-				{
-					
-					//Serial.println( "alarm_arm_disarm_timer:"+String(relay_lamp_totalTime));
-					
-					odd_even_01=!odd_even_01;
-					
-					if ( odd_even_01 )  //odd or even toggle
-					{
-						analogWrite(OUTPUT_ALARMSOUND,alarm_strenght);
-						Serial.print( "alarm_arm_disarm_timer on,"+ String (alarm_strenght));
-						
-						
-					}
-					else {		
-						digitalWrite(OUTPUT_ALARMSOUND,LOW);
-						Serial.println( " off");
-					}
-					
-						--alarm_arm_disarm_timer;
-				}else
-				{
-					odd_even_01 =false;
-				}
-			
-				
-				manualReapetEach01sec = true;
-		} 
 	
+	one01SecTimer ();
 	oneMinTimer ();
 	oneSecTimer();
 	
@@ -354,24 +332,34 @@ void loop() {
 									alarm_timer = alarm_totalTime;
 									psw_incorrectScore = 0; // reset for non repeating all the time
 									alarm_strenght = alarm_strenghFullBlast;
+									user_turnOnBeforeSystemTime=0; 
 								}
-								// fast sound
-						/*else if ((alarm_arm_disarm_timer == 0 && psw_incorrectScore == pswdLenght/ *=4* /  && alarm_incorrectScoreChanged != psw_incorrectScore)) // arm system
+								// first incorrect password , works as arm system and give time to exit from laser range
+						else if ((alarm_arm_disarm_timer == 0 && psw_incorrectScore == pswdLenght/*=4*/  && alarm_incorrectScoreChanged != psw_incorrectScore)) // arm system
 								{   
-									Serial.println("shielded:"/ * + String (alarm_incorrectScoreChanged) + " != " + String(psw_incorrectScore)* / );
+									Serial.println("shielded:" + String (alarm_incorrectScoreChanged) + " != " + String(psw_incorrectScore) );
 				
-									alarm_incorrectScoreChanged = psw_incorrectScore; 
-									//alarm_arm_disarm_timer = 8; //   alarm_arm_disarm_timer  / 2
+									alarm_incorrectScoreChanged = psw_incorrectScore;
+									//alarm_timer = 1; // 1sec alarm signal to alarm bugler from touching this buttons
+									const_manualReapetEach01secVariable (5); // .5sec alarm signal to alarm bugler from touching this buttons
 									alarm_strenght=alarm_strenghtWarning;
-									alarm_timer = 1;
+									
+								if (!short_signal) // if not ever was armed , then give initiation's time for laser to react
+								
+									user_turnOnBeforeSystemTime=user_turnOnBeforeSystemTotal; // turn on timer for later laser start to react 
+									
+									alarm_armed_disarmed_system = true; // arm system
+									
+									short_signal = true;
 			
 								}
-						*/		
-						//		slow sound
-						else if (alarm_timer ==0 && psw_incorrectScore >= (pswdLenght/*+pswdLenght*/)/*=8*/  && alarm_incorrectScoreChanged != psw_incorrectScore)	// act as inputed incorrect password warning with alarm 1 second each
+							
+								// first incorrect password 
+						else if (/*alarm_timer ==0*/ manualReapetEach01secVariable == 0 && psw_incorrectScore >= (pswdLenght+pswdLenght)/*=8*/  && alarm_incorrectScoreChanged != psw_incorrectScore)	// act as inputed incorrect password warning with alarm 1 second each
 								{
 									alarm_incorrectScoreChanged = psw_incorrectScore;
-									alarm_timer = 1; // short alarm signal to alarm bugler from touching this buttons
+									//alarm_timer = 1; // 1sec alarm signal to alarm bugler from touching this buttons
+									const_manualReapetEach01secVariable (5); // .5sec alarm signal to alarm bugler from touching this buttons
 									alarm_strenght=alarm_strenghtWarning;
 									alarm_armed_disarmed_system = true; // arm system
 									Serial.println("password warning");
@@ -396,25 +384,38 @@ void loop() {
 	
 	
 	
-						if (alarm_armed_disarmed_system) // if system is armed and ready to react with laser beam 200m sensor
+						if (alarm_armed_disarmed_system ) // if system is armed and ready to react with laser beam 100m sensor
 						{
 							laser_case = digitalRead(INPUT_LASERWCASE);
 							laser_beam = digitalRead(INPUT_LASERBEAM);
+		
+		
+		
+		
+		
+		
 		
 									if (  manualReapetEach01sec && !pswisActivePrint)  // do each second and password menu is not opened
 									{
 											display.setCursor(0,0);
 											menu.print__("Alarm: SAUGO\n\n");
 									
-										 if (alarm_delayTime != 0 || alarm_timer != 0)	
+										 if ( (alarm_delayTime != 0 || alarm_timer != 0)  ) 	//
 										 {
 											//menu.print__ ("laser_case:"+ String (laser_case));
 											//menu.print__ ("laser_beam:"+ String (laser_beam));
 										//	menu.print__ ("timer:"+ String (alarm_timer)+ " delay:"+String (alarm_delayTime));
 										 }
 									
+									
+									
+									
+									
+									
+									
+									
 											//*************************************************************** laser_beam	
-											if ( laser_beam !=laser_beamChanged )  // when laser interrupted
+											if (user_turnOnBeforeSystemTime == 0 && laser_beam !=laser_beamChanged )  // when laser interrupted and after user armed with buttons to wait for 10s 
 											{
 												laser_beamChanged = laser_beam; // not repeat multiple times
 										
@@ -433,8 +434,14 @@ void loop() {
 											
 												}
 											}
+											
+											
+											
+											
+											
+											
 											//*************************************************************** laser_case
-											if ( laser_case !=laser_caseChanged )  // when laser interrupted
+											if (user_turnOnBeforeSystemTime == 0 && laser_case !=laser_caseChanged )  // w// when laser interrupted and after user armed with buttons to wait for 10s 
 											{
 												laser_caseChanged = laser_case; // not repeat multiple times
 										
@@ -446,13 +453,21 @@ void loop() {
 														{
 															// react a alarm from laser beam
 															alarm_strenght = alarm_strenghFullBlast; // siren full strength
-															alarm_delayTime = alarm_delayTotal; // delay 10s before a siren/alarm to confuse buglers
+															//alarm_delayTime = alarm_delayTotal; // delay 10s before a siren/alarm to confuse buglers
+															alarm_timer = alarm_totalTime; // imidietly react
 															Serial.println("Saugo laser beam:"+String (alarm_arm_disarm_timer) + ", D:"+ String (alarm_delayTime)+ " T:"+ String (alarm_timer) );
 														
 														}
 											
 												}
 											}	
+										
+										
+										
+										
+										
+										
+										
 										
 
 									}
@@ -467,6 +482,9 @@ void loop() {
 							}
 		
 						}
+						
+						
+						
 						
 		}
 	    else 
@@ -551,7 +569,31 @@ void oneSecTimer () {
 		manualReapetEach1sec = true; // reset each second to print one time
 		
 		
-		if (alarm_delayTime > 0) // set confusion timer before alarm
+		
+		
+		if (user_turnOnBeforeSystemTime > 0) // turn on timer for laser start to react
+		{
+			user_turnOnBeforeSystemTime--;
+			
+			display.setCursor(0,7);
+			menu.print__ ("Systema reguos:"+ String (user_turnOnBeforeSystemTime)+ "      ");
+			
+			if (user_turnOnBeforeSystemTime == 0 && short_signal) // give little sound that says is over
+				{
+					
+					alarm_arm_disarm_timer = 2; // short pulse to alarm
+					short_signal = false;
+					display.setCursor(0,7);
+					//menu.print__ ("						");
+					//Serial.println(("short_signal"));
+					
+				}
+		}
+		
+		
+		
+		
+		if (alarm_delayTime > 0 && user_turnOnBeforeSystemTime == 0) // delay alarm for a while not to work,  set confusion for burglar's, 
 		{
 			
 			
@@ -563,12 +605,12 @@ void oneSecTimer () {
 			if (alarm_delayTime == 0) // set alarm timer
 			{
 				alarm_timer = alarm_totalTime; // give continue to turn on a alarm
-				
+				relay_lamp_timer = relay_lamp_totalTime; // turn on lamp only in here 
 			}
 		}
 		
 		
-		
+  //**************************************	
 		
 		if (alarm_timer > 0)
 		{
@@ -577,9 +619,14 @@ void oneSecTimer () {
 			
 			alarm_timer--;
 			
-			display.setCursor(0,7);
-			display.print ("Alarm IJUNGTAS:"+ String (alarm_timer)+ "      ");
 			
+			display.setCursor(0,7);
+			
+				menu.print__ ("Alarm IJUNGTA:"+ String (alarm_timer)+ "      ");
+			
+			
+			
+				
 			
 			if (alarm_timer == 0)
 				display.clear();
@@ -588,11 +635,85 @@ void oneSecTimer () {
 			analogWrite(OUTPUT_ALARMSOUND,0);
 			//Serial.println("B");
 			
+			}
+			
+			
+			
+	 
+	 
+	 //**************************************		
+		 if (relay_lamp_timer > 0 )
+		   {
+				relay_lamp_timer--; 
+					digitalWrite(OUTPUT_RELAY_LAMP , HIGH);
+					display.setCursor(0,6);
+					menu.print__ ("Lempa IJUNGTA:"+ String (relay_lamp_timer)+ "      ");
+					
+		   }else{
+					digitalWrite(OUTPUT_RELAY_LAMP,LOW);
+		   }
+		
+		
+	}
+}
+
+
+void one01SecTimer () {
+	
+	if (((long)clock_01sec + 100UL) < millis())
+	{
+		
+		clock_01sec = millis(); // reset each  60 seconds  time
+		
+		
+		if (manualReapetEach01secVariable > 0) // hold while have values
+		{
+			manualReapetEach01secVariable--;
+			
+			analogWrite(OUTPUT_ALARMSOUND,alarm_strenght);
+			//Serial.print( "manualReapetEach01secVariable[" +String(manualReapetEach01secVariable)+ "] on,"+ String (alarm_strenght));
+			
+			if (manualReapetEach01secVariable == 0 )
+			{
+				analogWrite(OUTPUT_ALARMSOUND,LOW);
+				//Serial.println( " *******off");
+			}
+			
 		}
 		
 		
 		
+		
+		if (alarm_arm_disarm_timer > 0 ) // only use for short sound
+		{
+			
+			
+			//Serial.println( "alarm_arm_disarm_timer:"+String(relay_lamp_totalTime));
+			
+			odd_even_01=!odd_even_01;
+			
+			if ( odd_even_01 )  //odd or even toggle and works like on and off
+			{
+				analogWrite(OUTPUT_ALARMSOUND,alarm_strenght);
+				//Serial.print( "alarm_arm_disarm_timer on,"+ String (alarm_strenght));
+				
+				
+			}
+			else {
+				digitalWrite(OUTPUT_ALARMSOUND,LOW);
+				//Serial.println( " off");
+			}
+			
+			--alarm_arm_disarm_timer;
+		}else
+		{
+			odd_even_01 =false;
+		}
+		
+		
+		manualReapetEach01sec = true;
 	}
+	
 }
 
 void fun_laser_case () 

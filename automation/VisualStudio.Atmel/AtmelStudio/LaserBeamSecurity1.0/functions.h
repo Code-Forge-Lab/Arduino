@@ -1,6 +1,8 @@
 bool isMenuActive; // save menu is active 
 bool manualReapetEach1sec; // allow print each second
 bool manualReapetEach01sec; // allow print each 1/10 of the second
+byte manualReapetEach01secVariable; // variable timer for custom 
+
 byte quickAccesModes;
 
 bool b1=false;
@@ -43,6 +45,7 @@ void userSetDefault() {
 	  alarm_strenghFullBlast	= 255	;  // when someone passed throw laser or password was incorrect to many times
 	  alarm_delayTotal = 10;
 	  relay_lamp_totalTime = 80;
+	  user_turnOnBeforeSystemTotal = 30;
 	
 };
 
@@ -67,6 +70,8 @@ void func3() { print("gives strength turn on\nalarm but\npowerfully "+ String (a
 void func4() { print ("wait to turn on alarm \n in beginning from \nlaser disturbtion"); }; // map(var_four, 0, 255, 0, 1024)
 void func5() { print("func"); };
 void func6() {print("time where be on light\n after laser passed");};
+void func7 () {print("to avoid laser react\n imidietly, give time \nexit,fom laser range");};
+
 
 void funcQc () 
 	{
@@ -96,13 +101,20 @@ void funcQc ()
 									   
 void func6Default() {
 	userSetDefault();
-	print("HEY DEFAULT");
-	delay(2000);
+	//print("HEY DEFAULT");
+	//delay(2000);
 };
 
 
 
 String booleans (bool val) { if (val) return "true "; else return "false";     };
+
+
+
+void const_manualReapetEach01secVariable (byte timer) 
+{
+	manualReapetEach01secVariable = timer;
+}
 
 void printbool(bool statement) {
 	menu.print__(statement);
