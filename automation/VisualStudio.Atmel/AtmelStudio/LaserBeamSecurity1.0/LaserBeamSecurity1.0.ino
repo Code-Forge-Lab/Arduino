@@ -441,7 +441,7 @@ void loop() {
 											
 											
 											//*************************************************************** laser_case
-											if (user_turnOnBeforeSystemTime == 0 && laser_case !=laser_caseChanged )  // w// when laser interrupted and after user armed with buttons to wait for 10s 
+											if (/*need react immediately*//*user_turnOnBeforeSystemTime == 0 &&*/ laser_case !=laser_caseChanged )  // w// when laser interrupted and after user armed with buttons to wait for 10s 
 											{
 												laser_caseChanged = laser_case; // not repeat multiple times
 										
@@ -454,7 +454,7 @@ void loop() {
 															// react a alarm from laser beam
 															alarm_strenght = alarm_strenghFullBlast; // siren full strength
 															//alarm_delayTime = alarm_delayTotal; // delay 10s before a siren/alarm to confuse buglers
-															alarm_timer = alarm_totalTime; // imidietly react
+															alarm_timer = alarm_totalTime; // immediately react
 															Serial.println("Saugo laser beam:"+String (alarm_arm_disarm_timer) + ", D:"+ String (alarm_delayTime)+ " T:"+ String (alarm_timer) );
 														
 														}
