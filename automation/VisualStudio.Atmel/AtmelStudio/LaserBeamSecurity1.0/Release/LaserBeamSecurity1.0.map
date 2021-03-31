@@ -7918,1012 +7918,1012 @@ END GROUP
                                  0xdf (size before relaxing)
                 0x40202918                _Z13one01SecTimerv
  *fill*         0x402029bf        0x1 
- .text.loop     0x402029c0      0x52a C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LaserBeamSecurity1.0\esp8266_generic\Release\LaserBeamSecurity1.0.cpp.o
-                                0x7a2 (size before relaxing)
+ .text.loop     0x402029c0      0x52e C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LaserBeamSecurity1.0\esp8266_generic\Release\LaserBeamSecurity1.0.cpp.o
+                                0x7aa (size before relaxing)
                 0x40202a10                loop
- *fill*         0x40202eea        0x2 
+ *fill*         0x40202eee        0x2 
  .text.startup._GLOBAL__sub_I__Z13EEPROM32_INITv
-                0x40202eec      0x107 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LaserBeamSecurity1.0\esp8266_generic\Release\LaserBeamSecurity1.0.cpp.o
+                0x40202ef0      0x107 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LaserBeamSecurity1.0\esp8266_generic\Release\LaserBeamSecurity1.0.cpp.o
                                 0x157 (size before relaxing)
- *fill*         0x40202ff3        0x1 
+ *fill*         0x40202ff7        0x1 
  .text.exit._GLOBAL__sub_D__Z13EEPROM32_INITv
-                0x40202ff4       0x45 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LaserBeamSecurity1.0\esp8266_generic\Release\LaserBeamSecurity1.0.cpp.o
+                0x40202ff8       0x45 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LaserBeamSecurity1.0\esp8266_generic\Release\LaserBeamSecurity1.0.cpp.o
                                  0x79 (size before relaxing)
- *fill*         0x40203039        0x3 
+ *fill*         0x4020303d        0x3 
  .text._ZN11EEPROMClass5beginEj
-                0x4020303c       0x60 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LaserBeamSecurity1.0\esp8266_generic\Release\EEPROM\EEPROM.cpp.o
+                0x40203040       0x60 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LaserBeamSecurity1.0\esp8266_generic\Release\EEPROM\EEPROM.cpp.o
                                  0x70 (size before relaxing)
-                0x40203044                _ZN11EEPROMClass5beginEj
+                0x40203048                _ZN11EEPROMClass5beginEj
  .text._ZN11EEPROMClass6commitEv
-                0x4020309c       0x5d C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LaserBeamSecurity1.0\esp8266_generic\Release\EEPROM\EEPROM.cpp.o
+                0x402030a0       0x5d C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LaserBeamSecurity1.0\esp8266_generic\Release\EEPROM\EEPROM.cpp.o
                                  0x6d (size before relaxing)
-                0x4020309c                _ZN11EEPROMClass6commitEv
- *fill*         0x402030f9        0x3 
+                0x402030a0                _ZN11EEPROMClass6commitEv
+ *fill*         0x402030fd        0x3 
  .text.startup._GLOBAL__sub_I__ZN11EEPROMClassC2Ej
-                0x402030fc       0x23 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LaserBeamSecurity1.0\esp8266_generic\Release\EEPROM\EEPROM.cpp.o
+                0x40203100       0x23 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LaserBeamSecurity1.0\esp8266_generic\Release\EEPROM\EEPROM.cpp.o
                                  0x27 (size before relaxing)
- *fill*         0x4020311f        0x1 
+ *fill*         0x40203123        0x1 
  .text._ZN7TwoWire4readEv
-                0x40203120       0x2e C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LaserBeamSecurity1.0\esp8266_generic\Release\Wire\Wire.cpp.o
-                0x4020312c                _ZN7TwoWire4readEv
- *fill*         0x4020314e        0x2 
+                0x40203124       0x2e C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LaserBeamSecurity1.0\esp8266_generic\Release\Wire\Wire.cpp.o
+                0x40203130                _ZN7TwoWire4readEv
+ *fill*         0x40203152        0x2 
  .text._ZN7TwoWire4peekEv
-                0x40203150       0x1d C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LaserBeamSecurity1.0\esp8266_generic\Release\Wire\Wire.cpp.o
+                0x40203154       0x1d C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LaserBeamSecurity1.0\esp8266_generic\Release\Wire\Wire.cpp.o
                                  0x29 (size before relaxing)
-                0x40203150                _ZN7TwoWire4peekEv
- *fill*         0x4020316d        0x3 
+                0x40203154                _ZN7TwoWire4peekEv
+ *fill*         0x40203171        0x3 
  .text._ZN7TwoWire5flushEv
-                0x40203170       0x24 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LaserBeamSecurity1.0\esp8266_generic\Release\Wire\Wire.cpp.o
+                0x40203174       0x24 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LaserBeamSecurity1.0\esp8266_generic\Release\Wire\Wire.cpp.o
                                  0x2c (size before relaxing)
-                0x40203178                _ZN7TwoWire5flushEv
+                0x4020317c                _ZN7TwoWire5flushEv
  .text._ZN7TwoWire5writeEPKhj
-                0x40203194       0x5a C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LaserBeamSecurity1.0\esp8266_generic\Release\Wire\Wire.cpp.o
+                0x40203198       0x5a C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LaserBeamSecurity1.0\esp8266_generic\Release\Wire\Wire.cpp.o
                                  0x62 (size before relaxing)
-                0x40203198                _ZN7TwoWire5writeEPKhj
- *fill*         0x402031ee        0x2 
+                0x4020319c                _ZN7TwoWire5writeEPKhj
+ *fill*         0x402031f2        0x2 
  .text._ZN7TwoWire5writeEh
-                0x402031f0       0x59 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LaserBeamSecurity1.0\esp8266_generic\Release\Wire\Wire.cpp.o
+                0x402031f4       0x59 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LaserBeamSecurity1.0\esp8266_generic\Release\Wire\Wire.cpp.o
                                  0x69 (size before relaxing)
-                0x402031f4                _ZN7TwoWire5writeEh
- *fill*         0x40203249        0x3 
+                0x402031f8                _ZN7TwoWire5writeEh
+ *fill*         0x4020324d        0x3 
  .text._ZN7TwoWire9availableEv
-                0x4020324c       0x2c C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LaserBeamSecurity1.0\esp8266_generic\Release\Wire\Wire.cpp.o
+                0x40203250       0x2c C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LaserBeamSecurity1.0\esp8266_generic\Release\Wire\Wire.cpp.o
                                  0x38 (size before relaxing)
-                0x4020324c                _ZN7TwoWire9availableEv
+                0x40203250                _ZN7TwoWire9availableEv
  .text._ZN7TwoWireC2Ev
-                0x40203278       0x14 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LaserBeamSecurity1.0\esp8266_generic\Release\Wire\Wire.cpp.o
-                0x4020327c                _ZN7TwoWireC1Ev
-                0x4020327c                _ZN7TwoWireC2Ev
+                0x4020327c       0x14 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LaserBeamSecurity1.0\esp8266_generic\Release\Wire\Wire.cpp.o
+                0x40203280                _ZN7TwoWireC1Ev
+                0x40203280                _ZN7TwoWireC2Ev
  .text._ZN7TwoWire5beginEii
-                0x4020328c       0x36 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LaserBeamSecurity1.0\esp8266_generic\Release\Wire\Wire.cpp.o
+                0x40203290       0x36 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LaserBeamSecurity1.0\esp8266_generic\Release\Wire\Wire.cpp.o
                                  0x3e (size before relaxing)
-                0x40203294                _ZN7TwoWire5beginEii
- *fill*         0x402032c2        0x2 
+                0x40203298                _ZN7TwoWire5beginEii
+ *fill*         0x402032c6        0x2 
  .text._ZN7TwoWire5beginEv
-                0x402032c4       0x1c C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LaserBeamSecurity1.0\esp8266_generic\Release\Wire\Wire.cpp.o
+                0x402032c8       0x1c C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LaserBeamSecurity1.0\esp8266_generic\Release\Wire\Wire.cpp.o
                                  0x28 (size before relaxing)
-                0x402032c4                _ZN7TwoWire5beginEv
+                0x402032c8                _ZN7TwoWire5beginEv
  .text._ZN7TwoWire8setClockEj
-                0x402032e0       0x14 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LaserBeamSecurity1.0\esp8266_generic\Release\Wire\Wire.cpp.o
+                0x402032e4       0x14 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LaserBeamSecurity1.0\esp8266_generic\Release\Wire\Wire.cpp.o
                                  0x18 (size before relaxing)
-                0x402032e0                _ZN7TwoWire8setClockEj
+                0x402032e4                _ZN7TwoWire8setClockEj
  .text._ZN7TwoWire17beginTransmissionEh
-                0x402032f4       0x22 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LaserBeamSecurity1.0\esp8266_generic\Release\Wire\Wire.cpp.o
+                0x402032f8       0x22 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LaserBeamSecurity1.0\esp8266_generic\Release\Wire\Wire.cpp.o
                                  0x2e (size before relaxing)
-                0x402032f8                _ZN7TwoWire17beginTransmissionEh
- *fill*         0x40203316        0x2 
+                0x402032fc                _ZN7TwoWire17beginTransmissionEh
+ *fill*         0x4020331a        0x2 
  .text._ZN7TwoWire15endTransmissionEh
-                0x40203318       0x36 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LaserBeamSecurity1.0\esp8266_generic\Release\Wire\Wire.cpp.o
+                0x4020331c       0x36 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LaserBeamSecurity1.0\esp8266_generic\Release\Wire\Wire.cpp.o
                                  0x52 (size before relaxing)
-                0x40203318                _ZN7TwoWire15endTransmissionEh
- *fill*         0x4020334e        0x2 
+                0x4020331c                _ZN7TwoWire15endTransmissionEh
+ *fill*         0x40203352        0x2 
  .text._ZN7TwoWire15endTransmissionEv
-                0x40203350       0x14 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LaserBeamSecurity1.0\esp8266_generic\Release\Wire\Wire.cpp.o
+                0x40203354       0x14 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LaserBeamSecurity1.0\esp8266_generic\Release\Wire\Wire.cpp.o
                                  0x18 (size before relaxing)
-                0x40203350                _ZN7TwoWire15endTransmissionEv
+                0x40203354                _ZN7TwoWire15endTransmissionEv
  .text.startup._GLOBAL__sub_I__ZN7TwoWire8rxBufferE
-                0x40203364       0x15 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LaserBeamSecurity1.0\esp8266_generic\Release\Wire\Wire.cpp.o
+                0x40203368       0x15 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LaserBeamSecurity1.0\esp8266_generic\Release\Wire\Wire.cpp.o
                                  0x1d (size before relaxing)
- *fill*         0x40203379        0x3 
+ *fill*         0x4020337d        0x3 
  .text._ZN12SSD1306Ascii6setColEh
-                0x4020337c       0x3f C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LaserBeamSecurity1.0\esp8266_generic\Release\SSD1306Ascii-SmallSize10\SSD1306Ascii.cpp.o
+                0x40203380       0x3f C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LaserBeamSecurity1.0\esp8266_generic\Release\SSD1306Ascii-SmallSize10\SSD1306Ascii.cpp.o
                                  0x4f (size before relaxing)
-                0x4020337c                _ZN12SSD1306Ascii6setColEh
- *fill*         0x402033bb        0x1 
+                0x40203380                _ZN12SSD1306Ascii6setColEh
+ *fill*         0x402033bf        0x1 
  .text._ZN12SSD1306Ascii7setFontEPKh
-                0x402033bc       0x27 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LaserBeamSecurity1.0\esp8266_generic\Release\SSD1306Ascii-SmallSize10\SSD1306Ascii.cpp.o
+                0x402033c0       0x27 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LaserBeamSecurity1.0\esp8266_generic\Release\SSD1306Ascii-SmallSize10\SSD1306Ascii.cpp.o
                                  0x2f (size before relaxing)
-                0x402033bc                _ZN12SSD1306Ascii7setFontEPKh
- *fill*         0x402033e3        0x1 
+                0x402033c0                _ZN12SSD1306Ascii7setFontEPKh
+ *fill*         0x402033e7        0x1 
  .text._ZN12SSD1306Ascii6setRowEh
-                0x402033e4       0x2f C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LaserBeamSecurity1.0\esp8266_generic\Release\SSD1306Ascii-SmallSize10\SSD1306Ascii.cpp.o
+                0x402033e8       0x2f C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LaserBeamSecurity1.0\esp8266_generic\Release\SSD1306Ascii-SmallSize10\SSD1306Ascii.cpp.o
                                  0x33 (size before relaxing)
-                0x402033e4                _ZN12SSD1306Ascii6setRowEh
- *fill*         0x40203413        0x1 
+                0x402033e8                _ZN12SSD1306Ascii6setRowEh
+ *fill*         0x40203417        0x1 
  .text._ZN12SSD1306Ascii9setCursorEhh
-                0x40203414       0x29 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LaserBeamSecurity1.0\esp8266_generic\Release\SSD1306Ascii-SmallSize10\SSD1306Ascii.cpp.o
+                0x40203418       0x29 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LaserBeamSecurity1.0\esp8266_generic\Release\SSD1306Ascii-SmallSize10\SSD1306Ascii.cpp.o
                                  0x35 (size before relaxing)
-                0x40203414                _ZN12SSD1306Ascii9setCursorEhh
- *fill*         0x4020343d        0x3 
+                0x40203418                _ZN12SSD1306Ascii9setCursorEhh
+ *fill*         0x40203441        0x3 
  .text._ZN12SSD1306Ascii12setStartLineEh
-                0x40203440       0x1d C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LaserBeamSecurity1.0\esp8266_generic\Release\SSD1306Ascii-SmallSize10\SSD1306Ascii.cpp.o
+                0x40203444       0x1d C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LaserBeamSecurity1.0\esp8266_generic\Release\SSD1306Ascii-SmallSize10\SSD1306Ascii.cpp.o
                                  0x21 (size before relaxing)
-                0x40203440                _ZN12SSD1306Ascii12setStartLineEh
- *fill*         0x4020345d        0x3 
+                0x40203444                _ZN12SSD1306Ascii12setStartLineEh
+ *fill*         0x40203461        0x3 
  .text._ZN12SSD1306Ascii5clearEhhhh
-                0x40203460       0x7d C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LaserBeamSecurity1.0\esp8266_generic\Release\SSD1306Ascii-SmallSize10\SSD1306Ascii.cpp.o
+                0x40203464       0x7d C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LaserBeamSecurity1.0\esp8266_generic\Release\SSD1306Ascii-SmallSize10\SSD1306Ascii.cpp.o
                                  0x8d (size before relaxing)
-                0x40203460                _ZN12SSD1306Ascii5clearEhhhh
- *fill*         0x402034dd        0x3 
+                0x40203464                _ZN12SSD1306Ascii5clearEhhhh
+ *fill*         0x402034e1        0x3 
  .text._ZN12SSD1306Ascii5clearEv
-                0x402034e0       0x3d C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LaserBeamSecurity1.0\esp8266_generic\Release\SSD1306Ascii-SmallSize10\SSD1306Ascii.cpp.o
+                0x402034e4       0x3d C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LaserBeamSecurity1.0\esp8266_generic\Release\SSD1306Ascii-SmallSize10\SSD1306Ascii.cpp.o
                                  0x49 (size before relaxing)
-                0x402034e0                _ZN12SSD1306Ascii5clearEv
- *fill*         0x4020351d        0x3 
+                0x402034e4                _ZN12SSD1306Ascii5clearEv
+ *fill*         0x40203521        0x3 
  .text._ZN12SSD1306Ascii4initEPK7DevType
-                0x40203520       0x5c C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LaserBeamSecurity1.0\esp8266_generic\Release\SSD1306Ascii-SmallSize10\SSD1306Ascii.cpp.o
+                0x40203524       0x5c C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LaserBeamSecurity1.0\esp8266_generic\Release\SSD1306Ascii-SmallSize10\SSD1306Ascii.cpp.o
                                  0x68 (size before relaxing)
-                0x40203520                _ZN12SSD1306Ascii4initEPK7DevType
+                0x40203524                _ZN12SSD1306Ascii4initEPK7DevType
  .text._ZN12SSD1306Ascii10clearToEOLEv
-                0x4020357c       0x37 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LaserBeamSecurity1.0\esp8266_generic\Release\SSD1306Ascii-SmallSize10\SSD1306Ascii.cpp.o
+                0x40203580       0x37 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LaserBeamSecurity1.0\esp8266_generic\Release\SSD1306Ascii-SmallSize10\SSD1306Ascii.cpp.o
                                  0x43 (size before relaxing)
-                0x4020357c                _ZN12SSD1306Ascii10clearToEOLEv
- *fill*         0x402035b3        0x1 
+                0x40203580                _ZN12SSD1306Ascii10clearToEOLEv
+ *fill*         0x402035b7        0x1 
  .text._ZN12SSD1306Ascii5writeEh
-                0x402035b4      0x249 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LaserBeamSecurity1.0\esp8266_generic\Release\SSD1306Ascii-SmallSize10\SSD1306Ascii.cpp.o
+                0x402035b8      0x249 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LaserBeamSecurity1.0\esp8266_generic\Release\SSD1306Ascii-SmallSize10\SSD1306Ascii.cpp.o
                                 0x27d (size before relaxing)
-                0x402035b8                _ZN12SSD1306Ascii5writeEh
- *fill*         0x402037fd        0x3 
- .text._Znwj    0x40203800       0x39 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(abi.cpp.o)
-                0x4020380c                _Znwj
- *fill*         0x40203839        0x3 
- .text._Znaj    0x4020383c       0x2d C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(abi.cpp.o)
+                0x402035bc                _ZN12SSD1306Ascii5writeEh
+ *fill*         0x40203801        0x3 
+ .text._Znwj    0x40203804       0x39 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(abi.cpp.o)
+                0x40203810                _Znwj
+ *fill*         0x4020383d        0x3 
+ .text._Znaj    0x40203840       0x2d C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(abi.cpp.o)
                                  0x39 (size before relaxing)
-                0x4020383c                _Znaj
- *fill*         0x40203869        0x3 
+                0x40203840                _Znaj
+ *fill*         0x4020386d        0x3 
  .text.__unhandled_exception_cpp
-                0x4020386c        0x8 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_main.cpp.o)
+                0x40203870        0x8 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_main.cpp.o)
                                  0x10 (size before relaxing)
  .text._ZL9loop_taskP11ETSEventTag
-                0x40203874       0x53 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_main.cpp.o)
+                0x40203878       0x53 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_main.cpp.o)
                                  0x5f (size before relaxing)
- *fill*         0x402038c7        0x1 
+ *fill*         0x402038cb        0x1 
  .text.__preloop_update_frequency
-                0x402038c8       0x2e C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_main.cpp.o)
-                0x402038d0                preloop_update_frequency
-                0x402038d0                __preloop_update_frequency
- *fill*         0x402038f6        0x2 
+                0x402038cc       0x2e C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_main.cpp.o)
+                0x402038d4                preloop_update_frequency
+                0x402038d4                __preloop_update_frequency
+ *fill*         0x402038fa        0x2 
  .text.can_yield
-                0x402038f8       0x1b C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_main.cpp.o)
+                0x402038fc       0x1b C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_main.cpp.o)
                                  0x1f (size before relaxing)
-                0x402038fc                can_yield
- *fill*         0x40203913        0x1 
+                0x40203900                can_yield
+ *fill*         0x40203917        0x1 
  .text.__esp_yield
-                0x40203914       0x27 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_main.cpp.o)
+                0x40203918       0x27 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_main.cpp.o)
                                  0x43 (size before relaxing)
-                0x40203914                esp_yield
-                0x40203914                __esp_yield
- *fill*         0x4020393b        0x1 
- .text.__yield  0x4020393c       0x48 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_main.cpp.o)
+                0x40203918                esp_yield
+                0x40203918                __esp_yield
+ *fill*         0x4020393f        0x1 
+ .text.__yield  0x40203940       0x48 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_main.cpp.o)
                                  0x6b (size before relaxing)
-                0x40203948                __yield
-                0x40203948                yield
- *fill*         0x40203984        0x0 
+                0x4020394c                __yield
+                0x4020394c                yield
+ *fill*         0x40203988        0x0 
  .text.optimistic_yield
-                0x40203984       0x2b C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_main.cpp.o)
+                0x40203988       0x2b C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_main.cpp.o)
                                  0x3b (size before relaxing)
-                0x40203984                optimistic_yield
- *fill*         0x402039af        0x1 
+                0x40203988                optimistic_yield
+ *fill*         0x402039b3        0x1 
  .text._Z9init_donev
-                0x402039b0       0x61 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_main.cpp.o)
+                0x402039b4       0x61 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_main.cpp.o)
                                  0x79 (size before relaxing)
-                0x402039c8                _Z9init_donev
- *fill*         0x40203a11        0x3 
+                0x402039cc                _Z9init_donev
+ *fill*         0x40203a15        0x3 
  .text.__loop_end
-                0x40203a14       0x15 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_main.cpp.o)
+                0x40203a18       0x15 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_main.cpp.o)
                                  0x21 (size before relaxing)
-                0x40203a14                loop_end
-                0x40203a14                __loop_end
- *fill*         0x40203a29        0x3 
+                0x40203a18                loop_end
+                0x40203a18                __loop_end
+ *fill*         0x40203a2d        0x3 
  .text._ZL12loop_wrapperv
-                0x40203a2c       0x38 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_main.cpp.o)
+                0x40203a30       0x38 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_main.cpp.o)
                                  0x54 (size before relaxing)
  .text.user_init
-                0x40203a64       0x68 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_main.cpp.o)
+                0x40203a68       0x68 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_main.cpp.o)
                                  0xa4 (size before relaxing)
-                0x40203a7c                user_init
+                0x40203a80                user_init
  .text.uart_write_char_d
-                0x40203acc       0x5b C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_postmortem.cpp.o)
- *fill*         0x40203b27        0x1 
+                0x40203ad0       0x5b C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_postmortem.cpp.o)
+ *fill*         0x40203b2b        0x1 
  .text.ets_printf_P
-                0x40203b28       0x5f C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_postmortem.cpp.o)
+                0x40203b2c       0x5f C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_postmortem.cpp.o)
                                  0x67 (size before relaxing)
- *fill*         0x40203b87        0x1 
+ *fill*         0x40203b8b        0x1 
  .text.print_stack
-                0x40203b88       0x4e C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_postmortem.cpp.o)
+                0x40203b8c       0x4e C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_postmortem.cpp.o)
                                  0x52 (size before relaxing)
- *fill*         0x40203bd6        0x2 
+ *fill*         0x40203bda        0x2 
  .text.cut_here
-                0x40203bd8       0x51 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_postmortem.cpp.o)
+                0x40203bdc       0x51 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_postmortem.cpp.o)
                                  0x61 (size before relaxing)
- *fill*         0x40203c29        0x3 
+ *fill*         0x40203c2d        0x3 
  .text.__wrap_system_restart_local
-                0x40203c2c      0x1f1 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_postmortem.cpp.o)
+                0x40203c30      0x1f1 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_postmortem.cpp.o)
                                 0x2a5 (size before relaxing)
-                0x40203c9c                __wrap_system_restart_local
- *fill*         0x40203e1d        0x3 
+                0x40203ca0                __wrap_system_restart_local
+ *fill*         0x40203e21        0x3 
  .text.raise_exception
-                0x40203e20       0x26 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_postmortem.cpp.o)
+                0x40203e24       0x26 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_postmortem.cpp.o)
                                  0x3c (size before relaxing)
- *fill*         0x40203e46        0x2 
- .text.abort    0x40203e48       0x10 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_postmortem.cpp.o)
+ *fill*         0x40203e4a        0x2 
+ .text.abort    0x40203e4c       0x10 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_postmortem.cpp.o)
                                  0x1c (size before relaxing)
-                0x40203e48                abort
+                0x40203e4c                abort
  .text.__assert_func
-                0x40203e58       0x22 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_postmortem.cpp.o)
+                0x40203e5c       0x22 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_postmortem.cpp.o)
                                  0x3e (size before relaxing)
-                0x40203e58                __assert_func
- *fill*         0x40203e7a        0x2 
+                0x40203e5c                __assert_func
+ *fill*         0x40203e7e        0x2 
  .text.__panic_func
-                0x40203e7c       0x27 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_postmortem.cpp.o)
+                0x40203e80       0x27 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_postmortem.cpp.o)
                                  0x3f (size before relaxing)
-                0x40203e7c                __panic_func
- *fill*         0x40203ea3        0x1 
+                0x40203e80                __panic_func
+ *fill*         0x40203ea7        0x1 
  .text._ZN3Twi18WAIT_CLOCK_STRETCHEv
-                0x40203ea4       0x8f C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_si2c.cpp.o)
+                0x40203ea8       0x8f C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_si2c.cpp.o)
                                  0x97 (size before relaxing)
-                0x40203eb8                _ZN3Twi18WAIT_CLOCK_STRETCHEv
- *fill*         0x40203f33        0x1 
+                0x40203ebc                _ZN3Twi18WAIT_CLOCK_STRETCHEv
+ *fill*         0x40203f37        0x1 
  .text._ZN3Twi8setClockEj
-                0x40203f34       0x58 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_si2c.cpp.o)
+                0x40203f38       0x58 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_si2c.cpp.o)
                                  0x64 (size before relaxing)
-                0x40203f40                _ZN3Twi8setClockEj
+                0x40203f44                _ZN3Twi8setClockEj
  .text._ZN3Twi11write_startEv
-                0x40203f8c       0x7d C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_si2c.cpp.o)
+                0x40203f90       0x7d C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_si2c.cpp.o)
                                  0x85 (size before relaxing)
-                0x40203f98                _ZN3Twi11write_startEv
- *fill*         0x40204009        0x3 
+                0x40203f9c                _ZN3Twi11write_startEv
+ *fill*         0x4020400d        0x3 
  .text._ZN3Twi10write_stopEv
-                0x4020400c       0x7f C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_si2c.cpp.o)
+                0x40204010       0x7f C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_si2c.cpp.o)
                                  0x9b (size before relaxing)
-                0x4020400c                _ZN3Twi10write_stopEv
- *fill*         0x4020408b        0x1 
+                0x40204010                _ZN3Twi10write_stopEv
+ *fill*         0x4020408f        0x1 
  .text._ZN3Twi9write_bitEb
-                0x4020408c       0x7b C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_si2c.cpp.o)
+                0x40204090       0x7b C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_si2c.cpp.o)
                                  0x8f (size before relaxing)
-                0x4020408c                _ZN3Twi9write_bitEb
- *fill*         0x40204107        0x1 
+                0x40204090                _ZN3Twi9write_bitEb
+ *fill*         0x4020410b        0x1 
  .text._ZN3Twi8read_bitEv
-                0x40204108       0x85 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_si2c.cpp.o)
+                0x4020410c       0x85 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_si2c.cpp.o)
                                  0xa1 (size before relaxing)
-                0x40204108                _ZN3Twi8read_bitEv
- *fill*         0x4020418d        0x3 
+                0x4020410c                _ZN3Twi8read_bitEv
+ *fill*         0x40204191        0x3 
  .text._ZN3Twi10write_byteEh
-                0x40204190       0x45 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_si2c.cpp.o)
+                0x40204194       0x45 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_si2c.cpp.o)
                                  0x51 (size before relaxing)
-                0x40204190                _ZN3Twi10write_byteEh
- *fill*         0x402041d5        0x3 
+                0x40204194                _ZN3Twi10write_byteEh
+ *fill*         0x402041d9        0x3 
  .text._ZN3Twi14twi_scl_valleyEv
-                0x402041d8       0x4c C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_si2c.cpp.o)
+                0x402041dc       0x4c C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_si2c.cpp.o)
                                  0x5c (size before relaxing)
-                0x402041d8                _ZN3Twi14twi_scl_valleyEv
+                0x402041dc                _ZN3Twi14twi_scl_valleyEv
  .text._ZN3Twi7writeToEhPhjh
-                0x40204224       0xb1 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_si2c.cpp.o)
+                0x40204228       0xb1 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_si2c.cpp.o)
                                  0xe1 (size before relaxing)
-                0x40204224                _ZN3Twi7writeToEhPhjh
- *fill*         0x402042d5        0x3 
+                0x40204228                _ZN3Twi7writeToEhPhjh
+ *fill*         0x402042d9        0x3 
  .text._ZN3Twi9eventTaskEP11ETSEventTag
-                0x402042d8       0x7b C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_si2c.cpp.o)
-                0x402042e8                _ZN3Twi9eventTaskEP11ETSEventTag
- *fill*         0x40204353        0x1 
+                0x402042dc       0x7b C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_si2c.cpp.o)
+                0x402042ec                _ZN3Twi9eventTaskEP11ETSEventTag
+ *fill*         0x40204357        0x1 
  .text.twi_setClock
-                0x40204354       0x17 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_si2c.cpp.o)
+                0x40204358       0x17 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_si2c.cpp.o)
                                  0x1f (size before relaxing)
-                0x40204354                twi_setClock
- *fill*         0x4020436b        0x1 
+                0x40204358                twi_setClock
+ *fill*         0x4020436f        0x1 
  .text._ZN3Twi4initEhh
-                0x4020436c       0x75 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_si2c.cpp.o)
+                0x40204370       0x75 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_si2c.cpp.o)
                                  0x95 (size before relaxing)
-                0x4020437c                _ZN3Twi4initEhh
- *fill*         0x402043e1        0x3 
+                0x40204380                _ZN3Twi4initEhh
+ *fill*         0x402043e5        0x3 
  .text.twi_init
-                0x402043e4       0x1d C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_si2c.cpp.o)
+                0x402043e8       0x1d C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_si2c.cpp.o)
                                  0x25 (size before relaxing)
-                0x402043e4                twi_init
- *fill*         0x40204401        0x3 
+                0x402043e8                twi_init
+ *fill*         0x40204405        0x3 
  .text.twi_writeTo
-                0x40204404       0x23 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_si2c.cpp.o)
+                0x40204408       0x23 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_si2c.cpp.o)
                                  0x2b (size before relaxing)
-                0x40204404                twi_writeTo
- *fill*         0x40204427        0x1 
+                0x40204408                twi_writeTo
+ *fill*         0x4020442b        0x1 
  .text.twi_transmit
-                0x40204428       0x1c C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_si2c.cpp.o)
+                0x4020442c       0x1c C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_si2c.cpp.o)
                                  0x24 (size before relaxing)
-                0x40204428                twi_transmit
+                0x4020442c                twi_transmit
  .text.startup._GLOBAL__sub_I__ZN3Twi8setClockEj
-                0x40204444       0x73 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_si2c.cpp.o)
+                0x40204448       0x73 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_si2c.cpp.o)
                                  0x77 (size before relaxing)
- *fill*         0x402044b7        0x1 
+ *fill*         0x402044bb        0x1 
  .text.delay_end
-                0x402044b8       0x13 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_wiring.cpp.o)
+                0x402044bc       0x13 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_wiring.cpp.o)
                                  0x17 (size before relaxing)
-                0x402044b8                delay_end
- *fill*         0x402044cb        0x1 
+                0x402044bc                delay_end
+ *fill*         0x402044cf        0x1 
  .text.micros_overflow_tick
-                0x402044cc       0x35 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_wiring.cpp.o)
-                0x402044d8                micros_overflow_tick
- *fill*         0x40204501        0x3 
- .text.__delay  0x40204504       0x60 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_wiring.cpp.o)
+                0x402044d0       0x35 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_wiring.cpp.o)
+                0x402044dc                micros_overflow_tick
+ *fill*         0x40204505        0x3 
+ .text.__delay  0x40204508       0x60 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_wiring.cpp.o)
                                  0x6f (size before relaxing)
-                0x40204514                delay
-                0x40204514                __delay
- *fill*         0x40204564        0x0 
- .text.init     0x40204564       0x45 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_wiring.cpp.o)
+                0x40204518                delay
+                0x40204518                __delay
+ *fill*         0x40204568        0x0 
+ .text.init     0x40204568       0x45 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_wiring.cpp.o)
                                  0x59 (size before relaxing)
-                0x40204570                init
- *fill*         0x402045a9        0x3 
+                0x40204574                init
+ *fill*         0x402045ad        0x3 
  .text.__pinMode
-                0x402045ac      0x36e C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_wiring_digital.cpp.o)
+                0x402045b0      0x36e C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_wiring_digital.cpp.o)
                                 0x376 (size before relaxing)
-                0x402045c0                pinMode
-                0x402045c0                __pinMode
- *fill*         0x4020491a        0x2 
+                0x402045c4                pinMode
+                0x402045c4                __pinMode
+ *fill*         0x4020491e        0x2 
  .text.__resetPins
-                0x4020491c       0x2a C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_wiring_digital.cpp.o)
+                0x40204920       0x2a C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_wiring_digital.cpp.o)
                                  0x31 (size before relaxing)
-                0x4020491c                resetPins
-                0x4020491c                __resetPins
- *fill*         0x40204946        0x2 
+                0x40204920                resetPins
+                0x40204920                __resetPins
+ *fill*         0x4020494a        0x2 
  .text.initPins
-                0x40204948       0x30 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_wiring_digital.cpp.o)
+                0x4020494c       0x30 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_wiring_digital.cpp.o)
                                  0x3c (size before relaxing)
-                0x40204950                initPins
+                0x40204954                initPins
  .text.__analogWriteRange
-                0x40204978        0xe C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_wiring_pwm.cpp.o)
-                0x4020497c                analogWriteRange
-                0x4020497c                __analogWriteRange
- *fill*         0x40204986        0x2 
+                0x4020497c        0xe C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_wiring_pwm.cpp.o)
+                0x40204980                analogWriteRange
+                0x40204980                __analogWriteRange
+ *fill*         0x4020498a        0x2 
  .text.__analogWriteFreq
-                0x40204988       0x2a C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_wiring_pwm.cpp.o)
-                0x40204994                analogWriteFreq
-                0x40204994                __analogWriteFreq
- *fill*         0x402049b2        0x2 
+                0x4020498c       0x2a C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_wiring_pwm.cpp.o)
+                0x40204998                analogWriteFreq
+                0x40204998                __analogWriteFreq
+ *fill*         0x402049b6        0x2 
  .text.__analogWrite
-                0x402049b4       0xb4 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_wiring_pwm.cpp.o)
+                0x402049b8       0xb4 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_wiring_pwm.cpp.o)
                                  0xd0 (size before relaxing)
-                0x402049bc                __analogWrite
-                0x402049bc                analogWrite
+                0x402049c0                __analogWrite
+                0x402049c0                analogWrite
  .text._ZN8EspClass14getFlashChipIdEv
-                0x40204a68       0x29 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(Esp.cpp.o)
-                0x40204a70                _ZN8EspClass14getFlashChipIdEv
- *fill*         0x40204a91        0x3 
+                0x40204a6c       0x29 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(Esp.cpp.o)
+                0x40204a74                _ZN8EspClass14getFlashChipIdEv
+ *fill*         0x40204a95        0x3 
  .text._ZN8EspClass16flashEraseSectorEj
-                0x40204a94       0x22 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(Esp.cpp.o)
-                0x40204a98                _ZN8EspClass16flashEraseSectorEj
- *fill*         0x40204ab6        0x2 
+                0x40204a98       0x22 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(Esp.cpp.o)
+                0x40204a9c                _ZN8EspClass16flashEraseSectorEj
+ *fill*         0x40204aba        0x2 
  .text._ZN8EspClass10flashWriteEjPjj
-                0x40204ab8       0xd8 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(Esp.cpp.o)
+                0x40204abc       0xd8 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(Esp.cpp.o)
                                  0xe4 (size before relaxing)
-                0x40204ac4                _ZN8EspClass10flashWriteEjPjj
+                0x40204ac8                _ZN8EspClass10flashWriteEjPjj
  .text._ZN8EspClass9flashReadEjPjj
-                0x40204b90       0x21 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(Esp.cpp.o)
+                0x40204b94       0x21 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(Esp.cpp.o)
                                  0x25 (size before relaxing)
-                0x40204b90                _ZN8EspClass9flashReadEjPjj
- *fill*         0x40204bb1        0x3 
+                0x40204b94                _ZN8EspClass9flashReadEjPjj
+ *fill*         0x40204bb5        0x3 
  .text._ZN14HardwareSerialD2Ev
-                0x40204bb4        0xb C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(HardwareSerial.cpp.o)
-                0x40204bb8                _ZN14HardwareSerialD1Ev
-                0x40204bb8                _ZN14HardwareSerialD2Ev
- *fill*         0x40204bbf        0x1 
+                0x40204bb8        0xb C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(HardwareSerial.cpp.o)
+                0x40204bbc                _ZN14HardwareSerialD1Ev
+                0x40204bbc                _ZN14HardwareSerialD2Ev
+ *fill*         0x40204bc3        0x1 
  .text._ZN14HardwareSerialD0Ev
-                0x40204bc0       0x17 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(HardwareSerial.cpp.o)
+                0x40204bc4       0x17 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(HardwareSerial.cpp.o)
                                  0x1f (size before relaxing)
-                0x40204bc0                _ZN14HardwareSerialD0Ev
- *fill*         0x40204bd7        0x1 
+                0x40204bc4                _ZN14HardwareSerialD0Ev
+ *fill*         0x40204bdb        0x1 
  .text._ZN14HardwareSerial4peekEv
-                0x40204bd8       0x14 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(HardwareSerial.cpp.o)
+                0x40204bdc       0x14 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(HardwareSerial.cpp.o)
                                  0x18 (size before relaxing)
-                0x40204bd8                _ZN14HardwareSerial4peekEv
+                0x40204bdc                _ZN14HardwareSerial4peekEv
  .text._ZN14HardwareSerial4readEv
-                0x40204bec       0x14 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(HardwareSerial.cpp.o)
+                0x40204bf0       0x14 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(HardwareSerial.cpp.o)
                                  0x18 (size before relaxing)
-                0x40204bec                _ZN14HardwareSerial4readEv
+                0x40204bf0                _ZN14HardwareSerial4readEv
  .text._ZN14HardwareSerial5writeEh
-                0x40204c00       0x17 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(HardwareSerial.cpp.o)
+                0x40204c04       0x17 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(HardwareSerial.cpp.o)
                                  0x1b (size before relaxing)
-                0x40204c00                _ZN14HardwareSerial5writeEh
- *fill*         0x40204c17        0x1 
+                0x40204c04                _ZN14HardwareSerial5writeEh
+ *fill*         0x40204c1b        0x1 
  .text._ZN14HardwareSerial5writeEPKhj
-                0x40204c18       0x14 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(HardwareSerial.cpp.o)
+                0x40204c1c       0x14 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(HardwareSerial.cpp.o)
                                  0x18 (size before relaxing)
-                0x40204c18                _ZN14HardwareSerial5writeEPKhj
+                0x40204c1c                _ZN14HardwareSerial5writeEPKhj
  .text._ZN14HardwareSerial9availableEv
-                0x40204c2c       0x24 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(HardwareSerial.cpp.o)
+                0x40204c30       0x24 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(HardwareSerial.cpp.o)
                                  0x34 (size before relaxing)
-                0x40204c2c                _ZN14HardwareSerial9availableEv
+                0x40204c30                _ZN14HardwareSerial9availableEv
  .text._ZN14HardwareSerial5flushEv
-                0x40204c50       0x53 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(HardwareSerial.cpp.o)
+                0x40204c54       0x53 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(HardwareSerial.cpp.o)
                                  0x6f (size before relaxing)
-                0x40204c5c                _ZN14HardwareSerial5flushEv
- *fill*         0x40204ca3        0x1 
+                0x40204c60                _ZN14HardwareSerial5flushEv
+ *fill*         0x40204ca7        0x1 
  .text._ZN14HardwareSerialC2Ei
-                0x40204ca4       0x19 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(HardwareSerial.cpp.o)
+                0x40204ca8       0x19 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(HardwareSerial.cpp.o)
                                  0x1d (size before relaxing)
-                0x40204ca4                _ZN14HardwareSerialC2Ei
-                0x40204ca4                _ZN14HardwareSerialC1Ei
- *fill*         0x40204cbd        0x3 
+                0x40204ca8                _ZN14HardwareSerialC2Ei
+                0x40204ca8                _ZN14HardwareSerialC1Ei
+ *fill*         0x40204cc1        0x3 
  .text._ZN14HardwareSerial9readBytesEPcj
-                0x40204cc0       0x8a C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(HardwareSerial.cpp.o)
+                0x40204cc4       0x8a C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(HardwareSerial.cpp.o)
                                  0x8e (size before relaxing)
-                0x40204ccc                _ZN14HardwareSerial9readBytesEPcj
- *fill*         0x40204d4a        0x2 
+                0x40204cd0                _ZN14HardwareSerial9readBytesEPcj
+ *fill*         0x40204d4e        0x2 
  .text.startup._GLOBAL__sub_I__ZN14HardwareSerialC2Ei
-                0x40204d4c       0x23 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(HardwareSerial.cpp.o)
+                0x40204d50       0x23 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(HardwareSerial.cpp.o)
                                  0x33 (size before relaxing)
- *fill*         0x40204d6f        0x1 
+ *fill*         0x40204d73        0x1 
  .text.exit._GLOBAL__sub_D__ZN14HardwareSerialC2Ei
-                0x40204d70        0xf C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(HardwareSerial.cpp.o)
+                0x40204d74        0xf C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(HardwareSerial.cpp.o)
                                  0x1b (size before relaxing)
- *fill*         0x40204d7f        0x1 
+ *fill*         0x40204d83        0x1 
  .text._malloc_r
-                0x40204d80       0x2f C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(heap.cpp.o)
+                0x40204d84       0x2f C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(heap.cpp.o)
                                  0x3b (size before relaxing)
-                0x40204d80                _malloc_r
- *fill*         0x40204daf        0x1 
- .text._free_r  0x40204db0       0x18 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(heap.cpp.o)
-                0x40204db4                _free_r
+                0x40204d84                _malloc_r
+ *fill*         0x40204db3        0x1 
+ .text._free_r  0x40204db4       0x18 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(heap.cpp.o)
+                0x40204db8                _free_r
  .text._realloc_r
-                0x40204dc8       0x35 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(heap.cpp.o)
+                0x40204dcc       0x35 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(heap.cpp.o)
                                  0x3d (size before relaxing)
-                0x40204dcc                _realloc_r
- *fill*         0x40204dfd        0x3 
+                0x40204dd0                _realloc_r
+ *fill*         0x40204e01        0x3 
  .text._calloc_r
-                0x40204e00       0x3d C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(heap.cpp.o)
+                0x40204e04       0x3d C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(heap.cpp.o)
                                  0x45 (size before relaxing)
-                0x40204e04                _calloc_r
- *fill*         0x40204e3d        0x3 
+                0x40204e08                _calloc_r
+ *fill*         0x40204e41        0x3 
  .text._ZN5Print5writeEPKc
-                0x40204e40       0x3a C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(Print.cpp.o)
+                0x40204e44       0x3a C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(Print.cpp.o)
                                  0x42 (size before relaxing)
-                0x40204e44                _ZN5Print5writeEPKc
- *fill*         0x40204e7a        0x2 
+                0x40204e48                _ZN5Print5writeEPKc
+ *fill*         0x40204e7e        0x2 
  .text._ZN5Print5printERK6String
-                0x40204e7c       0x30 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(Print.cpp.o)
+                0x40204e80       0x30 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(Print.cpp.o)
                                  0x34 (size before relaxing)
-                0x40204e7c                _ZN5Print5printERK6String
+                0x40204e80                _ZN5Print5printERK6String
  .text._ZN5Print5printEPKc
-                0x40204eac        0xf C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(Print.cpp.o)
+                0x40204eb0        0xf C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(Print.cpp.o)
                                  0x17 (size before relaxing)
-                0x40204eac                _ZN5Print5printEPKc
- *fill*         0x40204ebb        0x1 
+                0x40204eb0                _ZN5Print5printEPKc
+ *fill*         0x40204ebf        0x1 
  .text._ZN5Print7printlnEv
-                0x40204ebc       0x19 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(Print.cpp.o)
+                0x40204ec0       0x19 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(Print.cpp.o)
                                  0x1d (size before relaxing)
-                0x40204ec0                _ZN5Print7printlnEv
- *fill*         0x40204ed5        0x3 
+                0x40204ec4                _ZN5Print7printlnEv
+ *fill*         0x40204ed9        0x3 
  .text._ZN5Print7printlnERK6String
-                0x40204ed8       0x25 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(Print.cpp.o)
+                0x40204edc       0x25 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(Print.cpp.o)
                                  0x31 (size before relaxing)
-                0x40204ed8                _ZN5Print7printlnERK6String
- *fill*         0x40204efd        0x3 
+                0x40204edc                _ZN5Print7printlnERK6String
+ *fill*         0x40204f01        0x3 
  .text._ZN5Print7printlnEPKc
-                0x40204f00       0x25 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(Print.cpp.o)
+                0x40204f04       0x25 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(Print.cpp.o)
                                  0x31 (size before relaxing)
-                0x40204f00                _ZN5Print7printlnEPKc
- *fill*         0x40204f25        0x3 
+                0x40204f04                _ZN5Print7printlnEPKc
+ *fill*         0x40204f29        0x3 
  .text._ZNSt8functionIFbvEEaSERKS1_
-                0x40204f28       0x49 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(Schedule.cpp.o)
+                0x40204f2c       0x49 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(Schedule.cpp.o)
                                  0x55 (size before relaxing)
-                0x40204f28                _ZNSt8functionIFbvEEaSERKS1_
- *fill*         0x40204f71        0x3 
+                0x40204f2c                _ZNSt8functionIFbvEEaSERKS1_
+ *fill*         0x40204f75        0x3 
  .text._Z30schedule_recurrent_function_usRKSt8functionIFbvEEjS3_
-                0x40204f74       0xc3 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(Schedule.cpp.o)
+                0x40204f78       0xc3 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(Schedule.cpp.o)
                                  0xe3 (size before relaxing)
-                0x40204f8c                _Z30schedule_recurrent_function_usRKSt8functionIFbvEEjS3_
- *fill*         0x40205037        0x1 
+                0x40204f90                _Z30schedule_recurrent_function_usRKSt8functionIFbvEEjS3_
+ *fill*         0x4020503b        0x1 
  .text._Z23run_scheduled_functionsv
-                0x40205038       0xc7 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(Schedule.cpp.o)
+                0x4020503c       0xc7 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(Schedule.cpp.o)
                                  0xdf (size before relaxing)
-                0x4020504c                _Z23run_scheduled_functionsv
- *fill*         0x402050ff        0x1 
+                0x40205050                _Z23run_scheduled_functionsv
+ *fill*         0x40205103        0x1 
  .text._Z33run_scheduled_recurrent_functionsv
-                0x40205100      0x12b C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(Schedule.cpp.o)
+                0x40205104      0x12b C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(Schedule.cpp.o)
                                 0x167 (size before relaxing)
-                0x40205108                _Z33run_scheduled_recurrent_functionsv
- *fill*         0x4020522b        0x1 
+                0x4020510c                _Z33run_scheduled_recurrent_functionsv
+ *fill*         0x4020522f        0x1 
  .text.stack_thunk_get_stack_top
-                0x4020522c        0xb C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(StackThunk.cpp.o)
-                0x40205230                stack_thunk_get_stack_top
- *fill*         0x40205237        0x1 
+                0x40205230        0xb C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(StackThunk.cpp.o)
+                0x40205234                stack_thunk_get_stack_top
+ *fill*         0x4020523b        0x1 
  .text.stack_thunk_get_stack_bot
-                0x40205238        0xb C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(StackThunk.cpp.o)
-                0x4020523c                stack_thunk_get_stack_bot
- *fill*         0x40205243        0x1 
+                0x4020523c        0xb C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(StackThunk.cpp.o)
+                0x40205240                stack_thunk_get_stack_bot
+ *fill*         0x40205247        0x1 
  .text.stack_thunk_get_cont_sp
-                0x40205244        0xb C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(StackThunk.cpp.o)
-                0x40205248                stack_thunk_get_cont_sp
- *fill*         0x4020524f        0x1 
+                0x40205248        0xb C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(StackThunk.cpp.o)
+                0x4020524c                stack_thunk_get_cont_sp
+ *fill*         0x40205253        0x1 
  .text._ZN6Stream9timedReadEv
-                0x40205250       0x4a C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(Stream.cpp.o)
+                0x40205254       0x4a C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(Stream.cpp.o)
                                  0x56 (size before relaxing)
-                0x40205250                _ZN6Stream9timedReadEv
- *fill*         0x4020529a        0x2 
+                0x40205254                _ZN6Stream9timedReadEv
+ *fill*         0x4020529e        0x2 
  .text._ZN6Stream9readBytesEPcj
-                0x4020529c       0x41 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(Stream.cpp.o)
+                0x402052a0       0x41 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(Stream.cpp.o)
                                  0x45 (size before relaxing)
-                0x4020529c                _ZN6Stream9readBytesEPcj
- *fill*         0x402052dd        0x3 
+                0x402052a0                _ZN6Stream9readBytesEPcj
+ *fill*         0x402052e1        0x3 
  .text._ZN6Stream10readStringEv
-                0x402052e0       0x37 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(Stream.cpp.o)
+                0x402052e4       0x37 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(Stream.cpp.o)
                                  0x47 (size before relaxing)
-                0x402052e0                _ZN6Stream10readStringEv
- *fill*         0x40205317        0x1 
+                0x402052e4                _ZN6Stream10readStringEv
+ *fill*         0x4020531b        0x1 
  .text.uart_rx_available_unsafe
-                0x40205318       0x2b C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(uart.cpp.o)
+                0x4020531c       0x2b C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(uart.cpp.o)
                                  0x33 (size before relaxing)
-                0x4020531c                uart_rx_available_unsafe
- *fill*         0x40205343        0x1 
+                0x40205320                uart_rx_available_unsafe
+ *fill*         0x40205347        0x1 
  .text.uart_get_bit_length
-                0x40205344       0x38 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(uart.cpp.o)
-                0x40205348                uart_get_bit_length
+                0x40205348       0x38 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(uart.cpp.o)
+                0x4020534c                uart_get_bit_length
  .text.uart_rx_available
-                0x4020537c       0x4c C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(uart.cpp.o)
+                0x40205380       0x4c C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(uart.cpp.o)
                                  0x58 (size before relaxing)
-                0x40205384                uart_rx_available
+                0x40205388                uart_rx_available
  .text.uart_peek_char
-                0x402053c8       0x61 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(uart.cpp.o)
+                0x402053cc       0x61 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(uart.cpp.o)
                                  0x75 (size before relaxing)
-                0x402053cc                uart_peek_char
- *fill*         0x40205429        0x3 
+                0x402053d0                uart_peek_char
+ *fill*         0x4020542d        0x3 
  .text.uart_read
-                0x4020542c       0xe5 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(uart.cpp.o)
+                0x40205430       0xe5 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(uart.cpp.o)
                                 0x105 (size before relaxing)
-                0x40205430                uart_read
- *fill*         0x40205511        0x3 
+                0x40205434                uart_read
+ *fill*         0x40205515        0x3 
  .text.uart_read_char
-                0x40205514       0x1d C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(uart.cpp.o)
+                0x40205518       0x1d C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(uart.cpp.o)
                                  0x25 (size before relaxing)
-                0x40205514                uart_read_char
- *fill*         0x40205531        0x3 
+                0x40205518                uart_read_char
+ *fill*         0x40205535        0x3 
  .text.uart_tx_fifo_available
-                0x40205534       0x1b C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(uart.cpp.o)
+                0x40205538       0x1b C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(uart.cpp.o)
                                  0x1f (size before relaxing)
-                0x40205534                uart_tx_fifo_available
- *fill*         0x4020554f        0x1 
+                0x40205538                uart_tx_fifo_available
+ *fill*         0x40205553        0x1 
  .text.uart_do_write_char
-                0x40205550       0x40 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(uart.cpp.o)
+                0x40205554       0x40 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(uart.cpp.o)
                                  0x48 (size before relaxing)
  .text.uart_write_char
-                0x40205590       0x4f C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(uart.cpp.o)
+                0x40205594       0x4f C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(uart.cpp.o)
                                  0x5b (size before relaxing)
-                0x40205590                uart_write_char
- *fill*         0x402055df        0x1 
+                0x40205594                uart_write_char
+ *fill*         0x402055e3        0x1 
  .text.uart_write
-                0x402055e0       0x82 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(uart.cpp.o)
+                0x402055e4       0x82 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(uart.cpp.o)
                                  0x8e (size before relaxing)
-                0x402055e0                uart_write
- *fill*         0x40205662        0x2 
+                0x402055e4                uart_write
+ *fill*         0x40205666        0x2 
  .text.uart_wait_tx_empty
-                0x40205664       0x2b C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(uart.cpp.o)
+                0x40205668       0x2b C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(uart.cpp.o)
                                  0x39 (size before relaxing)
-                0x40205664                uart_wait_tx_empty
- *fill*         0x4020568f        0x1 
+                0x40205668                uart_wait_tx_empty
+ *fill*         0x40205693        0x1 
  .text._ZN12UpdaterClassC2Ev
-                0x40205690       0x45 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(Updater.cpp.o)
+                0x40205694       0x45 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(Updater.cpp.o)
                                  0x49 (size before relaxing)
-                0x40205690                _ZN12UpdaterClassC1Ev
-                0x40205690                _ZN12UpdaterClassC2Ev
- *fill*         0x402056d5        0x3 
+                0x40205694                _ZN12UpdaterClassC1Ev
+                0x40205694                _ZN12UpdaterClassC2Ev
+ *fill*         0x402056d9        0x3 
  .text._ZN12UpdaterClassD2Ev
-                0x402056d8       0x22 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(Updater.cpp.o)
+                0x402056dc       0x22 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(Updater.cpp.o)
                                  0x2e (size before relaxing)
-                0x402056d8                _ZN12UpdaterClassD2Ev
-                0x402056d8                _ZN12UpdaterClassD1Ev
- *fill*         0x402056fa        0x2 
+                0x402056dc                _ZN12UpdaterClassD2Ev
+                0x402056dc                _ZN12UpdaterClassD1Ev
+ *fill*         0x402056fe        0x2 
  .text.startup._GLOBAL__sub_I__ZN12UpdaterClassC2Ev
-                0x402056fc       0x19 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(Updater.cpp.o)
+                0x40205700       0x19 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(Updater.cpp.o)
                                  0x1d (size before relaxing)
- *fill*         0x40205715        0x3 
+ *fill*         0x40205719        0x3 
  .text.exit._GLOBAL__sub_D__ZN12UpdaterClassC2Ev
-                0x40205718       0x15 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(Updater.cpp.o)
+                0x4020571c       0x15 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(Updater.cpp.o)
                                  0x1d (size before relaxing)
- *fill*         0x4020572d        0x3 
+ *fill*         0x40205731        0x3 
  .text._ZN6String4initEv
-                0x40205730       0x32 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(WString.cpp.o)
+                0x40205734       0x32 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(WString.cpp.o)
                                  0x3e (size before relaxing)
-                0x40205730                _ZN6String4initEv
- *fill*         0x40205762        0x2 
+                0x40205734                _ZN6String4initEv
+ *fill*         0x40205766        0x2 
  .text._ZN6String10invalidateEv
-                0x40205764       0x32 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(WString.cpp.o)
+                0x40205768       0x32 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(WString.cpp.o)
                                  0x42 (size before relaxing)
-                0x40205764                _ZN6String10invalidateEv
- *fill*         0x40205796        0x2 
+                0x40205768                _ZN6String10invalidateEv
+ *fill*         0x4020579a        0x2 
  .text._ZN6StringD2Ev
-                0x40205798        0xf C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(WString.cpp.o)
+                0x4020579c        0xf C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(WString.cpp.o)
                                  0x17 (size before relaxing)
-                0x40205798                _ZN6StringD2Ev
-                0x40205798                _ZN6StringD1Ev
- *fill*         0x402057a7        0x1 
+                0x4020579c                _ZN6StringD2Ev
+                0x4020579c                _ZN6StringD1Ev
+ *fill*         0x402057ab        0x1 
  .text._ZN6String12changeBufferEj
-                0x402057a8      0x12b C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(WString.cpp.o)
+                0x402057ac      0x12b C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(WString.cpp.o)
                                 0x18f (size before relaxing)
-                0x402057ac                _ZN6String12changeBufferEj
- *fill*         0x402058d3        0x1 
+                0x402057b0                _ZN6String12changeBufferEj
+ *fill*         0x402058d7        0x1 
  .text._ZN6String7reserveEj
-                0x402058d4       0x53 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(WString.cpp.o)
+                0x402058d8       0x53 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(WString.cpp.o)
                                  0x6f (size before relaxing)
-                0x402058d4                _ZN6String7reserveEj
- *fill*         0x40205927        0x1 
+                0x402058d8                _ZN6String7reserveEj
+ *fill*         0x4020592b        0x1 
  .text._ZN6String4copyEPKcj
-                0x40205928       0x47 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(WString.cpp.o)
+                0x4020592c       0x47 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(WString.cpp.o)
                                  0x67 (size before relaxing)
-                0x40205928                _ZN6String4copyEPKcj
- *fill*         0x4020596f        0x1 
+                0x4020592c                _ZN6String4copyEPKcj
+ *fill*         0x40205973        0x1 
  .text._ZN6StringC2EPKc
-                0x40205970       0x35 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(WString.cpp.o)
+                0x40205974       0x35 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(WString.cpp.o)
                                  0x41 (size before relaxing)
-                0x40205974                _ZN6StringC2EPKc
-                0x40205974                _ZN6StringC1EPKc
- *fill*         0x402059a5        0x3 
+                0x40205978                _ZN6StringC2EPKc
+                0x40205978                _ZN6StringC1EPKc
+ *fill*         0x402059a9        0x3 
  .text._ZN6StringaSERKS_
-                0x402059a8       0x44 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(WString.cpp.o)
+                0x402059ac       0x44 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(WString.cpp.o)
                                  0x5f (size before relaxing)
-                0x402059a8                _ZN6StringaSERKS_
- *fill*         0x402059ec        0x0 
+                0x402059ac                _ZN6StringaSERKS_
+ *fill*         0x402059f0        0x0 
  .text._ZN6StringC2ERKS_
-                0x402059ec       0x21 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(WString.cpp.o)
+                0x402059f0       0x21 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(WString.cpp.o)
                                  0x2d (size before relaxing)
-                0x402059ec                _ZN6StringC2ERKS_
-                0x402059ec                _ZN6StringC1ERKS_
- *fill*         0x40205a0d        0x3 
+                0x402059f0                _ZN6StringC2ERKS_
+                0x402059f0                _ZN6StringC1ERKS_
+ *fill*         0x40205a11        0x3 
  .text._ZN6StringaSEPKc
-                0x40205a10       0x35 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(WString.cpp.o)
+                0x40205a14       0x35 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(WString.cpp.o)
                                  0x41 (size before relaxing)
-                0x40205a10                _ZN6StringaSEPKc
- *fill*         0x40205a45        0x3 
+                0x40205a14                _ZN6StringaSEPKc
+ *fill*         0x40205a49        0x3 
  .text._ZN6StringC2Ehh
-                0x40205a48       0x35 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(WString.cpp.o)
+                0x40205a4c       0x35 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(WString.cpp.o)
                                  0x49 (size before relaxing)
-                0x40205a48                _ZN6StringC2Ehh
-                0x40205a48                _ZN6StringC1Ehh
- *fill*         0x40205a7d        0x3 
+                0x40205a4c                _ZN6StringC2Ehh
+                0x40205a4c                _ZN6StringC1Ehh
+ *fill*         0x40205a81        0x3 
  .text._ZN6StringC2Eih
-                0x40205a80       0x4b C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(WString.cpp.o)
+                0x40205a84       0x4b C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(WString.cpp.o)
                                  0x63 (size before relaxing)
-                0x40205a84                _ZN6StringC2Eih
-                0x40205a84                _ZN6StringC1Eih
- *fill*         0x40205acb        0x1 
+                0x40205a88                _ZN6StringC2Eih
+                0x40205a88                _ZN6StringC1Eih
+ *fill*         0x40205acf        0x1 
  .text._ZN6String6concatEPKcj
-                0x40205acc       0x75 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(WString.cpp.o)
+                0x40205ad0       0x75 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(WString.cpp.o)
                                  0xa5 (size before relaxing)
-                0x40205acc                _ZN6String6concatEPKcj
- *fill*         0x40205b41        0x3 
+                0x40205ad0                _ZN6String6concatEPKcj
+ *fill*         0x40205b45        0x3 
  .text._ZN6String6concatERKS_
-                0x40205b44       0xaf C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(WString.cpp.o)
+                0x40205b48       0xaf C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(WString.cpp.o)
                                 0x107 (size before relaxing)
-                0x40205b44                _ZN6String6concatERKS_
- *fill*         0x40205bf3        0x1 
+                0x40205b48                _ZN6String6concatERKS_
+ *fill*         0x40205bf7        0x1 
  .text._ZN6String6concatEc
-                0x40205bf4       0x1b C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(WString.cpp.o)
+                0x40205bf8       0x1b C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(WString.cpp.o)
                                  0x23 (size before relaxing)
-                0x40205bf4                _ZN6String6concatEc
- *fill*         0x40205c0f        0x1 
+                0x40205bf8                _ZN6String6concatEc
+ *fill*         0x40205c13        0x1 
  .text._ZplRK15StringSumHelperRK6String
-                0x40205c10       0x3b C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(WString.cpp.o)
+                0x40205c14       0x3b C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(WString.cpp.o)
                                  0x57 (size before relaxing)
-                0x40205c10                _ZplRK15StringSumHelperRK6String
- *fill*         0x40205c4b        0x1 
+                0x40205c14                _ZplRK15StringSumHelperRK6String
+ *fill*         0x40205c4f        0x1 
  .text._ZplRK15StringSumHelperPKc
-                0x40205c4c       0x33 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(WString.cpp.o)
+                0x40205c50       0x33 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(WString.cpp.o)
                                  0x43 (size before relaxing)
-                0x40205c4c                _ZplRK15StringSumHelperPKc
- *fill*         0x40205c7f        0x1 
+                0x40205c50                _ZplRK15StringSumHelperPKc
+ *fill*         0x40205c83        0x1 
  .text.startup._GLOBAL__sub_I__ZN6StringC2EPKc
-                0x40205c80       0x19 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(WString.cpp.o)
+                0x40205c84       0x19 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(WString.cpp.o)
                                  0x1d (size before relaxing)
- *fill*         0x40205c99        0x3 
+ *fill*         0x40205c9d        0x3 
  .text.exit._GLOBAL__sub_D__ZN6StringC2EPKc
-                0x40205c9c       0x15 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(WString.cpp.o)
+                0x40205ca0       0x15 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(WString.cpp.o)
                                  0x1d (size before relaxing)
- *fill*         0x40205cb1        0x3 
+ *fill*         0x40205cb5        0x3 
  .text.cont_init
-                0x40205cb4       0x4a C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(cont_util.cpp.o)
+                0x40205cb8       0x4a C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(cont_util.cpp.o)
                                  0x52 (size before relaxing)
-                0x40205cc0                cont_init
- *fill*         0x40205cfe        0x2 
+                0x40205cc4                cont_init
+ *fill*         0x40205d02        0x2 
  .text.initFlashQuirks
-                0x40205d00       0x95 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_flash_quirks.cpp.o)
+                0x40205d04       0x95 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_flash_quirks.cpp.o)
                                  0xb5 (size before relaxing)
-                0x40205d04                initFlashQuirks
- *fill*         0x40205d95        0x3 
+                0x40205d08                initFlashQuirks
+ *fill*         0x40205d99        0x3 
  .text.user_rf_cal_sector_set
-                0x40205d98       0x1f C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_phy.cpp.o)
-                0x40205da0                user_rf_cal_sector_set
- *fill*         0x40205db7        0x1 
+                0x40205d9c       0x1f C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_phy.cpp.o)
+                0x40205da4                user_rf_cal_sector_set
+ *fill*         0x40205dbb        0x1 
  .text.user_rf_pre_init
-                0x40205db8       0x34 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_phy.cpp.o)
+                0x40205dbc       0x34 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_phy.cpp.o)
                                  0x54 (size before relaxing)
-                0x40205dbc                user_rf_pre_init
+                0x40205dc0                user_rf_pre_init
  .text._ZN12experimentalL11_SPICommandEjjjjjPjjj$constprop$0
-                0x40205dec      0x141 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_spi_utils.cpp.o)
+                0x40205df0      0x141 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_spi_utils.cpp.o)
                                 0x14d (size before relaxing)
- *fill*         0x40205f2d        0x3 
+ *fill*         0x40205f31        0x3 
  .text.SPI0Command
-                0x40205f30       0xbb C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_spi_utils.cpp.o)
+                0x40205f34       0xbb C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_spi_utils.cpp.o)
                                  0xc3 (size before relaxing)
-                0x40205f48                SPI0Command
- *fill*         0x40205feb        0x1 
+                0x40205f4c                SPI0Command
+ *fill*         0x40205fef        0x1 
  .text.initTimer
-                0x40205fec       0x54 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_waveform.cpp.o)
+                0x40205ff0       0x54 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_waveform.cpp.o)
  .text.startWaveformClockCycles
-                0x40206040       0xd7 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_waveform.cpp.o)
+                0x40206044       0xd7 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_waveform.cpp.o)
                                  0xeb (size before relaxing)
-                0x40206054                startWaveformClockCycles
- *fill*         0x40206117        0x1 
+                0x40206058                startWaveformClockCycles
+ *fill*         0x4020611b        0x1 
  .text._ZNSt17_Function_handlerIFbvEZ12settimeofdayEUlvE_E9_M_invokeERKSt9_Any_data
-                0x40206118       0x24 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(sntp-lwip2.cpp.o)
+                0x4020611c       0x24 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(sntp-lwip2.cpp.o)
                                  0x28 (size before relaxing)
  .text._ZNSt14_Function_base13_Base_managerIZ12settimeofdayEUlvE_E10_M_managerERSt9_Any_dataRKS3_St18_Manager_operation
-                0x4020613c       0x38 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(sntp-lwip2.cpp.o)
+                0x40206140       0x38 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(sntp-lwip2.cpp.o)
                                  0x40 (size before relaxing)
  .text.settimeofday
-                0x40206174       0xe1 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(sntp-lwip2.cpp.o)
+                0x40206178       0xe1 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(sntp-lwip2.cpp.o)
                                 0x119 (size before relaxing)
-                0x40206190                settimeofday
- *fill*         0x40206255        0x3 
+                0x40206194                settimeofday
+ *fill*         0x40206259        0x3 
  .text.startup._GLOBAL__sub_I__Z15settimeofday_cbOSt8functionIFvvEE
-                0x40206258        0x9 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(sntp-lwip2.cpp.o)
+                0x4020625c        0x9 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(sntp-lwip2.cpp.o)
                                   0xd (size before relaxing)
- *fill*         0x40206261        0x3 
+ *fill*         0x40206265        0x3 
  .text.exit._GLOBAL__sub_D__Z15settimeofday_cbOSt8functionIFvvEE
-                0x40206264       0x15 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(sntp-lwip2.cpp.o)
+                0x40206268       0x15 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(sntp-lwip2.cpp.o)
                                  0x1d (size before relaxing)
- *fill*         0x40206279        0x3 
+ *fill*         0x4020627d        0x3 
  .text.tune_timeshift64
-                0x4020627c       0x4a C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(time.cpp.o)
-                0x40206288                tune_timeshift64
- *fill*         0x402062c6        0x2 
- .text._ZN5Print5flushEv
-                0x402062c8        0x2 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LaserBeamSecurity1.0\esp8266_generic\Release\LaserBeamSecurity1.0.cpp.o
-                0x402062c8                _ZN5Print5flushEv
- *fill*         0x402062ca        0x0 
- *fill*         0x402062ca        0x0 
- *fill*         0x402062ca        0x0 
- *fill*         0x402062ca        0x0 
- *fill*         0x402062ca        0x0 
- *fill*         0x402062ca        0x0 
- *fill*         0x402062ca        0x0 
- *fill*         0x402062ca        0x0 
- *fill*         0x402062ca        0x0 
- *fill*         0x402062ca        0x0 
- *fill*         0x402062ca        0x0 
- *fill*         0x402062ca        0x0 
- *fill*         0x402062ca        0x0 
- *fill*         0x402062ca        0x0 
- *fill*         0x402062ca        0x0 
- *fill*         0x402062ca        0x0 
- *fill*         0x402062ca        0x0 
- *fill*         0x402062ca        0x0 
- *fill*         0x402062ca        0x0 
- *fill*         0x402062ca        0x0 
- *fill*         0x402062ca        0x0 
- *fill*         0x402062ca        0x0 
- *fill*         0x402062ca        0x0 
- *fill*         0x402062ca        0x0 
- *fill*         0x402062ca        0x0 
- *fill*         0x402062ca        0x0 
- *fill*         0x402062ca        0x0 
- *fill*         0x402062ca        0x0 
- *fill*         0x402062ca        0x0 
- *fill*         0x402062ca        0x0 
- *fill*         0x402062ca        0x0 
+                0x40206280       0x4a C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(time.cpp.o)
+                0x4020628c                tune_timeshift64
  *fill*         0x402062ca        0x2 
+ .text._ZN5Print5flushEv
+                0x402062cc        0x2 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LaserBeamSecurity1.0\esp8266_generic\Release\LaserBeamSecurity1.0.cpp.o
+                0x402062cc                _ZN5Print5flushEv
+ *fill*         0x402062ce        0x0 
+ *fill*         0x402062ce        0x0 
+ *fill*         0x402062ce        0x0 
+ *fill*         0x402062ce        0x0 
+ *fill*         0x402062ce        0x0 
+ *fill*         0x402062ce        0x0 
+ *fill*         0x402062ce        0x0 
+ *fill*         0x402062ce        0x0 
+ *fill*         0x402062ce        0x0 
+ *fill*         0x402062ce        0x0 
+ *fill*         0x402062ce        0x0 
+ *fill*         0x402062ce        0x0 
+ *fill*         0x402062ce        0x0 
+ *fill*         0x402062ce        0x0 
+ *fill*         0x402062ce        0x0 
+ *fill*         0x402062ce        0x0 
+ *fill*         0x402062ce        0x0 
+ *fill*         0x402062ce        0x0 
+ *fill*         0x402062ce        0x0 
+ *fill*         0x402062ce        0x0 
+ *fill*         0x402062ce        0x0 
+ *fill*         0x402062ce        0x0 
+ *fill*         0x402062ce        0x0 
+ *fill*         0x402062ce        0x0 
+ *fill*         0x402062ce        0x0 
+ *fill*         0x402062ce        0x0 
+ *fill*         0x402062ce        0x0 
+ *fill*         0x402062ce        0x0 
+ *fill*         0x402062ce        0x0 
+ *fill*         0x402062ce        0x0 
+ *fill*         0x402062ce        0x0 
+ *fill*         0x402062ce        0x2 
  .text._ZN11EEPROMClass4readEi
-                0x402062cc       0x1c C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LaserBeamSecurity1.0\esp8266_generic\Release\EEPROM\EEPROM.cpp.o
-                0x402062cc                _ZN11EEPROMClass4readEi
+                0x402062d0       0x1c C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LaserBeamSecurity1.0\esp8266_generic\Release\EEPROM\EEPROM.cpp.o
+                0x402062d0                _ZN11EEPROMClass4readEi
  .text._ZN11EEPROMClass5writeEih
-                0x402062e8       0x22 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LaserBeamSecurity1.0\esp8266_generic\Release\EEPROM\EEPROM.cpp.o
-                0x402062e8                _ZN11EEPROMClass5writeEih
- *fill*         0x4020630a        0x0 
- *fill*         0x4020630a        0x0 
- *fill*         0x4020630a        0x2 
+                0x402062ec       0x22 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LaserBeamSecurity1.0\esp8266_generic\Release\EEPROM\EEPROM.cpp.o
+                0x402062ec                _ZN11EEPROMClass5writeEih
+ *fill*         0x4020630e        0x0 
+ *fill*         0x4020630e        0x0 
+ *fill*         0x4020630e        0x2 
  .text._ZN6Stream9readBytesEPhj
-                0x4020630c       0x13 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LaserBeamSecurity1.0\esp8266_generic\Release\Wire\Wire.cpp.o
-                0x4020630c                _ZN6Stream9readBytesEPhj
- *fill*         0x4020631f        0x0 
- *fill*         0x4020631f        0x0 
- *fill*         0x4020631f        0x0 
- *fill*         0x4020631f        0x0 
- *fill*         0x4020631f        0x0 
- *fill*         0x4020631f        0x0 
- *fill*         0x4020631f        0x0 
- *fill*         0x4020631f        0x0 
- *fill*         0x4020631f        0x1 
+                0x40206310       0x13 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LaserBeamSecurity1.0\esp8266_generic\Release\Wire\Wire.cpp.o
+                0x40206310                _ZN6Stream9readBytesEPhj
+ *fill*         0x40206323        0x0 
+ *fill*         0x40206323        0x0 
+ *fill*         0x40206323        0x0 
+ *fill*         0x40206323        0x0 
+ *fill*         0x40206323        0x0 
+ *fill*         0x40206323        0x0 
+ *fill*         0x40206323        0x0 
+ *fill*         0x40206323        0x0 
+ *fill*         0x40206323        0x1 
  .text._ZN12SSD1306Ascii15ssd1306WriteCmdEh
-                0x40206320       0x18 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LaserBeamSecurity1.0\esp8266_generic\Release\SSD1306Ascii-SmallSize10\SSD1306Ascii.cpp.o
-                0x40206320                _ZN12SSD1306Ascii15ssd1306WriteCmdEh
+                0x40206324       0x18 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LaserBeamSecurity1.0\esp8266_generic\Release\SSD1306Ascii-SmallSize10\SSD1306Ascii.cpp.o
+                0x40206324                _ZN12SSD1306Ascii15ssd1306WriteCmdEh
  .text._ZNK12SSD1306Ascii8fontRowsEv
-                0x40206338       0x1c C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LaserBeamSecurity1.0\esp8266_generic\Release\SSD1306Ascii-SmallSize10\SSD1306Ascii.cpp.o
-                0x40206338                _ZNK12SSD1306Ascii8fontRowsEv
+                0x4020633c       0x1c C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LaserBeamSecurity1.0\esp8266_generic\Release\SSD1306Ascii-SmallSize10\SSD1306Ascii.cpp.o
+                0x4020633c                _ZNK12SSD1306Ascii8fontRowsEv
  .text._ZNK12SSD1306Ascii8fontSizeEv
-                0x40206354       0x10 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LaserBeamSecurity1.0\esp8266_generic\Release\SSD1306Ascii-SmallSize10\SSD1306Ascii.cpp.o
-                0x40206354                _ZNK12SSD1306Ascii8fontSizeEv
- *fill*         0x40206364        0x0 
- *fill*         0x40206364        0x0 
- *fill*         0x40206364        0x0 
- *fill*         0x40206364        0x0 
- *fill*         0x40206364        0x0 
+                0x40206358       0x10 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LaserBeamSecurity1.0\esp8266_generic\Release\SSD1306Ascii-SmallSize10\SSD1306Ascii.cpp.o
+                0x40206358                _ZNK12SSD1306Ascii8fontSizeEv
+ *fill*         0x40206368        0x0 
+ *fill*         0x40206368        0x0 
+ *fill*         0x40206368        0x0 
+ *fill*         0x40206368        0x0 
+ *fill*         0x40206368        0x0 
  .text._ZN12SSD1306Ascii18ssd1306WriteRamBufEh
-                0x40206364       0x45 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LaserBeamSecurity1.0\esp8266_generic\Release\SSD1306Ascii-SmallSize10\SSD1306Ascii.cpp.o
-                0x40206364                _ZN12SSD1306Ascii18ssd1306WriteRamBufEh
- *fill*         0x402063a9        0x0 
- *fill*         0x402063a9        0x0 
- *fill*         0x402063a9        0x0 
- *fill*         0x402063a9        0x0 
- *fill*         0x402063a9        0x0 
- *fill*         0x402063a9        0x0 
- *fill*         0x402063a9        0x0 
- *fill*         0x402063a9        0x3 
+                0x40206368       0x45 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LaserBeamSecurity1.0\esp8266_generic\Release\SSD1306Ascii-SmallSize10\SSD1306Ascii.cpp.o
+                0x40206368                _ZN12SSD1306Ascii18ssd1306WriteRamBufEh
+ *fill*         0x402063ad        0x0 
+ *fill*         0x402063ad        0x0 
+ *fill*         0x402063ad        0x0 
+ *fill*         0x402063ad        0x0 
+ *fill*         0x402063ad        0x0 
+ *fill*         0x402063ad        0x0 
+ *fill*         0x402063ad        0x0 
+ *fill*         0x402063ad        0x3 
  .text.initVariant
-                0x402063ac        0x2 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_main.cpp.o)
-                0x402063ac                initVariant
- *fill*         0x402063ae        0x0 
- *fill*         0x402063ae        0x0 
- *fill*         0x402063ae        0x0 
- *fill*         0x402063ae        0x0 
- *fill*         0x402063ae        0x0 
- *fill*         0x402063ae        0x0 
- *fill*         0x402063ae        0x0 
- *fill*         0x402063ae        0x2 
- .text.preinit  0x402063b0        0x2 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_main.cpp.o)
-                0x402063b0                preinit
+                0x402063b0        0x2 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_main.cpp.o)
+                0x402063b0                initVariant
+ *fill*         0x402063b2        0x0 
+ *fill*         0x402063b2        0x0 
+ *fill*         0x402063b2        0x0 
  *fill*         0x402063b2        0x0 
  *fill*         0x402063b2        0x0 
  *fill*         0x402063b2        0x0 
  *fill*         0x402063b2        0x0 
  *fill*         0x402063b2        0x2 
- .text.__custom_crash_callback
-                0x402063b4        0x2 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_postmortem.cpp.o)
-                0x402063b4                custom_crash_callback
-                0x402063b4                __custom_crash_callback
- *fill*         0x402063b6        0x0 
- *fill*         0x402063b6        0x0 
- *fill*         0x402063b6        0x0 
- *fill*         0x402063b6        0x0 
- *fill*         0x402063b6        0x0 
- *fill*         0x402063b6        0x0 
+ .text.preinit  0x402063b4        0x2 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_main.cpp.o)
+                0x402063b4                preinit
  *fill*         0x402063b6        0x0 
  *fill*         0x402063b6        0x0 
  *fill*         0x402063b6        0x0 
  *fill*         0x402063b6        0x0 
  *fill*         0x402063b6        0x2 
+ .text.__custom_crash_callback
+                0x402063b8        0x2 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_postmortem.cpp.o)
+                0x402063b8                custom_crash_callback
+                0x402063b8                __custom_crash_callback
+ *fill*         0x402063ba        0x0 
+ *fill*         0x402063ba        0x0 
+ *fill*         0x402063ba        0x0 
+ *fill*         0x402063ba        0x0 
+ *fill*         0x402063ba        0x0 
+ *fill*         0x402063ba        0x0 
+ *fill*         0x402063ba        0x0 
+ *fill*         0x402063ba        0x0 
+ *fill*         0x402063ba        0x0 
+ *fill*         0x402063ba        0x0 
+ *fill*         0x402063ba        0x2 
  .text._ZN3Twi8transmitEPKhh
-                0x402063b8       0x39 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_si2c.cpp.o)
-                0x402063b8                _ZN3Twi8transmitEPKhh
- *fill*         0x402063f1        0x0 
- *fill*         0x402063f1        0x0 
- *fill*         0x402063f1        0x0 
- *fill*         0x402063f1        0x0 
- *fill*         0x402063f1        0x0 
- *fill*         0x402063f1        0x0 
- *fill*         0x402063f1        0x0 
- *fill*         0x402063f1        0x0 
- *fill*         0x402063f1        0x0 
- *fill*         0x402063f1        0x0 
- *fill*         0x402063f1        0x0 
- *fill*         0x402063f1        0x0 
- *fill*         0x402063f1        0x0 
- *fill*         0x402063f1        0x0 
- *fill*         0x402063f1        0x0 
- *fill*         0x402063f1        0x0 
- *fill*         0x402063f1        0x0 
- *fill*         0x402063f1        0x3 
+                0x402063bc       0x39 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_si2c.cpp.o)
+                0x402063bc                _ZN3Twi8transmitEPKhh
+ *fill*         0x402063f5        0x0 
+ *fill*         0x402063f5        0x0 
+ *fill*         0x402063f5        0x0 
+ *fill*         0x402063f5        0x0 
+ *fill*         0x402063f5        0x0 
+ *fill*         0x402063f5        0x0 
+ *fill*         0x402063f5        0x0 
+ *fill*         0x402063f5        0x0 
+ *fill*         0x402063f5        0x0 
+ *fill*         0x402063f5        0x0 
+ *fill*         0x402063f5        0x0 
+ *fill*         0x402063f5        0x0 
+ *fill*         0x402063f5        0x0 
+ *fill*         0x402063f5        0x0 
+ *fill*         0x402063f5        0x0 
+ *fill*         0x402063f5        0x0 
+ *fill*         0x402063f5        0x0 
+ *fill*         0x402063f5        0x3 
  .text._ZNSt14_Function_baseD2Ev
-                0x402063f4       0x17 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(FunctionalInterrupt.cpp.o)
-                0x402063f4                _ZNSt14_Function_baseD1Ev
-                0x402063f4                _ZNSt14_Function_baseD2Ev
- *fill*         0x4020640b        0x1 
+                0x402063f8       0x17 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(FunctionalInterrupt.cpp.o)
+                0x402063f8                _ZNSt14_Function_baseD1Ev
+                0x402063f8                _ZNSt14_Function_baseD2Ev
+ *fill*         0x4020640f        0x1 
  .text._ZSt4swapISt9_Any_dataEvRT_S2_
-                0x4020640c       0x18 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(FunctionalInterrupt.cpp.o)
-                0x4020640c                _ZSt4swapISt9_Any_dataEvRT_S2_
- *fill*         0x40206424        0x0 
+                0x40206410       0x18 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(FunctionalInterrupt.cpp.o)
+                0x40206410                _ZSt4swapISt9_Any_dataEvRT_S2_
+ *fill*         0x40206428        0x0 
  .text._ZN14HardwareSerial9readBytesEPhj
-                0x40206424       0x13 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(HardwareSerial.cpp.o)
-                0x40206424                _ZN14HardwareSerial9readBytesEPhj
- *fill*         0x40206437        0x0 
- *fill*         0x40206437        0x0 
- *fill*         0x40206437        0x0 
- *fill*         0x40206437        0x0 
- *fill*         0x40206437        0x0 
- *fill*         0x40206437        0x0 
- *fill*         0x40206437        0x0 
- *fill*         0x40206437        0x0 
- *fill*         0x40206437        0x0 
- *fill*         0x40206437        0x0 
- *fill*         0x40206437        0x1 
+                0x40206428       0x13 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(HardwareSerial.cpp.o)
+                0x40206428                _ZN14HardwareSerial9readBytesEPhj
+ *fill*         0x4020643b        0x0 
+ *fill*         0x4020643b        0x0 
+ *fill*         0x4020643b        0x0 
+ *fill*         0x4020643b        0x0 
+ *fill*         0x4020643b        0x0 
+ *fill*         0x4020643b        0x0 
+ *fill*         0x4020643b        0x0 
+ *fill*         0x4020643b        0x0 
+ *fill*         0x4020643b        0x0 
+ *fill*         0x4020643b        0x0 
+ *fill*         0x4020643b        0x1 
  .text._ZN5Print5writeEPKhj
-                0x40206438       0x4d C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(Print.cpp.o)
-                0x40206438                _ZN5Print5writeEPKhj
- *fill*         0x40206485        0x0 
- *fill*         0x40206485        0x0 
- *fill*         0x40206485        0x0 
- *fill*         0x40206485        0x0 
- *fill*         0x40206485        0x0 
- *fill*         0x40206485        0x0 
- *fill*         0x40206485        0x0 
- *fill*         0x40206485        0x0 
- *fill*         0x40206485        0x0 
- *fill*         0x40206485        0x0 
- *fill*         0x40206485        0x0 
- *fill*         0x40206485        0x0 
- *fill*         0x40206485        0x0 
- *fill*         0x40206485        0x0 
- *fill*         0x40206485        0x0 
- *fill*         0x40206485        0x3 
+                0x4020643c       0x4d C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(Print.cpp.o)
+                0x4020643c                _ZN5Print5writeEPKhj
+ *fill*         0x40206489        0x0 
+ *fill*         0x40206489        0x0 
+ *fill*         0x40206489        0x0 
+ *fill*         0x40206489        0x0 
+ *fill*         0x40206489        0x0 
+ *fill*         0x40206489        0x0 
+ *fill*         0x40206489        0x0 
+ *fill*         0x40206489        0x0 
+ *fill*         0x40206489        0x0 
+ *fill*         0x40206489        0x0 
+ *fill*         0x40206489        0x0 
+ *fill*         0x40206489        0x0 
+ *fill*         0x40206489        0x0 
+ *fill*         0x40206489        0x0 
+ *fill*         0x40206489        0x0 
+ *fill*         0x40206489        0x3 
  .text.uart_rx_buffer_available_unsafe
-                0x40206488       0x16 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(uart.cpp.o)
-                0x40206488                uart_rx_buffer_available_unsafe
- *fill*         0x4020649e        0x0 
- *fill*         0x4020649e        0x0 
- *fill*         0x4020649e        0x0 
- *fill*         0x4020649e        0x0 
- *fill*         0x4020649e        0x0 
- *fill*         0x4020649e        0x0 
- *fill*         0x4020649e        0x0 
- *fill*         0x4020649e        0x0 
- *fill*         0x4020649e        0x2 
+                0x4020648c       0x16 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(uart.cpp.o)
+                0x4020648c                uart_rx_buffer_available_unsafe
+ *fill*         0x402064a2        0x0 
+ *fill*         0x402064a2        0x0 
+ *fill*         0x402064a2        0x0 
+ *fill*         0x402064a2        0x0 
+ *fill*         0x402064a2        0x0 
+ *fill*         0x402064a2        0x0 
+ *fill*         0x402064a2        0x0 
+ *fill*         0x402064a2        0x0 
+ *fill*         0x402064a2        0x2 
  .text.uart_get_baudrate
-                0x402064a0        0x6 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(uart.cpp.o)
-                0x402064a0                uart_get_baudrate
- *fill*         0x402064a6        0x2 
+                0x402064a4        0x6 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(uart.cpp.o)
+                0x402064a4                uart_get_baudrate
+ *fill*         0x402064aa        0x2 
  .text.uart_tx_enabled
-                0x402064a8        0x7 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(uart.cpp.o)
-                0x402064a8                uart_tx_enabled
- *fill*         0x402064af        0x0 
- *fill*         0x402064af        0x0 
- *fill*         0x402064af        0x0 
- *fill*         0x402064af        0x0 
- *fill*         0x402064af        0x1 
+                0x402064ac        0x7 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(uart.cpp.o)
+                0x402064ac                uart_tx_enabled
+ *fill*         0x402064b3        0x0 
+ *fill*         0x402064b3        0x0 
+ *fill*         0x402064b3        0x0 
+ *fill*         0x402064b3        0x0 
+ *fill*         0x402064b3        0x1 
  .text._ZNK6String3lenEv
-                0x402064b0       0x11 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(WString.cpp.o)
-                0x402064b0                _ZNK6String3lenEv
- *fill*         0x402064c1        0x3 
+                0x402064b4       0x11 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(WString.cpp.o)
+                0x402064b4                _ZNK6String3lenEv
+ *fill*         0x402064c5        0x3 
  .text._ZN6String6setLenEi
-                0x402064c4       0x1e C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(WString.cpp.o)
-                0x402064c4                _ZN6String6setLenEi
- *fill*         0x402064e2        0x2 
+                0x402064c8       0x1e C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(WString.cpp.o)
+                0x402064c8                _ZN6String6setLenEi
+ *fill*         0x402064e6        0x2 
  .text._ZNK6String6bufferEv
-                0x402064e4        0xa C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(WString.cpp.o)
-                0x402064e4                _ZNK6String6bufferEv
- *fill*         0x402064ee        0x2 
+                0x402064e8        0xa C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(WString.cpp.o)
+                0x402064e8                _ZNK6String6bufferEv
+ *fill*         0x402064f2        0x2 
  .text._ZNK6String7wbufferEv
-                0x402064f0        0xa C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(WString.cpp.o)
-                0x402064f0                _ZNK6String7wbufferEv
- *fill*         0x402064fa        0x0 
- *fill*         0x402064fa        0x0 
- *fill*         0x402064fa        0x0 
- *fill*         0x402064fa        0x0 
- *fill*         0x402064fa        0x0 
- *fill*         0x402064fa        0x0 
- *fill*         0x402064fa        0x0 
- *fill*         0x402064fa        0x0 
- *fill*         0x402064fa        0x0 
- *fill*         0x402064fa        0x0 
- *fill*         0x402064fa        0x0 
- *fill*         0x402064fa        0x0 
- *fill*         0x402064fa        0x0 
- *fill*         0x402064fa        0x0 
- *fill*         0x402064fa        0x0 
- *fill*         0x402064fa        0x0 
- *fill*         0x402064fa        0x0 
- *fill*         0x402064fa        0x0 
- *fill*         0x402064fa        0x0 
- *fill*         0x402064fa        0x0 
- *fill*         0x402064fa        0x0 
- *fill*         0x402064fa        0x2 
+                0x402064f4        0xa C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(WString.cpp.o)
+                0x402064f4                _ZNK6String7wbufferEv
+ *fill*         0x402064fe        0x0 
+ *fill*         0x402064fe        0x0 
+ *fill*         0x402064fe        0x0 
+ *fill*         0x402064fe        0x0 
+ *fill*         0x402064fe        0x0 
+ *fill*         0x402064fe        0x0 
+ *fill*         0x402064fe        0x0 
+ *fill*         0x402064fe        0x0 
+ *fill*         0x402064fe        0x0 
+ *fill*         0x402064fe        0x0 
+ *fill*         0x402064fe        0x0 
+ *fill*         0x402064fe        0x0 
+ *fill*         0x402064fe        0x0 
+ *fill*         0x402064fe        0x0 
+ *fill*         0x402064fe        0x0 
+ *fill*         0x402064fe        0x0 
+ *fill*         0x402064fe        0x0 
+ *fill*         0x402064fe        0x0 
+ *fill*         0x402064fe        0x0 
+ *fill*         0x402064fe        0x0 
+ *fill*         0x402064fe        0x0 
+ *fill*         0x402064fe        0x2 
  .text._Z13__get_rf_modev
-                0x402064fc        0x4 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_phy.cpp.o)
-                0x402064fc                _Z13__get_rf_modev
- .text._Z14__get_adc_modev
                 0x40206500        0x4 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_phy.cpp.o)
-                0x40206500                _Z14__get_adc_modev
+                0x40206500                _Z13__get_rf_modev
+ .text._Z14__get_adc_modev
+                0x40206504        0x4 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_phy.cpp.o)
+                0x40206504                _Z14__get_adc_modev
  .text._Z22__run_user_rf_pre_initv
-                0x40206504        0x2 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_phy.cpp.o)
-                0x40206504                _Z22__run_user_rf_pre_initv
- *fill*         0x40206506        0x0 
- *fill*         0x40206506        0x0 
- *fill*         0x40206506        0x0 
- *fill*         0x40206506        0x0 
- *fill*         0x40206506        0x2 
+                0x40206508        0x2 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_phy.cpp.o)
+                0x40206508                _Z22__run_user_rf_pre_initv
+ *fill*         0x4020650a        0x0 
+ *fill*         0x4020650a        0x0 
+ *fill*         0x4020650a        0x0 
+ *fill*         0x4020650a        0x0 
+ *fill*         0x4020650a        0x2 
  .text.precache
-                0x40206508       0x2c C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_features.cpp.o)
-                0x40206508                precache
- *fill*         0x40206534        0x0 
- *fill*         0x40206534        0x0 
- *fill*         0x40206534        0x0 
+                0x4020650c       0x2c C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_features.cpp.o)
+                0x4020650c                precache
+ *fill*         0x40206538        0x0 
+ *fill*         0x40206538        0x0 
+ *fill*         0x40206538        0x0 
  *.cc.o(.literal*, .text*)
  *(.rodata._ZTV*)
- *fill*         0x40206534        0x4 
+ *fill*         0x40206538        0x0 
  .rodata._ZTV16SSD1306AsciiWire
                 0x40206538       0x18 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LaserBeamSecurity1.0\esp8266_generic\Release\LaserBeamSecurity1.0.cpp.o
                 0x40206538                _ZTV16SSD1306AsciiWire
@@ -16257,182 +16257,182 @@ OUTPUT(C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release/La
  .debug_aranges
                 0x00002a70       0x20 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\libgcc.a(_fixsfsi.o)
 
-.debug_ranges   0x00000000     0x4d68
- .debug_ranges  0x00000000      0x418 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LaserBeamSecurity1.0\esp8266_generic\Release\LaserBeamSecurity1.0.cpp.o
- .debug_ranges  0x00000418       0x58 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LaserBeamSecurity1.0\esp8266_generic\Release\EEPROM\EEPROM.cpp.o
- .debug_ranges  0x00000470      0x170 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LaserBeamSecurity1.0\esp8266_generic\Release\Wire\Wire.cpp.o
- .debug_ranges  0x000005e0      0x2e8 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LaserBeamSecurity1.0\esp8266_generic\Release\SSD1306Ascii-SmallSize10\SSD1306Ascii.cpp.o
- .debug_ranges  0x000008c8       0x80 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(abi.cpp.o)
- .debug_ranges  0x00000948       0xb8 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_main.cpp.o)
- .debug_ranges  0x00000a00       0xe8 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_postmortem.cpp.o)
- .debug_ranges  0x00000ae8      0x3b8 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_si2c.cpp.o)
- .debug_ranges  0x00000ea0       0x90 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_wiring.cpp.o)
- .debug_ranges  0x00000f30       0xd8 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_wiring_digital.cpp.o)
- .debug_ranges  0x00001008       0x38 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_wiring_pwm.cpp.o)
- .debug_ranges  0x00001040      0x3f8 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(Esp.cpp.o)
- .debug_ranges  0x00001438      0x2c8 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(FunctionalInterrupt.cpp.o)
- .debug_ranges  0x00001700       0x10 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(gdb_hooks.cpp.o)
- .debug_ranges  0x00001710      0x1b8 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(HardwareSerial.cpp.o)
- .debug_ranges  0x000018c8       0xc0 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(heap.cpp.o)
- .debug_ranges  0x00001988      0x2b8 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(Print.cpp.o)
- .debug_ranges  0x00001c40      0x278 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(Schedule.cpp.o)
- .debug_ranges  0x00001eb8       0x80 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(StackThunk.cpp.o)
- .debug_ranges  0x00001f38      0x128 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(Stream.cpp.o)
- .debug_ranges  0x00002060      0x258 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(uart.cpp.o)
- .debug_ranges  0x000022b8      0x2c0 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(Updater.cpp.o)
- .debug_ranges  0x00002578      0x5b0 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(WString.cpp.o)
- .debug_ranges  0x00002b28      0x1b0 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(umm_malloc.cpp.o)
- .debug_ranges  0x00002cd8       0x20 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(cont.S.o)
- .debug_ranges  0x00002cf8       0x60 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(cont_util.cpp.o)
- .debug_ranges  0x00002d58       0x28 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_flash_quirks.cpp.o)
- .debug_ranges  0x00002d80       0x58 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_phy.cpp.o)
- .debug_ranges  0x00002dd8       0x58 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_spi_utils.cpp.o)
- .debug_ranges  0x00002e30       0x60 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_timer.cpp.o)
- .debug_ranges  0x00002e90       0xd0 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_waveform.cpp.o)
- .debug_ranges  0x00002f60       0x30 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_features.cpp.o)
- .debug_ranges  0x00002f90      0x198 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(lwip-esp.o)
- .debug_ranges  0x00003128      0x158 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(lwip-git.o)
- .debug_ranges  0x00003280      0x120 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(esp-dhcpserver.o)
- .debug_ranges  0x000033a0       0x18 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(ethernet.o)
- .debug_ranges  0x000033b8       0x10 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(init.o)
- .debug_ranges  0x000033c8       0x40 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(memp.o)
- .debug_ranges  0x00003408      0x280 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(tcp.o)
- .debug_ranges  0x00003688       0x70 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(timeouts.o)
- .debug_ranges  0x000036f8       0xd8 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(dns.o)
- .debug_ranges  0x000037d0       0xe8 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(tcp_in.o)
- .debug_ranges  0x000038b8      0x1b8 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(pbuf.o)
- .debug_ranges  0x00003a70       0xd0 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(netif.o)
- .debug_ranges  0x00003b40       0x78 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(def.o)
- .debug_ranges  0x00003bb8       0xb8 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(udp.o)
- .debug_ranges  0x00003c70      0x180 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(tcp_out.o)
- .debug_ranges  0x00003df0       0x68 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(ip4_frag.o)
- .debug_ranges  0x00003e58      0x280 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(dhcp.o)
- .debug_ranges  0x000040d8      0x120 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(etharp.o)
- .debug_ranges  0x000041f8       0x38 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(ip4_addr.o)
- .debug_ranges  0x00004230       0xa8 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(igmp.o)
- .debug_ranges  0x000042d8      0x1d8 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(ip4.o)
- .debug_ranges  0x000044b0       0x80 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(autoip.o)
- .debug_ranges  0x00004530       0x28 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(icmp.o)
- .debug_ranges  0x00004558       0x98 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(sntp.o)
- .debug_ranges  0x000045f0       0x30 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(mem.o)
- .debug_ranges  0x00004620       0x70 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(inet_chksum.o)
- .debug_ranges  0x00004690       0x88 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(raw.o)
- .debug_ranges  0x00004718       0x38 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\libstdc++.a(eh_terminate.o)
- .debug_ranges  0x00004750       0x10 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\libstdc++.a(del_opv.o)
- .debug_ranges  0x00004760       0x10 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\libstdc++.a(del_op.o)
- .debug_ranges  0x00004770       0x10 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\libstdc++.a(new_handler.o)
- .debug_ranges  0x00004780       0x28 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\libstdc++.a(new_opnt.o)
- .debug_ranges  0x000047a8       0x98 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\libstdc++.a(functexcept.o)
- .debug_ranges  0x00004840       0x18 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/libc/xtensa-lx106-elf/lib\libm.a(lib_a-s_fpclassify.o)
- .debug_ranges  0x00004858       0xd0 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/libc/xtensa-lx106-elf/lib\libc.a(lib_a-nano-vfprintf_float.o)
- .debug_ranges  0x00004928       0x48 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/libc/xtensa-lx106-elf/lib\libc.a(lib_a-nano-vfprintf_i.o)
- .debug_ranges  0x00004970       0x18 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/libc/xtensa-lx106-elf/lib\libc.a(lib_a-strtod.o)
- .debug_ranges  0x00004988       0xe0 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/libc/xtensa-lx106-elf/lib\libc.a(string_pgmspace.o)
- .debug_ranges  0x00004a68       0x18 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/libc/xtensa-lx106-elf/lib\libc.a(lib_a-dtoa.o)
- .debug_ranges  0x00004a80       0x30 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/libc/xtensa-lx106-elf/lib\libc.a(lib_a-mprec.o)
- .debug_ranges  0x00004ab0       0x10 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/libc/xtensa-lx106-elf/lib\libc.a(lib_a-nano-svfprintf.o)
- .debug_ranges  0x00004ac0       0x90 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\libgcc.a(unwind-dw2-fde.o)
- .debug_ranges  0x00004b50      0x160 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(sntp-lwip2.cpp.o)
- .debug_ranges  0x00004cb0       0xb8 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(time.cpp.o)
+.debug_ranges   0x00000000     0x4d50
+ .debug_ranges  0x00000000      0x400 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LaserBeamSecurity1.0\esp8266_generic\Release\LaserBeamSecurity1.0.cpp.o
+ .debug_ranges  0x00000400       0x58 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LaserBeamSecurity1.0\esp8266_generic\Release\EEPROM\EEPROM.cpp.o
+ .debug_ranges  0x00000458      0x170 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LaserBeamSecurity1.0\esp8266_generic\Release\Wire\Wire.cpp.o
+ .debug_ranges  0x000005c8      0x2e8 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LaserBeamSecurity1.0\esp8266_generic\Release\SSD1306Ascii-SmallSize10\SSD1306Ascii.cpp.o
+ .debug_ranges  0x000008b0       0x80 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(abi.cpp.o)
+ .debug_ranges  0x00000930       0xb8 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_main.cpp.o)
+ .debug_ranges  0x000009e8       0xe8 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_postmortem.cpp.o)
+ .debug_ranges  0x00000ad0      0x3b8 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_si2c.cpp.o)
+ .debug_ranges  0x00000e88       0x90 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_wiring.cpp.o)
+ .debug_ranges  0x00000f18       0xd8 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_wiring_digital.cpp.o)
+ .debug_ranges  0x00000ff0       0x38 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_wiring_pwm.cpp.o)
+ .debug_ranges  0x00001028      0x3f8 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(Esp.cpp.o)
+ .debug_ranges  0x00001420      0x2c8 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(FunctionalInterrupt.cpp.o)
+ .debug_ranges  0x000016e8       0x10 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(gdb_hooks.cpp.o)
+ .debug_ranges  0x000016f8      0x1b8 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(HardwareSerial.cpp.o)
+ .debug_ranges  0x000018b0       0xc0 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(heap.cpp.o)
+ .debug_ranges  0x00001970      0x2b8 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(Print.cpp.o)
+ .debug_ranges  0x00001c28      0x278 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(Schedule.cpp.o)
+ .debug_ranges  0x00001ea0       0x80 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(StackThunk.cpp.o)
+ .debug_ranges  0x00001f20      0x128 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(Stream.cpp.o)
+ .debug_ranges  0x00002048      0x258 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(uart.cpp.o)
+ .debug_ranges  0x000022a0      0x2c0 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(Updater.cpp.o)
+ .debug_ranges  0x00002560      0x5b0 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(WString.cpp.o)
+ .debug_ranges  0x00002b10      0x1b0 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(umm_malloc.cpp.o)
+ .debug_ranges  0x00002cc0       0x20 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(cont.S.o)
+ .debug_ranges  0x00002ce0       0x60 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(cont_util.cpp.o)
+ .debug_ranges  0x00002d40       0x28 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_flash_quirks.cpp.o)
+ .debug_ranges  0x00002d68       0x58 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_phy.cpp.o)
+ .debug_ranges  0x00002dc0       0x58 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_spi_utils.cpp.o)
+ .debug_ranges  0x00002e18       0x60 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_timer.cpp.o)
+ .debug_ranges  0x00002e78       0xd0 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_waveform.cpp.o)
+ .debug_ranges  0x00002f48       0x30 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_features.cpp.o)
+ .debug_ranges  0x00002f78      0x198 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(lwip-esp.o)
+ .debug_ranges  0x00003110      0x158 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(lwip-git.o)
+ .debug_ranges  0x00003268      0x120 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(esp-dhcpserver.o)
+ .debug_ranges  0x00003388       0x18 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(ethernet.o)
+ .debug_ranges  0x000033a0       0x10 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(init.o)
+ .debug_ranges  0x000033b0       0x40 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(memp.o)
+ .debug_ranges  0x000033f0      0x280 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(tcp.o)
+ .debug_ranges  0x00003670       0x70 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(timeouts.o)
+ .debug_ranges  0x000036e0       0xd8 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(dns.o)
+ .debug_ranges  0x000037b8       0xe8 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(tcp_in.o)
+ .debug_ranges  0x000038a0      0x1b8 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(pbuf.o)
+ .debug_ranges  0x00003a58       0xd0 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(netif.o)
+ .debug_ranges  0x00003b28       0x78 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(def.o)
+ .debug_ranges  0x00003ba0       0xb8 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(udp.o)
+ .debug_ranges  0x00003c58      0x180 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(tcp_out.o)
+ .debug_ranges  0x00003dd8       0x68 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(ip4_frag.o)
+ .debug_ranges  0x00003e40      0x280 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(dhcp.o)
+ .debug_ranges  0x000040c0      0x120 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(etharp.o)
+ .debug_ranges  0x000041e0       0x38 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(ip4_addr.o)
+ .debug_ranges  0x00004218       0xa8 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(igmp.o)
+ .debug_ranges  0x000042c0      0x1d8 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(ip4.o)
+ .debug_ranges  0x00004498       0x80 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(autoip.o)
+ .debug_ranges  0x00004518       0x28 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(icmp.o)
+ .debug_ranges  0x00004540       0x98 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(sntp.o)
+ .debug_ranges  0x000045d8       0x30 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(mem.o)
+ .debug_ranges  0x00004608       0x70 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(inet_chksum.o)
+ .debug_ranges  0x00004678       0x88 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(raw.o)
+ .debug_ranges  0x00004700       0x38 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\libstdc++.a(eh_terminate.o)
+ .debug_ranges  0x00004738       0x10 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\libstdc++.a(del_opv.o)
+ .debug_ranges  0x00004748       0x10 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\libstdc++.a(del_op.o)
+ .debug_ranges  0x00004758       0x10 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\libstdc++.a(new_handler.o)
+ .debug_ranges  0x00004768       0x28 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\libstdc++.a(new_opnt.o)
+ .debug_ranges  0x00004790       0x98 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\libstdc++.a(functexcept.o)
+ .debug_ranges  0x00004828       0x18 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/libc/xtensa-lx106-elf/lib\libm.a(lib_a-s_fpclassify.o)
+ .debug_ranges  0x00004840       0xd0 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/libc/xtensa-lx106-elf/lib\libc.a(lib_a-nano-vfprintf_float.o)
+ .debug_ranges  0x00004910       0x48 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/libc/xtensa-lx106-elf/lib\libc.a(lib_a-nano-vfprintf_i.o)
+ .debug_ranges  0x00004958       0x18 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/libc/xtensa-lx106-elf/lib\libc.a(lib_a-strtod.o)
+ .debug_ranges  0x00004970       0xe0 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/libc/xtensa-lx106-elf/lib\libc.a(string_pgmspace.o)
+ .debug_ranges  0x00004a50       0x18 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/libc/xtensa-lx106-elf/lib\libc.a(lib_a-dtoa.o)
+ .debug_ranges  0x00004a68       0x30 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/libc/xtensa-lx106-elf/lib\libc.a(lib_a-mprec.o)
+ .debug_ranges  0x00004a98       0x10 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/libc/xtensa-lx106-elf/lib\libc.a(lib_a-nano-svfprintf.o)
+ .debug_ranges  0x00004aa8       0x90 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\libgcc.a(unwind-dw2-fde.o)
+ .debug_ranges  0x00004b38      0x160 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(sntp-lwip2.cpp.o)
+ .debug_ranges  0x00004c98       0xb8 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(time.cpp.o)
 
-.debug_line     0x00000000    0x36e8d
- .debug_line    0x00000000     0x2b4b C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LaserBeamSecurity1.0\esp8266_generic\Release\LaserBeamSecurity1.0.cpp.o
- .debug_line    0x00002b4b      0xa95 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LaserBeamSecurity1.0\esp8266_generic\Release\EEPROM\EEPROM.cpp.o
- .debug_line    0x000035e0      0xf4a C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LaserBeamSecurity1.0\esp8266_generic\Release\Wire\Wire.cpp.o
- .debug_line    0x0000452a     0x17fb C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LaserBeamSecurity1.0\esp8266_generic\Release\SSD1306Ascii-SmallSize10\SSD1306Ascii.cpp.o
- .debug_line    0x00005d25      0x939 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(abi.cpp.o)
- .debug_line    0x0000665e      0xcc2 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_main.cpp.o)
- .debug_line    0x00007320      0xacb C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_postmortem.cpp.o)
- .debug_line    0x00007deb     0x17c4 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_si2c.cpp.o)
- .debug_line    0x000095af      0xa2e C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_wiring.cpp.o)
- .debug_line    0x00009fdd      0xf23 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_wiring_digital.cpp.o)
- .debug_line    0x0000af00      0x901 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_wiring_pwm.cpp.o)
- .debug_line    0x0000b801     0x16d6 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(Esp.cpp.o)
- .debug_line    0x0000ced7      0xcc9 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(FunctionalInterrupt.cpp.o)
- .debug_line    0x0000dba0       0xa1 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(gdb_hooks.cpp.o)
- .debug_line    0x0000dc41      0xd70 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(HardwareSerial.cpp.o)
- .debug_line    0x0000e9b1      0x47c C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(heap.cpp.o)
- .debug_line    0x0000ee2d      0xf83 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(Print.cpp.o)
- .debug_line    0x0000fdb0      0xec0 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(Schedule.cpp.o)
- .debug_line    0x00010c70      0x4f7 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(StackThunk.cpp.o)
- .debug_line    0x00011167      0xd52 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(Stream.cpp.o)
- .debug_line    0x00011eb9     0x1755 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(uart.cpp.o)
- .debug_line    0x0001360e     0x14d3 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(Updater.cpp.o)
- .debug_line    0x00014ae1     0x20bc C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(WString.cpp.o)
- .debug_line    0x00016b9d      0xc88 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(umm_malloc.cpp.o)
- .debug_line    0x00017825      0x1e3 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(cont.S.o)
- .debug_line    0x00017a08      0x391 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(cont_util.cpp.o)
- .debug_line    0x00017d99      0x331 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_flash_quirks.cpp.o)
- .debug_line    0x000180ca      0x3cc C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_phy.cpp.o)
- .debug_line    0x00018496      0x456 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_spi_utils.cpp.o)
- .debug_line    0x000188ec      0xa7c C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_timer.cpp.o)
- .debug_line    0x00019368      0xc59 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_waveform.cpp.o)
- .debug_line    0x00019fc1      0x1f9 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_features.cpp.o)
- .debug_line    0x0001a1ba      0x9d6 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(lwip-esp.o)
- .debug_line    0x0001ab90      0x943 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(lwip-git.o)
- .debug_line    0x0001b4d3     0x11cf C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(esp-dhcpserver.o)
- .debug_line    0x0001c6a2      0x30b C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(ethernet.o)
- .debug_line    0x0001c9ad      0x187 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(init.o)
- .debug_line    0x0001cb34      0x387 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(memp.o)
- .debug_line    0x0001cebb     0x1953 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(tcp.o)
- .debug_line    0x0001e80e      0x4f3 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(timeouts.o)
- .debug_line    0x0001ed01      0x946 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(dns.o)
- .debug_line    0x0001f647     0x1696 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(tcp_in.o)
- .debug_line    0x00020cdd      0xeee C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(pbuf.o)
- .debug_line    0x00021bcb      0x8e4 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(netif.o)
- .debug_line    0x000224af      0x39d C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(def.o)
- .debug_line    0x0002284c      0xa4a C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(udp.o)
- .debug_line    0x00023296     0x1062 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(tcp_out.o)
- .debug_line    0x000242f8      0x93f C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(ip4_frag.o)
- .debug_line    0x00024c37     0x16d5 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(dhcp.o)
- .debug_line    0x0002630c      0xa02 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(etharp.o)
- .debug_line    0x00026d0e      0x4fa C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(ip4_addr.o)
- .debug_line    0x00027208      0x9ba C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(igmp.o)
- .debug_line    0x00027bc2     0x156e C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(ip4.o)
- .debug_line    0x00029130      0x642 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(autoip.o)
- .debug_line    0x00029772      0x40b C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(icmp.o)
- .debug_line    0x00029b7d      0x901 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(sntp.o)
- .debug_line    0x0002a47e      0x275 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(mem.o)
- .debug_line    0x0002a6f3      0x4e3 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(inet_chksum.o)
- .debug_line    0x0002abd6      0x15c C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(ip.o)
- .debug_line    0x0002ad32      0x668 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(raw.o)
- .debug_line    0x0002b39a      0x239 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\libstdc++.a(eh_terminate.o)
- .debug_line    0x0002b5d3       0x85 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\libstdc++.a(del_opv.o)
- .debug_line    0x0002b658      0x162 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\libstdc++.a(eh_term_handler.o)
- .debug_line    0x0002b7ba      0x146 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\libstdc++.a(del_op.o)
- .debug_line    0x0002b900       0x8f C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\libstdc++.a(new_handler.o)
- .debug_line    0x0002b98f      0x115 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\libstdc++.a(new_opnt.o)
- .debug_line    0x0002baa4      0x7e6 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\libstdc++.a(functexcept.o)
- .debug_line    0x0002c28a      0x1d2 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/libc/xtensa-lx106-elf/lib\libm.a(lib_a-s_fpclassify.o)
- .debug_line    0x0002c45c      0x12a C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/libc/xtensa-lx106-elf/lib\libc.a(lib_a-itoa.o)
- .debug_line    0x0002c586      0x16a C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/libc/xtensa-lx106-elf/lib\libc.a(lib_a-memchr.o)
- .debug_line    0x0002c6f0      0x892 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/libc/xtensa-lx106-elf/lib\libc.a(lib_a-nano-vfprintf_float.o)
- .debug_line    0x0002cf82      0xa2a C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/libc/xtensa-lx106-elf/lib\libc.a(lib_a-nano-vfprintf_i.o)
- .debug_line    0x0002d9ac      0x61c C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/libc/xtensa-lx106-elf/lib\libc.a(lib_a-nano-vfscanf_float.o)
- .debug_line    0x0002dfc8       0xce C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/libc/xtensa-lx106-elf/lib\libc.a(lib_a-sf_nan.o)
- .debug_line    0x0002e096      0x314 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/libc/xtensa-lx106-elf/lib\libc.a(lib_a-sprintf.o)
- .debug_line    0x0002e3aa      0xed7 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/libc/xtensa-lx106-elf/lib\libc.a(lib_a-strtod.o)
- .debug_line    0x0002f281      0x49a C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/libc/xtensa-lx106-elf/lib\libc.a(lib_a-strtol.o)
- .debug_line    0x0002f71b      0x26c C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/libc/xtensa-lx106-elf/lib\libc.a(lib_a-utoa.o)
- .debug_line    0x0002f987      0x2cd C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/libc/xtensa-lx106-elf/lib\libc.a(lib_a-vsnprintf.o)
- .debug_line    0x0002fc54      0x748 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/libc/xtensa-lx106-elf/lib\libc.a(string_pgmspace.o)
- .debug_line    0x0003039c       0x6c C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/libc/xtensa-lx106-elf/lib\libc.a(lib_a-ctype_.o)
- .debug_line    0x00030408     0x106f C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/libc/xtensa-lx106-elf/lib\libc.a(lib_a-dtoa.o)
- .debug_line    0x00031477      0x868 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/libc/xtensa-lx106-elf/lib\libc.a(lib_a-gdtoa-gethex.o)
- .debug_line    0x00031cdf      0x289 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/libc/xtensa-lx106-elf/lib\libc.a(lib_a-gdtoa-hexnan.o)
- .debug_line    0x00031f68      0x1a4 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/libc/xtensa-lx106-elf/lib\libc.a(lib_a-impure.o)
- .debug_line    0x0003210c      0x2d4 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/libc/xtensa-lx106-elf/lib\libc.a(lib_a-locale.o)
- .debug_line    0x000323e0      0xea7 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/libc/xtensa-lx106-elf/lib\libc.a(lib_a-mprec.o)
- .debug_line    0x00033287      0x8cb C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/libc/xtensa-lx106-elf/lib\libc.a(lib_a-nano-svfprintf.o)
- .debug_line    0x00033b52      0x5a8 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/libc/xtensa-lx106-elf/lib\libc.a(lib_a-findfp.o)
- .debug_line    0x000340fa       0xee C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\libgcc.a(_modsi3.o)
- .debug_line    0x000341e8      0x365 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\libgcc.a(_cmpdf2.o)
- .debug_line    0x0003454d      0xe5e C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\libgcc.a(unwind-dw2-fde.o)
- .debug_line    0x000353ab      0x9e9 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(sntp-lwip2.cpp.o)
- .debug_line    0x00035d94      0xc95 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(time.cpp.o)
- .debug_line    0x00036a29       0x8e C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\libgcc.a(_ashrdi3.o)
- .debug_line    0x00036ab7      0x2ed C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\libgcc.a(_divsf3.o)
- .debug_line    0x00036da4       0xe9 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\libgcc.a(_fixsfsi.o)
+.debug_line     0x00000000    0x36e81
+ .debug_line    0x00000000     0x2b3f C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LaserBeamSecurity1.0\esp8266_generic\Release\LaserBeamSecurity1.0.cpp.o
+ .debug_line    0x00002b3f      0xa95 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LaserBeamSecurity1.0\esp8266_generic\Release\EEPROM\EEPROM.cpp.o
+ .debug_line    0x000035d4      0xf4a C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LaserBeamSecurity1.0\esp8266_generic\Release\Wire\Wire.cpp.o
+ .debug_line    0x0000451e     0x17fb C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LaserBeamSecurity1.0\esp8266_generic\Release\SSD1306Ascii-SmallSize10\SSD1306Ascii.cpp.o
+ .debug_line    0x00005d19      0x939 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(abi.cpp.o)
+ .debug_line    0x00006652      0xcc2 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_main.cpp.o)
+ .debug_line    0x00007314      0xacb C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_postmortem.cpp.o)
+ .debug_line    0x00007ddf     0x17c4 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_si2c.cpp.o)
+ .debug_line    0x000095a3      0xa2e C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_wiring.cpp.o)
+ .debug_line    0x00009fd1      0xf23 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_wiring_digital.cpp.o)
+ .debug_line    0x0000aef4      0x901 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_wiring_pwm.cpp.o)
+ .debug_line    0x0000b7f5     0x16d6 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(Esp.cpp.o)
+ .debug_line    0x0000cecb      0xcc9 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(FunctionalInterrupt.cpp.o)
+ .debug_line    0x0000db94       0xa1 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(gdb_hooks.cpp.o)
+ .debug_line    0x0000dc35      0xd70 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(HardwareSerial.cpp.o)
+ .debug_line    0x0000e9a5      0x47c C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(heap.cpp.o)
+ .debug_line    0x0000ee21      0xf83 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(Print.cpp.o)
+ .debug_line    0x0000fda4      0xec0 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(Schedule.cpp.o)
+ .debug_line    0x00010c64      0x4f7 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(StackThunk.cpp.o)
+ .debug_line    0x0001115b      0xd52 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(Stream.cpp.o)
+ .debug_line    0x00011ead     0x1755 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(uart.cpp.o)
+ .debug_line    0x00013602     0x14d3 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(Updater.cpp.o)
+ .debug_line    0x00014ad5     0x20bc C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(WString.cpp.o)
+ .debug_line    0x00016b91      0xc88 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(umm_malloc.cpp.o)
+ .debug_line    0x00017819      0x1e3 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(cont.S.o)
+ .debug_line    0x000179fc      0x391 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(cont_util.cpp.o)
+ .debug_line    0x00017d8d      0x331 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_flash_quirks.cpp.o)
+ .debug_line    0x000180be      0x3cc C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_phy.cpp.o)
+ .debug_line    0x0001848a      0x456 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_spi_utils.cpp.o)
+ .debug_line    0x000188e0      0xa7c C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_timer.cpp.o)
+ .debug_line    0x0001935c      0xc59 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_waveform.cpp.o)
+ .debug_line    0x00019fb5      0x1f9 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(core_esp8266_features.cpp.o)
+ .debug_line    0x0001a1ae      0x9d6 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(lwip-esp.o)
+ .debug_line    0x0001ab84      0x943 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(lwip-git.o)
+ .debug_line    0x0001b4c7     0x11cf C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(esp-dhcpserver.o)
+ .debug_line    0x0001c696      0x30b C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(ethernet.o)
+ .debug_line    0x0001c9a1      0x187 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(init.o)
+ .debug_line    0x0001cb28      0x387 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(memp.o)
+ .debug_line    0x0001ceaf     0x1953 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(tcp.o)
+ .debug_line    0x0001e802      0x4f3 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(timeouts.o)
+ .debug_line    0x0001ecf5      0x946 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(dns.o)
+ .debug_line    0x0001f63b     0x1696 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(tcp_in.o)
+ .debug_line    0x00020cd1      0xeee C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(pbuf.o)
+ .debug_line    0x00021bbf      0x8e4 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(netif.o)
+ .debug_line    0x000224a3      0x39d C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(def.o)
+ .debug_line    0x00022840      0xa4a C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(udp.o)
+ .debug_line    0x0002328a     0x1062 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(tcp_out.o)
+ .debug_line    0x000242ec      0x93f C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(ip4_frag.o)
+ .debug_line    0x00024c2b     0x16d5 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(dhcp.o)
+ .debug_line    0x00026300      0xa02 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(etharp.o)
+ .debug_line    0x00026d02      0x4fa C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(ip4_addr.o)
+ .debug_line    0x000271fc      0x9ba C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(igmp.o)
+ .debug_line    0x00027bb6     0x156e C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(ip4.o)
+ .debug_line    0x00029124      0x642 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(autoip.o)
+ .debug_line    0x00029766      0x40b C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(icmp.o)
+ .debug_line    0x00029b71      0x901 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(sntp.o)
+ .debug_line    0x0002a472      0x275 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(mem.o)
+ .debug_line    0x0002a6e7      0x4e3 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(inet_chksum.o)
+ .debug_line    0x0002abca      0x15c C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(ip.o)
+ .debug_line    0x0002ad26      0x668 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\liblwip2-536-feat.a(raw.o)
+ .debug_line    0x0002b38e      0x239 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\libstdc++.a(eh_terminate.o)
+ .debug_line    0x0002b5c7       0x85 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\libstdc++.a(del_opv.o)
+ .debug_line    0x0002b64c      0x162 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\libstdc++.a(eh_term_handler.o)
+ .debug_line    0x0002b7ae      0x146 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\libstdc++.a(del_op.o)
+ .debug_line    0x0002b8f4       0x8f C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\libstdc++.a(new_handler.o)
+ .debug_line    0x0002b983      0x115 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\libstdc++.a(new_opnt.o)
+ .debug_line    0x0002ba98      0x7e6 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\libstdc++.a(functexcept.o)
+ .debug_line    0x0002c27e      0x1d2 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/libc/xtensa-lx106-elf/lib\libm.a(lib_a-s_fpclassify.o)
+ .debug_line    0x0002c450      0x12a C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/libc/xtensa-lx106-elf/lib\libc.a(lib_a-itoa.o)
+ .debug_line    0x0002c57a      0x16a C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/libc/xtensa-lx106-elf/lib\libc.a(lib_a-memchr.o)
+ .debug_line    0x0002c6e4      0x892 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/libc/xtensa-lx106-elf/lib\libc.a(lib_a-nano-vfprintf_float.o)
+ .debug_line    0x0002cf76      0xa2a C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/libc/xtensa-lx106-elf/lib\libc.a(lib_a-nano-vfprintf_i.o)
+ .debug_line    0x0002d9a0      0x61c C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/libc/xtensa-lx106-elf/lib\libc.a(lib_a-nano-vfscanf_float.o)
+ .debug_line    0x0002dfbc       0xce C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/libc/xtensa-lx106-elf/lib\libc.a(lib_a-sf_nan.o)
+ .debug_line    0x0002e08a      0x314 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/libc/xtensa-lx106-elf/lib\libc.a(lib_a-sprintf.o)
+ .debug_line    0x0002e39e      0xed7 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/libc/xtensa-lx106-elf/lib\libc.a(lib_a-strtod.o)
+ .debug_line    0x0002f275      0x49a C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/libc/xtensa-lx106-elf/lib\libc.a(lib_a-strtol.o)
+ .debug_line    0x0002f70f      0x26c C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/libc/xtensa-lx106-elf/lib\libc.a(lib_a-utoa.o)
+ .debug_line    0x0002f97b      0x2cd C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/libc/xtensa-lx106-elf/lib\libc.a(lib_a-vsnprintf.o)
+ .debug_line    0x0002fc48      0x748 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/libc/xtensa-lx106-elf/lib\libc.a(string_pgmspace.o)
+ .debug_line    0x00030390       0x6c C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/libc/xtensa-lx106-elf/lib\libc.a(lib_a-ctype_.o)
+ .debug_line    0x000303fc     0x106f C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/libc/xtensa-lx106-elf/lib\libc.a(lib_a-dtoa.o)
+ .debug_line    0x0003146b      0x868 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/libc/xtensa-lx106-elf/lib\libc.a(lib_a-gdtoa-gethex.o)
+ .debug_line    0x00031cd3      0x289 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/libc/xtensa-lx106-elf/lib\libc.a(lib_a-gdtoa-hexnan.o)
+ .debug_line    0x00031f5c      0x1a4 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/libc/xtensa-lx106-elf/lib\libc.a(lib_a-impure.o)
+ .debug_line    0x00032100      0x2d4 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/libc/xtensa-lx106-elf/lib\libc.a(lib_a-locale.o)
+ .debug_line    0x000323d4      0xea7 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/libc/xtensa-lx106-elf/lib\libc.a(lib_a-mprec.o)
+ .debug_line    0x0003327b      0x8cb C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/libc/xtensa-lx106-elf/lib\libc.a(lib_a-nano-svfprintf.o)
+ .debug_line    0x00033b46      0x5a8 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/libc/xtensa-lx106-elf/lib\libc.a(lib_a-findfp.o)
+ .debug_line    0x000340ee       0xee C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\libgcc.a(_modsi3.o)
+ .debug_line    0x000341dc      0x365 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\libgcc.a(_cmpdf2.o)
+ .debug_line    0x00034541      0xe5e C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\libgcc.a(unwind-dw2-fde.o)
+ .debug_line    0x0003539f      0x9e9 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(sntp-lwip2.cpp.o)
+ .debug_line    0x00035d88      0xc95 C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LASERB~1.0\ESP826~1\Release\core.a(time.cpp.o)
+ .debug_line    0x00036a1d       0x8e C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\libgcc.a(_ashrdi3.o)
+ .debug_line    0x00036aab      0x2ed C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\libgcc.a(_divsf3.o)
+ .debug_line    0x00036d98       0xe9 C:\Users\zilvi\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.7.4/tools/sdk/lib\libgcc.a(_fixsfsi.o)
 
 .debug_str      0x00000000    0x1e1fd
  .debug_str     0x00000000     0x3eba C:\Users\zilvi\AppData\Local\Temp\VMBuilds\LaserBeamSecurity1.0\esp8266_generic\Release\LaserBeamSecurity1.0.cpp.o

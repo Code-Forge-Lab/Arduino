@@ -266,7 +266,7 @@ void setup() {
 	analogWriteFreq(1000);
 	analogWriteRange(255);
 	
-	// when system turn on , give time to ignore laser booting
+	// when system turn on , give time to ignore laser booting and giving false signals
 	user_turnOnBeforeSystemTime = user_turnOnBeforeSystemTotal;
 	
 	Serial.print("Complete Loading");
@@ -458,7 +458,10 @@ void loop() {
 															// react a alarm from laser beam
 															alarm_strenght = alarm_strenghFullBlast; // siren full strength
 															//alarm_delayTime = alarm_delayTotal; // delay 10s before a siren/alarm to confuse buglers
-															alarm_timer = alarm_totalTime; // immediately react
+															
+															alarm_timer = 230; /*alarm_totalTime*/; // immediately react at full time because this is serious 230= 3min,57sec
+															relay_lamp_timer = 255; // turn on lamp for 255= 4min,15sec
+															//alarm_delayTime = 2;//activate relay with short value in here 
 															Serial.println("Saugo laser beam:"+String (alarm_arm_disarm_timer) + ", D:"+ String (alarm_delayTime)+ " T:"+ String (alarm_timer) );
 														
 														}
@@ -575,6 +578,10 @@ void oneSecTimer () {
 		
 		
 		
+		
+		
+	//*******************************************
+		
 		if (user_turnOnBeforeSystemTime > 0) // turn on timer for laser start to react
 		{
 			user_turnOnBeforeSystemTime--;
@@ -597,6 +604,10 @@ void oneSecTimer () {
 		
 		
 		
+		
+		
+	//***********************************	
+		
 		if (alarm_delayTime > 0 && user_turnOnBeforeSystemTime == 0) // delay alarm for a while not to work,  set confusion for burglar's, 
 		{
 			
@@ -612,6 +623,12 @@ void oneSecTimer () {
 				relay_lamp_timer = relay_lamp_totalTime; // turn on lamp only in here 
 			}
 		}
+		
+		
+		
+		
+		
+		
 		
 		
   //**************************************	
@@ -643,6 +660,8 @@ void oneSecTimer () {
 			
 			
 			
+			
+			
 	 
 	 
 	 //**************************************		
@@ -659,6 +678,14 @@ void oneSecTimer () {
 		
 		
 	}
+	
+	
+	
+	
+	
+	//xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+	
+	
 }
 
 
