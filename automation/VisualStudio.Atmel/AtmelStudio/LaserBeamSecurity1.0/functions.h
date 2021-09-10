@@ -32,6 +32,14 @@ String p1;
 String p2;
 
 
+void SoundSystemIsArmed ();
+
+
+void fun_turnOnSytemTimerAutomaticly () {
+	prg_turnOnSytemTimerAutomaticly = user_turnOnSytemTimerAutomaticly * 60;
+	//prg_turnOnSytemTimerAutomaticly = 62;
+};
+
 void userSetDefault() {
 	 var_one = 10;
 	 var_two = 22;
@@ -46,6 +54,9 @@ void userSetDefault() {
 	  alarm_delayTotal = 10;
 	  relay_lamp_totalTime = 80;
 	  user_turnOnBeforeSystemTotal = 30;
+	  
+	  user_turnOnSytemTimerAutomaticly = 5;
+	  
 	
 };
 
@@ -71,7 +82,7 @@ void func4() { print ("wait to turn on alarm \n in beginning from \nlaser distur
 void func5() { print("func"); };
 void func6() {print("time where be on light\n after laser passed");};
 void func7 () {print("to avoid laser react\n immediately, give time \nexit,from laser range");};
-
+void func8 () {print("timer to turn on\n security automaticly\n 0=off"); };
 
 void funcQc () 
 	{
@@ -266,7 +277,7 @@ void collectPasswordRuntime () {
 	 
 	 if (  ( btnUp.onlyReadPressedSignleTime() || btnDown.onlyReadPressedSignleTime()) ) //  // if button up or down then activate timer to work and while pressing, reset with millis()
 	 {
-		 clock_btnPswTimeout = millis() + 5000UL; // reset each  10 seconds  time
+		 clock_btnPswTimeout = millis() + 3000UL; // reset each  10 seconds  time
 		 //Serial.println( millis() < (long)clock_btnPswTimeout );
 		 countInputs ();
 		 manualReapetEach1sec = true; // to work faster when pressed a buttons

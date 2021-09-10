@@ -144,6 +144,7 @@ static const uint8_t D14 = 6; //SDCLK             NO,   Reason[3]               
 #include "buttons.h"
 void oneSecTimer ();
 void oneMinTimer ();
+void oneHourTimer();
 // buttons
  byte BUTTON_SET =  D0;  // pull up
  byte BUTTON_DOWN = D3; // pull up
@@ -175,6 +176,8 @@ byte alarm_countLaser;				   // count laser interrupts
 byte alarm_incorrectScoreChanged;      // =0 // for no repeating multiple times
 byte alarm_arm_disarm_timer;           // for representative's that user are armed a system with alarm short pulse alarm sound 
 bool alarm_armed_disarmed_system=0;	   // enable or disable armed or disarmed to work with laser
+byte user_turnOnSytemTimerAutomaticly;// timer that does turn on a alarm system after given time 
+int  prg_turnOnSytemTimerAutomaticly;// timer that does turn on a alarm system after given time 
 
 byte relay_lamp_totalTime = 80; // store value how much time should work a relay
 byte relay_lamp_timer;         // timer for turn on relay for a lamps
@@ -190,6 +193,7 @@ byte user_turnOnBeforeSystemTotal = 30;
 bool short_signal = false;
 
 //Clock variables
+unsigned long clock_60min = 0;
 unsigned long clock_1min = 0;
 unsigned long clock_1sec = 0;
 unsigned long clock_01sec = 0; // .1 sec
@@ -219,12 +223,13 @@ void setup() {
 	menu.IncludeFunction(&func5, alarm_countLaser, "Alarm Laser Count", "count");
 	menu.IncludeFunction(&func6, relay_lamp_totalTime, "Lamp Shine Time", "sec");
 	menu.IncludeFunction(&func7, user_turnOnBeforeSystemTotal, "Laser non react time", "sec");
+	menu.IncludeFunction(&func8, user_turnOnSytemTimerAutomaticly, "Security Timer      ", "hour");
 	
 	menu.IncludeQuckAccessFunction(&funcQc, quickAccesModes, "Alarmas", "mode", false);
 	// a default function are saved in here.
 	menu.IncludeFunctionSetDefault(&userSetDefault);
 	
-	menu.initiate();
+	menu.initiate();;
 
 	 if (quickAccesModes == 0)
 	 {
@@ -334,7 +339,7 @@ void loop() {
 		 
 	 
 	
-						if (psw_incorrectScore >= 20) // 5 incorrect times then alarm Base is 4
+						if (psw_incorrectScore >= 12) // 3 incorrect times then alarm Base is 4
 								{	
 									alarm_timer = alarm_totalTime;
 									psw_incorrectScore = 0; // reset for non repeating all the time
@@ -385,7 +390,7 @@ void loop() {
 								alarm_strenght = alarm_strenghtWarning;
 								alarm_armed_disarmed_system = false; // disarm system
 								alarm_delayTime = 0;
-								
+								fun_turnOnSytemTimerAutomaticly ();
 				
 						}
 	
@@ -493,7 +498,10 @@ void loop() {
 						//***************************************************************************** if system disarmed
 							if (manualReapetEach1sec && !pswisActivePrint){
 								display.setCursor(0,0);
-								menu.print__("Alarm: ISJUNGTA");
+								menu.print__("Alarm: ISJUNGTA\n");
+								
+								if (prg_turnOnSytemTimerAutomaticly > 0)
+								menu.print__("Bet bus ijungta\n:"+String (prg_turnOnSytemTimerAutomaticly)+"min");
 							}
 		
 						}
@@ -562,7 +570,16 @@ void loop() {
 
 
 
-
+void oneHourTimer () {
+	
+	/// CLOCK 1 min			60000UL  120000UL  x 2 clock speed
+	if (((long)clock_60min + 60000UL) < millis()) // 120000UL a double clock speed by
+	{
+		clock_60min = millis(); // reset each  60 seconds  time
+		
+	}
+	
+}
 
 void oneMinTimer () {
 	
@@ -572,6 +589,27 @@ void oneMinTimer () {
 		clock_1min = millis(); // reset each  60 seconds  time
 		display.clear();
 		manualReapetEach1sec = true; // reset for fast print
+		
+		
+		
+		
+		// turn on alarm system automatically by specified time when user inputed correct password, to avoid forgetting to arm security 
+		if (prg_turnOnSytemTimerAutomaticly > 1)
+		
+			prg_turnOnSytemTimerAutomaticly =  prg_turnOnSytemTimerAutomaticly - 1; // subtract timer for a while 
+		
+		else if (prg_turnOnSytemTimerAutomaticly == 1)	 {
+		
+			prg_turnOnSytemTimerAutomaticly =  0;
+			//quickAccesModes = 1 ; // saugo
+			alarm_armed_disarmed_system = true;
+			SoundSystemIsArmed () ;
+			alarm_strenght = alarm_strenghtWarning;
+		}
+		
+		
+		
+		
 	}
 	
 }
@@ -600,7 +638,7 @@ void oneSecTimer () {
 			if (user_turnOnBeforeSystemTime == 0 && short_signal) // give little sound that says is over
 				{
 					
-					alarm_arm_disarm_timer = 4; // short pulse to alarm
+					SoundSystemIsArmed (); // short pulse to alarm
 					short_signal = false;
 					display.setCursor(0,7);
 					//menu.print__ ("						");
@@ -788,5 +826,11 @@ void buttonReaction () {
 		
 		singleTimeOffAlarm = true;
 	}
+	
+}
+
+
+void SoundSystemIsArmed () {
+	alarm_arm_disarm_timer = 4; // short pulse to alarm
 	
 }
