@@ -64,6 +64,10 @@ bool ActivateOneHourWhenPassed = false; // alow to pass a logick in each hour
 signed int heaterOn_TotalTime = 2700 ; // how mucth time shoud work a heater by seconds 60sec*45min = 2700
 signed int heaterOn_Sec = 0 ; // turn on heater by a seconds
 unsigned long clock_1sec = 0;
+
+unsigned long clock_0_2sec = 0; // 0.2 seconds update
+unsigned long clock_1secCounter = 0;// if x 5 then = 1 sec 
+
 byte          clock_1minCount = 0;
 
 
@@ -111,7 +115,7 @@ String transConditionalPrint (String state ,String indexHref, String trueStatePr
                    return (" <a href=\"/"+indexHref+"/off\"><button class=\"button_footer2\"  style=\"width:"+widthProcentage+"\">"+falsestatePrint+"</button></a>");
            }          
 
-void turnOnHeatingTimeout () { heaterOn_Sec = heaterOn_TotalTime;}
+void turnOnHeatingTimeout () { heaterOn_Sec = heaterOn_TotalTime; pin_heaterState = "on";}
 
 void Heater_Auto_on () {
 
@@ -125,8 +129,6 @@ void Heater_Auto_on () {
     else if (output9State == "on" && timeClient.getHours() == 20) {Serial.println(" at 20h");  turnOnHeatingTimeout (); }
     else { ActivateOneHourWhenPassed = true; }; // if failed to auto-on then reset to work for a next time
 
-    if (!ActivateOneHourWhenPassed) // if any time codition in above was passed then apdate coditional button
-        pin_heaterState = "on";
           //Serial.print ("Stage:ActivateOneHourWhenPassed auto-on ["+ String (ActivateOneHourWhenPassed));
          // Serial.println ("]     State20h " + String (output9State == "on") + ", getHours[" +String (timeClient.getHours()) + "]==20h:" + String (timeClient.getHours() == 20));
     }
@@ -159,15 +161,45 @@ if (clock_1minCount > 30 )
 
 }
 
+void turnOnByButtonEvent () { // when push button  is pressed
+
+   if (!digitalRead (pin_button))
+ {
+      //Serial.println("Button is pressed");
+      turnOnHeatingTimeout ();
+
+ }
+
+}
+
+
+void quarterSecondTimer () { //0.2 second
+
+  if (((long)clock_0_2sec + 200UL) < millis())
+
+  {
+      turnOnByButtonEvent ();
+      clock_0_2sec= millis();
+      clock_1secCounter  = clock_1secCounter + 1;
+
+  }
+
+}
+
 void oneSecTimer () {
   
-  if (((long)clock_1sec + 1000UL) < millis())
-  {
-    clock_1sec = millis(); // reset each  60 seconds  time
- 
+  quarterSecondTimer () ;
 
-    if ( heaterOn_Sec > 0 ) // countdown timeout
-      heaterOn_Sec = heaterOn_Sec -1;
+  if (clock_1secCounter >=5)
+  {
+    clock_1secCounter = 0;
+
+
+     // Serial.println ("1 Sec");
+    
+
+    if ( heaterOn_Sec > 0 ) {heaterOn_Sec = heaterOn_Sec -1;} // countdown timeout
+      
 
        one30SecTimer ();
   }
@@ -179,14 +211,6 @@ void oneSecTimer () {
 // in closed wifi loop and wise wersa
 void inFullLoop ()
 {
-
- if (!digitalRead (pin_button))
- {
-      //Serial.println("Button is pressed");
-      turnOnHeatingTimeout ();
-      pin_heaterState = "on";
-
- }
 
 
 }
