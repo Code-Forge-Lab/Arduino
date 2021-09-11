@@ -16,7 +16,7 @@ const char* password = "kamile666";
 WiFiServer server(80);
 
 
-const long utcOffsetInSeconds = 10800;
+const long utcOffsetInSeconds = 10800; // 10800
 //char daysOfTheWeek[7][12] = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
 char daysOfTheWeekLT[7][20] = {"Sekmadienis", "Pirmadienis", "Antradienis", "Treciadienis", "Ketvirtadienis", "Penktadienis", "Sestadienis"};
 // Define NTP Client to get time
@@ -45,7 +45,7 @@ String pin_heaterState = "off";
 
 // Assign output variables to GPIO pins
 //const int output5 = 5;
-const int pin_heater = 2; // on relay esp01 = 0, but on esp8266 = 2 
+const int pin_heater = 0; // on relay esp01 = 0, but on esp8266 = 2 
 
 // Current time
 unsigned long currentTime = millis();
@@ -56,6 +56,11 @@ const long timeoutTime = 2000;
 
 bool previousHeaterOn  = true; // always true to begin with
 bool previousState = false;
+
+int  CheckOneHourPassed ; // change state to auto-on in eacth hour by compared that is not the same
+bool ActivateOneHourWhenPassed = false; // alow to pass a logick in each hour 
+
+signed int heaterOn_TotalTime = 2700 ; // how mucth time shoud work a heater by seconds 60sec*45min = 2700
 signed int heaterOn_Sec = 0 ; // turn on heater by a seconds
 unsigned long clock_1sec = 0;
 byte          clock_1minCount = 0;
@@ -105,6 +110,27 @@ String transConditionalPrint (String state ,String indexHref, String trueStatePr
                    return (" <a href=\"/"+indexHref+"/off\"><button class=\"button_footer2\"  style=\"width:"+widthProcentage+"\">"+falsestatePrint+"</button></a>");
            }          
 
+void turnOnHeatingTimeout () { heaterOn_Sec = heaterOn_TotalTime;}
+
+void Heater_Auto_on () {
+
+    if (ActivateOneHourWhenPassed ) {
+      
+
+          ActivateOneHourWhenPassed = false; // but if any 1/4 condition is correct, then leave this disabler to prevent from multiple  on in same hour 
+         if (output6State == "on" && timeClient.getHours() == 8) {Serial.println(" at 8h");  turnOnHeatingTimeout (); }
+    else if (output7State == "on" && timeClient.getHours() == 10) {Serial.println(" at 10h");  turnOnHeatingTimeout (); }
+    else if (output8State == "on" && timeClient.getHours() == 16) {Serial.println(" at 16h");  turnOnHeatingTimeout (); }
+    else if (output9State == "on" && timeClient.getHours() == 20) {Serial.println(" at 20h");  turnOnHeatingTimeout (); }
+    else { ActivateOneHourWhenPassed = true; }; // if failed to auto-on then reset to work for a next time
+
+    if (!ActivateOneHourWhenPassed) // if any time codition in above was passed then apdate coditional button
+        pin_heaterState = "on";
+          //Serial.print ("Stage:ActivateOneHourWhenPassed auto-on ["+ String (ActivateOneHourWhenPassed));
+         // Serial.println ("]     State20h " + String (output9State == "on") + ", getHours[" +String (timeClient.getHours()) + "]==20h:" + String (timeClient.getHours() == 20));
+    }
+
+}
 
 
 
@@ -116,6 +142,15 @@ if (clock_1minCount > 30 )
     
     clock_1minCount = 0;
     funTimeClient ();
+
+    if (CheckOneHourPassed != timeClient.getHours() ) // check if hour is changed
+    {
+      CheckOneHourPassed = timeClient.getHours();
+      ActivateOneHourWhenPassed = true ;// reset
+    }
+
+    Heater_Auto_on ();
+
   }
      else
        clock_1minCount = clock_1minCount + 1;
@@ -130,12 +165,8 @@ void oneSecTimer () {
     clock_1sec = millis(); // reset each  60 seconds  time
  
 
-    if ( heaterOn_Sec > 0 ) 
+    if ( heaterOn_Sec > 0 ) // countdown timeout
       heaterOn_Sec = heaterOn_Sec -1;
-    else
-     // pin_heaterState = "on";
-    
-
 
        one30SecTimer ();
   }
@@ -153,7 +184,7 @@ void inFullLoop ()
 
 
 void setup() {
- // //Serial.begin(115200);
+ Serial.begin(115200);
    
   // Initialize the output variables as outputs
  // pinMode(output5, OUTPUT);
@@ -188,6 +219,7 @@ if (readMemoryBool (9))  output9State = "on";
   //Serial.println("IP address: ");
   //Serial.println(WiFi.localIP());
   server.begin();
+  funTimeClient ();
 }
 
 void loop(){
@@ -244,7 +276,7 @@ void loop(){
              // digitalWrite(pin_heater, HIGH);
 
                if (previousHeaterOn)
-                    heaterOn_Sec = 60;
+                    turnOnHeatingTimeout();
                   previousHeaterOn = false;
               
             } else if (header.indexOf("GET /4/off") >= 0) {
@@ -335,7 +367,7 @@ void loop(){
             client.println("<link rel=\"icon\" href=\"data:,\">");
             // CSS to style the on/off buttons 
             // Feel free to change the background-color and font-size attributes to fit your preferences
-            client.println("<style>html { font-family: Helvetica; display: inline-block; margin: 0px auto; text-align: center;}");
+            client.println("<style>html { font-family: Helvetica; display: inline-block; margin: 0px auto; text-align: center;background-color:#E9E0EC;}");
             client.println(".button { background-color: #195B6A; border: none; color: white; padding: 16px 40px;text-decoration: none; font-size: 30px; margin: 2px; cursor: pointer;}");
             client.println(".button2 {background-color: #77878A;}");
 
@@ -375,7 +407,11 @@ void loop(){
 
             if (heaterOn_Sec > 0 ){
               
-              client.println("<div class=\"container\"><a href=\"/reload\" class=\"reload\" style=\"text-align:left;\">Will work [" + String(heaterOn_Sec) + "] </a>");
+              String h = (getHours() > 0) ? String(getHours()) +"h " : " " ;
+              String m = (getMinutes() > 0) ? String(getMinutes()) +"m " : " " ;
+              String s = (getSeconds() > 0) ? String(getSeconds()) +"s " : " " ;
+
+              client.println("<div class=\"container\"><a href=\"/reload\" class=\"reload\" style=\"text-align:left;\">Working [" + h + m + s + "] </a>");
               digitalWrite(pin_heater, LOW);
               
             }
@@ -534,7 +570,7 @@ bool writeMemory(int16_t address, bool value) {
 // write to memory ones 
 bool readMemoryBool(int16_t address) {
 
-  //Serial.println("Read bool:" + String (EEPROM.read(address)) );    
+  Serial.println("Read bool:" + String (EEPROM.read(address)) );    
   return EEPROM.read(address);
 };
 
@@ -542,8 +578,18 @@ bool readMemoryBool(int16_t address) {
 
 // write to memory ones 
 byte readMemoryByte(int16_t address) {
-       //Serial.println("Read byte:" + String (EEPROM.read(address)) );
+       Serial.println("Read byte:" + String (EEPROM.read(address)) );
   return EEPROM.read(address);
 };
 
 
+
+int getHours()  {
+  return ((heaterOn_Sec  % 86400L) / 3600);
+}
+int getMinutes()  {
+  return ((heaterOn_Sec % 3600) / 60);
+}
+int getSeconds()  {
+  return (heaterOn_Sec % 60);
+}
