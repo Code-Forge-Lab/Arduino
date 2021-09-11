@@ -45,7 +45,8 @@ String pin_heaterState = "off";
 
 // Assign output variables to GPIO pins
 //const int output5 = 5;
-const int pin_heater = 0; // on relay esp01 = 0, but on esp8266 = 2 
+const byte pin_heater = 0; // on relay esp01 = 0, but on esp8266 = 2 
+const byte pin_button = 2; // GPIO2
 
 // Current time
 unsigned long currentTime = millis();
@@ -179,7 +180,15 @@ void oneSecTimer () {
 void inFullLoop ()
 {
 
-  
+ if (!digitalRead (pin_button))
+ {
+      //Serial.println("Button is pressed");
+      turnOnHeatingTimeout ();
+      pin_heaterState = "on";
+
+ }
+
+
 }
 
 
@@ -189,6 +198,7 @@ void setup() {
   // Initialize the output variables as outputs
  // pinMode(output5, OUTPUT);
   pinMode(pin_heater, OUTPUT);
+  pinMode (pin_button, INPUT_PULLUP);
   // Set outputs to LOW
   //digitalWrite(output5, LOW);
   digitalWrite(pin_heater, HIGH );
@@ -369,7 +379,7 @@ void loop(){
             // Feel free to change the background-color and font-size attributes to fit your preferences
             client.println("<style>html { font-family: Helvetica; display: inline-block; margin: 0px auto; text-align: center;background-color:#E9E0EC;}");
             client.println(".button { background-color: #195B6A; border: none; color: white; padding: 16px 40px;text-decoration: none; font-size: 30px; margin: 2px; cursor: pointer;}");
-            client.println(".button2 {background-color: #77878A;}");
+            client.println(".button2 {background-color: #77AE73;}");
 
             client.println(".container {width: auto;height: 70px}");
             client.println(".reload { background-color: #B68181; float: left;  border: none; color: white; padding: 16px 40px;text-decoration: none;  margin: 2px; cursor: pointer;}");
@@ -382,11 +392,11 @@ void loop(){
             client.println("h1,h2 {color: #191725;}");
 
             /* Add a background color on hover */ 
-            client.println(" button:hover {background-color: #3e8e41;transition-duration: 0.5s;}");
-            client.println(" .btn-group button:hover {background-color: #3e8e41;}");
+            client.println(" button:hover {background-color: #77878A;transition-duration: 1.2s;}");
+            client.println(" .btn-group button:hover {background-color: #77878A;}"); // 3e8e41 = SHARP green, 77AE73 = blure green,  195B6A = blue , 77878A = brown
             
             client.println(".button_footer{background-color: #195B6A; height:50px; border: 1px solid #BFC4B9; /* Green border */color: white; /* White text */padding: 10px 24px; /* Some padding */cursor: pointer; /* Pointer/hand icon */float: left; /* Float the buttons side by side */}");
-            client.println(".button_footer2{background-color: #77878A; height:50px; border: 1px solid #BFC4B9; /* Green border */color: white; /* White text */padding: 10px 24px; /* Some padding */cursor: pointer; /* Pointer/hand icon */float: left; /* Float the buttons side by side */}");
+            client.println(".button_footer2{background-color: #77AE73; height:50px; border: 1px solid #BFC4B9; /* Green border */color: white; /* White text */padding: 10px 24px; /* Some padding */cursor: pointer; /* Pointer/hand icon */float: left; /* Float the buttons side by side */}");
              
             /* Clear floats (clearfix hack) */
             client.println(".btn-group:after { content: ""; clear: both;  display: table;}");
