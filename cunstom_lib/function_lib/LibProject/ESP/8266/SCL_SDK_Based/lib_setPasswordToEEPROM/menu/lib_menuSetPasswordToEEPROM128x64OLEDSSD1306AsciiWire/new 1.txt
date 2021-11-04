@@ -1,0 +1,9 @@
+Flash 36% to 35% RAM 28% also 28% 274084-274220 29356-29412
+
+no Serial begin
+Program size: 277,632
+Minimum Memory Usage: 30480
+
+with Serial begin
+Program size: 279,520 bytes
+Minimum Memory Usage: 30480
