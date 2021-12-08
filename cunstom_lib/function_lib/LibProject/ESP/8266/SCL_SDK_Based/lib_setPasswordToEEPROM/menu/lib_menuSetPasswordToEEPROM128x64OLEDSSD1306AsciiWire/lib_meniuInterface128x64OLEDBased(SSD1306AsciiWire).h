@@ -705,6 +705,7 @@ public:bool InterfaceDinamic() {
 							delay(2000);
 							meniuOptionIsSelected = !meniuOptionIsSelected; // back to meniu options
 							display.clear();
+							
 						}
 					}
 				}
