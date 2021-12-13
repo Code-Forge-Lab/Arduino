@@ -22,7 +22,7 @@ bool writeMemory(int16_t address, bool value) {
 
 	if (EEPROM.read(address) != value) {
 		EEPROM.write(address, value);
-		//print("Wrote!");
+		Serial.println("Wrote! addr:"+String (address) + " val:"+ String  (value));
 		//delay(200);
 		return true;
 	}

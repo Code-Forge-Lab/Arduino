@@ -6,13 +6,17 @@
 #define CONST_TOTALMENUELEMENTS  15 // maximum ammount of elemtents(functions) in meniu 
 
 //Structure
-#include "Arduino.h"
-#include <Wire.h>
+//#include "Arduino.h"
+//#include <Wire.h>
 #include <LiquidCrystal_I2C.h> //0x3F mine or 0x27 need to find out with :LINK:http://playground.arduino.cc/main/i2cscanner
-#include<stdlib.h>
-#include <stdio.h>
+//#include<stdlib.h>
+//#include <stdio.h>
 #include "EEPROM32.h"
-using namespace std;
+//using namespace std;
+
+// To reduce hight write speed  to display
+unsigned long timerPrint;
+bool timerPrintAvailable = true;
 
 
 
@@ -24,27 +28,62 @@ using namespace std;
 #define RST_PIN -1
 
 
-LiquidCrystal_I2C display(I2C_ADDRESS, 2, 1, 0, 4, 5, 6, 7, 3, POSITIVE); //was 0x3F  Eldas: 0x27 ,A4 and A5 Are Used
+LiquidCrystal_I2C display(I2C_ADDRESS,20,4); // set the LCD address to 0x27 for a 16 chars and 2 line display or 20 chars and 4 collums
 
 
 
 //String SPACE = "                ";
-void print(String txt) {
-	display.print(txt);
-//	display.println(SPACE);
+void print(String txt , byte line = 255 , byte column = 255) {
+
+
+   if (timerPrintAvailable)
+  {
+    if ( (line + column) != 510 ) {
+    display.setCursor (column , line);
+    // Serial.println ( "cl:" + String (column) + " ln:" + String (line ) + "=" + String (line + column));
+    }
+
+   // Serial.println (" " + txt);
+    display.print(txt); 
+  }
+  
 
 }
 
 
-void print(byte txt) {
-	display.print(txt);
+void print(byte txt , byte line = 255 , byte column = 255) {
+
+
+  
+  if (timerPrintAvailable)
+  {
+    if ( (line + column) != 510 ) {
+    display.setCursor (column , line);
+    //Serial.println ( "cl:" + String (column) + " ln:" + String (line ) + "=" + String (line + column));
+    }
+
+    Serial.println (" " + txt);
+    //display.print(txt);
+  }
 	//display.println(SPACE);
 
 }
 
 
-void println(byte txt) {
-	display.print(txt);
+void println(byte txt , byte line = 255 , byte column = 255) {
+ 
+  
+ 
+  if (timerPrintAvailable)
+  {
+    if ( (line + column) != 510 ) {
+    display.setCursor (column , line);
+    //Serial.println ( "cl:" + String (column) + " ln:" + String (line ) + "=" + String (line + column));
+    }
+
+    Serial.println (" " + txt);
+    //display.print(txt);
+  }
 	//display.println(SPACE);
 
 }
@@ -281,16 +320,24 @@ public:void IncludeQuckAccessFunction( void (*functionPointer)(), byte & functio
 
 	  void initiateDisplay() {
 
-		  Wire.begin();
-		  Wire.setClock(400000L); // 800000L or 400000L
-		  delay(500);
-		  display.begin(16, 2);
-		  delay(1000);
-		  display.begin(16, 2);
-		  delay(500);
-		  display.setBacklight(HIGH);
+		 // Wire.begin();
+		 // Wire.setClock(800000L); // 800000L or 400000L
+		 // delay(500);
+		 // display.begin(20, 4);
+      
+      display.init();
+		  display.backlight();// HIGH
+      display.setCursor(0,0);
+		  
+		  delay(100);
+		  print ("Booting .",0,0);
+      delay(700);
+      print ("Booting . .",0,0);
+      delay(700);
+      print ("Booting . . .",0,0);
+      delay (1000);
 		  //	  
-		  userGetValues();// load values from EEPROM memory!
+		 
 	  }
 
 
@@ -431,7 +478,7 @@ private:void menuSelectedPrint() {
 	}
 */
 	
-	display.setCursor(spacer, 0);
+	//display.setCursor(spacer, 0);
 
 	// print something specific  about a this function out frtom this scope 
 	func_stored[meniuOptionSelectFun() + 1].fnc_();
@@ -493,7 +540,19 @@ private:void menuQuckAccesPrint() {
 
 
 public:bool InterfaceDinamic() {
-		
+
+   display.setCursor (0,0);
+
+      
+// To reduce hight write speed  to display  
+      timerPrintAvailable = false;  
+     if (millis() > (long)(timerPrint + 1000L) )
+    {
+        timerPrint = millis();
+        timerPrintAvailable = true;
+    };
+
+    
 	// Slow access options
 		if (*buttonSET || boolSetButton) {
 									 
@@ -697,7 +756,7 @@ public:bool InterfaceDinamic() {
 					boolQuicklyChange = false;
 					boolSetButton = false;
 					userSetValuesToMemory(); // write temperature changes to memory
-					display.clear();
+					//display.clear();
 					delay(200);
 				}
 				else
@@ -712,7 +771,7 @@ public:bool InterfaceDinamic() {
 				if (boolQuicklyChange) {
 					//display.setTextColor(BLACK, WHITE); // Draw 'inverse' text
 
-				//	display.clear();
+					display.clear();
 
 
 					menuQuckAccesPrint();
@@ -735,25 +794,35 @@ public:bool InterfaceDinamic() {
 		}
 
 
+
 		return boolSetMenu || boolQuicklyChange;
 	}
 	
 
 
-	// address automatically by 1 byte each time 
+
+	  // address automaticly by 1 byte each time 
 public:void userSetValuesToMemory(int index = -1) { // plus quick access function
 	if (index > -1) {
-		for (int_fast16_t count = 1; count < (includedMenuCount); count++) {
-			writeMemory((count + includeStartingPointMem), *func_stored[count].__functionValueAddress); //save all values to memory EEPROM
-			//print(String (count)+ ", " + String (func_stored[count].__funcAddress) +", "+String(*func_stored[count].__functionValueAddress));
-		}
+		// save single value to memory
+		Serial.println ("userSetValuesToMemory false adr:"+String (index + includeStartingPointMem) + " index:"+ String (index));
+		writeMemory((index + includeStartingPointMem), *func_stored[index].__functionValueAddress);
+
+		//display.clear(); print("Single point debug");	print(String(index) + ",addr: " + String(func_stored[index].__funcAddress) + ",val:" + String(*func_stored[index].__functionValueAddress));
+
 	}
 	else {
-		writeMemory((index + includeStartingPointMem), *func_stored[index].__functionValueAddress); //save all values to memory EEPROM
-	}
-		//delay(1000);
-	};
+		//save all values to memory EEPROM
+		//display.clear(); print("Multyple point debug");
 
+		for (int_fast16_t count = 1; count < (includedMenuCount); count++) {
+			writeMemory((count + includeStartingPointMem), *func_stored[count].__functionValueAddress); //save all values to memory EEPROM
+			Serial.println(String(count) + ",addr:" + String(func_stored[count].__funcAddress) + "val:, " + String(*func_stored[count].__functionValueAddress));
+		}
+
+	}
+	//delay(11000);
+};
 	
 	// address automatically by 1 byte each time 
 public:void userGetValues() {
@@ -772,9 +841,12 @@ public:void userGetValues() {
 
 	void displayButtonsValue() {
 	String btn="btn";
-		print(btn+"SET:" + String(*buttonSET)); // getting value of the pointer
-		print(btn+"UP:" + String(*buttonUP)); // value of the pointer
-		print(btn+"DOWN:" + String(*buttonDOWN)); // value of the pointer
+		display.setCursor (0,0);
+		print(btn+"SET:" + String(*buttonSET)+" UP:" + String(*buttonUP)+" DOWN:" + String(*buttonDOWN)); // getting value of the pointer
+		//display.setCursor (0,1);
+		//print(btn+"UP:" + String(*buttonUP)); // value of the pointer
+		//display.setCursor (0,2);
+		//print(btn+"DOWN:" + String(*buttonDOWN)); // value of the pointer
 	};
 	
 	
@@ -867,33 +939,3 @@ void userSetDefault() {
 
 };
 */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

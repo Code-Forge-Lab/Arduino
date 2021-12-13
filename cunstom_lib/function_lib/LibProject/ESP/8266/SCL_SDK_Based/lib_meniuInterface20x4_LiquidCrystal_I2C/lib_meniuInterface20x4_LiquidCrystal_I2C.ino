@@ -133,12 +133,12 @@ static const uint8_t D14 = 6; //SDCLK             NO,   Reason[3]               
 
 
 /*
- Name:		lib_meniuInterface128x64OLEDSSD1306AsciiWire.ino
+ Name:		lib_meniuInterface20x4_LiquidCrystal_I2C.ino
  Created:	2/8/2020 8:43:53 PM
  Author:	zick
 */
 
-#include "lib_meniuInterface128x64OLEDBased(SSD1306AsciiWire).h"
+#include "lib_meniuInterface20x4_LiquidCrystal_I2C.h"
 #include "buttons.h"
 
 // buttons
@@ -158,15 +158,18 @@ byte var_six;
 //Clock variables
 unsigned long clock_1min = 0;
 unsigned long clock_1sec = 0;
-
+unsigned long timer5Sec = 0;
 // buttons variables
 bool buttonUP;
 bool buttonSET;
 bool buttonDOWN;
 
-buttons btnUp   (buttonUP,BUTTON_UP , true);//(bool &BTN/*button variable that change at demand*/,byte &PinRead /*what kind of pin to read*/ , bool InvertDigitalRead = true/*Read input statement invertecly !*/,bool PressSingleTime = false /*Disable fast pulses and leave single press*/ ,unsigned long CLOCK_ADD = 0UL /*add time  away to slower the speed of pulses*/) {
-buttons btnDown (buttonDOWN,BUTTON_DOWN , true);
-lib_meniuInterface128x64OLEDSSD1306AsciiWire menu(buttonUP, buttonDOWN, buttonSET); // set a buttons to in.
+int inc = 0;
+
+buttons btnUp   (buttonUP,BUTTON_UP , true , false , 100UL);//(bool &BTN/*button variable that change at demand*/,byte &PinRead /*what kind of pin to read*/ , bool InvertDigitalRead = true/*Read input statement invertecly !*/,bool PressSingleTime = false /*Disable fast pulses and leave single press*/ ,unsigned long CLOCK_ADD = 0UL /*add time  away to slower the speed of pulses*/) {
+buttons btnDown (buttonDOWN,BUTTON_DOWN , true , false , 100UL);
+
+lib_meniuInterface20x4_LiquidCrystal_I2C menu(buttonUP, buttonDOWN, buttonSET); // set a buttons to in.
 
 #include "EEPROM32.h"
 #include "functions.h"
@@ -179,20 +182,12 @@ void setup() {
 	menu.IncludeFunction(&func2, var_two, "var_two", "psi");
 	menu.IncludeFunction(&func3, var_three, "var_three", "l/min",true);
 	menu.IncludeFunction(&func4, var_four, "var_four", "val");
-	menu.IncludeQuckAccessFunction(&func5, var_five, "Quick Access", "psi", false);
+	menu.IncludeQuckAccessFunction(&func5, var_five, "Quick Access", "psi", true);
 	// a default function are saved in here.
 	menu.IncludeFunctionSetDefault(&userSetDefault);
 	
 	menu.initiate();
 
-
-	
-	for  (int i = 0; i < 8; i++)
-	{
-		display.setCursor(i * 3 ,1);
-		println (".");
-		delay(200);
-	}
 
 	// include buttons
 	pinMode(BUTTON_DOWN, INPUT);
@@ -201,8 +196,9 @@ void setup() {
 	
 	Serial.print("Complete Loading");
 	delay(50);
-	print("Loading complete.");
+	print("Loading complete.",0,0);
 	delay(2500);
+	display.clear ();
 }
 
 // the loop function runs over and over again until power down or reset
@@ -218,19 +214,22 @@ void loop() {
 	btnUp.scaning();
 	btnDown.scaning();
 
+	 menu.updates ();
+
 	/// CLOCK 1 min			60000UL  120000UL  x 2 clock speed 
 	if (((long)clock_1min + 60000UL) < millis()) // 120000UL a double clock speed by
 	{
 		clock_1min = millis(); // reset each  60 seconds  time
 		display.clear();
-		manualReapetEach1sec = true; // reset for fast print 
 	}
 
 
-	if (((long)clock_1sec + 1000UL) < millis()) 
+	if (((long)clock_1sec + 500UL) < millis()) 
 	{
 		clock_1sec = millis(); // reset each  60 seconds  time
-		manualReapetEach1sec = true; // reset each second to print one time 
+		
+		
+
 	}
 
 	
@@ -251,16 +250,21 @@ void loop() {
 			//menu.displayStoredMemoryValues();
 		
 		
-		printeach_1sec("Hello world");
-		printeach_1sec("counts btns ups:" + String (count_buttonUp) + " \n,Downs:"+String (count_buttonDown));
-		printeach_1sec("");
+		menu.print__("Hello world" , 1,0);
+		menu.print__("countsUps:" + String (count_buttonUp) + ",Dns:"+String (count_buttonDown),2,0);
+		menu.print__("LOOT"+String (inc),3,0);
 		
 //		print("::" + String (menu.isclearedDisplayCommon));
 
 		
+		if (millis() > (long)(timer5Sec + 5000L) )
+    {
+        timer5Sec = millis();
+        inc++;
+    };
 
 
-	manualReapetEach1sec = false;
+
 
 	btnUp.endScaning();
 	btnDown.endScaning();
