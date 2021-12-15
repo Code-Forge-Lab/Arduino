@@ -34,7 +34,7 @@ LiquidCrystal_I2C display(I2C_ADDRESS,20,4); // set the LCD address to 0x27 for 
 
 
 
-//String SPACE = "                ";
+String SPACE = "                    ";
 void print(String txt , byte line = 255 , byte column = 255) {
 
 
@@ -217,7 +217,7 @@ class lib_meniuInterface20x4_LiquidCrystal_I2C
 	bool meniuOptionIsSelected = false; // When eventually are at P0-P3 option then time to select what specifically are changing a values that are included in the statement.
 	bool meniuOptionWhenSelected = false;// for clearing one time a menu option are change
 	unsigned long startedWaiting;
-	unsigned long startedWaitingmeniuOptionSelected;
+	int startedWaitingmeniuOptionSelected;
 	byte toggleDisplay = 0;
 	bool isMenuOpened = false; // know about menu when is opened and when is not. To avoid printing on menu with other uncontrolled 'Print' functions
 	// less important
@@ -227,8 +227,14 @@ class lib_meniuInterface20x4_LiquidCrystal_I2C
 	byte delayOpenMenuQuickAccess = 0;
 	byte delayOpenMenu = 0; // delay to open menu when was closed after  menu long press options
 	bool delayOpenMenuFirstTime  = false; // when frist time opening 'long press' menu , give delay to avoid hitting P1 option in same time
+		// default menu option
+	byte delaySetToDefault = 0;
+	byte delaySetToDefaultPressingButton = 0;
 
+	bool basicToggle = false;
+	byte basicToggleCount = 0; 
 
+	unsigned long clock_1sec;
 public:bool isclearedDisplayCommon = false; // common try use to clear once when enter in a option 
 	  bool isCompletedChangeValueToExitFromSelectedOption = false; // more robust Set button press waiter
 
@@ -486,44 +492,52 @@ private:void meniuDescribeOptionDisplay(String txt) {
 	print(txt);
 }
 
+
+void fun_startedWaitingmeniuOptionSelected (int value = 300) 
+{
+	startedWaitingmeniuOptionSelected = value;
+}
+
 	   // only for a buttons/ badly on rotary encoder
 private:byte meniuOptionSelectFun() {
 
 
 	// if pressing a button and menu where are selected are not to big then...
-	if ((*buttonUP && meniuOptionSelected < includedMenuCount /*+ 1 <Error, out of menu bounderies*/) && meniuOptionIsPressing && !meniuOptionIsSelected) {
+	if (*buttonUP) {
 
-		++meniuOptionSelected;
-		startedWaitingmeniuOptionSelected = millis();// time out start point
+		  if (meniuOptionSelected < includedMenuCount /*+ 1 <Error, out of menu bounderies*/ && meniuOptionIsPressing && !meniuOptionIsSelected)
+			 ++meniuOptionSelected;
+		
 
+		fun_startedWaitingmeniuOptionSelected ();// time out start point
 
 	}
 	// if pressing a button and menu where are selected are not to small then...
-	if ((*buttonDOWN && meniuOptionSelected > 1) && meniuOptionIsPressing && !meniuOptionIsSelected) {
-
-		--meniuOptionSelected;
-		startedWaitingmeniuOptionSelected = millis();// time out start point
-
+	if (*buttonDOWN ) {
+			
+			if ( meniuOptionSelected > 1 && meniuOptionIsPressing && !meniuOptionIsSelected)
+				--meniuOptionSelected;
+		
+		fun_startedWaitingmeniuOptionSelected ();// seconds time out start point
 	}
 
 	// Give new timeout and starting point for menu functions to work
-	if (*buttonSET && !meniuOptionIsSelected) {
+	//if (*buttonSET /*&&  !meniuOptionIsSelected*/ ) {
 		//meniuOptionIsPressing = true;
-		startedWaitingmeniuOptionSelected = millis();// time out start point
-	}
+	//	fun_startedWaitingmeniuOptionSelected(); //seconds time out start point
+	//}
 
-	// if user do not do for a while , accrues a time out.
-	if ((millis() > (long)(startedWaitingmeniuOptionSelected + 25000UL)) && !meniuOptionIsSelected)
+	// if user do not do for a while , accrues a time out.								  
+	if (/* !meniuOptionIsSelected && */ isMenuOpened &&  startedWaitingmeniuOptionSelected == 1 /*125seconds*/    )
 	{
+		// long Press Menu
 		boolSetButton = false; // exit from boolSetButton statement
 		boolSetMenu = false; // exit from boolSetMenu statement
 		meniuOptionSelected = 1; //reset menu position to P0
 		isclearedDisplayCommon = false;
-		//timerPrintOffset = 999UL; // back to default (1 sec) after menu is closed
-		timePrintDelayOffset = 5; // back to default (1 sec) after menu is closed
-		delayOpenMenuQuickAccess = 5; // delay to pen menu when was closed after quick access menu 
-		
 
+		userSetValuesToMemory(); // write temperature changes to memory includeQuckAccessMenu
+		display.clear();
 
 	}
 
@@ -685,18 +699,41 @@ private: void clearMenuDisplay() {
 // allows printing each second on display
 public:void updates (){
 		timerPrintAvailable = false;  
+
+  if (millis() > (long)(clock_1sec + 1000) )
+  {
+        clock_1sec = millis();
+
+        if (startedWaitingmeniuOptionSelected > 0)
+        	--startedWaitingmeniuOptionSelected;
+
+  }
+
   if (millis() > (long)(timerPrint + timerPrintOffset) )
     {
         timerPrint = millis();
         timerPrintAvailable = true;
 
 
+        if (basicToggleCount == 0)
+        {
+	        basicToggle = !basicToggle;
+	    	basicToggleCount = 9;
+    	}
+    		basicToggleCount--;
 
-        if (timePrintDelayOffset > 0) // after menu is closed , wait to print regual status screen 
+
+
+        if ( timePrintDelayOffset > 0) // after menu is closed , wait to print regual status screen 
         	--timePrintDelayOffset;
-
-        else if (!isMenuOpened)
+        else if (!isMenuOpened /*display value correctly*/)
         	 timerPrintOffset = 995UL; // and set to regular speed from 100-200UL
+
+
+
+        if (delaySetToDefault > 0)
+        	--delaySetToDefault ;
+       
 
 
         if (delayOpenMenuQuickAccess > 0)
@@ -705,31 +742,25 @@ public:void updates (){
 		if (delayOpenMenu > 0) 
 		    --delayOpenMenu; // delay to open menu when was closed after  menu long press options
 
+		
 
-        Serial.println (" time frame " +String (timePrintDelayOffset) + ",[ delayOpenMenu:" + String (delayOpenMenu) + " QuickAccess:"+ String (delayOpenMenuQuickAccess) + "] boolSetMenu:" + String (boolSetMenu) + " delayOpenMenuFirstTime:"+ String (delayOpenMenuFirstTime));
+        Serial.println (" time frame " +String (timerPrintOffset) + ",[ delayOpenMenu:" + String (delayOpenMenu) + " QuickAccess:"+ String (delayOpenMenuQuickAccess) + "] boolSetMenu:" + String (boolSetMenu) + " delayOpenMenuFirstTime:"+ String (delayOpenMenuFirstTime) +
+         " meniuOptionSelectFun():" + String (meniuOptionSelectFun()) + "~"+ String (includedMenuCount) + " menu close:" + String (startedWaitingmeniuOptionSelected) + " default button:" + String (delaySetToDefaultPressingButton)  );
     };
 }
 
 public:bool InterfaceDinamic() {
 	// always set display at zero state.	
-	display.setCursor(0, 0);
+	//display.setCursor(0, 0);
 
-
-	//if (!*buttonSET) {
-	//	if (isCompletedChangeValueToExitFromSelectedOption && !*buttonSET) {
-	//		isCompletedChangeValueToExitFromSelectedOption = false; // help for a pressing to short to press while it needet
-	//	}
-	//}
-	// Slow access options
-
-	if ( *buttonSET  ) // contantly eveluating 6 until button is realesed 
-				{
-					
-					//delayOpenMenu = 6 ;  
-				}
 
 	if ((*buttonSET || boolSetButton) && delayOpenMenuQuickAccess == 0  /*<- work as delay to avoid open instanly after menu was closed */) {
 		boolSetButton = true;
+		
+	 	 if  (*buttonSET)
+		   fun_startedWaitingmeniuOptionSelected ();
+
+
 
 		// when in menu selected option and pressing a set button to exit to common parameters. 
 		if (meniuOptionIsSelected && *buttonSET) {
@@ -747,17 +778,17 @@ public:bool InterfaceDinamic() {
 			// event trigger if after some time will react to button set
 			// reset whole set loop
 			//                                              Extra timer for not hit a first option or to work whole block!
-			if ( (millis() > (long)(startedWaiting + 5000UL + 10UL)) && *buttonSET) 
+			if ( (millis() > (long)(startedWaiting + 5000UL + 100UL)) && *buttonSET  ) 
 				{
 
 						// After meniu option was selected 
-						if (meniuOptionIsSelected) {
+						if (meniuOptionIsSelected && /*default function fix to dont crash */ !(defaultIsFunc && meniuOptionSelectFun() == includedMenuCount - 1)) {
 							userSetValuesToMemory(meniuOptionSelectFun() + 1);// start common menu options addresing in memory from 2, skipping 1 place.
 
 
 							//display.set1X();
 							if (meniuOptionSelectFun() < includedMenuCount) // only display meniu option values exept on 'EXIT'
-								print(">P" + String(meniuOptionSelectFun()) + "< ",0,0);
+								print("?P" + String(meniuOptionSelectFun()) + "?",0,0); // while pressing 
 
 
 
@@ -770,15 +801,21 @@ public:bool InterfaceDinamic() {
 						//}
 
 						
-						// When set button is while pressing , execute this branch
 
+
+						// Works as delay to  whole loop of loong press menu
+						
+						// When set button is while pressing , execute this branch
 						if ( delayOpenMenu == 0  && delayOpenMenuFirstTime ) // wait until user releas Set button . Countdown until reach a 0 and before that 1 gives unique delay after set button was realesed 5 point before 
 						{// 
-							meniuOptionIsSelected = !meniuOptionIsSelected;
+							meniuOptionIsSelected = !meniuOptionIsSelected; // enter to menu option
 						}
 
-						delayOpenMenu = 3 ;// contantly eveluating 6 until button is realese
-						delayOpenMenuFirstTime = true;
+						delayOpenMenu = 3 ;// contantly eveluating 3 until button is realese , works as timer or timeout to user be available to press
+						delayOpenMenuFirstTime = true; // when user entered in long press menu and hit here for a first time 
+						delaySetToDefaultPressingButton = 0; // default timing to work proprietary
+
+						// EXIT----------------------------------------------------------------
 						// Exit from progra  and main boolSetButton loop...if meniu not selected
 						if (meniuOptionSelectFun() == includedMenuCount) { // Exit
 
@@ -787,9 +824,17 @@ public:bool InterfaceDinamic() {
 							meniuOptionSelected = 1; //reset meniu position to P0
 							meniuOptionIsSelected = false; // when user exit from meniu set to default 
 							isclearedDisplayCommon = false;
-							// now working delayOpenMenu = 5;
-							//display.set1X();
-							//Serial.println ("Exit from seleced menu ");
+							
+							timePrintDelayOffset = 4;
+							delayOpenMenuQuickAccess  = 7;
+							boolSetMenu = false;
+							boolQuicklyChange = false;
+							isclearedDisplayCommon = false; // reset a clearing system
+							
+							display.clear();
+							display.setCursor(0, 0);
+							//timerPrintOffset = 998UL;
+						
 						}
 
 
@@ -829,13 +874,26 @@ public:bool InterfaceDinamic() {
 				//display.setCursor(0, 0);
 				//display.set1X();
 				if (meniuOptionSelectFun() < includedMenuCount) // only display meniu option values exept on 'EXIT'
-					print("[P" + String(meniuOptionSelectFun()) + "]",0,0);
+					
+					
+
+					if (meniuOptionIsSelected && /*print fix not flicker*/ !(defaultIsFunc && meniuOptionSelectFun() == includedMenuCount - 1))
+						if (basicToggle) {
+								if (basicToggleCount < 6) // to see ?P1?
+								print(" P" + String(meniuOptionSelectFun()) + " ",0,0);
+						}
+						else
+							print(">P" + String(meniuOptionSelectFun()) + "<",0,0);
+					else
+							print("[P" + String(meniuOptionSelectFun()) + "]",0,0);
+
 
 				// if meniu option not selected print about meniu abbreviation
 
 				if (!meniuOptionWhenSelected) {
 					//print("-");
-					//print("");
+					//if ( !(defaultIsFunc && meniuOptionSelectFun() == includedMenuCount - 1) )
+					//	print(" to default " ,0 , 5);
 
 
 
@@ -857,32 +915,73 @@ public:bool InterfaceDinamic() {
 
 				//Set to Default
 				//check if option is available
-				if (defaultIsFunc && meniuOptionSelectFun() == includedMenuCount - 1) { // set to default 
+				if (defaultIsFunc && meniuOptionSelectFun() == includedMenuCount - 1 )  // set to default 
+				{ 
 					
-					print("<Reset to default>" , 1 ,0);
+					print("Reset to default" , 0 ,0);
 
-					if (meniuOptionIsSelected) {
-						print("Press up to reset" ,2,0);
+					 
 
-						if (*buttonUP)
-						{
-							
-							if (defaultIsFunc) {
-								defaultFunc();
-								//display.set2X();
-								print(" Done" ,3,0);
-								//display.set1X();
-								// reset to default
-							}else{
-								print ("No default function",3,0);
-							}
+					 if (meniuOptionIsSelected) 
+					 {
+					 	
+					 	 
 
-							//userSetValuesToMemory();
-							delay(2000);
-							meniuOptionIsSelected = !meniuOptionIsSelected; // back to meniu options
-							display.clear();
+								 
+					 			switch(delaySetToDefault) 
+					 	{
+						  case 0:
+							   		   print("Press UP"  ,1,0); // default print while at zero 
+							    		break;
+						  case 1:
+						  				print(SPACE ,1,0); // clear "Done"
+								 		meniuOptionIsSelected = !meniuOptionIsSelected; // back to meniu options
+								 		delaySetToDefaultPressingButton = 0;
+						    			break;
+
+						    case 2 ... 38: 
+						    			 
+								 		 defaultFunc();
+										 userSetValuesToMemory();
+						    			 print(" Done           "  ,1,0);
+						   				 break;	 
+
 						}
-					}
+
+
+
+								    if (delaySetToDefaultPressingButton > 0)
+											 	print (String (map(delaySetToDefaultPressingButton, 0, 38, 0, 100)) + "%" , 1 ,9 );
+
+
+								 	if (*buttonUP && delaySetToDefault == 0 )
+								 	{
+										
+									 
+
+										 		if ( delaySetToDefaultPressingButton > 40)
+										 		 	{
+														delaySetToDefault = 40;	
+										 		    }
+									 				
+
+									  			if (delaySetToDefaultPressingButton <= 40)
+								 	 					 delaySetToDefaultPressingButton++;
+
+								 	} 
+
+								 	//if (delaySetToDefaultPressingButton > 0 && !*buttonSET)
+										//--delaySetToDefaultPressingButton;
+						
+					   
+
+
+
+					 }
+
+
+					 
+
 				}
 				else {
 					// ----------------------do rest of options------------------------------------
@@ -909,28 +1008,13 @@ public:bool InterfaceDinamic() {
 
 
 
-				//  EXIT-----------------------------------------
+				//  EXIT ONLY PRINT-------------------------------------
 				if (meniuOptionSelectFun() >= includedMenuCount) { // Exit
 					//display.setCursor(0, 0);
 
 					//display.set2X();
-					print("  [EXIT]" ,0,0);
-
-					if (meniuOptionIsSelected) {
-
-						boolSetMenu = false;
-						boolQuicklyChange = false;
-						isclearedDisplayCommon = false; // reset a clearing system
-						display.clear();
-						display.setCursor(0, 0);
-						//timerPrintOffset = 998UL;
-						timePrintDelayOffset = 5;
-						//delayOpenMenu = 5;  // delay to open menu when was closed after  menu long press options
-						delayOpenMenuQuickAccess  = 3; 
-					}
-
-
-
+					print("  [EXIT]      " ,0,0);
+					print(SPACE ,1,0);
 				}
 
 
@@ -959,7 +1043,7 @@ public:bool InterfaceDinamic() {
 
 			// exit from tight loops!
 			// event trigger if after some time will react to button set
-			if ( /*Wait while user realesing a button*/(millis() > (long)(startedWaiting + 1000UL)) && *buttonSET || /*or timeout for 45s*/(millis() > (long)(startedWaiting + 45100UL))) {
+			if ( /*Wait while user realesing a button*/(millis() > (long)(startedWaiting + 400UL))  && *buttonSET || startedWaitingmeniuOptionSelected  == 0 /* || or timeout for 45s(millis() > (long)(startedWaiting + 45100UL)) */ ) {
 				// reset whole set loop
 				boolQuicklyChange = false;
 				boolSetButton = false;
@@ -970,7 +1054,7 @@ public:bool InterfaceDinamic() {
 				timePrintDelayOffset = 5;
 				delayOpenMenuQuickAccess = 5 ; 
 			
-				delay(100);
+				//delay(100);
 
 				
 			}

@@ -179,10 +179,10 @@ void setup() {
 	Serial.begin (115200);
 	//EEPROM.begin(512);
 	menu.IncludeFunction(&func1, var_one, "var_one", "psi", false);
-	menu.IncludeFunction(&func2, var_two, "var_two", "psi");
+	menu.IncludeFunction(&func2, var_two, "var_two", "tankis");
 	menu.IncludeFunction(&func3, var_three, "var_three", "l/min",true);
 	menu.IncludeFunction(&func4, var_four, "var_four", "val");
-	menu.IncludeQuckAccessFunction(&func5, var_five, "Quick Access", "psi", true);
+	menu.IncludeQuckAccessFunction(&func5, var_five, "Temperatura", "C", true);
 	// a default function are saved in here.
 	menu.IncludeFunctionSetDefault(&userSetDefault);
 	
