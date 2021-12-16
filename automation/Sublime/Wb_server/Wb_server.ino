@@ -9,11 +9,11 @@
 #include <EEPROM.h>
 
 // Replace with your network credentials
-const char* ssid     = "MD_home";
-const char* password = "migtukas";
-signed int relayOn_TotalTime = 18000 ; // how mucth time shoud work a heater by seconds 60sec*45min = 2700
+const char* ssid     = "cc";
+const char* password = "cc";
+signed int relayOn_TotalTime = 18000 ; // how mucth time shoud work a relay by seconds 60sec*45min = 2700
 String headerName = "Bike Charger Server"; // give a name to a webserver
-const long utcOffsetInSeconds = 7200; // 10800 // time zone offset
+
 
 // Set web server port number to 80
 WiFiServer server(80);
@@ -24,6 +24,7 @@ WiFiServer server(80);
 char daysOfTheWeekLT[7][20] = {"Sekmadienis", "Pirmadienis", "Antradienis", "Treciadienis", "Ketvirtadienis", "Penktadienis", "Sestadienis"};
 // Define NTP Client to get time
 WiFiUDP ntpUDP;
+const long utcOffsetInSeconds = 7200; // 10800 // time zone offset
 NTPClient timeClient(ntpUDP, "europe.pool.ntp.org", utcOffsetInSeconds);
 
 
@@ -44,11 +45,11 @@ String output9State = "off";
 String collectionOfStateAsTrigggerTimes = "";
 
 
-String pin_heaterState = "off";
+String pin_relayState = "off";
 
 // Assign output variables to GPIO pins
 //const int output5 = 5;
-const byte pin_heater = 0; // on relay esp01 = 0, but on esp8266 = 2 
+const byte pin_relay = 0; // on relay esp01 = 0, but on esp8266 = 2 
 const byte pin_button = 2; // GPIO2
 
 // Current time
@@ -58,7 +59,7 @@ unsigned long previousTime = 0;
 // Define timeout time in milliseconds (example: 2000ms = 2s)
 const long timeoutTime = 2000;
 
-bool previousHeaterOn  = true; // always true to begin with
+bool previousRelayOn  = true; // always true to begin with
 bool previousState = false;
 
 int  CheckOneHourPassed ; // change state to auto-on in eacth hour by compared that is not the same
@@ -132,19 +133,19 @@ String transConditionalPrint (String state ,String indexHref, String trueStatePr
                    return (" <a href=\"/"+indexHref+"/off\"><button class=\"button_footer2\"  style=\"width:"+widthProcentage+"\">"+falsestatePrint+"</button></a>");
            }          
 
-void turnOnHeatingTimeout (String turnedByEvent = "") { relayOn_Sec = relayOn_TotalTime; pin_heaterState = "on"; funTimeReportUser(turnedByEvent); }
+void turnOnRelaysTimeout (String turnedByEvent = "") { relayOn_Sec = relayOn_TotalTime; pin_relayState = "on"; funTimeReportUser(turnedByEvent); }
 
-void Heater_Auto_on (String turnedByEvent = "") {
+void Relay_Auto_on (String turnedByEvent = "") {
 
     if (ActivateOneHourWhenPassed ) {
       
       
 
           ActivateOneHourWhenPassed = false; // but if any 1/4 condition is correct, then leave this disabler to prevent from multiple  on in same hour 
-         if (output6State == "on" && timeClient.getHours() == 3) {Serial.println(" at 8h");    turnOnHeatingTimeout (turnedByEvent); }
-    else if (output7State == "on" && timeClient.getHours() == 5) {Serial.println(" at 10h");  turnOnHeatingTimeout (turnedByEvent); }
-    else if (output8State == "on" && timeClient.getHours() == 13) {Serial.println(" at 16h");  turnOnHeatingTimeout (turnedByEvent); }
-    else if (output9State == "on" && timeClient.getHours() == 15) {Serial.println(" at 20h");  turnOnHeatingTimeout (turnedByEvent); }
+         if (output6State == "on" && timeClient.getHours() == 3) {Serial.println(" at 8h");    turnOnRelaysTimeout (turnedByEvent); }
+    else if (output7State == "on" && timeClient.getHours() == 5) {Serial.println(" at 10h");  turnOnRelaysTimeout (turnedByEvent); }
+    else if (output8State == "on" && timeClient.getHours() == 13) {Serial.println(" at 16h");  turnOnRelaysTimeout (turnedByEvent); }
+    else if (output9State == "on" && timeClient.getHours() == 15) {Serial.println(" at 20h");  turnOnRelaysTimeout (turnedByEvent); }
     else { ActivateOneHourWhenPassed = true; }; // if failed to auto-on then reset to work for a next time
 
           //Serial.print ("Stage:ActivateOneHourWhenPassed auto-on ["+ String (ActivateOneHourWhenPassed));
@@ -161,6 +162,9 @@ void one30SecTimer ()
 if (clock_1minCount > 30 )
   {
     
+    Serial.print("IP address: ");
+    Serial.println(WiFi.localIP());
+
     clock_1minCount = 0;
     funTimeClient ();
 
@@ -170,7 +174,7 @@ if (clock_1minCount > 30 )
       ActivateOneHourWhenPassed = true ;// reset
     }
 
-    Heater_Auto_on ("automatiskai");
+    Relay_Auto_on ("automatiskai");
 
   }
      else
@@ -184,7 +188,7 @@ void turnOnByButtonEvent () { // when push button  is pressed
    if (!digitalRead (pin_button))
  {
       //Serial.println("Button is pressed");
-      turnOnHeatingTimeout ("migtuku");
+      turnOnRelaysTimeout ("migtuku");
 
  }
 
@@ -247,14 +251,14 @@ void inFullLoop ()
 
 void setup() {
  Serial.begin(115200);
-   
+   Serial.println ("Starting ...");
   // Initialize the output variables as outputs
  // pinMode(output5, OUTPUT);
-  pinMode(pin_heater, OUTPUT);
+  pinMode(pin_relay, OUTPUT);
   pinMode (pin_button, INPUT_PULLUP);
   // Set outputs to LOW
   //digitalWrite(output5, LOW);
-  digitalWrite(pin_heater, HIGH );
+  digitalWrite(pin_relay, HIGH );
 
   EEPROM32_INIT();
 //Serial.println("Load settings from EEPROM");
@@ -262,7 +266,6 @@ if (readMemoryBool (6))  output6State = "on";
 if (readMemoryBool (7))  output7State = "on";
 if (readMemoryBool (8))  output8State = "on";
 if (readMemoryBool (9))  output9State = "on";
-
 
 
   // Connect to Wi-Fi network with SSID and password
@@ -278,7 +281,7 @@ if (readMemoryBool (9))  output9State = "on";
   timeClient.setUpdateInterval(10000UL); // 10 seconds interval to update a time
   // Print local IP address and start web server
   Serial.println("");
-  Serial.println("WiFi connected.");
+  Serial.println("WiFi connected.  " + *ssid);
   Serial.println("IP address: ");
   Serial.println(WiFi.localIP());
   server.begin();
@@ -329,24 +332,24 @@ void loop(){
 
 
             if (header.indexOf("GET /reload") >= 0)
-                previousHeaterOn = true;
+                previousRelayOn = true;
 
             if (header.indexOf("GET /4/on") >= 0) {                                       
               
               //Serial.println("GPIO 4 on");
-              pin_heaterState = "on";
+              pin_relayState = "on";
               
-             // digitalWrite(pin_heater, HIGH);
+             // digitalWrite(pin_relay, HIGH);
 
-               if (previousHeaterOn)
-                    turnOnHeatingTimeout("internetu");
-                  previousHeaterOn = false;
+               if (previousRelayOn)
+                    turnOnRelaysTimeout("internetu");
+                  previousRelayOn = false;
               
             } else if (header.indexOf("GET /4/off") >= 0) {
              //Serial.println("GPIO 4 off");
-              pin_heaterState = "off";
+              pin_relayState = "off";
 
-                previousHeaterOn = true;
+                previousRelayOn = true;
                 relayOn_Sec = 0;
             }
             
@@ -475,12 +478,12 @@ void loop(){
               String s = (getSeconds(relayOn_Sec) > 0) ? String(getSeconds(relayOn_Sec)) +"s " : " " ;
 
               client.println("<div class=\"container\"><a href=\"/reload\" class=\"reload\" style=\"text-align:left;\">Working [" + h + m + s + "] </a>");
-              digitalWrite(pin_heater, LOW);
+              digitalWrite(pin_relay, LOW);
               
             }
             else{
               client.println("<div class=\"container\"><a href=\"/reload\" class=\"reload\" style=\"text-align:left;\">    [Reload]   </a>");
-              digitalWrite(pin_heater, HIGH);
+              digitalWrite(pin_relay, HIGH);
               
                
             }
@@ -494,7 +497,7 @@ void loop(){
             
             // Display current state, and ON/OFF buttons for GPIO 4  
              
-            if (pin_heaterState=="off") {
+            if (pin_relayState=="off") {
               client.println("<a href=\"/4/on\"><button class=\"button\">ON</button></a>");
             } else {
               client.println("<a href=\"/4/off\"><button class=\"button button2\">OFF</button></a>");
@@ -580,19 +583,19 @@ void loop(){
 
                if (previousState && relayOn_Sec== 1)
                 {
-                  //Serial.print("RESET timer:pin_heaterState from :"+pin_heaterState + " " + String (previousState));
-                  pin_heaterState = "off"; // back to off state
+                  //Serial.print("RESET timer:pin_relayState from :"+pin_relayState + " " + String (previousState));
+                  pin_relayState = "off"; // back to off state
                   
-                  //Serial.println(" new :" +pin_heaterState);
+                  //Serial.println(" new :" +pin_relayState);
 
                    previousState = false;
                 }
 
-              digitalWrite(pin_heater, LOW);
+              digitalWrite(pin_relay, LOW);
             }
             else{
               
-              digitalWrite(pin_heater, HIGH);
+              digitalWrite(pin_relay, HIGH);
                previousState = true;
               
             }
