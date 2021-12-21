@@ -754,11 +754,24 @@ public:bool InterfaceDinamic() {
 	//display.setCursor(0, 0);
 
 
+
+	if (*buttonSET)
+	{
+		
+		if (delayOpenMenuQuickAccess > 0) // avoid exiting from quickAccesMenu while button is pressing 
+		{
+			delayOpenMenuQuickAccess = 3;
+			timePrintDelayOffset = 3;
+		}
+	
+
+		   fun_startedWaitingmeniuOptionSelected ();
+	}
+
 	if ((*buttonSET || boolSetButton) && delayOpenMenuQuickAccess == 0  /*<- work as delay to avoid open instanly after menu was closed */) {
 		boolSetButton = true;
 		
-	 	 if  (*buttonSET)
-		   fun_startedWaitingmeniuOptionSelected ();
+	 	 
 
 
 
@@ -950,7 +963,8 @@ public:bool InterfaceDinamic() {
 
 
 
-								    if (delaySetToDefaultPressingButton > 0)
+								    if (delaySetToDefaultPressingButton > 0 && delaySetToDefaultPressingButton < 37)
+								    
 											 	print (String (map(delaySetToDefaultPressingButton, 0, 38, 0, 100)) + "%" , 1 ,9 );
 
 
@@ -963,10 +977,16 @@ public:bool InterfaceDinamic() {
 										 		 	{
 														delaySetToDefault = 40;	
 										 		    }
+										 		else 
+										 			{	
+								 	 					delaySetToDefaultPressingButton++;
+
+										 			}
+
 									 				
 
-									  			if (delaySetToDefaultPressingButton <= 40)
-								 	 					 delaySetToDefaultPressingButton++;
+									  			//if (delaySetToDefaultPressingButton <= 40)
+								 	 			//		 delaySetToDefaultPressingButton++;
 
 								 	} 
 
@@ -1036,7 +1056,7 @@ public:bool InterfaceDinamic() {
 
 
 		//-----------------// Quickly Access/change single option-----------------------------------------
-		else if (*buttonSET == LOW || boolQuicklyChange) {
+		else if ( *buttonSET == LOW || boolQuicklyChange) {
 			// set loop from boolean
 
 

@@ -536,6 +536,7 @@ void loop() {
 													alarm_arm_disarm_timer = 8;
 													alarm_strenght = alarm_strenghtWarning;
 													Serial.println("laser beam:"+String (alarm_arm_disarm_timer));
+                          relay_lamp_timer = 2; //seconds to shine when someone trigger a laser beam 
 													
 												}
 				}
@@ -552,6 +553,7 @@ void loop() {
 												alarm_strenght = alarm_strenghtWarning;
 													
 												Serial.println("laser case:"+String (alarm_arm_disarm_timer));
+                        relay_lamp_timer = 2; //seconds to shine when someone trigger a laser case 
 												
 											}	
 				}
