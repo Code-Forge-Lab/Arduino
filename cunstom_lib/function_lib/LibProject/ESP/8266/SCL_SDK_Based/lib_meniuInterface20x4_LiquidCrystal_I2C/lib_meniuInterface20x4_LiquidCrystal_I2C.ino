@@ -180,9 +180,12 @@ void setup() {
 	//EEPROM.begin(512);
 	menu.IncludeFunction(&func1, var_one, "var_one", "psi", false);
 	menu.IncludeFunction(&func2, var_two, "var_two", "tankis");
-	menu.IncludeFunction(&func3, var_three, "var_three", "l/min",true);
-	menu.IncludeFunction(&func4, var_four, "var_four", "val");
-	menu.IncludeQuckAccessFunction(&func5, var_five, "Temperatura", "C", true);
+	menu.IncludeFunction(&func3, var_three, "var_three", "L/min");
+	menu.IncludeFunction(&func4, var_four, "var_five", "Lux");
+	menu.IncludeFunction(&func4, var_four, "var_six", "Lux");
+	menu.IncludeFunction(&func4, var_four, "var_seven", "Lux");
+	menu.IncludeFunction(&func4, var_four, "var_eight", "Lux");
+	menu.IncludeQuckAccessFunction(&func5, var_five, "Boiler", "C",false);
 	// a default function are saved in here.
 	menu.IncludeFunctionSetDefault(&userSetDefault);
 	

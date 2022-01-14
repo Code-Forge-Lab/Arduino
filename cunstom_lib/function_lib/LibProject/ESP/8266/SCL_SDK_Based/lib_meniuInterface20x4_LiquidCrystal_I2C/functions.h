@@ -14,16 +14,12 @@ void userSetDefault() {
 
 
 
-void func1() { print("func1 " + String(var_one), 1 , 5); menu.menuPrintManuallyValue(map(var_one, 0, 255, 0, 1024)); };
-void func2() { print("func2 " + String(var_two) , 1 , 5); };
-void func3() { print("func3 ignr! "); menu.menuPrintManuallyValue(333);/*not works,good*/ };
-void func4() { print ("func4 " , 1 , 5); }; // map(var_four, 0, 255, 0, 1024)
-void func5() { print("Pressure" + String(var_five) + "_" ,1,5); menu.menuQuckAccesPrintManuallyValue(map(var_five, 0, 255, 0, 1024)); };
-void func6Default() {
-	//userSetDefault();
-	print("HEY DEFAULT");
-	delay(2000);
-};
+void func1() { print("func1 " ); menu.menuPrintManuallyValue(map(var_one, 0, 255, 0, 1024)); };
+void func2() { print("func2 " ); };
+void func3() { print("func3 ignr! "); };
+void func4() { print ("func4 ",1,7);print ("All about balance ",2,0); }; // map(var_four, 0, 255, 0, 1024)
+void func5() { print("func5 ",1,7); menu.menuQuckAccesPrintManuallyValue(map(var_five, 0, 255, 0, 1024)); };
+
 
 
 

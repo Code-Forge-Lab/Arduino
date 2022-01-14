@@ -35,14 +35,14 @@ LiquidCrystal_I2C display(I2C_ADDRESS,20,4); // set the LCD address to 0x27 for 
 
 
 String SPACE = "                    ";
-void print(String txt , byte line = 255 , byte column = 255) {
+void print(String txt , byte line = 255 , byte row = 255) {
 
 
    if (timerPrintAvailable)
   {
-    if ( (line + column) != 510 ) {
-    display.setCursor (column , line);
-    // Serial.println ( "cl:" + String (column) + " ln:" + String (line ) + "=" + String (line + column));
+    if ( (line + row) != 510 ) {
+    display.setCursor (row , line);
+    // Serial.println ( "cl:" + String (row) + " ln:" + String (line ) + "=" + String (line + row));
     }
 
    // Serial.println (" " + txt);
@@ -53,61 +53,61 @@ void print(String txt , byte line = 255 , byte column = 255) {
 }
 
 
-void print(byte txt , byte line = 255 , byte column = 255) {
+// void print(byte txt , byte line = 255 , byte row = 255) {
 
 
   
-  if (timerPrintAvailable)
-  {
-    if ( (line + column) != 510 ) {
-    display.setCursor (column , line);
-    //Serial.println ( "cl:" + String (column) + " ln:" + String (line ) + "=" + String (line + column));
-    }
+//   if (timerPrintAvailable)
+//   {
+//     if ( (line + row) != 510 ) {
+//     display.setCursor (row , line);
+//     //Serial.println ( "cl:" + String (row) + " ln:" + String (line ) + "=" + String (line + row));
+//     }
 
-    Serial.println (" " + txt);
-    //display.print(txt);
-  }
-	//display.println(SPACE);
+//     Serial.println (" " + txt);
+//     //display.print(txt);
+//   }
+// 	//display.println(SPACE);
 
-}
+// }
 
 
-void println(byte txt , byte line = 255 , byte column = 255) {
+// void println(byte txt , byte line = 255 , byte row = 255) {
  
   
  
-  if (timerPrintAvailable)
-  {
-    if ( (line + column) != 510 ) {
-    display.setCursor (column , line);
-    //Serial.println ( "cl:" + String (column) + " ln:" + String (line ) + "=" + String (line + column));
-    }
+//   if (timerPrintAvailable)
+//   {
+//     if ( (line + row) != 510 ) {
+//     display.setCursor (row , line);
+//     //Serial.println ( "cl:" + String (row) + " ln:" + String (line ) + "=" + String (line + row));
+//     }
 
-    Serial.println (" " + txt);
-    //display.print(txt);
-  }
-	//display.println(SPACE);
+//     Serial.println (" " + txt);
+//     //display.print(txt);
+//   }
+// 	//display.println(SPACE);
 
-}
+// }
 
 
-void println(String  txt , byte line = 255 , byte column = 255) {
+// void println(String  txt , byte line = 255 , byte row = 255) {
  
   
  
-  if (timerPrintAvailable)
-  {
-    if ( (line + column) != 510 ) {
-    display.setCursor (column , line);
-    //Serial.println ( "cl:" + String (column) + " ln:" + String (line ) + "=" + String (line + column));
-    }
+//   if (timerPrintAvailable)
+//   {
+//     if ( (line + row) != 510 ) {
+//     display.setCursor (row , line);
+//     //Serial.println ( "cl:" + String (row) + " ln:" + String (line ) + "=" + String (line + row));
+//     }
 
-    Serial.println (" " + txt);
-    //display.print(txt);
-  }
-	//display.println(SPACE);
+//     Serial.println (" " + txt);
+//     //display.print(txt);
+//   }
+// 	//display.println(SPACE);
 
-}
+// }
 
 
 
@@ -235,6 +235,8 @@ class lib_meniuInterface20x4_LiquidCrystal_I2C
 	byte basicToggleCount = 0; 
 
 	unsigned long clock_1sec;
+
+	int pxLengh = 4; // as [P1] size 
 public:bool isclearedDisplayCommon = false; // common try use to clear once when enter in a option 
 	  bool isCompletedChangeValueToExitFromSelectedOption = false; // more robust Set button press waiter
 
@@ -482,15 +484,6 @@ public:void IncludeQuckAccessFunction(void (*functionPointer)(), byte& functionV
 
 
 	  //------------------------------------------------------------------
-private:void meniuDescribeOptionDisplay(String txt) {
-	display.setCursor(0, 0);
-
-	//display.setTextSize(1);
-	//display.println(txt);
-
-
-	print(txt);
-}
 
 
 void fun_startedWaitingmeniuOptionSelected (int value = 300) 
@@ -564,7 +557,7 @@ private:void userChangeMeniuValue(byte* userPx, byte __delay = 10, byte minValue
 	{
 		*userPx = *userPx + 1;
 
-		delay(__delay);
+		//delay(__delay);
 		//startedWaiting = millis(); //reset meniu delay counter // LAG When  push SET Button
 	}
 
@@ -572,7 +565,7 @@ private:void userChangeMeniuValue(byte* userPx, byte __delay = 10, byte minValue
 	if (*buttonDOWN && *userPx > minValue)
 	{
 		*userPx = *userPx - 1;
-		delay(__delay);
+		//delay(__delay);
 		//startedWaiting = millis();  //reset meniu delay counter // LAG When  push SET Button
 	}
 
@@ -587,13 +580,24 @@ private:void userChangeMeniuValue(bool* userPx, byte __delay = 10) {
 	{
 		*userPx != *userPx;
 
-		delay(__delay);
+		//delay(__delay);
 		//startedWaiting = millis(); //reset meniu delay counter // LAG When  push SET Button
 	}
 
 
 
 }
+
+
+
+private: void autoText (String txt , byte line , byte row ) {
+
+	print (txt , line,row);
+	//display.setCursor (row , line);
+	display.setCursor (txt.length(),line); // txt.length() display.setCursor (7,2);
+
+}
+
 
 private:void menuSelectedPrint(int value = 0, bool value_print = false) {
 	
@@ -603,11 +607,13 @@ private:void menuSelectedPrint(int value = 0, bool value_print = false) {
 	//if (func_stored[includedMenuCount].printfunctionValue)
 
 	if (func_stored[meniuOptionSelected + 1].__printfunctionValue) { // if not false to print by manualy in custom function
+		
+
 		//print stored values from a memory 
 		//println(String (*func_stored[meniuOptionSelected + 1].__functionValueAddress) + " " ,1,0);
 
 		//display.set1X();
-		print(String (*func_stored[meniuOptionSelected + 1].__functionValueAddress) + " " + func_stored[meniuOptionSelected + 1].__functionValueAbbreviation + " ",2,0);
+		autoText(String (*func_stored[meniuOptionSelected + 1].__functionValueAddress) + "" + func_stored[meniuOptionSelected + 1].__functionValueAbbreviation + " ",1,0);
 
 		//display.setCursor(0, 30);
 	} // if not allowed to print 
@@ -634,12 +640,16 @@ private:void menuQuckAccesPrint() {
 
 	// if allowed to print function
 	if (func_stored[includeQuckAccessMenu].__printfunctionValue) {
+		
 		//print stored values from a memory 
 
 		//display.set2X();
 		//println( String (*func_stored[includeQuckAccessMenu].__functionValueAddress) + " ",1,0);
 		//display.set1X();
-		print(String (*func_stored[includeQuckAccessMenu].__functionValueAddress) +" "+ func_stored[includeQuckAccessMenu].__functionValueAbbreviation,1,0);
+		autoText (String (*func_stored[includeQuckAccessMenu].__functionValueAddress) + "" + func_stored[includeQuckAccessMenu].__functionValueAbbreviation + " ",1,0);
+
+		
+
 		//var_manualMode
 
 	} // if not allowed to print 
@@ -656,30 +666,40 @@ private:void menuQuckAccesPrint() {
 
 
 // Interpeter all alligment and print a manual value in custom function = .func
-public: void menuPrintManuallyValue(int value , byte line = 1 , byte column = 0) {
+public: void menuPrintManuallyValue(int value ) {
 	
 	//print(meniuOptionSelected + 1);
 	
 	if (!func_stored[meniuOptionSelected + 1 ].__printfunctionValue) { // if allowed to print in config
+		
+
 		//display.set2X();
 		//println(String(value) + " " ,1,5);
 
 		//display.set1X();
-		print(String(value) + " "+ func_stored[meniuOptionSelected + 1].__functionValueAbbreviation + " " ,line,column);
+		autoText (String(value) + "" + func_stored[meniuOptionSelected + 1].__functionValueAbbreviation + " " ,1,0);
+
+
 	}
 }
 	  
 // Interpeter all alligment and print a manual value in custom function = .func only for quick access menu
-public:void menuQuckAccesPrintManuallyValue(int value , byte line = 1 , byte column = 0) {
+public:void menuQuckAccesPrintManuallyValue(int value  ) {
 	
 	//print(meniuOptionSelected + 1);
 
+
+
 	if (!func_stored[includeQuckAccessMenu].__printfunctionValue) { // if allowed to print in config
+		String pTxt;
+
 		//display.set2X();
-		//println(String (value) + " " +func_stored[includeQuckAccessMenu].__functionValueAbbreviation,1,0);
+		//println(String (value) + "" +func_stored[includeQuckAccessMenu].__functionValueAbbreviation,1,0);
 
-		print(String (value) + " " +func_stored[includeQuckAccessMenu].__functionValueAbbreviation + " " ,line,column);	
 
+		autoText (String (value) + "" + func_stored[includeQuckAccessMenu].__functionValueAbbreviation + " " ,1,0);
+
+		
 		//display.set1X();
 		//print( func_stored[includeQuckAccessMenu].__functionValueAbbreviation);
 	}
@@ -836,7 +856,6 @@ public:bool InterfaceDinamic() {
 							boolSetMenu = false; // exit from boolSetMenu statement
 							meniuOptionSelected = 1; //reset meniu position to P0
 							meniuOptionIsSelected = false; // when user exit from meniu set to default 
-							isclearedDisplayCommon = false;
 							
 							timePrintDelayOffset = 4;
 							delayOpenMenuQuickAccess  = 7;
@@ -893,13 +912,16 @@ public:bool InterfaceDinamic() {
 					if (meniuOptionIsSelected && /*print fix not flicker*/ !(defaultIsFunc && meniuOptionSelectFun() == includedMenuCount - 1))
 						if (basicToggle) {
 								if (basicToggleCount < 6) // to see ?P1?
-								print(" P" + String(meniuOptionSelectFun()) + " ",0,0);
+									print(" P" + String(meniuOptionSelectFun()) + " ",0,0);
 						}
 						else
 							print(">P" + String(meniuOptionSelectFun()) + "<",0,0);
 					else
-							print("[P" + String(meniuOptionSelectFun()) + "]",0,0);
+						{		
+							pxLengh = String ("[P" + String(meniuOptionSelectFun()) + "]").length();
+							print("[P" + String(meniuOptionSelectFun()) + "]" ,0,0);
 
+						}
 
 				// if meniu option not selected print about meniu abbreviation
 
@@ -1005,12 +1027,12 @@ public:bool InterfaceDinamic() {
 				}
 				else {
 					// ----------------------do rest of options------------------------------------
-
+					// + 1 to avoid to stuble a Quck access menu option
 
 
 
 					// print about  menu  what it's doing
-					print(func_stored[meniuOptionSelectFun() + 1].__functionName,0,5); // + 1 to avoid to stuble a Quck access menu option
+					print(func_stored[meniuOptionSelectFun() + 1].__functionName,0,pxLengh); 
 
 
 					// if user select a desire function, then change his value
@@ -1020,6 +1042,10 @@ public:bool InterfaceDinamic() {
 
 						//print menu
 						menuSelectedPrint();
+					} else 
+
+					{
+
 					}
 
 
@@ -1033,7 +1059,7 @@ public:bool InterfaceDinamic() {
 					//display.setCursor(0, 0);
 
 					//display.set2X();
-					print("  [EXIT]      " ,0,0);
+					print("[EXIT]              " ,0,0);
 					print(SPACE ,1,0);
 				}
 
@@ -1083,6 +1109,7 @@ public:bool InterfaceDinamic() {
 				// set whole set loop
 				boolQuicklyChange = true;
 				boolSetButton = true;
+				pxLengh = 4; // parameters taking space print 
 
 			}
 

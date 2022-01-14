@@ -145,10 +145,10 @@ static const uint8_t D14 = 6; //SDCLK             NO,   Reason[3]               
 #include <EEPROM.h>
 
 // Replace with your network credentials
-const char* ssid     = "cc";
-const char* password = "cc";
-signed int relayOn_TotalTime = 18000 ; // how mucth time shoud work a relay by seconds 60sec*45min = 2700
-String headerName = "Bike Charger Server"; // give a name to a webserver
+const char* ssid     = "zz";
+const char* password = "zz";
+signed int relayOn_TotalTime = 43260 ; // how mucth time shoud work a relay by seconds 60sec*45min = 2700
+String headerName = "Battery Operating"; // give a name to a webserver
 
 
 // Set web server port number to 80
@@ -185,7 +185,9 @@ String pin_relayState = "off";
 
 // Assign output variables to GPIO pins
 //const int output5 = 5;
-const byte pin_relay = 0; // on relay esp01 = 0, but on esp8266 = 2 
+const byte pin_relayPower = D8; // on relay esp01 = 0, but on esp8266 = 2 
+const byte pin_relay_inverter = D7;
+const byte pin_ReadInverterFault = D6 ; // read inverter where are in fault condition to react as swith off power relay fast as possible
 const byte pin_button = 2; // GPIO2
 
 // Current time
@@ -202,7 +204,12 @@ int  CheckOneHourPassed ; // change state to auto-on in eacth hour by compared t
 bool ActivateOneHourWhenPassed = false; // alow to pass a logick in each hour 
 
 
-signed int relayOn_Sec = 0 ; // turn on relay by a seconds
+ signed int relayPowerOn_Sec = 0 ; // turn on relay by a seconds
+ signed int relayInverterOn_Sec = 0; // seconds to turn on a inverter
+ signed int relayInverterOn_Total = 16; // seconds
+
+bool       inverterFailed = false; // save condition about inverter process is working propietly
+String      reportWhatTimeInverterFailed = ""; 
 
 // represent for a user what time and day was turned on 
 String     reportWhatTimeWasOn = ""; 
@@ -269,7 +276,7 @@ String transConditionalPrint (String state ,String indexHref, String trueStatePr
                    return (" <a href=\"/"+indexHref+"/off\"><button class=\"button_footer2\"  style=\"width:"+widthProcentage+"\">"+falsestatePrint+"</button></a>");
            }          
 
-void turnOnRelaysTimeout (String turnedByEvent = "") { relayOn_Sec = relayOn_TotalTime; pin_relayState = "on"; funTimeReportUser(turnedByEvent); }
+void turnOnRelaysTimeout (String turnedByEvent = "") { relayPowerOn_Sec = relayOn_TotalTime; pin_relayState = "on"; funTimeReportUser(turnedByEvent); inverterFailed = false;/* reset invertert failed condtition if possible*/}
 
 void Relay_Auto_on (String turnedByEvent = "") {
 
@@ -278,11 +285,13 @@ void Relay_Auto_on (String turnedByEvent = "") {
       
 
           ActivateOneHourWhenPassed = false; // but if any 1/4 condition is correct, then leave this disabler to prevent from multiple  on in same hour 
-         if (output6State == "on" && timeClient.getHours() == 3) {Serial.println(" at 8h");    turnOnRelaysTimeout (turnedByEvent); }
-    else if (output7State == "on" && timeClient.getHours() == 5) {Serial.println(" at 10h");  turnOnRelaysTimeout (turnedByEvent); }
-    else if (output8State == "on" && timeClient.getHours() == 13) {Serial.println(" at 16h");  turnOnRelaysTimeout (turnedByEvent); }
-    else if (output9State == "on" && timeClient.getHours() == 15) {Serial.println(" at 20h");  turnOnRelaysTimeout (turnedByEvent); }
+         if (output6State == "on" && timeClient.getHours() == 8) {Serial.println(" at 8h");    turnOnRelaysTimeout (turnedByEvent); }
+    else if (output7State == "on" && timeClient.getHours() == 10) {Serial.println(" at 10h");  turnOnRelaysTimeout (turnedByEvent); }
+    else if (output8State == "on" && timeClient.getHours() == 16) {Serial.println(" at 16h");  turnOnRelaysTimeout (turnedByEvent); }
+    else if (output9State == "on" && timeClient.getHours() == 20) {Serial.println(" at 20h");  turnOnRelaysTimeout (turnedByEvent); }
     else { ActivateOneHourWhenPassed = true; }; // if failed to auto-on then reset to work for a next time
+
+        
 
           //Serial.print ("Stage:ActivateOneHourWhenPassed auto-on ["+ String (ActivateOneHourWhenPassed));
          // Serial.println ("]     State20h " + String (output9State == "on") + ", getHours[" +String (timeClient.getHours()) + "]==20h:" + String (timeClient.getHours() == 20));
@@ -291,7 +300,7 @@ void Relay_Auto_on (String turnedByEvent = "") {
 }
 
 
-
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 void one30SecTimer () 
 {
 
@@ -343,7 +352,7 @@ void quarterSecondTimer () { //0.2 second
   }
 
 }
-
+//+++++++++++++++++++++++++++++++++++++++++++++++++++
 void oneSecTimer () {
   
   quarterSecondTimer () ;
@@ -367,10 +376,19 @@ void oneSecTimer () {
 
     }
 
-    if ( relayOn_Sec > 0 ) {relayOn_Sec = relayOn_Sec -1; reportHowMuchTimeWasOn = reportHowMuchTimeWasOn + 1;} // countdown timeout
-      
+    if ( relayPowerOn_Sec > 0 ) {relayPowerOn_Sec = relayPowerOn_Sec -1; reportHowMuchTimeWasOn = reportHowMuchTimeWasOn + 1;} // countdown timeout
+       {
+         one30SecTimer ();
+       }
 
-       one30SecTimer ();
+
+      if (relayInverterOn_Sec > 0)
+        {
+         relayInverterOn_Sec-- ;
+        }
+
+      //  Serial.println ("relayInverterOn_Sec: "+ String (relayInverterOn_Sec) + " relayPowerOn_Sec: "+ String (relayPowerOn_Sec)  + " pin_ReadInverterFault: "+ String (digitalRead(pin_ReadInverterFault)) + " inverterFailed:" + String (inverterFailed) +
+      //   " relayInverterOn_Sec:"+ String (relayInverterOn_Sec) + " << " + String (int(  relayInverterOn_Total / 2 ))   );
   }
 
 }
@@ -385,16 +403,28 @@ void inFullLoop ()
 }
 
 
+
+
+
+
+
+
+//==============================================
+
+
 void setup() {
  Serial.begin(115200);
    Serial.println ("Starting ...");
   // Initialize the output variables as outputs
  // pinMode(output5, OUTPUT);
-  pinMode(pin_relay, OUTPUT);
+  pinMode (pin_relayPower, OUTPUT);
+  pinMode (pin_relay_inverter, OUTPUT);
   pinMode (pin_button, INPUT_PULLUP);
+  pinMode (pin_ReadInverterFault , INPUT_PULLUP);
   // Set outputs to LOW
   //digitalWrite(output5, LOW);
-  digitalWrite(pin_relay, HIGH );
+  digitalWrite(pin_relayPower, LOW );
+  digitalWrite(pin_relay_inverter, LOW );
 
   EEPROM32_INIT();
 //Serial.println("Load settings from EEPROM");
@@ -424,7 +454,20 @@ if (readMemoryBool (9))  output9State = "on";
   funTimeClient ();
 }
 
+
+
+
+
+
+
+
+
+//----------------------------------------------
+
+
 void loop(){
+
+
   WiFiClient client = server.available();   // Listen for incoming clients
     
   if (client) {                             // If a new client connects,
@@ -474,8 +517,10 @@ void loop(){
               
               //Serial.println("GPIO 4 on");
               pin_relayState = "on";
-              
-             // digitalWrite(pin_relay, HIGH);
+              relayInverterOn_Sec = relayInverterOn_Total;
+             // digitalWrite(pin_relayPower, HIGH);
+
+              inverterFailed = false; // reset status about inverter when user pressed a to turn on
 
                if (previousRelayOn)
                     turnOnRelaysTimeout("internetu");
@@ -486,7 +531,7 @@ void loop(){
               pin_relayState = "off";
 
                 previousRelayOn = true;
-                relayOn_Sec = 0;
+                relayPowerOn_Sec = 0;
             }
             
 
@@ -607,19 +652,23 @@ void loop(){
             client.println("<body> <h1> " + headerName + " </h1> ");
 
 
-            if (relayOn_Sec > 0 ){
+            if (relayPowerOn_Sec > 0 ){
               
-              String h = (getHours(relayOn_Sec) > 0) ? String(getHours(relayOn_Sec)) +"h " : " " ;
-              String m = (getMinutes(relayOn_Sec) > 0) ? String(getMinutes(relayOn_Sec)) +"m " : " " ;
-              String s = (getSeconds(relayOn_Sec) > 0) ? String(getSeconds(relayOn_Sec)) +"s " : " " ;
+              String h = (getHours(relayPowerOn_Sec) > 0) ? String(getHours(relayPowerOn_Sec)) +"h " : " " ;
+              String m = (getMinutes(relayPowerOn_Sec) > 0) ? String(getMinutes(relayPowerOn_Sec)) +"m " : " " ;
+              String s = (getSeconds(relayPowerOn_Sec) > 0) ? String(getSeconds(relayPowerOn_Sec)) +"s " : " " ;
 
               client.println("<div class=\"container\"><a href=\"/reload\" class=\"reload\" style=\"text-align:left;\">Working [" + h + m + s + "] </a>");
-              digitalWrite(pin_relay, LOW);
+             
+            //     digitalWrite(pin_relayPower, HIGH);
+            //    digitalWrite(pin_relay_inverter, HIGH );
+
               
             }
             else{
               client.println("<div class=\"container\"><a href=\"/reload\" class=\"reload\" style=\"text-align:left;\">    [Reload]   </a>");
-              digitalWrite(pin_relay, HIGH);
+              digitalWrite(pin_relayPower, LOW);
+              digitalWrite(pin_relay_inverter, LOW );
               
                
             }
@@ -673,6 +722,9 @@ void loop(){
              if (reportWhatTimeWasOn.length() > 0)
                 client.println ("<br>Buvo ijungta:" + reportWhatTimeWasOn);
 
+              if (inverterFailed)
+                 client.println ("<br>Inverteris sutriko: " + reportWhatTimeInverterFailed+ " !");
+
              client.println("</p>");
 
 
@@ -712,12 +764,22 @@ void loop(){
    
 
 
+       if (!digitalRead(pin_ReadInverterFault) && (relayInverterOn_Sec  < int( relayInverterOn_Total / 2) )/*ignore inverter while booting*/  ) // if inverter failed at some point, switch down a power relay to avoid blackouts
+             {
+                 relayPowerOn_Sec = 0; // reset
+                 inverterFailed = true; // save a failed condtition
+                 pin_relayState = "off"; // back to off state
+                 reportWhatTimeInverterFailed =  " " + timeClient.getFormattedTime(); // save time when was failed inverter to boot or was to low at a power 
 
-     if (relayOn_Sec > 0 ){ // if timeout still on then turn on 
+             }
+
+
+
+     if (relayPowerOn_Sec > 0  && !inverterFailed){ // if timeout still on then turn on 
               
              
 
-               if (previousState && relayOn_Sec== 1)
+               if (previousState && relayPowerOn_Sec== 1)
                 {
                   //Serial.print("RESET timer:pin_relayState from :"+pin_relayState + " " + String (previousState));
                   pin_relayState = "off"; // back to off state
@@ -727,17 +789,35 @@ void loop(){
                    previousState = false;
                 }
 
-              digitalWrite(pin_relay, LOW);
+             
+
+
+               if (relayInverterOn_Sec  > 0) // firts turn on a inverter
+                  {
+                      digitalWrite (pin_relay_inverter , HIGH); 
+                      reportWhatTimeInverterFailed = ""; //reset when user pressed to turn on button
+                  }
+              else if (relayInverterOn_Sec == 0)  // then turn on a power relay and also inverter 
+                  {
+                      digitalWrite (pin_relay_inverter , HIGH);
+                      digitalWrite(pin_relayPower, HIGH);  
+                  }
+
+
             }
             else{
               
-              digitalWrite(pin_relay, HIGH);
+                     digitalWrite(pin_relayPower, LOW);
+                     digitalWrite (pin_relay_inverter , LOW);
+
                previousState = true;
               
             }
    
 
 
+
+           
 }
 
 
