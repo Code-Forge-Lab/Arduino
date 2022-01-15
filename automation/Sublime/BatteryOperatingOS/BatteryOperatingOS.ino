@@ -206,7 +206,7 @@ bool ActivateOneHourWhenPassed = false; // alow to pass a logick in each hour
 
  signed int relayPowerOn_Sec = 0 ; // turn on relay by a seconds
  signed int relayInverterOn_Sec = 0; // seconds to turn on a inverter
- signed int relayInverterOn_Total = 16; // seconds
+ signed int relayInverterOn_Total = 16; // seconds when power relay to be on
 
 bool       inverterFailed = false; // save condition about inverter process is working propietly
 String      reportWhatTimeInverterFailed = ""; 
@@ -276,7 +276,7 @@ String transConditionalPrint (String state ,String indexHref, String trueStatePr
                    return (" <a href=\"/"+indexHref+"/off\"><button class=\"button_footer2\"  style=\"width:"+widthProcentage+"\">"+falsestatePrint+"</button></a>");
            }          
 
-void turnOnRelaysTimeout (String turnedByEvent = "") { relayPowerOn_Sec = relayOn_TotalTime; pin_relayState = "on"; funTimeReportUser(turnedByEvent); inverterFailed = false;/* reset invertert failed condtition if possible*/}
+void turnOnRelaysTimeout (String turnedByEvent = "") { relayPowerOn_Sec = relayOn_TotalTime; pin_relayState = "on"; funTimeReportUser(turnedByEvent); inverterFailed = false;/* reset invertert failed condtition if possible*/ relayInverterOn_Sec = relayInverterOn_Total;}
 
 void Relay_Auto_on (String turnedByEvent = "") {
 
