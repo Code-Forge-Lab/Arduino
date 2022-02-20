@@ -147,7 +147,7 @@ static const uint8_t D14 = 6; //SDCLK             NO,   Reason[3]               
 // Replace with your network credentials
 const char* ssid     = "zz";
 const char* password = "zz";
-signed int relayOn_TotalTime = 43260 ; // how mucth time shoud work a relay by seconds 60sec*45min = 2700
+signed int relayOn_TotalTime = 86460 ; // how mucth time shoud work a relay by seconds 60sec*45min = 2700
 String headerName = "Battery Operating"; // give a name to a webserver
 
 
@@ -276,7 +276,7 @@ String transConditionalPrint (String state ,String indexHref, String trueStatePr
                    return (" <a href=\"/"+indexHref+"/off\"><button class=\"button_footer2\"  style=\"width:"+widthProcentage+"\">"+falsestatePrint+"</button></a>");
            }          
 
-void turnOnRelaysTimeout (String turnedByEvent = "") { relayPowerOn_Sec = relayOn_TotalTime; pin_relayState = "on"; funTimeReportUser(turnedByEvent); inverterFailed = false;/* reset invertert failed condtition if possible*/ relayInverterOn_Sec = relayInverterOn_Total;}
+void turnOnRelaysTimeout (String turnedByEvent = "") { relayPowerOn_Sec = relayOn_TotalTime; pin_relayState = "on"; funTimeReportUser(turnedByEvent);/* inverterFailed = false;/* reset invertert failed condtition if possible*/ relayInverterOn_Sec = relayInverterOn_Total;}
 
 void Relay_Auto_on (String turnedByEvent = "") {
 
@@ -370,6 +370,7 @@ void oneSecTimer () {
         if (reportWhatTimeOnResetCounter == 1)
            {
             reportWhatTimeWasOn = ""; // in every 12 hours passed whidout any activation button or internet or auto-on, reset representive string to not show for a less confution in the future
+            inverterFailed = false;/* reset invertert failed condtition if possible*/
            }
 
         reportWhatTimeOnResetCounter= reportWhatTimeOnResetCounter - 1;
@@ -654,11 +655,12 @@ void loop(){
 
             if (relayPowerOn_Sec > 0 ){
               
+              String d = (getDays(relayPowerOn_Sec) != 0) ? String(getDays(relayPowerOn_Sec)) +"d " : " " ;
               String h = (getHours(relayPowerOn_Sec) > 0) ? String(getHours(relayPowerOn_Sec)) +"h " : " " ;
               String m = (getMinutes(relayPowerOn_Sec) > 0) ? String(getMinutes(relayPowerOn_Sec)) +"m " : " " ;
               String s = (getSeconds(relayPowerOn_Sec) > 0) ? String(getSeconds(relayPowerOn_Sec)) +"s " : " " ;
 
-              client.println("<div class=\"container\"><a href=\"/reload\" class=\"reload\" style=\"text-align:left;\">Working [" + h + m + s + "] </a>");
+              client.println("<div class=\"container\"><a href=\"/reload\" class=\"reload\" style=\"text-align:left;\">Working ["+ d + h + m + s + "] </a>");
              
             //     digitalWrite(pin_relayPower, HIGH);
             //    digitalWrite(pin_relay_inverter, HIGH );
@@ -869,6 +871,10 @@ byte readMemoryByte(int16_t address) {
 };
 
 
+int getDays(int d )  {
+
+  return (( d % 2592000L) / 86400);
+}
 
 int getHours(int h )  {
   return (( h % 86400L) / 3600);
@@ -877,5 +883,6 @@ int getMinutes(int m)  {
   return ((m % 3600) / 60);
 }
 int getSeconds(int s)  {
+ //Serial.println ("Day..........................................................................................: " + String ( (( s % 2592000L) / 86400)) );
   return (s % 60);
 }
