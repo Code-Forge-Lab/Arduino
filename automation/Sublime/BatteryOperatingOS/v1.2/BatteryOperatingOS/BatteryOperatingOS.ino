@@ -147,6 +147,7 @@ static const uint8_t D14 = 6; //SDCLK             NO,   Reason[3]               
 // Replace with your network credentials
 const char* ssid  = "MM";
 const char* password = "GG";
+const char* password = "GG";
 signed int relayOn_TotalTime = 86460 ; // how mucth time shoud work a relay by seconds 60sec*45min = 2700
 String headerName = "Battery Operating"; // give a name to a webserver
 

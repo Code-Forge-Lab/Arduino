@@ -137,7 +137,8 @@ static const uint8_t D14 = 6; //SDCLK             NO,   Reason[3]               
 #include <DNSServer.h>
 #include <ESP8266WebServer.h>
 #include <WiFiManager.h>         // https://github.com/tzapu/WiFiManager
-
+#include "Voltmeter2.h"
+#include "buttons.h"
 
 
 /*  About program
@@ -145,6 +146,7 @@ Inspect where inv. is on and output strong 220vac
   GPIO16 (D0) = Inv.ReadAC+         ->testPoint_Inv,ReadAC
 */
 const static uint8_t Inv_readAC = D0;
+bool sensorDoInv_readAC = false;
 /*
 Relay Turn On Relay to 220v Output
 Can control 220v relay and also read inv live, is completly on with "Feed_Separate"
@@ -167,7 +169,11 @@ bool    doAvoidInv_On = false;    //sec delay to turn to on inverter to fast, av
 Turn on inv. prg by button
   GPIO0 (D3) = Prg.on.button
 */
-const static uint8_t Prg_on_button = D3;
+const static byte Prg_on_button = D3;
+bool buttonSET;
+byte BUTTON_SET =  Prg_on_button;
+buttons btnPrg_on (buttonSET,BUTTON_SET , false);
+byte doPrg_on_button = false; // 
 /*
 Indicate status about program
   GPIO2 (D4) = LED_Indicator
@@ -175,22 +181,26 @@ Indicate status about program
 const static uint8_t LED_Indicator = D4;
 /*
 Read external signals from inverter where tells about successful working stage
-  GPIO14(D5) = Inv.ReadSignal+      ->3-20V Input
+  GPIO14(D5) = Inv.ReadSignal+      ->Contact Input
 */
 const static uint8_t Inv_ReadSignal = D5;
+bool sensorDoInv_ReadSignal = false;
 /*
 Read external signals from inverter where tells about successful working stage
   GPIO12(D6) = Prg.StopInv+         ->48-70V Input
 */
 const static uint8_t Prg_StopInv = D6;
+bool sensorDoPrg_StopInv = false;
 /*
 --Analog Read--
   A0 = Read.Batery.Volt
 */
-const static uint8_t Read_Batery_Volt = A0;
-int sensorRead_Batery_Volt = 0;  // value read from the pot
+const static uint8_t Read_Battery_Volt = A0;
+int sensorRead_Battery_Volt = 0;  // value read from the pot
+//(uint8_t pin_input = A0 ,              float broken_voltage = 0.0        ,  float R1 = 100000.0 , float R2 = 10000.0  )
+VoltMeter voltAvrBattery  (Read_Battery_Volt, 0.0 ,   45000.0 ,2200.0  );
 
-
+        
 
 // Function declaration
 void funInv_On_then_Output220 (String x);
@@ -229,10 +239,12 @@ void setup() {
   pinMode (LED_Indicator,     OUTPUT);// output
   pinMode (Inv_ReadSignal,    INPUT);
   pinMode (Prg_StopInv,       INPUT);
-  pinMode (Read_Batery_Volt,  INPUT);
+  pinMode (Read_Battery_Volt,  INPUT);
   // Set outputs to LOW
-  digitalWrite(output5, LOW);
-  digitalWrite(output4, LOW);
+ // digitalWrite(output5, LOW);
+ // digitalWrite(output4, LOW);
+
+
 
   // WiFiManager
   // Local intialization. Once its business is done, there is no need to keep it around
@@ -255,11 +267,14 @@ void setup() {
   //Serial.println (WiFiManager.localIP());
   // if you get here you have connected to the WiFi
   Serial.println("Connected________________________");
-  
+    
   server.begin();
 }
 
+
+   // myClass.getVal();
 void loop(){
+  
   WiFiClient client = server.available();   // Listen for incoming clients
 
   if (client) {                             // If a new client connects,
@@ -325,7 +340,7 @@ void loop(){
             client.println(".button2 {background-color:MediumSeaGreen ;}</style></head>");
             
             // Web Page Heading
-            client.println("<body><h1>ESP8266 Web Server</h1>");
+            client.println("<body><h1>BatteryOperationOS</h1>");
             
             // Display current state, and ON/OFF buttons for GPIO 5  
             client.println("<p>Inv_On - State " + output5State + " Avoid: " + String(delayAvoid_Inv_On) + "</p>");
@@ -353,11 +368,13 @@ void loop(){
                
             // Display current state, and ON/OFF buttons for GPIO 4  
             client.println("<p>GPIO 4 - State " + output4State + " "+ String (delay_Inv_Output220) +" b:"+String (doInv_Output220)+"</p>" );
+            client.println("<p> "+ getStatusText () +"</p>" );
+            
             // If the output4State is off, it displays the ON button       
             if (output4State=="off") {
-              client.println("<p><a href=\"/4/on\"><button class=\"button\">ON</button></a></p>");
+              client.println("<p><a href=\"/4/on\"><button class=\"button\">off "+String (voltAvrBattery.voltage)+"v</button></a></p>");
             } else {
-              client.println("<p><a href=\"/4/off\"><button class=\"button button2\">OFF</button></a></p>");
+              client.println("<p><a href=\"/4/off\"><button class=\"button button2\">on "+String (sensorRead_Battery_Volt)+" vbits</button></a></p>");
             }
             client.println("</body></html>");
             
@@ -387,9 +404,26 @@ void loop(){
   oneSecTimer ();
 
   
-  
+  btnPrg_on.endScaning ();
 }
 
+void __main () {
+  btnPrg_on.scaning();
+
+  sensorDoInv_readAC      = digitalRead (Inv_readAC);  
+  sensorDoInv_ReadSignal  = digitalRead (Inv_ReadSignal); // __/ __
+  sensorDoPrg_StopInv     = digitalRead (Prg_StopInv);
+  // doPrg_on_button         = !digitalRead (Prg_on_button);
+  doPrg_on_button         = digitalRead (btnPrg_on.onlyReadPressedSignleTime ());
+
+  //if (btnPrg_on.onlyReadPressedSignleTime()){
+  //          doPrg_on_button = true;
+  //}
+
+  
+     
+     voltAvrBattery.VoltageMeterUpdate ();
+}
 
 void quarterSecondTimer () { //0.2 second
 
@@ -401,7 +435,7 @@ void quarterSecondTimer () { //0.2 second
       clock_1secCounter  = clock_1secCounter + 1;
 
      //Sensor
-      sensorRead_Batery_Volt = analogRead(Read_Batery_Volt);
+      sensorRead_Battery_Volt = analogRead(Read_Battery_Volt);
      //sec delay to pass power throw power relay from inverter
      if (delay_Inv_Output220 < 3 &&  delay_Inv_Output220 >= 1) {
 
@@ -428,6 +462,9 @@ void quarterSecondTimer () { //0.2 second
 void oneSecTimer () {
 
      quarterSecondTimer () ;
+     __main();
+     
+
  if (clock_1secCounter >=5){
 
           clock_1secCounter = 0;
@@ -453,7 +490,9 @@ void oneSecTimer () {
                  //--------------------
               }
 
-          Serial.println (". s:" + String (sensorRead_Batery_Volt));
+          
+          Serial.println (getStatusText ());
+
     }
 
 }
@@ -480,7 +519,21 @@ void funInv_On_then_Output220 (String x = "off") {
 
       delay_Inv_Output220 = 0;
       doInv_Output220 = false;
+      // doPrg_on_button = false;
 
 
    }
+}
+
+
+String getText (String index, bool conditionNaming){
+  if (conditionNaming)
+    return ",  " + index + ": true";
+  else
+    return ",  " + index + ": false";
+
+}
+String getStatusText () {
+ return   (". bits:" + String (sensorRead_Battery_Volt) +" = "+ String (voltAvrBattery.voltage) + "v.  "+ getText("sensorDoInv_readAC D0 ",sensorDoInv_readAC) + getText("  sensorDoInv_ReadSignal __/ __ D5",sensorDoInv_ReadSignal) + getText ("  sensorDoPrg_StopInv D6",sensorDoPrg_StopInv) + getText ("  btnPrg_on D3", doPrg_on_button ) );
+
 }

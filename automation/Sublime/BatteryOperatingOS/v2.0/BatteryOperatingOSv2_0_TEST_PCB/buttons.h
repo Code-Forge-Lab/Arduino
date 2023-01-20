@@ -28,8 +28,11 @@ public:void scaning (){
 	//unsigned long now;   
 	//unsigned long then;
 
+		     Serial.println ("pinRead:" + String(digitalRead(*pinRead)) + " invertDigitalRead:"+ String (!invertDigitalRead)	 ); delay (1000);
 
 		if (digitalRead(*pinRead) == !invertDigitalRead) { // invertDigitalRead == HIGH in esp8266
+				
+			
 				/*
 						if (btnPressedSingleTime == false ) {
 										//Serial.println(String(cnt) + "button pressed now");
