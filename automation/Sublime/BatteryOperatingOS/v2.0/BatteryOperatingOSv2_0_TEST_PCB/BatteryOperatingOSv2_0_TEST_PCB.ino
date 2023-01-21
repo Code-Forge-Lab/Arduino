@@ -172,7 +172,7 @@ Turn on inv. prg by button
 const static byte Prg_on_button = D3;
 bool buttonSET;
 byte BUTTON_SET =  Prg_on_button;
-buttons btnPrg_on (buttonSET,BUTTON_SET , false);
+buttonTimeout btnPrg_on (buttonSET,BUTTON_SET , true ,3000);
 byte doPrg_on_button = false; // 
 /*
 Indicate status about program
@@ -277,10 +277,17 @@ void loop(){
   
   WiFiClient client = server.available();   // Listen for incoming clients
 
+   
+
   if (client) {                             // If a new client connects,
     Serial.println("New Client.");          // print a message out in the serial port
     String currentLine = "";                // make a String to hold incoming data from the client
-    while (client.connected()) {            // loop while the client's connected
+    while (client.connected()) 
+    {            // loop while the client's connected
+     // prgm
+     btnPrg_on.scaning();
+      oneSecTimer ();
+
       if (client.available()) {             // if there's bytes to read from the client,
         char c = client.read();             // read a byte, then
         Serial.write(c);                    // print it out the serial monitor
@@ -295,7 +302,7 @@ void loop(){
             client.println("Content-type:text/html");
             client.println("Connection: close");
             client.println();
-            oneSecTimer ();
+           
             
             // turns the GPIOs on and off
             if (!doAvoidInv_On && header.indexOf("GET /5/on") >= 0) {//sec delay to turn to on inverter to fast, avoid toggle switching
@@ -390,7 +397,8 @@ void loop(){
         }
       }
 
-     oneSecTimer ();
+     
+      
     }
     // Clear the header variable
     header = "";
@@ -400,32 +408,41 @@ void loop(){
     Serial.println("");
 
   
-  }
+  }else {
+
+
+  btnPrg_on.scaning();
+
   oneSecTimer ();
 
   
-  btnPrg_on.endScaning ();
+  
+   btnPrg_on.endScaning();
+ }
 }
 
 void __main () {
-  btnPrg_on.scaning();
+ 
 
-  sensorDoInv_readAC      = digitalRead (Inv_readAC);  
-  sensorDoInv_ReadSignal  = digitalRead (Inv_ReadSignal); // __/ __
-  sensorDoPrg_StopInv     = digitalRead (Prg_StopInv);
+  sensorDoInv_readAC      = digitalRead (Inv_readAC);          // need more then 170v dc-ac or short a test points
+  sensorDoInv_ReadSignal  = digitalRead (Inv_ReadSignal);      // __/ __ need contact to activate
+  sensorDoPrg_StopInv     = digitalRead (Prg_StopInv);         // need source and ground to activate opticouple
   // doPrg_on_button         = !digitalRead (Prg_on_button);
-  doPrg_on_button         = digitalRead (btnPrg_on.onlyReadPressedSignleTime ());
+  doPrg_on_button         = btnPrg_on.getBtnTPressLongTime (); // hold 3 seconds to activate and return true
 
   //if (btnPrg_on.onlyReadPressedSignleTime()){
   //          doPrg_on_button = true;
   //}
 
   
-     
-     voltAvrBattery.VoltageMeterUpdate ();
+  // btnPrg_on.endScaning ();
+  voltAvrBattery.VoltageMeterUpdate ();
+
 }
 
 void quarterSecondTimer () { //0.2 second
+
+   __main();
 
   if (((long)clock_0_2sec + 200UL) < millis())
 
@@ -461,8 +478,10 @@ void quarterSecondTimer () { //0.2 second
 
 void oneSecTimer () {
 
+      
+
      quarterSecondTimer () ;
-     __main();
+     
      
 
  if (clock_1secCounter >=5){
@@ -493,6 +512,7 @@ void oneSecTimer () {
           
           Serial.println (getStatusText ());
 
+          
     }
 
 }
