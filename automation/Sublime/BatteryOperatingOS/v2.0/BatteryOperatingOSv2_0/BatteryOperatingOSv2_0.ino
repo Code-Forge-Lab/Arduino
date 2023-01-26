@@ -191,6 +191,15 @@ Read external signals from inverter where tells about successful working stage
 */
 const static uint8_t Prg_StopInv = D6;
 bool sensorDoPrg_StopInv = false;
+
+/*
+Swtich temperature sensor that give a contact then reached critical level
+Prg.StopInvTemp _/_
+*/
+const static uint8_t Prg_StopInvTemp = D7; 
+bool sensorPrg_StopInvTemp = false;
+
+
 /*
 --Analog Read--
   A0 = Read.Batery.Volt
@@ -198,7 +207,7 @@ bool sensorDoPrg_StopInv = false;
 const static uint8_t Read_Battery_Volt = A0;
 int sensorRead_Battery_Volt = 0;  // value read from the pot
 //(uint8_t pin_input = A0 ,              float broken_voltage = 0.0        ,  float R1 = 100000.0 , float R2 = 10000.0  )
-VoltMeter voltAvrBattery  (Read_Battery_Volt, 0.0 ,   45000.0 ,2200.0  );
+VoltMeter voltAvrBattery  (Read_Battery_Volt, 0.0 ,   680000.0 ,3900.0  );
 
         
 
@@ -206,6 +215,7 @@ VoltMeter voltAvrBattery  (Read_Battery_Volt, 0.0 ,   45000.0 ,2200.0  );
 void funInv_On_then_Output220 (String x);
 void oneSecTimer ();
 void quarterSecondTimer ();
+String fun_CmdRead (String);
 
 
 
@@ -222,6 +232,7 @@ WiFiServer server(80);
 
 // Variable to store the HTTP request
 String header;
+String header_cmd;
 
 // Auxiliar variables to store the current output state
 String output5State = "off";
@@ -235,14 +246,15 @@ void setup() {
   Serial.begin(115200);
   Serial.println ("Starting setup . . .");
   // Initialize the output variables as outputs
-  pinMode (Inv_readAC,        INPUT);
-  pinMode (Inv_Output220,     OUTPUT);// output
-  pinMode (Inv_On,            OUTPUT);// output
-  pinMode (Prg_on_button,     INPUT);
-  pinMode (LED_Indicator,     OUTPUT);// output
-  pinMode (Inv_ReadSignal,    INPUT);
-  pinMode (Prg_StopInv,       INPUT);
-  pinMode (Read_Battery_Volt,  INPUT);
+  pinMode (Inv_readAC,           INPUT);
+  pinMode (Inv_Output220,        OUTPUT);// output
+  pinMode (Inv_On,               OUTPUT);// output
+  pinMode (Prg_on_button,        INPUT);
+  pinMode (LED_Indicator,        OUTPUT);// output
+  pinMode (Inv_ReadSignal,       INPUT);
+  pinMode (Prg_StopInv,          INPUT);
+  pinMode (Prg_StopInvTemp,      INPUT);
+  pinMode (Read_Battery_Volt,    INPUT);
   // Set outputs to LOW
  // digitalWrite(output5, LOW);
  // digitalWrite(output4, LOW);
@@ -324,6 +336,7 @@ void loop(){
               output5State = "off";
 
                funInv_On_then_Output220 ("off") ; 
+               // delayAvoid_Inv_On = 5;
              
 
             } else if (header.indexOf("GET /4/on") >= 0) {
@@ -338,7 +351,12 @@ void loop(){
               output4State = "off";
              // digitalWrite(output4, LOW);
 
-            } else if (header.indexOf ("/configurations?finput=")){
+            } else if (header.indexOf ("/configurations?finput") > 0 ){
+              
+              header_cmd = header.substring(header.indexOf("/configurations?finput") + 23, header.indexOf (" HTTP") ); // //test header_cmd output
+               // header_cmd = header.substring ( header_cmd.indexOf ("finput="), 67 );
+               // header_cmd = header.substring( 3, 55 ); // //test header_cmd output
+               //
               LED_IndicatorBlinkFast = 4;
             }
             
@@ -391,8 +409,13 @@ void loop(){
               client.println("<p><a href=\"/4/off\"><button class=\"button button2\">on "+String (sensorRead_Battery_Volt)+" vbits</button></a></p>");
             }
             //Input configurations
-              client.println ("<form action=\"/configurations\"><label for=\"finput\">First name:</label><input type=\"text\" id=\"finput\" name=\"finput\"><br><br><input type=\"submit\" value=\"Submit\"></form>");
 
+        
+              client.println ("<form action=\"/configurations\"><label for=\"finput\">First name:</label><input type=\"text\" id=\"finput\" name=\"finput\"><br><br><input type=\"submit\" value=\"Submit\"></form>");
+              
+              //test header_cmd output
+              //client.println("<p>NVD" + header_cmd + "  inderxf "+ String (header_cmd.indexOf ("=")) + "  http>" + String (header_cmd.indexOf ("HTTP"))  + "</p>");
+              client.println("<p>Pout> " + header_cmd  + "</p>");
 
             client.println("</body></html>");
             
@@ -412,13 +435,15 @@ void loop(){
       
     }
     // Clear the header variable
+    // fun_CmdRead (header); // doesnt work cleanly
     header = "";
     // Close the connection
     client.stop();
     Serial.println("Client disconnected.");
     Serial.println("");
 
-  
+    
+
   }else {
 
 
@@ -429,6 +454,9 @@ void loop(){
   
   
    btnPrg_on.endScaning();
+
+
+   
  }
 }
 
@@ -438,6 +466,7 @@ void __main () {
   sensorDoInv_readAC      = digitalRead (Inv_readAC);          // need more then 170v dc-ac or short a test points
   sensorDoInv_ReadSignal  = digitalRead (Inv_ReadSignal);      // __/ __ need contact to activate
   sensorDoPrg_StopInv     = digitalRead (Prg_StopInv);         // need source and ground to activate opticouple
+  sensorPrg_StopInvTemp   = digitalRead (Prg_StopInvTemp);
   // doPrg_on_button         = !digitalRead (Prg_on_button);
   doPrg_on_button         = btnPrg_on.getBtnTPressLongTime (); // hold 3 seconds to activate and return true
 
@@ -510,8 +539,15 @@ void oneSecTimer () {
      
 
  if (clock_1secCounter >=5){
-
           clock_1secCounter = 0;
+
+          
+          if ( header_cmd.length() > 0)
+          {
+            fun_CmdRead (header_cmd);
+             header_cmd = "";
+          }
+
 
            if (delayAvoid_Inv_On > 0){
             delayAvoid_Inv_On--; // delay given to avoid turn on to fast
@@ -535,7 +571,7 @@ void oneSecTimer () {
               }
 
           
-          Serial.println (getStatusText ());
+          // Serial.println (getStatusText ());
 
           
     }
@@ -579,6 +615,62 @@ String getText (String index, bool conditionNaming){
 
 }
 String getStatusText () {
- return   (". bits:" + String (sensorRead_Battery_Volt) +" = "+ String (voltAvrBattery.voltage) + "v.  "+ getText("sensorDoInv_readAC D0 ",sensorDoInv_readAC) + getText("  sensorDoInv_ReadSignal __/ __ D5",sensorDoInv_ReadSignal) + getText ("  sensorDoPrg_StopInv D6",sensorDoPrg_StopInv) + getText ("  btnPrg_on D3", doPrg_on_button ) );
+ return   
+            (". bits:" + String (sensorRead_Battery_Volt) +" = "
+  + String  (voltAvrBattery.voltage) + "v.  "
+  + getText ("DoInv_readAC D0 ~220v",sensorDoInv_readAC) 
+  + getText ("  DoInv_ReadSignal D5_/_",sensorDoInv_ReadSignal)
+  + getText ("  DoPrg_StopInv D6 +48v",sensorDoPrg_StopInv) 
+  + getText ("  btnPrg_on D3 _/_", doPrg_on_button ) 
+  + getText ("  StopInvTemp D7_/_", sensorPrg_StopInvTemp ) );
 
+
+}
+
+
+String fun_CmdRead (String cmdRead /*input commands here*/) 
+{
+   String cmdGetSpecial; // special simbol begins from ':'
+   String cmdNRead = cmdRead;
+    // Serial.println ("+++++++++++++++++++++++++++full link> " + cmdRead);
+
+    if (cmdRead.length() > 0 ){// read comed arround
+       
+         // cmdRead = cmdRead.substring (0,cmdRead.length()-1); //to  remove incoming '\n'   
+         // Serial.println ("------------found Text:" + cmdRead);
+       
+
+        if (cmdRead.lastIndexOf("-") > 0) {
+          cmdGetSpecial = cmdRead.substring (cmdRead.lastIndexOf("-") + 1 ,cmdRead.length()); //separate text after-
+          cmdRead = cmdRead.substring (0,cmdRead.indexOf("-"));
+          Serial.println ("cmdRead:"  + cmdRead) ;
+          Serial.println ("found '-' " + cmdGetSpecial);
+          
+         }
+
+        if (cmdRead == "help")
+           Serial.println ("Awailable commands to input a credential for login in local network.\nssd:wifiname\npswd:password");
+
+         else if (cmdRead == "pswd" ){
+           Serial.println ("Registered wifi password:" + cmdGetSpecial);
+         }
+
+         else if (cmdRead == "ssd"){
+
+           Serial.println ("Registered ssd as wifi name:" + cmdGetSpecial );
+         }
+
+         else 
+          {
+           Serial.println ("For more information type 'help'");
+          //Serial.println ("No command found DDDDDD:"  + cmdNRead + " ,^^ " + cmdRead.substring (cmdRead.indexOf ( " H") , cmdRead.length()) ) ;
+          // Serial.println ("Received " +String (cmdRead.length()) + ">" + String (cmdRead) + String (cmdRead == "help") + " == help");
+          }
+       
+           
+
+      
+    }
+
+  return "";
 }
