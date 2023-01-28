@@ -222,6 +222,7 @@ String fun_CmdRead (String);
 //fast blink
 
 uint8_t LED_IndicatorBlinkFast = 0;
+uint8_t LED_IndicatorBlinkFast_Common = 4;
 
 unsigned long clock_0_2sec = 0; // 0.2 seconds update
 unsigned long clock_1secCounter = 0;// if x 5 then = 1 sec
@@ -232,7 +233,11 @@ WiFiServer server(80);
 
 // Variable to store the HTTP request
 String header;
-String header_cmd;
+
+/// input commands from user
+String cmd_received;
+String cmd_msgOut;  // write to user what condition have hit on the webserver
+
 
 // Auxiliar variables to store the current output state
 String output5State = "off";
@@ -353,11 +358,11 @@ void loop(){
 
             } else if (header.indexOf ("/configurations?finput") > 0 ){
               
-              header_cmd = header.substring(header.indexOf("/configurations?finput") + 23, header.indexOf (" HTTP") ); // //test header_cmd output
-               // header_cmd = header.substring ( header_cmd.indexOf ("finput="), 67 );
-               // header_cmd = header.substring( 3, 55 ); // //test header_cmd output
+              cmd_received = header.substring(header.indexOf("/configurations?finput") + 23, header.indexOf (" HTTP") ); // //test cmd_received output
+               // cmd_received = header.substring ( cmd_received.indexOf ("finput="), 67 );
+               // cmd_received = header.substring( 3, 55 ); // //test raw cmd_received output
                //
-              LED_IndicatorBlinkFast = 4;
+              LED_IndicatorBlinkFast = LED_IndicatorBlinkFast_Common;
             }
             
             // Display the HTML web page
@@ -413,9 +418,9 @@ void loop(){
         
               client.println ("<form action=\"/configurations\"><label for=\"finput\">First name:</label><input type=\"text\" id=\"finput\" name=\"finput\"><br><br><input type=\"submit\" value=\"Submit\"></form>");
               
-              //test header_cmd output
-              //client.println("<p>NVD" + header_cmd + "  inderxf "+ String (header_cmd.indexOf ("=")) + "  http>" + String (header_cmd.indexOf ("HTTP"))  + "</p>");
-              client.println("<p>Pout> " + header_cmd  + "</p>");
+              //test cmd_received output
+              //client.println("<p>NVD" + cmd_received + "  inderxf "+ String (cmd_received.indexOf ("=")) + "  http>" + String (cmd_received.indexOf ("HTTP"))  + "</p>");
+              client.println("<p>Pout> " + /*cmd_received*/  cmd_msgOut + "</p>");
 
             client.println("</body></html>");
             
@@ -542,10 +547,10 @@ void oneSecTimer () {
           clock_1secCounter = 0;
 
           
-          if ( header_cmd.length() > 0)
+          if ( cmd_received.length() > 0)
           {
-            fun_CmdRead (header_cmd);
-             header_cmd = "";
+            fun_CmdRead (cmd_received);
+             cmd_received = "";
           }
 
 
@@ -627,10 +632,14 @@ String getStatusText () {
 
 }
 
+// int intDataTipe (int & changeOriginal , String  ) {
+
+// }
 
 String fun_CmdRead (String cmdRead /*input commands here*/) 
 {
-   String cmdGetSpecial; // special simbol begins from ':'
+   String cmdGetSpecial; // special value simbol begins from '-'
+   int    cmdGetSpecialInt; // value convert into integer 
    String cmdNRead = cmdRead;
     // Serial.println ("+++++++++++++++++++++++++++full link> " + cmdRead);
 
@@ -639,30 +648,60 @@ String fun_CmdRead (String cmdRead /*input commands here*/)
          // cmdRead = cmdRead.substring (0,cmdRead.length()-1); //to  remove incoming '\n'   
          // Serial.println ("------------found Text:" + cmdRead);
        
+          // cmd_msgOut = ""; // reset
 
         if (cmdRead.lastIndexOf("-") > 0) {
           cmdGetSpecial = cmdRead.substring (cmdRead.lastIndexOf("-") + 1 ,cmdRead.length()); //separate text after-
           cmdRead = cmdRead.substring (0,cmdRead.indexOf("-"));
-          Serial.println ("cmdRead:"  + cmdRead) ;
-          Serial.println ("found '-' " + cmdGetSpecial);
+
+           if (cmdGetSpecial.indexOf ("+"))// spaces
+         {
+          Serial.println ("found+++ Spaces +++: " + String (cmdGetSpecial.indexOf ("+")) + "~" + String (cmdGetSpecial.length ()) );
+          cmdGetSpecial = cmdGetSpecial.substring  ( 0 , cmdGetSpecial.indexOf ("+")); // delete leave text before spaces '+' begins
+          Serial.println ("rslt: " + cmdGetSpecial );
+         }
+
+          //to integer
+          cmdGetSpecialInt = (cmdGetSpecial.toInt());
+          Serial.println ("comand: "  + cmdRead) ;
+          Serial.println ("-value: " + cmdGetSpecial);
+          Serial.println ("-valueInt: " + String (cmdGetSpecialInt));
           
          }
 
-        if (cmdRead == "help")
-           Serial.println ("Awailable commands to input a credential for login in local network.\nssd:wifiname\npswd:password");
 
+        
+
+
+        if (cmdRead == "help")
+         { 
+
+           cmd_msgOut = "Awailable commands to input a credential for login in local network.\nssd-wifiname\npswd-password\nfastblink-int ";
+           Serial.println (cmd_msgOut);
+         }
          else if (cmdRead == "pswd" ){
-           Serial.println ("Registered wifi password:" + cmdGetSpecial);
+           cmd_msgOut = "Registered wifi password:" + cmdGetSpecial;
+           Serial.println (cmd_msgOut);
+
+         }
+
+          else if (cmdRead == "fastblink" ){
+           cmd_msgOut = "fast blink value:" + cmdGetSpecial;
+           Serial.println (cmd_msgOut);
+           LED_IndicatorBlinkFast_Common = cmdGetSpecialInt;
+
          }
 
          else if (cmdRead == "ssd"){
+            cmd_msgOut = "Registered ssd as wifi name:" + cmdGetSpecial ;
+           Serial.println (cmd_msgOut);
 
-           Serial.println ("Registered ssd as wifi name:" + cmdGetSpecial );
          }
 
          else 
           {
-           Serial.println ("For more information type 'help'");
+           cmd_msgOut ="For more information type 'help' ( " + cmdRead + " - " + cmdGetSpecial +" ?)" ;
+           Serial.println (cmd_msgOut);
           //Serial.println ("No command found DDDDDD:"  + cmdNRead + " ,^^ " + cmdRead.substring (cmdRead.indexOf ( " H") , cmdRead.length()) ) ;
           // Serial.println ("Received " +String (cmdRead.length()) + ">" + String (cmdRead) + String (cmdRead == "help") + " == help");
           }
