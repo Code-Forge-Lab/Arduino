@@ -139,6 +139,7 @@ static const uint8_t D14 = 6; //SDCLK             NO,   Reason[3]               
 #include <WiFiManager.h>         // https://github.com/tzapu/WiFiManager
 #include "Voltmeter2.h"
 #include "buttons.h"
+#include "EEPROM32.h"
 
 
 /*  About program
@@ -207,7 +208,10 @@ bool sensorPrg_StopInvTemp = false;
 const static uint8_t Read_Battery_Volt = A0;
 int sensorRead_Battery_Volt = 0;  // value read from the pot
 //(uint8_t pin_input = A0 ,              float broken_voltage = 0.0        ,  float R1 = 100000.0 , float R2 = 10000.0  )
-VoltMeter voltAvrBattery  (Read_Battery_Volt, 0.0 ,   680000.0 ,3900.0  );
+VoltMeter voltAvrBattery  (Read_Battery_Volt, 0.0 ,   680000.0 ,5100.0  );
+byte minBatVlt = 15;
+byte maxBatVlt = 16;
+byte fixBatVlt = 10; // 1 equil 0.1 * 5100 = 510
 
         
 
@@ -216,8 +220,15 @@ void funInv_On_then_Output220 (String x);
 void oneSecTimer ();
 void quarterSecondTimer ();
 String fun_CmdRead (String);
+void setBatVltRange (uint8_t , uint8_t );
+void avoidBatVltOutOfRangeThenMemCommit(); // avoid inputed voltage to be out of range;
+void getmemBatVlt ();
 
 
+// EEPROM memory address
+int16_t memMinBatVlt = 1;
+int16_t memMaxBatVlt = 2;
+int16_t memfixVltR   = 3;
 
 //fast blink
 
@@ -247,9 +258,22 @@ String output4State = "off";
 const int output5 = Inv_Output220;
 const int output4 = Inv_On;
 
+
+  // WiFiManager
+  // Local intialization. Once its business is done, there is no need to keep it around
+  WiFiManager wifiManager;
+  
+
 void setup() {
   Serial.begin(115200);
   Serial.println ("Starting setup . . .");
+
+  EEPROM32_INIT( 10);
+ delay (10);
+ getmemBatVlt ();
+
+ if (readMemoryByte(memfixVltR)>=255) {writeMemory(memfixVltR,(byte)100); Serial.println ("Writing memfixVltR: 100");} else voltAvrBattery.FixVltR(readMemoryByte(memfixVltR)); // Works as potentiometer
+ delay (10);
   // Initialize the output variables as outputs
   pinMode (Inv_readAC,           INPUT);
   pinMode (Inv_Output220,        OUTPUT);// output
@@ -266,10 +290,6 @@ void setup() {
 
 
 
-  // WiFiManager
-  // Local intialization. Once its business is done, there is no need to keep it around
-  WiFiManager wifiManager;
-  
   // Uncomment and run it once, if you want to erase all the stored information
   //wifiManager.resetSettings();
   
@@ -481,7 +501,7 @@ void __main () {
 
   
   // btnPrg_on.endScaning ();
-  voltAvrBattery.VoltageMeterUpdate ();
+  
 
 }
 
@@ -496,6 +516,10 @@ void quarterSecondTimer () { //0.2 second
       clock_0_2sec= millis();
       clock_1secCounter  = clock_1secCounter + 1;
 
+      voltAvrBattery.VoltageMeterUpdate (true); // update with each passed clock
+      
+
+
 
        // blink led while turning on a 220v relay 
       
@@ -504,10 +528,12 @@ void quarterSecondTimer () { //0.2 second
           LED_IndicatorBlinkFast--;
 
       if (LED_IndicatorBlinkFast % 2 == 1  )//blick when turning on relay
-          digitalWrite (LED_Indicator, HIGH);
-      else
           digitalWrite (LED_Indicator, LOW);
+      else
+          digitalWrite (LED_Indicator, HIGH);
         }
+
+
 
 
      //Sensor
@@ -561,7 +587,6 @@ void oneSecTimer () {
 
           // second relay that pass power throw power 220v relay
           if (delay_Inv_Output220 > 0){
-                
                 delay_Inv_Output220--; // substrack when "inv_on" relay is activated
                 
 
@@ -619,6 +644,20 @@ String getText (String index, bool conditionNaming){
     return ",  " + index + ": false";
 
 }
+
+
+bool isValidNumber(String str){
+    bool isNum=false;
+    for(byte i=0;i<str.length();i++)
+    {
+    isNum = isDigit(str.charAt(i)) || str.charAt(i) == '+' || str.charAt(i) == '.' || str.charAt(i) == '-';
+    if(!isNum) return false;
+    }
+    return isNum;
+}
+
+ 
+
 String getStatusText () {
  return   
             (". bits:" + String (sensorRead_Battery_Volt) +" = "
@@ -640,7 +679,9 @@ String fun_CmdRead (String cmdRead /*input commands here*/)
 {
    String cmdGetSpecial; // special value simbol begins from '-'
    int    cmdGetSpecialInt; // value convert into integer 
+   bool   cmdIsValidInt = false;
    String cmdNRead = cmdRead;
+   bool sP = false;
     // Serial.println ("+++++++++++++++++++++++++++full link> " + cmdRead);
 
     if (cmdRead.length() > 0 ){// read comed arround
@@ -648,13 +689,13 @@ String fun_CmdRead (String cmdRead /*input commands here*/)
          // cmdRead = cmdRead.substring (0,cmdRead.length()-1); //to  remove incoming '\n'   
          // Serial.println ("------------found Text:" + cmdRead);
        
-          // cmd_msgOut = ""; // reset
+           cmd_msgOut = ""; // reset
 
         if (cmdRead.lastIndexOf("-") > 0) {
           cmdGetSpecial = cmdRead.substring (cmdRead.lastIndexOf("-") + 1 ,cmdRead.length()); //separate text after-
           cmdRead = cmdRead.substring (0,cmdRead.indexOf("-"));
 
-           if (cmdGetSpecial.indexOf ("+"))// spaces
+           if (cmdGetSpecial.indexOf ("+"))//remove spaces
          {
           Serial.println ("found+++ Spaces +++: " + String (cmdGetSpecial.indexOf ("+")) + "~" + String (cmdGetSpecial.length ()) );
           cmdGetSpecial = cmdGetSpecial.substring  ( 0 , cmdGetSpecial.indexOf ("+")); // delete leave text before spaces '+' begins
@@ -663,9 +704,14 @@ String fun_CmdRead (String cmdRead /*input commands here*/)
 
           //to integer
           cmdGetSpecialInt = (cmdGetSpecial.toInt());
+
+          // check in string is a valid integer without any characters
+          cmdIsValidInt = isValidNumber (cmdGetSpecial);
+
           Serial.println ("comand: "  + cmdRead) ;
           Serial.println ("-value: " + cmdGetSpecial);
           Serial.println ("-valueInt: " + String (cmdGetSpecialInt));
+          Serial.println (getText ("is integer data type: ", isValidNumber (cmdGetSpecial)  ));
           
          }
 
@@ -676,26 +722,80 @@ String fun_CmdRead (String cmdRead /*input commands here*/)
         if (cmdRead == "help")
          { 
 
-           cmd_msgOut = "Awailable commands to input a credential for login in local network.\nssd-wifiname\npswd-password\nfastblink-int ";
+           cmd_msgOut = "Awailable commands:,fixVltR-byte,fastblink-int,maxBatVlt-byte,minBatVlt-byte,status,restart,resetWifi-intpswrd, ";
            Serial.println (cmd_msgOut);
          }
-         else if (cmdRead == "pswd" ){
-           cmd_msgOut = "Registered wifi password:" + cmdGetSpecial;
-           Serial.println (cmd_msgOut);
+         else if (cmdRead == "fixVltR" ){
+           cmd_msgOut = "Registered fix voltage of R resistor 1 byte is equal -> 0.01: ";
 
+            if (cmdIsValidInt) 
+            {   
+                cmd_msgOut+="["+  String ((byte)cmdGetSpecialInt) + "]" + " a value: " + String (voltAvrBattery.getFixVltR());
+                voltAvrBattery.FixVltR((byte)cmdGetSpecialInt);
+                writeMemory (memfixVltR, (byte)cmdGetSpecialInt);
+             } else { cmd_msgOut += " [not a byte],stored: "+ String (readMemoryByte (memfixVltR)) + " a value: " +  String (voltAvrBattery.getFixVltR()) ;};
+
+           Serial.println (cmd_msgOut);
          }
+
 
           else if (cmdRead == "fastblink" ){
-           cmd_msgOut = "fast blink value:" + cmdGetSpecial;
-           Serial.println (cmd_msgOut);
+           cmd_msgOut = "fast blink value:" + cmdGetSpecial; Serial.println (cmd_msgOut);
+           
            LED_IndicatorBlinkFast_Common = cmdGetSpecialInt;
 
          }
 
-         else if (cmdRead == "ssd"){
-            cmd_msgOut = "Registered ssd as wifi name:" + cmdGetSpecial ;
-           Serial.println (cmd_msgOut);
+         else if (cmdRead == "status"){
+            cmd_msgOut = "Received maxBatVlt:" + String (maxBatVlt) + " minBatVlt:" + String (minBatVlt) ;
+            Serial.println (cmd_msgOut);
+            
+            
+         }
+         else if (cmdRead == "resetWifi"){
+            cmd_msgOut = "Received, reset wifi settings:";
+             if (cmdIsValidInt)
+             {
+               
+                if (cmdGetSpecialInt == 1357) {
+                      Serial.println (cmd_msgOut);
+                      wifiManager.resetSettings();
+                      ESP.restart();
+                }else
+                  cmd_msgOut+= " [wrong password!]";
+             }else
+                  cmd_msgOut+= " [enter a numeric password!]";
+            
+         }
+          else if (cmdRead == "restart"){
+            cmd_msgOut = "Received, start restart os:";
+            Serial.println (cmd_msgOut);
+            ESP.restart();
+            
+         }
+         else if (cmdRead == "minBatVlt"){
+            cmd_msgOut = "Registered minimum battery voltage: " + cmdGetSpecial  ; Serial.println (cmd_msgOut);
+           
+             if (cmdIsValidInt){
+                 minBatVlt = cmdGetSpecialInt;
+                 avoidBatVltOutOfRangeThenMemCommit ();
+                 Serial.println ("min out");
 
+             }
+            else
+              sP = true; // failed to proceed whithout a proper number
+
+         }
+         else if (cmdRead == "maxBatVlt"){
+            cmd_msgOut = "maxBatVlt changed:" + cmdGetSpecial ; Serial.println (cmd_msgOut);
+           
+            if (cmdIsValidInt){
+                 maxBatVlt = cmdGetSpecialInt;
+                 avoidBatVltOutOfRangeThenMemCommit ();
+                 Serial.println ("max out");
+             }
+            else
+              sP = true; // failed to proceed whithout a proper number
          }
 
          else 
@@ -708,8 +808,113 @@ String fun_CmdRead (String cmdRead /*input commands here*/)
        
            
 
-      
+
+              if (sP) 
+              {
+                      Serial.println ("Unable to proceed");
+                      cmd_msgOut+= " [err:Unable to proceed , no integer]";
+              }
+
+
     }
 
   return "";
+}
+
+
+
+void setBatVltRange (uint8_t minBatVlt_ , uint8_t maxBatVlt_)
+{
+
+  minBatVlt = minBatVlt_;
+  maxBatVlt = maxBatVlt_;
+
+  if (minBatVlt > maxBatVlt) // if minimum voltage is higher then maximum then make as same level to with
+  {
+    maxBatVlt = minBatVlt_ + 1;
+    Serial.println ("maximum voltage was reseted");
+  }
+
+  // if (maxBatVlt > ) // voltage range
+}
+
+
+
+
+
+
+void avoidBatVltOutOfRangeThenMemCommit (){
+  bool itsDone = true;// chenk if all condition passed  successfully
+
+   if (minBatVlt > maxBatVlt) // if minimum voltage is higher then maximum then make as same level to with
+  {
+    maxBatVlt = minBatVlt + 1;
+    Serial.println ("minimum voltage was higher then expected, reseted");
+  }
+
+ if (maxBatVlt >= 64)
+ {
+  maxBatVlt = 64;
+ }
+
+      if (minBatVlt < 10 &&  maxBatVlt <= 16)
+      {
+        Serial.println ("12v mode");
+      }
+ else if (minBatVlt < 24 &&  maxBatVlt <= 32)
+      {
+        Serial.println ("24v mode");
+
+      }
+ else if (minBatVlt < 36 &&  maxBatVlt <= 48)
+      {
+        Serial.println ("36v mode");
+
+      }
+ else if (minBatVlt < 54 &&  maxBatVlt <= 64)
+      {
+        Serial.println ("48v mode");
+
+      }
+  else
+  {
+         itsDone = false;
+    Serial.println ("doesnt found range in 'avoidBatVltOutOfRange' funcion");
+  } 
+
+  if (itsDone) // prepare to commit into EEPROM memory
+  {
+    Serial.println ("successfully updated battery variables values to EEPROM");
+
+    writeMemory(memMinBatVlt,minBatVlt);
+    writeMemory(memMaxBatVlt,maxBatVlt);
+  }else
+  {
+    Serial.println ("Unable to save battery variables values to EEPROM");
+  }
+}
+
+
+
+
+
+
+
+//==========
+void getmemBatVlt () {
+    Serial.println ("Received battery voltage range from memory");
+  minBatVlt = readMemoryByte(memMinBatVlt);
+  maxBatVlt = readMemoryByte(memMaxBatVlt);
+
+  if (minBatVlt > 62 || maxBatVlt > 64)
+  {
+    minBatVlt = 42;
+    maxBatVlt = 64;
+
+    writeMemory(memMinBatVlt,minBatVlt);
+    writeMemory(memMaxBatVlt,maxBatVlt);
+
+    Serial.println ("Chaning bad boundaries having values" );
+  }
+
 }
