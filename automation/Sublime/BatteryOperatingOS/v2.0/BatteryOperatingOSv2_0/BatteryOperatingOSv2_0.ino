@@ -94,7 +94,7 @@ A0     ADC0            Analog Input      NO
 //    Warning
 // {!1} --Disable Serial.print , and become regular GPIO INPUT/OUTPUT that can work with I2C Displays
 // {!2} -- If using button , must use pullup RESISTOR 
-//                                       //INPUT VCC-->[5.1k]-|-[btn]--GND                     INPUT VCC-->[btn]-|-[5.1k]--GND
+//                                       //INPUT VCC-->[5.1k]-|-[btn]--GND      ser               INPUT VCC-->[btn]-|-[5.1k]--GND
 //INPUT or buttons                               PULLUP                                                PULLDOWN
 
 static const uint8_t DTX  = 1;  //                    {!1}                                                {!1}
@@ -234,6 +234,7 @@ int16_t memfixVltR   = 3;
 
 uint8_t LED_IndicatorBlinkFast = 0;
 uint8_t LED_IndicatorBlinkFast_Common = 4;
+uint8_t LED_IndicatorBlinkFast_CommonShort = 2;
 
 unsigned long clock_0_2sec = 0; // 0.2 seconds update
 unsigned long clock_1secCounter = 0;// if x 5 then = 1 sec
@@ -382,7 +383,7 @@ void loop(){
                // cmd_received = header.substring ( cmd_received.indexOf ("finput="), 67 );
                // cmd_received = header.substring( 3, 55 ); // //test raw cmd_received output
                //
-              LED_IndicatorBlinkFast = LED_IndicatorBlinkFast_Common;
+              LED_IndicatorBlinkFast = LED_IndicatorBlinkFast_CommonShort;
             }
             
             // Display the HTML web page
@@ -492,8 +493,8 @@ void __main () {
   sensorDoInv_ReadSignal  = digitalRead (Inv_ReadSignal);      // __/ __ need contact to activate
   sensorDoPrg_StopInv     = digitalRead (Prg_StopInv);         // need source and ground to activate opticouple
   sensorPrg_StopInvTemp   = digitalRead (Prg_StopInvTemp);
-  // doPrg_on_button         = !digitalRead (Prg_on_button);
-  doPrg_on_button         = btnPrg_on.getBtnTPressLongTime (); // hold 3 seconds to activate and return true
+  doPrg_on_button         = !digitalRead (Prg_on_button);
+  // doPrg_on_button         = btnPrg_on.getBtnTPressLongTime (); // hold 3 seconds to activate and return true
 
   //if (btnPrg_on.onlyReadPressedSignleTime()){
   //          doPrg_on_button = true;
@@ -729,11 +730,13 @@ String fun_CmdRead (String cmdRead /*input commands here*/)
            cmd_msgOut = "Registered fix voltage of R resistor 1 byte is equal -> 0.01: ";
 
             if (cmdIsValidInt) 
-            {   
+            {  
+                LED_IndicatorBlinkFast = LED_IndicatorBlinkFast_Common;
+                voltAvrBattery.FixVltR((byte)cmdGetSpecialInt); 
                 cmd_msgOut+="["+  String ((byte)cmdGetSpecialInt) + "]" + " a value: " + String (voltAvrBattery.getFixVltR());
-                voltAvrBattery.FixVltR((byte)cmdGetSpecialInt);
+               
                 writeMemory (memfixVltR, (byte)cmdGetSpecialInt);
-             } else { cmd_msgOut += " [not a byte],stored: "+ String (readMemoryByte (memfixVltR)) + " a value: " +  String (voltAvrBattery.getFixVltR()) ;};
+             } else { cmd_msgOut += " [not a byte],stored: "+ String (readMemoryByte (memfixVltR)) + "b a value: " +  String (voltAvrBattery.getFixVltR()) ;};
 
            Serial.println (cmd_msgOut);
          }
@@ -747,10 +750,12 @@ String fun_CmdRead (String cmdRead /*input commands here*/)
          }
 
          else if (cmdRead == "status"){
+
+            LED_IndicatorBlinkFast = LED_IndicatorBlinkFast_Common;
             cmd_msgOut = "Received maxBatVlt:" + String (maxBatVlt) + " minBatVlt:" + String (minBatVlt) ;
             Serial.println (cmd_msgOut);
             
-            
+
          }
          else if (cmdRead == "resetWifi"){
             cmd_msgOut = "Received, reset wifi settings:";
@@ -758,6 +763,7 @@ String fun_CmdRead (String cmdRead /*input commands here*/)
              {
                
                 if (cmdGetSpecialInt == 1357) {
+                      LED_IndicatorBlinkFast = LED_IndicatorBlinkFast_Common;
                       Serial.println (cmd_msgOut);
                       wifiManager.resetSettings();
                       ESP.restart();
@@ -768,6 +774,7 @@ String fun_CmdRead (String cmdRead /*input commands here*/)
             
          }
           else if (cmdRead == "restart"){
+            LED_IndicatorBlinkFast = LED_IndicatorBlinkFast_Common;
             cmd_msgOut = "Received, start restart os:";
             Serial.println (cmd_msgOut);
             ESP.restart();
@@ -777,6 +784,7 @@ String fun_CmdRead (String cmdRead /*input commands here*/)
             cmd_msgOut = "Registered minimum battery voltage: " + cmdGetSpecial  ; Serial.println (cmd_msgOut);
            
              if (cmdIsValidInt){
+                 LED_IndicatorBlinkFast = LED_IndicatorBlinkFast_Common;
                  minBatVlt = cmdGetSpecialInt;
                  avoidBatVltOutOfRangeThenMemCommit ();
                  Serial.println ("min out");
@@ -790,6 +798,7 @@ String fun_CmdRead (String cmdRead /*input commands here*/)
             cmd_msgOut = "maxBatVlt changed:" + cmdGetSpecial ; Serial.println (cmd_msgOut);
            
             if (cmdIsValidInt){
+                 LED_IndicatorBlinkFast = LED_IndicatorBlinkFast_Common;
                  maxBatVlt = cmdGetSpecialInt;
                  avoidBatVltOutOfRangeThenMemCommit ();
                  Serial.println ("max out");

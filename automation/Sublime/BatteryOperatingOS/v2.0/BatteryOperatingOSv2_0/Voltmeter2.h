@@ -63,7 +63,7 @@ const static int   NUM_SAMPLES = 10;
 			 }
 
 			 if (sample_count >= NUM_SAMPLES) {
-			 -//Serial.println ("R_Fix R2: " + String (R2) +" fix value - " + String (fRb) + " , R1: " + String (R1));	
+			 //Serial.println ("R_Fix R2: " + String (R2) +" fix value - " + String (fRb) + " , R1: " + String (R1));	
 			 // calculate the voltage
 			 // use 5.0 for a 5.0V ADC reference voltage
 			 // 5.015V is the calibrated reference voltage
