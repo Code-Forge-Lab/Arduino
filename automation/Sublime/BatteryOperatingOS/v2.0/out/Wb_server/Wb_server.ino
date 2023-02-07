@@ -285,7 +285,7 @@ Serial.println("Load settings from EEPROM");
 if (readMemoryBool (6))  output6State = "on";
 if (readMemoryBool (7))  output7State = "on";
 if (readMemoryBool (8))  output8State = "on";
-if (readMemoryBool (9))  output9State = "on";
+if (readMemoryBool (9))  output9State = "on"; 
 
 
 
