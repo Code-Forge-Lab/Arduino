@@ -9,8 +9,8 @@
 #include <EEPROM.h>
 
 // Replace with your network credentials
-const char* ssid     = "ElDiablo";
-const char* password = "kamile666";
+const char* ssid     = "MD_home";
+const char* password = "migtukas";
 
 // Set web server port number to 80
 WiFiServer server(80);

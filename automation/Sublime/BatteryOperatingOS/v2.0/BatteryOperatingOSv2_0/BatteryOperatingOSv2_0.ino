@@ -132,15 +132,17 @@ static const uint8_t D14 = 6; //SDCLK             NO,   Reason[3]               
 
 
 
+//A
+// #include <ESP8266WiFi.h>
 
-#include <ESP8266WiFi.h>
-#include <DNSServer.h>
-#include <ESP8266WebServer.h>
-#include <WiFiManager.h>         // https://github.com/tzapu/WiFiManager
+// #include <DNSServer.h> // not needy
+// #include <ESP8266WebServer.h> // not needy
+
+//B
+#include <WiFiManager.h>  //         // https://github.com/tzapu/WiFiManager
 #include "Voltmeter2.h"
 #include "buttons.h"
 #include "EEPROM32.h"
-
 
 /*  About program
 Inspect where inv. is on and output strong 220vac
@@ -243,6 +245,14 @@ unsigned long clock_1sec = 0 ;
 // Set web server port number to 80
 WiFiServer server(80);
 
+
+// Current time
+unsigned long currentTime = millis();
+// Previous time
+unsigned long previousTime = 0; 
+// Define timeout time in milliseconds (example: 2000ms = 2s)
+const long timeoutTime = 2000;
+
 // Variable to store the HTTP request
 String header;
 
@@ -266,7 +276,7 @@ const int output4 = Inv_On;
   
 
 void setup() {
-  Serial.begin(115200);
+  // Serial.begin(115200);
   Serial.println ("Starting setup . . .");
 
   EEPROM32_INIT( 10);
@@ -289,10 +299,10 @@ void setup() {
  // digitalWrite(output5, LOW);
  // digitalWrite(output4, LOW);
 
-
-
+//A
+ 
   // Uncomment and run it once, if you want to erase all the stored information
-  //wifiManager.resetSettings();
+  // wifiManager.resetSettings();
   
   // set custom ip for portal
   //wifiManager.setAPConfig(IPAddress(10,0,1,1), IPAddress(10,0,1,1), IPAddress(255,255,255,0));
@@ -300,17 +310,33 @@ void setup() {
   // fetches ssid and pass from eeprom and tries to connect
   // if it does not connect it starts an access point with the specified name
   
-  wifiManager.setConfigPortalTimeout(180);
+  wifiManager.setConfigPortalTimeout(280);
   // here  "AutoConnectAP"
   // and goes into a blocking loop awaiting configuration
-  wifiManager.autoConnect("BatteryOperationOS");
+  wifiManager.autoConnect("Inverter Manager");
   // or use this for auto generated name ESP + ChipID
   //wifiManager.autoConnect();
   
+
+
+
+  //B
+  //Serial.print("Connecting to ");
+  //Serial.println(ssid);
+  //WiFi.begin(ssid, password);
+  // while (WiFi.status() != WL_CONNECTED) {
+  //   delay(500);
+  //   Serial.print(".");
+  // }
+
+
   //Serial.println (WiFiManager.localIP());
   // if you get here you have connected to the WiFi
   Serial.println("Connected________________________");
-    
+  Serial.println("");
+  Serial.println("WiFi connected.");
+  Serial.println("IP address: ");
+  Serial.println(WiFi.localIP());
   server.begin();
 }
 
@@ -325,11 +351,14 @@ void loop(){
   if (client) {                             // If a new client connects,
     Serial.println("New Client.");          // print a message out in the serial port
     String currentLine = "";                // make a String to hold incoming data from the client
-    while (client.connected()) 
-    {            // loop while the client's connected
+    currentTime = millis();
+    previousTime = currentTime;
+    while (client.connected() && currentTime - previousTime <= timeoutTime) { // loop while the client's connected
+      currentTime = millis(); 
      // prgm
-     btnPrg_on.scaning();
-      oneSecTimer ();
+     // btnPrg_on.scaning();
+       oneSecTimer ();
+
 
       if (client.available()) {             // if there's bytes to read from the client,
         char c = client.read();             // read a byte, then
@@ -473,13 +502,13 @@ void loop(){
   }else {
 
 
-  btnPrg_on.scaning();
+  // btnPrg_on.scaning();
 
   oneSecTimer ();
 
   
   
-   btnPrg_on.endScaning();
+   // btnPrg_on.endScaning();
 
 
    

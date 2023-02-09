@@ -4,18 +4,24 @@
 *********/
 #include <NTPClient.h>
 // Load Wi-Fi library
+
 #include <ESP8266WiFi.h>
+#include <DNSServer.h>
+#include <ESP8266WebServer.h>
+ #include <WiFiManager.h>         // https://github.com/tzapu/WiFiManager
+
 #include <WiFiUdp.h>
 #include <EEPROM.h>
 
 // Replace with your network credentials
-const char* ssid     = "a";
-const char* password = "b";
+// const char* ssid     = "a";
+// const char* password = "b";
 
 // Set web server port number to 80
 WiFiServer server(80);
 
 
+String currentTimeHeader;
 const long utcOffsetInSeconds = 10800; // 10800
 //char daysOfTheWeek[7][12] = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
 char daysOfTheWeekLT[7][20] = {"Sekmadienis", "Pirmadienis", "Antradienis", "Treciadienis", "Ketvirtadienis", "Penktadienis", "Sestadienis"};
@@ -39,7 +45,7 @@ static const uint8_t D8   = 15;  //               NO,   Reason[1]               
 
 
 
-String currentTimeHeader;
+
 // Variable to store the HTTP request
 String header;
 
@@ -268,7 +274,7 @@ void inFullLoop ()
 
 
 void setup() {
- // Serial.begin(115200);
+ Serial.begin(115200);
    
   // Initialize the output variables as outputs
  // pinMode(output5, OUTPUT);
@@ -280,23 +286,45 @@ void setup() {
   //digitalWrite(output5, LOW);
   // digitalWrite(pin_Inv_On, HIGH );
 
+  WiFiManager wifiManager;
+
+
   EEPROM32_INIT();
 Serial.println("Load settings from EEPROM");
 if (readMemoryBool (6))  output6State = "on";
 if (readMemoryBool (7))  output7State = "on";
 if (readMemoryBool (8))  output8State = "on";
-if (readMemoryBool (9))  output9State = "on"; 
+if (readMemoryBool (9))  output9State = "on";
 
 
+
+// WiFiManager
+  // Local intialization. Once its business is done, there is no need to keep it around
+  //WiFiManager wifiManager;
+  
+  // Uncomment and run it once, if you want to erase all the stored information
+  // wifiManager.resetSettings();
+  
+  // set custom ip for portal
+  //wifiManager.setAPConfig(IPAddress(10,0,1,1), IPAddress(10,0,1,1), IPAddress(255,255,255,0));
+
+  // fetches ssid and pass from eeprom and tries to connect
+  // if it does not connect it starts an access point with the specified name
+  // here  "AutoConnectAP"
+  // and goes into a blocking loop awaiting configuration
+  wifiManager.setConfigPortalTimeout(280);
+  wifiManager.autoConnect("Inverter Manager");
+  // or use this for auto generated name ESP + ChipID
+  wifiManager.autoConnect();
 
   // Connect to Wi-Fi network with SSID and password
-  Serial.print("Connecting to ");
-  Serial.println(ssid);
-  WiFi.begin(ssid, password);
-  while (WiFi.status() != WL_CONNECTED) {
-    delay(500);
-    Serial.print(".");
-  }
+  // Serial.print("Connecting to ");
+  // Serial.println(ssid);
+  // WiFi.begin(ssid, password);
+  // while (WiFi.status() != WL_CONNECTED) {
+  //   delay(500);
+  //   Serial.print(".");
+  // }
 
   timeClient.begin();
   timeClient.setUpdateInterval(10000UL); // 10 seconds interval to update a time

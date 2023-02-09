@@ -145,8 +145,8 @@ static const uint8_t D14 = 6; //SDCLK             NO,   Reason[3]               
 #include <EEPROM.h>
 
 // Replace with your network credentials
-const char* ssid     = "cc";
-const char* password = "cc";
+const char* ssid     = "MD_home";
+const char* password = "migtukas";
 signed int relayOn_TotalTime = 18000 ; // how mucth time shoud work a relay by seconds 60sec*45min = 2700
 String headerName = "Bike Charger Server"; // give a name to a webserver
 
