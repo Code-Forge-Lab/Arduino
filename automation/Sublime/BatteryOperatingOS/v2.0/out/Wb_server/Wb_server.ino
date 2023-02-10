@@ -83,9 +83,9 @@ int  asBtnWasPress_Sec; // hold a count how much time button is pressed
 bool doWebBtnWasPress = false;
 
 int  CheckOneHourPassed ; // change state to auto-on in eacth hour by compared that is not the same
-bool ActivateOneHourWhenPassed = false; // alow to pass a logick in each hour 
+bool ActivateOneHourWhenPassed = false; // alow to pass a logic in each hour 
 
-signed int Inv_OnOn_TotalTime = 23000 ; // how mucth time shoud work a Inv_On by seconds 60sec*45min = 2700
+signed int Inv_OnOn_TotalTime = 22000 ; // how mucth time shoud work a Inv_On by seconds 60sec*45min = 2700
 signed int Inv_OnOn_Sec = 0 ; // turn on Inv_On by a seconds
 signed int powrelay_Sec = 0;
 unsigned long clock_1sec = 0;
@@ -633,38 +633,41 @@ void loop(){
 
 
 
-     if (Inv_OnOn_Sec > 0 || doBtnWasPress){ // if timeout still on then turn on 
+            if (Inv_OnOn_Sec > 0 /*|| doBtnWasPress*/)
+            { // if timeout still on then turn on 
               
              
 
-               if (previousState && Inv_OnOn_Sec <= 1)
-                {
-                    Serial.print("RESET timer:pin_Inv_OnState from :"+pin_Inv_OnState + " " + String (previousState));
-                  pin_Inv_OnState = "off"; // back to off state
-                  
-                    Serial.println(" new :" +pin_Inv_OnState);
+                     if (previousState && Inv_OnOn_Sec <= 1)
+                      {
+                          Serial.print("RESET timer:pin_Inv_OnState from :"+pin_Inv_OnState + " " + String (previousState));
+                        pin_Inv_OnState = "off"; // back to off state
+                        
+                          Serial.println(" new :" +pin_Inv_OnState);
 
-                   previousState = false;
-                }
+                         previousState = false;
+                      }
 
-              digitalWrite(pin_Inv_On, HIGH);
-            if (asBtnWasPress_Sec  == 0)   digitalWrite (pin_ledIndicator , HIGH);
+                    digitalWrite(pin_Inv_On, HIGH);
 
-              if (powrelay_Sec  == 0)
-              digitalWrite (Inv_Output220, HIGH);  
+                  if (asBtnWasPress_Sec  == 0)   digitalWrite (pin_ledIndicator , HIGH);
+
+                    if (powrelay_Sec  == 0)
+                    digitalWrite (Inv_Output220, HIGH);  
             }
             else{
               
-               previousState = true;
-              digitalWrite(pin_Inv_On, LOW);
-              digitalWrite (Inv_Output220, LOW);
-             if (asBtnWasPress_Sec  == 0)  digitalWrite(pin_ledIndicator , LOW);
+                     previousState = true;
+                     doBtnWasPress = false; // for a sink in 
+                    digitalWrite(pin_Inv_On, LOW);
+                    digitalWrite (Inv_Output220, LOW);
+                   if (asBtnWasPress_Sec  == 0)  digitalWrite(pin_ledIndicator , LOW);
               
             }
    
 
 
-}
+} 
 
 
 
