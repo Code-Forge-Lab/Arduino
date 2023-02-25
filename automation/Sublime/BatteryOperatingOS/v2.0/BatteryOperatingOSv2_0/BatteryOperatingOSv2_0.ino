@@ -226,7 +226,7 @@ bool doReactInBatVlt = true; // react in battery automaticly turn on inverter by
         
 
 // Function declaration
-void funInv_On_then_Output220 (String x);
+void funInv_On_then_Output220 (String x = "off" , bool silence = false);
 void oneSecTimer ();
 void quarterSecondTimer ();
 String fun_CmdRead (String);
@@ -294,8 +294,10 @@ void setup() {
  getmemBatVlt ();
 
  if (readMemoryByte(memfixVltR)>=255) {writeMemory(memfixVltR,(byte)100); Serial.println ("Writing memfixVltR: 100");} else voltAvrBattery.FixVltR(readMemoryByte(memfixVltR)); // Works as potentiometer
- if (readMemoryByte(memReactInBatVlt)>=255) {writeMemory(memReactInBatVlt,true); Serial.println ("Writing memReactInBatVlt: true");} else domemReactInBatVlt = (bool)(readMemoryByte(memReactInBatVlt)); // Works as potentiometer
+ if (readMemoryByte(memReactInBatVlt)>=255) {writeMemory(memReactInBatVlt,true); Serial.println ("Writing memReactInBatVlt: true");} else doReactInBatVlt = (bool)(readMemoryByte(memReactInBatVlt)); // Works as potentiometer
  
+ if (doReactInBatVlt)        output4State = "on"; // change graphical user interface
+
  delay (10);
   // Initialize the output variables as outputs
   pinMode (Inv_readAC,           INPUT);
@@ -486,9 +488,9 @@ void loop(){
             
             // If the output4State is off, it displays the ON button       
             if (output4State=="off") {
-              client.println("<p><a href=\"/4/on\"><button class=\"button\">off "+String (voltAvrBattery.voltage)+"v</button></a></p>");
+              client.println("<p><a href=\"/4/on\"><button class=\"button\">Disabled Auto</button></a></p>");
             } else {
-              client.println("<p><a href=\"/4/off\"><button class=\"button button2\">on "+String (sensorRead_Battery_Volt)+" vbits</button></a></p>");
+              client.println("<p><a href=\"/4/off\"><button class=\"button button2\">Activated"+String (voltAvrBattery.voltage)+"v</button></a></p>");
             }
             //Input configurations
 
@@ -655,10 +657,10 @@ void oneSecTimer () {
 
 
 
-//---------------// React to turning on a inverter by voltage range ------------//
+//---------------// React to turning on a inverter by voltage range ------------//660
 
 
-      if (!doBatMaxVltReached && (voltAvrBattery.voltage >= maxBatVlt) ) // turn on a inverter
+      if (doReactInBatVlt/*<auto on condition from user*/ && !doBatMaxVltReached && (voltAvrBattery.voltage >= maxBatVlt) ) // turn on a inverter
          {
            Serial.println ("Condition: senscor " + String (voltAvrBattery.voltage) +"v >= batery then max " + String ( maxBatVlt) + "v " );
           if (maxBatVltSustained_cnt <= maxBatVltSustained_sec) // keep counting 
@@ -667,10 +669,10 @@ void oneSecTimer () {
 
             Serial.println ("sustained max voltage: " + String (maxBatVltSustained_cnt) );
             doBatBeHigh = true; // sub condition, telling about high voltage at the moment
-          if (maxBatVltSustained_cnt >= maxBatVltSustained_sec) // when voltage was sustained more then 10 seconds when turn on a inverter 
+          if (maxBatVltSustained_cnt >= maxBatVltSustained_sec) // when voltage was sustained more then 60 seconds when turn on a inverter 
              {
               doBatMaxVltReached = true;
-              funInv_On_then_Output220 ("on");
+              funInv_On_then_Output220 ("on",false);
               Serial.println ("turn on inv when voltage is in healthy level");
             }
          }
@@ -678,8 +680,11 @@ void oneSecTimer () {
       {
           doBatMaxVltReached = false;
           maxBatVltSustained_cnt = 0;
-          funInv_On_then_Output220 ("off");
-          Serial.println ("off inv when on low battery");
+          funInv_On_then_Output220 ("off",false);
+
+          if (!doReactInBatVlt) Serial.print ("auto mode is disabled and / ");
+          Serial.println ("inv is off when low battery");
+
           doBatIsLow = true;
           doBatBeHigh = false;
       }
@@ -688,6 +693,8 @@ void oneSecTimer () {
         maxBatVltSustained_cnt = 0;
         doBatIsLow = false;
         doBatBeHigh = false;
+
+        if (!doReactInBatVlt) Serial.print ("auto mode is disabled and / ");
         Serial.println ("no battery condition");
       }
 
@@ -768,7 +775,7 @@ void oneSecTimer () {
 }
 
 // turn on both relays
-void funInv_On_then_Output220 (String x = "off") {
+void funInv_On_then_Output220 (String x  , bool silence) {
 
    if  (x == "on"){
      // digitalWrite (Inv_Output220, HIGH);
@@ -779,7 +786,7 @@ void funInv_On_then_Output220 (String x = "off") {
          delay_Inv_Output220 = maxDelay_Inv_Output220; 
          delayAvoid_Inv_On = maxDelayAvoid_Inv_On;  // activate protection against turning on to fast and multiple times
          doPrg_on_button = true; // only for in sinck with website button
-         Serial.println ("funInv_On_then_Output220:on");
+        if (silence)  Serial.println ("funInv_On_then_Output220:on");
        }
 
       
@@ -789,7 +796,7 @@ void funInv_On_then_Output220 (String x = "off") {
       digitalWrite (Inv_On, LOW);
       digitalWrite (LED_Indicator, LOW);
       output5StateInvOutput = "off"; // is opposite
-      Serial.println ("funInv_On_then_Output220:off");
+       if (silence) Serial.println ("funInv_On_then_Output220:off");
       delay_Inv_Output220 = 0;
       doInv_Output220 = false;
       doPrg_on_button = false;
