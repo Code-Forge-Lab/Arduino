@@ -216,8 +216,13 @@ int sensorRead_Battery_Volt = 0;  // value read from the pot
 VoltMeter voltAvrBattery  (Read_Battery_Volt, 0.0 ,   680000.0 ,5100.0  );
 byte minBatVlt = 15;
 byte maxBatVlt = 16;
-byte fixBatVlt = 100; // 1 equil 0.01 * 5100 = 510
-
+byte fixBatVlt = 100; // 1 equil 0.01 * 5100 = 510  // fix voltage in 255 range
+bool doBatMaxVltReached = false; // enable when maximum voltage was reached and disable when minimum voltage is gained
+byte maxBatVltSustained_sec = 60; //  if not interuption in 30 seconds have in reached by maximum voltage range then
+byte maxBatVltSustained_cnt = 0; //  keep count of maxBatVltSustained_sec
+bool doBatIsLow = false; // save condition about battery low voltage in the scope
+bool doBatBeHigh = false; // save condition about battery high voltage in the scope
+bool doReactInBatVlt = true; // react in battery automaticly turn on inverter by changend voltage;
         
 
 // Function declaration
@@ -234,6 +239,7 @@ void funTurnInvAutomaticallyByVoltage ();
 int16_t memMinBatVlt = 1;
 int16_t memMaxBatVlt = 2;
 int16_t memfixVltR   = 3;
+int16_t memReactInBatVlt   = 4;
 
 //fast blink
 bool    LED_IndicatorBlink     = false;
@@ -288,6 +294,8 @@ void setup() {
  getmemBatVlt ();
 
  if (readMemoryByte(memfixVltR)>=255) {writeMemory(memfixVltR,(byte)100); Serial.println ("Writing memfixVltR: 100");} else voltAvrBattery.FixVltR(readMemoryByte(memfixVltR)); // Works as potentiometer
+ if (readMemoryByte(memReactInBatVlt)>=255) {writeMemory(memReactInBatVlt,true); Serial.println ("Writing memReactInBatVlt: true");} else domemReactInBatVlt = (bool)(readMemoryByte(memReactInBatVlt)); // Works as potentiometer
+ 
  delay (10);
   // Initialize the output variables as outputs
   pinMode (Inv_readAC,           INPUT);
@@ -387,13 +395,18 @@ void loop(){
                // output5StateInvOutput = "on"; // alredy in funInv_On_then_Output220 function
 
                // second relay that pass power throw power 220v relay from inverter and also turn on inverter
+              if (!doBatIsLow) // turn on inverter when no battery voltage is to low
                funInv_On_then_Output220 ("on") ; 
+              else
+               delayAvoid_Inv_On = maxDelayAvoid_Inv_On;  // activate protection against turning on to fast and multiple times
+
 
             } else if (header.indexOf("GET /5/off") >= 0) {
               
               Serial.println("GPIO 5 off");
               // output5StateInvOutput = "off"; // alredy in funInv_On_then_Output220 function
 
+              
                funInv_On_then_Output220 ("off") ; 
                // delayAvoid_Inv_On = 5;
              
@@ -403,12 +416,16 @@ void loop(){
               Serial.println("GPIO 4 on");
               output4State = "on";
               //digitalWrite(output4, HIGH);
+              writeMemory(memReactInBatVlt,true);
+              doReactInBatVlt = true;
 
             } else if (header.indexOf("GET /4/off") >= 0) {
 
               Serial.println("GPIO 4 off");
               output4State = "off";
              // digitalWrite(output4, LOW);
+              writeMemory(memReactInBatVlt,false);
+              doReactInBatVlt = false;
 
             } else if (header.indexOf ("/configurations?finput") > 0 ){
               
@@ -434,15 +451,21 @@ void loop(){
             client.println("<body><h1>BatteryOperationOS</h1>");
             
             // Display current state, and ON/OFF buttons for GPIO 5  
-            client.println("<p>Inv_On - State " + output5StateInvOutput + " Avoid: " + String(delayAvoid_Inv_On) + "</p>");
+            // client.println("<p>Inv_On - State " + output5StateInvOutput + " Avoid: " + String(delayAvoid_Inv_On) + "</p>");
             
             // If the output5StateInvOutput is off, it displays the ON button       
             if (output5StateInvOutput=="off") {
               // indicate about turning on an Inverter
              if (!doAvoidInv_On)
+                  if(doBatBeHigh)
+                  client.println("<p><a href=\"/5/on\"><button class=\"button\">Inv Off / High Battery</button></a></p>");
+                  else
                   client.println("<p><a href=\"/5/on\"><button class=\"button\">Inv Off</button></a></p>");
               else// give numeric timeout visualatation
+                 if(!doBatIsLow)
                   client.println("<p><a href=\"/5/on\"><button class=\"button\">"+String(delayAvoid_Inv_On)+"!</button></a></p>");
+                  else
+                  client.println("<p><a href=\"/5/on\"><button class=\"button\">Low Battery!</button></a></p>");
               //------------------------------------------------------
 
             } else {  //+(delay_Inv_Output220 > 0) ?+"P:"+String(delay_Inv_Output220): +"^"+
@@ -458,8 +481,8 @@ void loop(){
             } 
                
             // Display current state, and ON/OFF buttons for GPIO 4  
-            client.println("<p>GPIO 4 - State " + output4State + " "+ String (delay_Inv_Output220) +" b:"+String (doInv_Output220)+"</p>" );
-            client.println("<p> "+ getStatusText () +"</p>" );
+            // client.println("<p>GPIO 4 - State " + output4State + " "+ String (delay_Inv_Output220) +" b:"+String (doInv_Output220)+"</p>" );
+            // client.println("<p> "+ getStatusText () +"</p>" );
             
             // If the output4State is off, it displays the ON button       
             if (output4State=="off") {
@@ -470,7 +493,7 @@ void loop(){
             //Input configurations
 
         
-              client.println ("<form action=\"/configurations\"><label for=\"finput\">First name:</label><input type=\"text\" id=\"finput\" name=\"finput\"><br><br><input type=\"submit\" value=\"Submit\"></form>");
+              client.println ("<form action=\"/configurations\"><label for=\"finput\">cmd:</label><input type=\"text\" id=\"finput\" name=\"finput\"><br><br><input type=\"submit\" value=\"Submit\"></form>");
               
               //test cmd_received output
               //client.println("<p>NVD" + cmd_received + "  inderxf "+ String (cmd_received.indexOf ("=")) + "  http>" + String (cmd_received.indexOf ("HTTP"))  + "</p>");
@@ -578,6 +601,9 @@ void quarterSecondTimer () { //0.2 second
 
      //Sensor
       sensorRead_Battery_Volt = analogRead(Read_Battery_Volt);
+
+
+
      //sec delay to pass power throw power relay from inverter
      if (delay_Inv_Output220 < 3 &&  delay_Inv_Output220 >= 1) {
 
@@ -624,7 +650,52 @@ void oneSecTimer () {
             delayAvoid_Inv_On--; // delay given to avoid turn on to fast
            }
 
-////////////////////////////Program Button are pressed
+
+
+
+
+
+//---------------// React to turning on a inverter by voltage range ------------//
+
+
+      if (!doBatMaxVltReached && (voltAvrBattery.voltage >= maxBatVlt) ) // turn on a inverter
+         {
+           Serial.println ("Condition: senscor " + String (voltAvrBattery.voltage) +"v >= batery then max " + String ( maxBatVlt) + "v " );
+          if (maxBatVltSustained_cnt <= maxBatVltSustained_sec) // keep counting 
+              maxBatVltSustained_cnt++;
+
+
+            Serial.println ("sustained max voltage: " + String (maxBatVltSustained_cnt) );
+            doBatBeHigh = true; // sub condition, telling about high voltage at the moment
+          if (maxBatVltSustained_cnt >= maxBatVltSustained_sec) // when voltage was sustained more then 10 seconds when turn on a inverter 
+             {
+              doBatMaxVltReached = true;
+              funInv_On_then_Output220 ("on");
+              Serial.println ("turn on inv when voltage is in healthy level");
+            }
+         }
+      else if (voltAvrBattery.voltage <= minBatVlt)
+      {
+          doBatMaxVltReached = false;
+          maxBatVltSustained_cnt = 0;
+          funInv_On_then_Output220 ("off");
+          Serial.println ("off inv when on low battery");
+          doBatIsLow = true;
+          doBatBeHigh = false;
+      }
+      else // if no any voltage is awailable
+      {
+        maxBatVltSustained_cnt = 0;
+        doBatIsLow = false;
+        doBatBeHigh = false;
+        Serial.println ("no battery condition");
+      }
+
+
+
+
+
+//---------------Program Button are pressed------------------------------//
 
 
            
@@ -708,7 +779,7 @@ void funInv_On_then_Output220 (String x = "off") {
          delay_Inv_Output220 = maxDelay_Inv_Output220; 
          delayAvoid_Inv_On = maxDelayAvoid_Inv_On;  // activate protection against turning on to fast and multiple times
          doPrg_on_button = true; // only for in sinck with website button
-         Serial.println ("funInv_On_then_Output220:off");
+         Serial.println ("funInv_On_then_Output220:on");
        }
 
       
@@ -722,6 +793,7 @@ void funInv_On_then_Output220 (String x = "off") {
       delay_Inv_Output220 = 0;
       doInv_Output220 = false;
       doPrg_on_button = false;
+      doBatMaxVltReached = false;
 
 
    }
@@ -764,8 +836,12 @@ String getStatusText () {
   + getText ("DoInv_readAC D0 ~220v",sensorDoInv_readAC) 
   + getText ("  DoInv_ReadSignal D5_/_",sensorDoInv_ReadSignal)
   + getText ("  DoPrg_StopInv D6 +48v",sensorDoPrg_StopInv) 
-  + getText ("  btnPrg_on D3 _/_", doPrg_on_button ) 
+  + getText ("\n  btnPrg_on D3 _/_", doPrg_on_button ) 
+  + getText ("  doBatMaxVltReached", doBatMaxVltReached ) 
+  + getText ("  doReactInBatVlt", doReactInBatVlt ) 
   + getText ("  StopInvTemp D7_/_", sensorPrg_StopInvTemp ) );
+
+            
 
 
 }
@@ -850,7 +926,7 @@ String fun_CmdRead (String cmdRead /*input commands here*/)
          else if (cmdRead == "status"){
 
             LED_IndicatorBlinkFast = LED_IndicatorBlinkFast_Common;
-            cmd_msgOut = "Received maxBatVlt:" + String (maxBatVlt) + " minBatVlt:" + String (minBatVlt) ;
+            cmd_msgOut = "Received maxBatVlt:" + String (maxBatVlt) + " minBatVlt:" + String (minBatVlt) + getStatusText () ;
             Serial.println (cmd_msgOut);
             
 
