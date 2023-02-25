@@ -490,7 +490,7 @@ void loop(){
             if (output4State=="off") {
               client.println("<p><a href=\"/4/on\"><button class=\"button\">Disabled Auto</button></a></p>");
             } else {
-              client.println("<p><a href=\"/4/off\"><button class=\"button button2\">Activated"+String (voltAvrBattery.voltage)+"v</button></a></p>");
+              client.println("<p><a href=\"/4/off\"><button class=\"button button2\">Activated "+String (voltAvrBattery.voltage)+"v</button></a></p>");
             }
             //Input configurations
 
@@ -904,7 +904,7 @@ String fun_CmdRead (String cmdRead /*input commands here*/)
         if (cmdRead == "help")
          { 
 
-           cmd_msgOut = "Awailable commands:,fixVltR-byte,fastblink-int,maxBatVlt-byte,minBatVlt-byte,status,restart,resetWifi-intpswrd, ";
+           cmd_msgOut = "Awailable commands:,fixVltR-byte,clear,maxBatVlt-byte,minBatVlt-byte,status,restart,resetWifi-intpswrd, ";
            Serial.println (cmd_msgOut);
          }
          else if (cmdRead == "fixVltR" ){
@@ -923,11 +923,9 @@ String fun_CmdRead (String cmdRead /*input commands here*/)
          }
 
 
-          else if (cmdRead == "fastblink" ){
-           cmd_msgOut = "fast blink value:" + cmdGetSpecial; Serial.println (cmd_msgOut);
-           
-           LED_IndicatorBlinkFast_Common = cmdGetSpecialInt;
-
+          else if (cmdRead == "clear" ){
+           cmd_msgOut = "";
+            LED_IndicatorBlinkFast = LED_IndicatorBlinkFast_Common;
          }
 
          else if (cmdRead == "status"){
