@@ -156,18 +156,18 @@ Can control 220v relay and also read inv live, is completly on with "Feed_Separa
   GPIO5 (D1) = Inv.Output220        ->Realy { 220v Out [r__/ __] }
 */
 const static uint8_t Inv_Output220 = D1;
-uint8_t maxDelay_Inv_Output220  = 14; //max delay before turning on a relay to pass a power from inverter
-uint8_t delay_Inv_Output220;          //sec delay to pass power throw power relay from inverter
-bool    doInv_Output220 = false;      //sec delay to pass power throw power relay from inverter 
+uint8_t maxDelay_Inv_Output220  = 5; //sec delay to pass power throw power relay from boiler
+uint8_t delay_Inv_Output220;          //sec delay to pass power throw power relay from boiler
+bool    doInv_Output220 = false;      //sec delay to pass power throw power relay from boiler 
 /*
 Relay Turn On Inverter
 Turn on invite. by powering throw relay
   GPIO4 (D2) = Inv.On               ->Relay { Inv.On [r__/ __] }
 */
 const static uint8_t Inv_On = D2;
-uint8_t maxDelayAvoid_Inv_On = 24; //sec delay to turn to on inverter to fast, avoid toggle switching 
-uint8_t delayAvoid_Inv_On = 0;    //sec delay to turn to on inverter to fast, avoid toggle switching 
-bool    doAvoidInv_On = false;    //sec delay to turn to on inverter to fast, avoid toggle switching
+uint8_t maxDelayAvoid_Inv_On = 24; //sec delay to turn to on boiler to fast, avoid toggle switching 
+uint8_t delayAvoid_Inv_On = 0;    //sec delay to turn to on boiler to fast, avoid toggle switching 
+bool    doAvoidInv_On = false;    //sec delay to turn to on boiler to fast, avoid toggle switching
 /*
 Turn on inv. prg by button
   GPIO0 (D3) = Prg.on.button
@@ -186,13 +186,13 @@ Indicate status about program
 */
 const static uint8_t LED_Indicator = D4;
 /*
-Read external signals from inverter where tells about successful working stage
+Read external signals from boiler where tells about successful working stage
   GPIO14(D5) = Inv.ReadSignal+      ->Contact Input
 */
 const static uint8_t Inv_ReadSignal = D5;
 bool sensorDoInv_ReadSignal = false;
 /*
-Read external signals from inverter where tells about successful working stage
+Read external signals from boiler where tells about successful working stage
   GPIO12(D6) = Prg.StopInv+         ->48-70V Input
 */
 const static uint8_t Prg_StopInv = D6;
@@ -213,16 +213,16 @@ bool sensorPrg_StopInvTemp = false;
 const static uint8_t Read_Battery_Volt = A0;
 int sensorRead_Battery_Volt = 0;  // value read from the pot
 //(uint8_t pin_input = A0 ,              float broken_voltage = 0.0        ,  float R1 = 100000.0 , float R2 = 10000.0  )
-VoltMeter voltAvrBattery  (Read_Battery_Volt, 0.0 ,   680000.0 ,5100.0  );
+VoltMeter voltAvrBattery  (Read_Battery_Volt, 0.0 ,   2000000.0 ,33000.0  );
 byte minBatVlt = 15;
 byte maxBatVlt = 16;
 byte fixBatVlt = 100; // 1 equil 0.01 * 5100 = 510  // fix voltage in 255 range
 bool doBatMaxVltReached = false; // enable when maximum voltage was reached and disable when minimum voltage is gained
-byte maxBatVltSustained_sec = 60; //  if not interuption in 30 seconds have in reached by maximum voltage range then
+byte maxBatVltSustained_sec = 20; //  if not interuption in 20-60 seconds have in reached by maximum voltage range then
 byte maxBatVltSustained_cnt = 0; //  keep count of maxBatVltSustained_sec
 bool doBatIsLow = false; // save condition about battery low voltage in the scope
 bool doBatBeHigh = false; // save condition about battery high voltage in the scope
-bool doReactInBatVlt = true; // react in battery automaticly turn on inverter by changend voltage;
+bool doReactInBatVlt = true; // react in battery automaticly turn on boiler by changend voltage;
         
 
 // Function declaration
@@ -294,7 +294,7 @@ void setup() {
  getmemBatVlt ();
 
  if (readMemoryByte(memfixVltR)>=255) {writeMemory(memfixVltR,(byte)100); Serial.println ("Writing memfixVltR: 100");} else voltAvrBattery.FixVltR(readMemoryByte(memfixVltR)); // Works as potentiometer
- if (readMemoryByte(memReactInBatVlt)>=255) {writeMemory(memReactInBatVlt,true); Serial.println ("Writing memReactInBatVlt: true");} else doReactInBatVlt = (bool)(readMemoryByte(memReactInBatVlt)); // Works as potentiometer
+ if (readMemoryByte(memReactInBatVlt)>=255) {writeMemory(memReactInBatVlt,true); Serial.println ("Writing memReactInBatVlt: true");} else doReactInBatVlt = (bool)(readMemoryByte(memReactInBatVlt)); // Works as auto on
  
  if (doReactInBatVlt)        output4State = "on"; // change graphical user interface
 
@@ -391,13 +391,13 @@ void loop(){
            
             
             // turns the GPIOs on and off
-            if (!doAvoidInv_On && header.indexOf("GET /5/on") >= 0) {//sec delay to turn to on inverter to fast, avoid toggle switching
+            if (!doAvoidInv_On && header.indexOf("GET /5/on") >= 0) {//sec delay to turn to on boiler to fast, avoid toggle switching
               Serial.println("GPIO 5 on");
              
                // output5StateInvOutput = "on"; // alredy in funInv_On_then_Output220 function
 
-               // second relay that pass power throw power 220v relay from inverter and also turn on inverter
-              if (!doBatIsLow) // turn on inverter when no battery voltage is to low
+               // second relay that pass power throw power 220v relay from boiler and also turn on boiler
+              if (!doBatIsLow) // turn on boiler when no battery voltage is to low
                funInv_On_then_Output220 ("on") ; 
               else
                delayAvoid_Inv_On = maxDelayAvoid_Inv_On;  // activate protection against turning on to fast and multiple times
@@ -450,7 +450,7 @@ void loop(){
             client.println(".button2 {background-color:MediumSeaGreen ;}</style></head>");
             
             // Web Page Heading
-            client.println("<body><h1>BatteryOperationOS</h1>");
+            client.println("<body><h1>BoilerHeatingSolar</h1>");
             
             // Display current state, and ON/OFF buttons for GPIO 5  
             // client.println("<p>Inv_On - State " + output5StateInvOutput + " Avoid: " + String(delayAvoid_Inv_On) + "</p>");
@@ -564,21 +564,6 @@ void __main () {
 
 }
 
-String NVal (String name , int value) {
-  return " " + name + ": " + String (value);
-}
-// return desidion about sensor reactence
-bool reactionFromASensors (bool sensorsOutputs = false) {
-
-
-  if (sensorsOutputs)
-  {
-    Serial.print (NVal("Read AC",sensorDoInv_readAC) + NVal("Inv Read Signal",sensorDoInv_ReadSignal) + NVal ("Prg Stop Inv:", sensorDoPrg_StopInv) + NVal("Stop Inv Temp:",sensorPrg_StopInvTemp) );
-    // Serial.print (NVal("Read AC",sensorDoInv_readAC));
-  }
-  return sensorDoInv_readAC ;
-}
-
 void quarterSecondTimer () { //0.2 second
 
    __main();
@@ -621,7 +606,7 @@ void quarterSecondTimer () { //0.2 second
 
 
 
-     //sec delay to pass power throw power relay from inverter
+     //sec delay to pass power throw power relay from boiler
      if (delay_Inv_Output220 < 3 &&  delay_Inv_Output220 >= 1) {
 
        doInv_Output220 = true; // to avoid cycling maxDelay 
@@ -631,7 +616,7 @@ void quarterSecondTimer () { //0.2 second
     }
     //----------------------------------------------------------
 
-    //sec delay to turn to on inverter to fast, avoid toggle switching
+    //sec delay to turn to on boiler to fast, avoid toggle switching
     if (delayAvoid_Inv_On > 0){
 
       doAvoidInv_On = true;
@@ -672,10 +657,10 @@ void oneSecTimer () {
 
 
 
-//---------------// React to turning on a inverter by voltage range ------------//660
+//---------------// React to turning on a boiler by voltage range ------------//660
 
 
-      if (doReactInBatVlt/*<auto on condition from user*/ && !doBatMaxVltReached && (voltAvrBattery.voltage >= maxBatVlt) && reactionFromASensors() /*and no reaction from a sensors*/) // turn on a inverter
+      if (doReactInBatVlt/*<auto on condition from user*/ && !doBatMaxVltReached && (voltAvrBattery.voltage >= maxBatVlt) ) // turn on a boiler
          {
            Serial.println ("Condition: senscor " + String (voltAvrBattery.voltage) +"v >= batery then max " + String ( maxBatVlt) + "v " );
           if (maxBatVltSustained_cnt <= maxBatVltSustained_sec) // keep counting 
@@ -684,7 +669,7 @@ void oneSecTimer () {
 
             Serial.println ("sustained max voltage: " + String (maxBatVltSustained_cnt) );
             doBatBeHigh = true; // sub condition, telling about high voltage at the moment
-          if (maxBatVltSustained_cnt >= maxBatVltSustained_sec) // when voltage was sustained more then 60 seconds when turn on a inverter 
+          if (maxBatVltSustained_cnt >= maxBatVltSustained_sec) // when voltage was sustained more then 60 seconds when turn on a boiler 
              {
               doBatMaxVltReached = true;
               funInv_On_then_Output220 ("on",false);
@@ -701,14 +686,6 @@ void oneSecTimer () {
           Serial.println ("inv is off when low battery");
 
           doBatIsLow = true;
-          doBatBeHigh = false;
-      }
-      else if (reactionFromASensors ())
-      {
-          Serial.println ("Failed becouse of sensors");
-          reactionFromASensors ();
-
-          doBatIsLow = false;
           doBatBeHigh = false;
       }
       else // if no any voltage is awailable
@@ -748,7 +725,7 @@ void oneSecTimer () {
                 if (delayPrg_on_button == maxDelayPrg_on_button -1) {
                     doPrg_on_button = !doPrg_on_button; // here change bolean condition
 
-                    if (doPrg_on_button) // turn on inverter and passing power relay
+                    if (doPrg_on_button) // turn on boiler and passing power relay
                         funInv_On_then_Output220 ("on");
                      else 
                         funInv_On_then_Output220 ("off");
@@ -980,7 +957,7 @@ String fun_CmdRead (String cmdRead /*input commands here*/)
             cmd_msgOut = "Received, start restart os:";
             Serial.println (cmd_msgOut);
             ESP.restart();
-            
+            M
          }
          else if (cmdRead == "minBatVlt"){
            
@@ -1042,7 +1019,6 @@ String fun_CmdRead (String cmdRead /*input commands here*/)
 
 
 
-
 void setBatVltRange (uint8_t minBatVlt_ , uint8_t maxBatVlt_) // not in use
 {
 
@@ -1063,17 +1039,18 @@ void setBatVltRange (uint8_t minBatVlt_ , uint8_t maxBatVlt_) // not in use
 
 
 
-bool avoidBatVltOutOfRangeThenMemCommit (){
+bool avoidBatVltOutOfRangeThenMemCommit (/*String name, byte value*/){
   bool itsDone = true;// chenk if all condition passed  successfully
 
    if (minBatVlt > maxBatVlt) // if minimum voltage is higher then maximum then make as same level to with
   {
     maxBatVlt = minBatVlt + 1;
     Serial.println ("minimum voltage was higher then expected, reseted");
-    itsDone = false; // at some point its failed
+    itsDone = false;
   }
 
  
+
       if (minBatVlt < 10 &&  maxBatVlt <= 16)
       {
         Serial.println ("12v mode");
@@ -1088,7 +1065,7 @@ bool avoidBatVltOutOfRangeThenMemCommit (){
         Serial.println ("36v mode");
 
       }
- else if (minBatVlt < 54 &&  maxBatVlt <= 64)
+ else if (minBatVlt < 540 &&  maxBatVlt <= 640)
       {
         Serial.println ("48v mode");
 
@@ -1111,7 +1088,7 @@ bool avoidBatVltOutOfRangeThenMemCommit (){
     Serial.println ("Unable to save battery variables values to EEPROM");
   }
 
- if (maxBatVlt >= 64)
+ /* if (maxBatVlt >= 64)
  {
   maxBatVlt = 64;
  }
@@ -1119,9 +1096,9 @@ bool avoidBatVltOutOfRangeThenMemCommit (){
  if (minBatVlt >= 63)
  {
   minBatVlt = 63;
- }
+ }*/
 
-  return false;
+    return false;
 }
 
 
@@ -1136,7 +1113,7 @@ void getmemBatVlt () {
   minBatVlt = readMemoryByte(memMinBatVlt);
   maxBatVlt = readMemoryByte(memMaxBatVlt);
 
-  if (minBatVlt > 62 || maxBatVlt > 64)
+  /*if (minBatVlt > 62 || maxBatVlt > 64)
   {
     minBatVlt = 42;
     maxBatVlt = 64;
@@ -1145,6 +1122,6 @@ void getmemBatVlt () {
     writeMemory(memMaxBatVlt,maxBatVlt);
 
     Serial.println ("Chaning bad boundaries having values" );
-  }
+  }*/
 
 }
