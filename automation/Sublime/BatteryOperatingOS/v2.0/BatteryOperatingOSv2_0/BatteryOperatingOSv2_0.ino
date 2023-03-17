@@ -404,7 +404,7 @@ void loop(){
                // output5StateInvOutput = "on"; // alredy in funInv_On_then_Output220 function
 
                // second relay that pass power throw power 220v relay from inverter and also turn on inverter
-              if (!doBatIsLow) // turn on inverter when no battery voltage is to low
+              if (!doBatIsLow && reactionFromASensors ()) // turn on inverter when no battery voltage is to low
                funInv_On_then_Output220 ("on") ; 
               else
                delayAvoid_Inv_On = maxDelayAvoid_Inv_On;  // activate protection against turning on to fast and multiple times
@@ -469,7 +469,7 @@ void loop(){
 
                   if(doBatBeHigh) client.println("<p><a href=\"/5/on\"><button class=\"button\">Inv Off / High Battery</button></a></p>");
                  
-                  else if (desctiptionInv_readAC)      client.println("<p><a href=\"/5/on\"><button class=\"button\">No Inv.~220v Output!</button></a></p>");
+                  else if (desctiptionInv_readAC)      client.println("<p><a href=\"/5/on\"><button class=\"button\">No ~220v Output!</button></a></p>");
                   else if (desctiptionInv_ReadSignal)  client.println("<p><a href=\"/5/on\"><button class=\"button\">Inv. Read Signal!</button></a></p>");
                   else if (desctiptionPrg_StopInv)     client.println("<p><a href=\"/5/on\"><button class=\"button\">Prg. Stop Inverter!</button></a></p>");
                   else if (desctiptionPrg_StopInvTemp) client.println("<p><a href=\"/5/on\"><button class=\"button\">Temp. Protection!</button></a></p>");
@@ -583,21 +583,16 @@ String NVal (String name , int value) {
 
 
 // return desidion about sensor reactence----------------------------++++++++++++++++++
-bool reactionFromASensors (bool sensorsOutputs = false) {
+bool reactionFromASensors () {
 bool cnd = true; // failed to obtain condition from a sensors
 desribtionsInText = ""; // clear each time 
-  if (sensorsOutputs)
-  {
-    Serial.print (NVal("Read AC",sensorDoInv_readAC) + NVal("Inv Read Signal",sensorDoInv_ReadSignal) + NVal ("Prg Stop Inv:", sensorDoPrg_StopInv) + NVal("Stop Inv Temp:",sensorPrg_StopInvTemp) );
-    // Serial.print (NVal("Read AC",sensorDoInv_readAC));
-  }
 
   //  desctiptionInv_readAC     
   //  desctiptionInv_ReadSignal  
   //  desctiptionPrg_StopInv    
   //  desctiptionPrg_StopInvTemp   
 
-  if (sensorDoInv_readAC)    {cnd = false;     desctiptionInv_readAC =  true; desribtionsInText =+ "No AC output ,";} else { desctiptionInv_readAC = false;};
+  if (sensorDoInv_readAC)    {cnd = false;     desctiptionInv_readAC =  true; desribtionsInText =+ "No Inv.~220v output ,";} else { desctiptionInv_readAC = false;};
   if (sensorDoInv_ReadSignal){cnd = false; desctiptionInv_ReadSignal =  true; desribtionsInText =+ "Read Inv. Signal ,";} else { desctiptionInv_ReadSignal = false;};
   if (sensorDoPrg_StopInv)   {cnd = false; desctiptionPrg_StopInv =     true; desribtionsInText =+ "Prg. Stop Inverter ,";} else { desctiptionPrg_StopInv = false;};
   if (sensorPrg_StopInvTemp) {cnd = false; desctiptionPrg_StopInvTemp = true; desribtionsInText =+ "Stop inverter of critical temperature ,";} else { desctiptionPrg_StopInvTemp = false;};
