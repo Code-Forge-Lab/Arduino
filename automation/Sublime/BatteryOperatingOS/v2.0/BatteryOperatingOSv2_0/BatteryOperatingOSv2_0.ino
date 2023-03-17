@@ -223,7 +223,14 @@ byte maxBatVltSustained_cnt = 0; //  keep count of maxBatVltSustained_sec
 bool doBatIsLow = false; // save condition about battery low voltage in the scope
 bool doBatBeHigh = false; // save condition about battery high voltage in the scope
 bool doReactInBatVlt = true; // react in battery automaticly turn on inverter by changend voltage;
-        
+
+// conditional desribtions statements
+
+   bool desctiptionInv_readAC = false ;      
+   bool desctiptionInv_ReadSignal = false ;   
+   bool desctiptionPrg_StopInv = false ;     
+   bool desctiptionPrg_StopInvTemp = false ; 
+   String desribtionsInText = ""; // hold information about failed conditions from a sensors    
 
 // Function declaration
 void funInv_On_then_Output220 (String x = "off" , bool silence = false);
@@ -459,10 +466,16 @@ void loop(){
             if (output5StateInvOutput=="off") {
               // indicate about turning on an Inverter
              if (!doAvoidInv_On)
-                  if(doBatBeHigh)
-                  client.println("<p><a href=\"/5/on\"><button class=\"button\">Inv Off / High Battery</button></a></p>");
+
+                  if(doBatBeHigh) client.println("<p><a href=\"/5/on\"><button class=\"button\">Inv Off / High Battery</button></a></p>");
+                 
+                  else if (desctiptionInv_readAC)      client.println("<p><a href=\"/5/on\"><button class=\"button\">No Inv.~220v Output!</button></a></p>");
+                  else if (desctiptionInv_ReadSignal)  client.println("<p><a href=\"/5/on\"><button class=\"button\">Inv. Read Signal!</button></a></p>");
+                  else if (desctiptionPrg_StopInv)     client.println("<p><a href=\"/5/on\"><button class=\"button\">Prg. Stop Inverter!</button></a></p>");
+                  else if (desctiptionPrg_StopInvTemp) client.println("<p><a href=\"/5/on\"><button class=\"button\">Temp. Protection!</button></a></p>");
                   else
                   client.println("<p><a href=\"/5/on\"><button class=\"button\">Inv Off</button></a></p>");
+
               else// give numeric timeout visualatation
                  if(!doBatIsLow)
                   client.println("<p><a href=\"/5/on\"><button class=\"button\">"+String(delayAvoid_Inv_On)+"!</button></a></p>");
@@ -567,16 +580,30 @@ void __main () {
 String NVal (String name , int value) {
   return " " + name + ": " + String (value);
 }
-// return desidion about sensor reactence
+
+
+// return desidion about sensor reactence----------------------------++++++++++++++++++
 bool reactionFromASensors (bool sensorsOutputs = false) {
-
-
+bool cnd = true; // failed to obtain condition from a sensors
+desribtionsInText = ""; // clear each time 
   if (sensorsOutputs)
   {
     Serial.print (NVal("Read AC",sensorDoInv_readAC) + NVal("Inv Read Signal",sensorDoInv_ReadSignal) + NVal ("Prg Stop Inv:", sensorDoPrg_StopInv) + NVal("Stop Inv Temp:",sensorPrg_StopInvTemp) );
     // Serial.print (NVal("Read AC",sensorDoInv_readAC));
   }
-  return sensorDoInv_readAC ;
+
+  //  desctiptionInv_readAC     
+  //  desctiptionInv_ReadSignal  
+  //  desctiptionPrg_StopInv    
+  //  desctiptionPrg_StopInvTemp   
+
+  if (sensorDoInv_readAC)    {cnd = false;     desctiptionInv_readAC =  true; desribtionsInText =+ "No AC output ,";} else { desctiptionInv_readAC = false;};
+  if (sensorDoInv_ReadSignal){cnd = false; desctiptionInv_ReadSignal =  true; desribtionsInText =+ "Read Inv. Signal ,";} else { desctiptionInv_ReadSignal = false;};
+  if (sensorDoPrg_StopInv)   {cnd = false; desctiptionPrg_StopInv =     true; desribtionsInText =+ "Prg. Stop Inverter ,";} else { desctiptionPrg_StopInv = false;};
+  if (sensorPrg_StopInvTemp) {cnd = false; desctiptionPrg_StopInvTemp = true; desribtionsInText =+ "Stop inverter of critical temperature ,";} else { desctiptionPrg_StopInvTemp = false;};
+
+  
+  return cnd;
 }
 
 void quarterSecondTimer () { //0.2 second
@@ -703,11 +730,12 @@ void oneSecTimer () {
           doBatIsLow = true;
           doBatBeHigh = false;
       }
-      else if (reactionFromASensors ())
+      else if (!reactionFromASensors ())
       {
-          Serial.println ("Failed becouse of sensors");
+          Serial.println ("Failed becouse of sensors ERR: " + desribtionsInText);
           reactionFromASensors ();
-
+          funInv_On_then_Output220 ("off",false);
+          
           doBatIsLow = false;
           doBatBeHigh = false;
       }
