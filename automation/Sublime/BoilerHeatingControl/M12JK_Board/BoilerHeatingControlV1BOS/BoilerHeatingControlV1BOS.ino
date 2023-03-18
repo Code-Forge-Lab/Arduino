@@ -483,7 +483,7 @@ void loop(){
               if (delay_Inv_Output220 > 2)
                  client.println("<p><a href=\"/5/off\"><button class=\"button button2\">P:"+String(delay_Inv_Output220-2)+" Inv On</button></a></p>");
               else if (turnOffTimer > 0 && doBatIsLow)
-                  client.println("<p><a href=\"/5/on\"><button class=\"button\">Off After "+String(turnOffTimer)+"</button></a></p>");
+                  client.println("<p><a href=\"/5/off\"><button class=\"button\">Off After "+String(turnOffTimer)+"</button></a></p>");
 
               else if (doInv_Output220)
                  client.println("<p><a href=\"/5/off\"><button class=\"button button2\">^Inv On</button></a></p>");
@@ -675,7 +675,7 @@ void oneSecTimer () {
       if (doReactInBatVlt/*<auto on condition from user*/ && !doBatMaxVltReached && (voltAvrBattery.voltage >= maxBatVlt) ) // turn on a boiler
          {
            Serial.println ("Condition: senscor " + String (voltAvrBattery.voltage) +"v >= batery then max " + String ( maxBatVlt) + "v " );
-           
+           funTurnOffTimer(true);
 
           if (maxBatVltSustained_cnt <= maxBatVltSustained_sec) // keep counting 
               maxBatVltSustained_cnt++;
@@ -801,7 +801,7 @@ void oneSecTimer () {
 }
 
 void funTurnOffTimer (bool emableTimer) {/// turn off timer calculation
-      turnOffTimerMax = (int)turnOffTimerMaxConst + ((int)turnOffTimerUser);
+      turnOffTimerMax = (int)turnOffTimerMaxConst * ((int)turnOffTimerUser);
    if (emableTimer) turnOffTimer = turnOffTimerMax;
 }
 
