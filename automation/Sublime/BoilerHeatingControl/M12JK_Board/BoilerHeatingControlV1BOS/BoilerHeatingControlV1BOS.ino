@@ -960,15 +960,17 @@ String fun_CmdRead (String cmdRead /*input commands here*/)
 
 
           else if (cmdRead == "fixTurnOffTimer" ){
+            funTurnOffTimer (); // refresh calculation values
          if (cmdIsValidInt) 
             {  
               LED_IndicatorBlinkFast = LED_IndicatorBlinkFast_Common;
               turnOffTimerUser = (byte)cmdGetSpecialInt;
-              cmd_msgOut+=" fixTurnOffTimer  a value: " + String (turnOffTimerUser) + " as " + String (turnOffTimerMax) + " timer ";
+              funTurnOffTimer (); // refresh calculation values
+              cmd_msgOut+=" fixTurnOffTimer  a value: " + String (turnOffTimerUser) + " as " + String (turnOffTimerMax) + "s timer ";
               writeMemory(memturnOffTimer,(byte)turnOffTimerUser);
 
             } 
-            else {cmd_msgOut+="Failed register fixTurnOffTimer a mem value: " + String (turnOffTimerUser) + " as " + String (turnOffTimerMax) + " timer max ";};
+            else {cmd_msgOut+="Failed register fixTurnOffTimer a mem value: " + String (turnOffTimerUser) + " as " + String (turnOffTimerMax) + "s timer max ";};
          }
 
          else if (cmdRead == "clear" ){
