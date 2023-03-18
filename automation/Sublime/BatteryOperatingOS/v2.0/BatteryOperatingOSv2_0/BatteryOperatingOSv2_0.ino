@@ -248,6 +248,7 @@ void setBatVltRange (uint8_t , uint8_t );
 bool avoidBatVltOutOfRangeThenMemCommit(); // avoid inputed voltage to be out of range;
 void getmemBatVlt ();
 void funTurnInvAutomaticallyByVoltage ();
+bool reactionFromASensors (bool react = false);
 
 // EEPROM memory address
 int16_t memMinBatVlt = 1;
@@ -602,7 +603,11 @@ String NVal (String name , int value) {
 
 
 // return desidion about sensor reactence----------------------------++++++++++++++++++
-bool reactionFromASensors () {
+void descTxt (String txt , bool enable) {
+  if (enable)
+    desribtionsInText += txt;
+}
+bool reactionFromASensors (bool react) {
 bool cnd = true; // failed to obtain condition from a sensors
 desribtionsInText = ""; // clear each time 
 
@@ -611,10 +616,10 @@ desribtionsInText = ""; // clear each time
   //  desctiptionPrg_StopInv    
   //  desctiptionPrg_StopInvTemp   
 
-  if (sensorDoInv_readAC     && !desctiptionUserInv_readAC)    {cnd = false;     desctiptionInv_readAC =  true; desribtionsInText =+ "No Inv.~220v output ,";} else { desctiptionInv_readAC = false;};
-  if (sensorDoInv_ReadSignal && !desctiptionUserInv_ReadSignal){cnd = false; desctiptionInv_ReadSignal =  true; desribtionsInText =+ "Read Inv. Signal ,";} else { desctiptionInv_ReadSignal = false;};
-  if (sensorDoPrg_StopInv    && !desctiptionUserPrg_StopInv)   {cnd = false; desctiptionPrg_StopInv =     true; desribtionsInText =+ "Prg. Stop Inverter ,";} else { desctiptionPrg_StopInv = false;};
-  if (sensorPrg_StopInvTemp  && !desctiptionUserPrg_StopInvTemp) {cnd = false; desctiptionPrg_StopInvTemp = true; desribtionsInText =+ "Stop inverter of critical temperature ,";} else { desctiptionPrg_StopInvTemp = false;};
+  if (sensorDoInv_readAC     && !desctiptionUserInv_readAC)      {cnd = false;     desctiptionInv_readAC =  true; descTxt("No Inv.~220v output ," , react);                   } else { desctiptionInv_readAC = false;};
+  if (sensorDoInv_ReadSignal && !desctiptionUserInv_ReadSignal)  {cnd = false; desctiptionInv_ReadSignal =  true; descTxt("Read Inv. Signal ," , react);                      } else { desctiptionInv_ReadSignal = false;};
+  if (sensorDoPrg_StopInv    && !desctiptionUserPrg_StopInv)     {cnd = false; desctiptionPrg_StopInv =     true; descTxt("Prg. Stop Inverter ," , react);                    } else { desctiptionPrg_StopInv = false;};
+  if (sensorPrg_StopInvTemp  && !desctiptionUserPrg_StopInvTemp) {cnd = false; desctiptionPrg_StopInvTemp = true; descTxt("Stop inverter of critical temperature ," , react); } else { desctiptionPrg_StopInvTemp = false;};
 
   
   return cnd;
@@ -745,13 +750,16 @@ void oneSecTimer () {
           doBatBeHigh = false;
       }
       else if (!reactionFromASensors ())
-      {
+      { 
+          reactionFromASensors (true);
           Serial.println ("Failed becouse of sensors ERR: " + desribtionsInText);
-          reactionFromASensors ();
+          
           funInv_On_then_Output220 ("off",false);
           
           doBatIsLow = false;
           doBatBeHigh = false;
+          maxBatVltSustained_cnt = 0;
+
       }
       else // if no any voltage is awailable
       {
@@ -974,7 +982,7 @@ String fun_CmdRead (String cmdRead /*input commands here*/)
         if (cmdRead == "help")
          { 
 
-           cmd_msgOut = "Awailable commands:,fixVltR-byte,maxBatVlt-byte,minBatVlt-byte,ignoreReadAC-bool,ignoreReadInvSignal-bool,IgnorePrgStopInv-bool,IgnorePrgStopInvTemp-bool,clear,status,restart,resetWifi-intpswrd, ";
+           cmd_msgOut = "Awailable commands:,fixVltR-byte,maxBatVlt-byte,minBatVlt-byte,ignoreReadAC-bool,ignoreReadInvSignal-bool,IgnorePrgStopInv-bool,IgnorePrgStopInvTemp-bool,ignoreAllSensors,clear,status,restart,resetWifi-intpswrd, ";
            Serial.println (cmd_msgOut);
          }
 
@@ -1020,6 +1028,18 @@ String fun_CmdRead (String cmdRead /*input commands here*/)
 
             }
           else { cmd_msgOut += cmdRead + " [not a byte],stored: "+ String (readMemoryByte (memPrg_StopInvTemp))  ;};
+        }
+
+         else if (cmdRead == "ignoreAllSensors") {
+          writeMemory (memInv_readAC, true);
+          writeMemory (memInv_ReadSignal, true);
+          writeMemory (memPrg_StopInv, true);
+          writeMemory (memPrg_StopInvTemp, true);
+          desctiptionUserInv_readAC = true; 
+          desctiptionUserInv_ReadSignal = true; 
+          desctiptionUserPrg_StopInv = true; 
+          desctiptionUserPrg_StopInvTemp = true; 
+          cmd_msgOut += "Changed to ignore all sensors " + desribtionsInText;
         }
 //---------------------------End of desctriptionUser memory variables
          else if (cmdRead == "fixVltR" ){
