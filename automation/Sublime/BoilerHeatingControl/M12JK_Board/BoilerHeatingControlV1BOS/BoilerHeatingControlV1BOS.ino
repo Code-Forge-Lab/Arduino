@@ -768,7 +768,7 @@ void oneSecTimer () {
 
           
           // Serial.println (getStatusText ());
-
+Fre
           
     }
 
@@ -841,12 +841,13 @@ String getStatusText () {
             (". bits:" + String (sensorRead_Battery_Volt) +" = "
   + String  (voltAvrBattery.voltage) + "v.  "
   + getText ("DoInv_readAC D0 ~220v",sensorDoInv_readAC) 
-  + getText ("  DoInv_ReadSignal D5_/_",sensorDoInv_ReadSignal)
-  + getText ("  DoPrg_StopInv D6 +48v",sensorDoPrg_StopInv) 
-  + getText ("\n  btnPrg_on D3 _/_", doPrg_on_button ) 
+  + getText ("  Inv_ReadSignal D5_/_",sensorDoInv_ReadSignal)
+  + getText ("  Prg_StopInv D6",sensorDoPrg_StopInv) 
+  + getText ("  StopInvTemp D7_/_", sensorPrg_StopInvTemp )
+  + getText ("  btnPrg_on D3 _/_", doPrg_on_button ) 
   + getText ("  doBatMaxVltReached", doBatMaxVltReached ) 
   + getText ("  doReactInBatVlt", doReactInBatVlt ) 
-  + getText ("  StopInvTemp D7_/_", sensorPrg_StopInvTemp ) );
+  + "]]" );
 
             
 

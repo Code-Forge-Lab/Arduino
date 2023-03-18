@@ -224,13 +224,20 @@ bool doBatIsLow = false; // save condition about battery low voltage in the scop
 bool doBatBeHigh = false; // save condition about battery high voltage in the scope
 bool doReactInBatVlt = true; // react in battery automaticly turn on inverter by changend voltage;
 
-// conditional desribtions statements
+// conditional desribtions statements from a program
 
    bool desctiptionInv_readAC = false ;      
    bool desctiptionInv_ReadSignal = false ;   
    bool desctiptionPrg_StopInv = false ;     
    bool desctiptionPrg_StopInvTemp = false ; 
+
+// conditional description statements from a user
+   bool desctiptionUserInv_readAC = false ;      
+   bool desctiptionUserInv_ReadSignal = false ;   
+   bool desctiptionUserPrg_StopInv = false ;     
+   bool desctiptionUserPrg_StopInvTemp = false ; 
    String desribtionsInText = ""; // hold information about failed conditions from a sensors    
+
 
 // Function declaration
 void funInv_On_then_Output220 (String x = "off" , bool silence = false);
@@ -246,7 +253,11 @@ void funTurnInvAutomaticallyByVoltage ();
 int16_t memMinBatVlt = 1;
 int16_t memMaxBatVlt = 2;
 int16_t memfixVltR   = 3;
-int16_t memReactInBatVlt   = 4;
+int16_t memReactInBatVlt   = 5 ;
+int16_t memInv_readAC      = 6 ; // ignore sensoring condition from a user leaved statements     
+int16_t memInv_ReadSignal  = 7 ; // ignore sensoring condition from a user leaved statements  
+int16_t memPrg_StopInv     = 8 ; // ignore sensoring condition from a user leaved statements    
+int16_t memPrg_StopInvTemp = 9 ; // ignore sensoring condition from a user leaved statements
 
 //fast blink
 bool    LED_IndicatorBlink     = false;
@@ -303,6 +314,12 @@ void setup() {
  if (readMemoryByte(memfixVltR)>=255) {writeMemory(memfixVltR,(byte)100); Serial.println ("Writing memfixVltR: 100");} else voltAvrBattery.FixVltR(readMemoryByte(memfixVltR)); // Works as potentiometer
  if (readMemoryByte(memReactInBatVlt)>=255) {writeMemory(memReactInBatVlt,true); Serial.println ("Writing memReactInBatVlt: true");} else doReactInBatVlt = (bool)(readMemoryByte(memReactInBatVlt)); // Works as potentiometer
  
+ if (readMemoryByte(memInv_readAC)>=255) {writeMemory(memInv_readAC,true); Serial.println ("Writing memInv_readAC: true");} else                desctiptionUserInv_readAC = (bool)(readMemoryByte(memInv_readAC)); // ignore sensoring condition from a user leaved statements
+ if (readMemoryByte(memInv_ReadSignal)>=255) {writeMemory(memInv_ReadSignal,true); Serial.println ("Writing memInv_ReadSignal: true");} else    desctiptionUserInv_ReadSignal = (bool)(readMemoryByte(memInv_ReadSignal)); // ignore sensoring condition from a user leaved statements
+ if (readMemoryByte(memPrg_StopInv)>=255) {writeMemory(memPrg_StopInv,true); Serial.println ("Writing memPrg_StopInv: true");} else             desctiptionUserPrg_StopInv = (bool)(readMemoryByte(memPrg_StopInv)); // ignore sensoring condition from a user leaved statements
+ if (readMemoryByte(memPrg_StopInvTemp)>=255) {writeMemory(memPrg_StopInvTemp,true); Serial.println ("Writing memPrg_StopInvTemp: true");} else desctiptionUserPrg_StopInvTemp = (bool)(readMemoryByte(memPrg_StopInvTemp)); // ignore sensoring condition from a user leaved statements
+
+
  if (doReactInBatVlt)        output4State = "on"; // change graphical user interface
 
  delay (10);
@@ -582,6 +599,8 @@ String NVal (String name , int value) {
 }
 
 
+
+
 // return desidion about sensor reactence----------------------------++++++++++++++++++
 bool reactionFromASensors () {
 bool cnd = true; // failed to obtain condition from a sensors
@@ -592,10 +611,10 @@ desribtionsInText = ""; // clear each time
   //  desctiptionPrg_StopInv    
   //  desctiptionPrg_StopInvTemp   
 
-  if (sensorDoInv_readAC)    {cnd = false;     desctiptionInv_readAC =  true; desribtionsInText =+ "No Inv.~220v output ,";} else { desctiptionInv_readAC = false;};
-  if (sensorDoInv_ReadSignal){cnd = false; desctiptionInv_ReadSignal =  true; desribtionsInText =+ "Read Inv. Signal ,";} else { desctiptionInv_ReadSignal = false;};
-  if (sensorDoPrg_StopInv)   {cnd = false; desctiptionPrg_StopInv =     true; desribtionsInText =+ "Prg. Stop Inverter ,";} else { desctiptionPrg_StopInv = false;};
-  if (sensorPrg_StopInvTemp) {cnd = false; desctiptionPrg_StopInvTemp = true; desribtionsInText =+ "Stop inverter of critical temperature ,";} else { desctiptionPrg_StopInvTemp = false;};
+  if (sensorDoInv_readAC     && !desctiptionUserInv_readAC)    {cnd = false;     desctiptionInv_readAC =  true; desribtionsInText =+ "No Inv.~220v output ,";} else { desctiptionInv_readAC = false;};
+  if (sensorDoInv_ReadSignal && !desctiptionUserInv_ReadSignal){cnd = false; desctiptionInv_ReadSignal =  true; desribtionsInText =+ "Read Inv. Signal ,";} else { desctiptionInv_ReadSignal = false;};
+  if (sensorDoPrg_StopInv    && !desctiptionUserPrg_StopInv)   {cnd = false; desctiptionPrg_StopInv =     true; desribtionsInText =+ "Prg. Stop Inverter ,";} else { desctiptionPrg_StopInv = false;};
+  if (sensorPrg_StopInvTemp  && !desctiptionUserPrg_StopInvTemp) {cnd = false; desctiptionPrg_StopInvTemp = true; desribtionsInText =+ "Stop inverter of critical temperature ,";} else { desctiptionPrg_StopInvTemp = false;};
 
   
   return cnd;
@@ -889,10 +908,15 @@ String getStatusText () {
   + getText ("DoInv_readAC D0 ~220v",sensorDoInv_readAC) 
   + getText ("  DoInv_ReadSignal D5_/_",sensorDoInv_ReadSignal)
   + getText ("  DoPrg_StopInv D6 +48v",sensorDoPrg_StopInv) 
-  + getText ("\n  btnPrg_on D3 _/_", doPrg_on_button ) 
+  + getText ("  btnPrg_on D3 _/_", doPrg_on_button ) 
+  + getText ("  StopInvTemp D7_/_", sensorPrg_StopInvTemp ) 
   + getText ("  doBatMaxVltReached", doBatMaxVltReached ) 
+  + getText ("  IgnoreInv_readAC", desctiptionUserInv_readAC ) 
+  + getText ("  IgnoreInv_ReadSignal", desctiptionUserInv_ReadSignal ) 
+  + getText ("  IgnorePrg_StopInv", desctiptionUserPrg_StopInv ) 
+  + getText ("  IgnorePrg_StopInvTemp", desctiptionUserPrg_StopInvTemp ) 
   + getText ("  doReactInBatVlt", doReactInBatVlt ) 
-  + getText ("  StopInvTemp D7_/_", sensorPrg_StopInvTemp ) );
+  + "//" );
 
             
 
@@ -950,9 +974,54 @@ String fun_CmdRead (String cmdRead /*input commands here*/)
         if (cmdRead == "help")
          { 
 
-           cmd_msgOut = "Awailable commands:,fixVltR-byte,clear,maxBatVlt-byte,minBatVlt-byte,status,restart,resetWifi-intpswrd, ";
+           cmd_msgOut = "Awailable commands:,fixVltR-byte,maxBatVlt-byte,minBatVlt-byte,ignoreReadAC-bool,ignoreReadInvSignal-bool,IgnorePrgStopInv-bool,IgnorePrgStopInvTemp-bool,clear,status,restart,resetWifi-intpswrd, ";
            Serial.println (cmd_msgOut);
          }
+
+         else if (cmdRead == "ignoreReadAC" ){
+           if (cmdIsValidInt) 
+            {
+                 LED_IndicatorBlinkFast = LED_IndicatorBlinkFast_Common;
+                 cmd_msgOut+= cmdRead + " ["+  String ((byte)cmdGetSpecialInt) + "]" + "from a was value: " + String (readMemoryByte (memInv_readAC) );
+                 writeMemory (memInv_readAC, (byte)cmdGetSpecialInt);
+                 desctiptionUserInv_readAC = bool (cmdGetSpecialInt);
+            }
+          else { cmd_msgOut += cmdRead + " [not a byte],stored: "+ String (readMemoryByte (memInv_readAC))  ;};
+        }
+         else if (cmdRead == "ignoreReadInvSignal" ){
+           if (cmdIsValidInt) 
+            {
+                 LED_IndicatorBlinkFast = LED_IndicatorBlinkFast_Common;
+                 cmd_msgOut+= cmdRead + " ["+  String ((byte)cmdGetSpecialInt) + "]" + "from a was value: " + String (readMemoryByte (memInv_ReadSignal) );
+                 writeMemory (memInv_ReadSignal, (byte)cmdGetSpecialInt);
+                 desctiptionUserInv_ReadSignal = bool (cmdGetSpecialInt);
+
+            }
+          else { cmd_msgOut += cmdRead + " [not a byte],stored: "+ String (readMemoryByte (memInv_ReadSignal))  ;};
+        }
+         else if (cmdRead == "IgnorePrgStopInv" ){
+           if (cmdIsValidInt) 
+            {
+                 LED_IndicatorBlinkFast = LED_IndicatorBlinkFast_Common;
+                 cmd_msgOut+= cmdRead + " ["+  String ((byte)cmdGetSpecialInt) + "]" + "from a was value: " + String (readMemoryByte (memPrg_StopInv) );
+                 writeMemory (memPrg_StopInv, (byte)cmdGetSpecialInt);
+                 desctiptionUserPrg_StopInv = bool (cmdGetSpecialInt);
+
+            }
+          else { cmd_msgOut += cmdRead + " [not a byte],stored: "+ String (readMemoryByte (memPrg_StopInv))  ;};
+        }
+         else if (cmdRead == "IgnorePrgStopInvTemp" ){
+           if (cmdIsValidInt) 
+            {
+                 LED_IndicatorBlinkFast = LED_IndicatorBlinkFast_Common;
+                 cmd_msgOut+= cmdRead + " ["+  String ((byte)cmdGetSpecialInt) + "]" + "from a was value: " + String (readMemoryByte (memPrg_StopInvTemp) );
+                 writeMemory (memPrg_StopInvTemp, (byte)cmdGetSpecialInt);
+                 desctiptionUserPrg_StopInvTemp = bool (cmdGetSpecialInt);
+
+            }
+          else { cmd_msgOut += cmdRead + " [not a byte],stored: "+ String (readMemoryByte (memPrg_StopInvTemp))  ;};
+        }
+//---------------------------End of desctriptionUser memory variables
          else if (cmdRead == "fixVltR" ){
            cmd_msgOut = "Registered fix voltage of R resistor 1 byte is equal -> 0.01: ";
 
