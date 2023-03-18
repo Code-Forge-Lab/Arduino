@@ -223,7 +223,11 @@ byte maxBatVltSustained_cnt = 0; //  keep count of maxBatVltSustained_sec
 bool doBatIsLow = false; // save condition about battery low voltage in the scope
 bool doBatBeHigh = false; // save condition about battery high voltage in the scope
 bool doReactInBatVlt = true; // react in battery automaticly turn on boiler by changend voltage;
-        
+
+int turnOffTimer = 0 ;// to avoid turning on and very fast turning off a boiler thant create junp in voltage at nearly fully charget batery 
+int turnOffTimerMaxConst = 10; // not changing base value
+int turnOffTimerMax = turnOffTimerMaxConst ;// seconds 
+byte turnOffTimerUser = 1; // store addition timer value , additional for a turnOffTimerMax      
 
 // Function declaration
 void funInv_On_then_Output220 (String x = "off" , bool silence = false);
@@ -234,12 +238,14 @@ void setBatVltRange (uint8_t , uint8_t );
 bool avoidBatVltOutOfRangeThenMemCommit(); // avoid inputed voltage to be out of range;
 void getmemBatVlt ();
 void funTurnInvAutomaticallyByVoltage ();
+void funTurnOffTimer(bool enableTimer = false);
 
 // EEPROM memory address
 int16_t memMinBatVlt = 1;
 int16_t memMaxBatVlt = 2;
 int16_t memfixVltR   = 3;
 int16_t memReactInBatVlt   = 4;
+int16_t memturnOffTimer   = 5;
 
 //fast blink
 bool    LED_IndicatorBlink     = false;
@@ -295,7 +301,8 @@ void setup() {
 
  if (readMemoryByte(memfixVltR)>=255) {writeMemory(memfixVltR,(byte)100); Serial.println ("Writing memfixVltR: 100");} else voltAvrBattery.FixVltR(readMemoryByte(memfixVltR)); // Works as potentiometer
  if (readMemoryByte(memReactInBatVlt)>=255) {writeMemory(memReactInBatVlt,true); Serial.println ("Writing memReactInBatVlt: true");} else doReactInBatVlt = (bool)(readMemoryByte(memReactInBatVlt)); // Works as auto on
- 
+ if (readMemoryByte(memturnOffTimer)>=255) {writeMemory(memturnOffTimer,(byte)1); Serial.println ("Writing memturnOffTimer: 1");} else turnOffTimerUser = (byte)(readMemoryByte(memturnOffTimer)); 
+
  if (doReactInBatVlt)        output4State = "on"; // change graphical user interface
 
  delay (10);
@@ -466,6 +473,7 @@ void loop(){
               else// give numeric timeout visualatation
                  if(!doBatIsLow)
                   client.println("<p><a href=\"/5/on\"><button class=\"button\">"+String(delayAvoid_Inv_On)+"!</button></a></p>");
+                 
                   else
                   client.println("<p><a href=\"/5/on\"><button class=\"button\">Low Battery!</button></a></p>");
               //------------------------------------------------------
@@ -474,8 +482,12 @@ void loop(){
               
               if (delay_Inv_Output220 > 2)
                  client.println("<p><a href=\"/5/off\"><button class=\"button button2\">P:"+String(delay_Inv_Output220-2)+" Inv On</button></a></p>");
+              else if (turnOffTimer > 0 && doBatIsLow)
+                  client.println("<p><a href=\"/5/on\"><button class=\"button\">Off After "+String(turnOffTimer)+"</button></a></p>");
+
               else if (doInv_Output220)
                  client.println("<p><a href=\"/5/off\"><button class=\"button button2\">^Inv On</button></a></p>");
+             
               else 
                  client.println("<p><a href=\"/5/off\"><button class=\"button button2\">xInv On</button></a></p>");
 
@@ -652,7 +664,7 @@ void oneSecTimer () {
             delayAvoid_Inv_On--; // delay given to avoid turn on to fast
            }
 
-
+          
 
 
 
@@ -663,9 +675,11 @@ void oneSecTimer () {
       if (doReactInBatVlt/*<auto on condition from user*/ && !doBatMaxVltReached && (voltAvrBattery.voltage >= maxBatVlt) ) // turn on a boiler
          {
            Serial.println ("Condition: senscor " + String (voltAvrBattery.voltage) +"v >= batery then max " + String ( maxBatVlt) + "v " );
+           
+
           if (maxBatVltSustained_cnt <= maxBatVltSustained_sec) // keep counting 
               maxBatVltSustained_cnt++;
-
+              
 
             Serial.println ("sustained max voltage: " + String (maxBatVltSustained_cnt) );
             doBatBeHigh = true; // sub condition, telling about high voltage at the moment
@@ -678,9 +692,20 @@ void oneSecTimer () {
          }
       else if (voltAvrBattery.voltage <= minBatVlt)
       {
-          doBatMaxVltReached = false;
-          maxBatVltSustained_cnt = 0;
-          funInv_On_then_Output220 ("off",false);
+
+           if (turnOffTimer > 0)
+           {  
+              Serial.print ("turnOffTimer: " + String (turnOffTimer) + " , ");
+                 turnOffTimer--;
+                
+           } else {
+                 doBatMaxVltReached = false;
+                 maxBatVltSustained_cnt = 0;
+                 funInv_On_then_Output220 ("off",false);
+           }
+
+         
+          
 
           if (!doReactInBatVlt) Serial.print ("auto mode is disabled and / ");
           Serial.println ("inv is off when low battery");
@@ -696,6 +721,7 @@ void oneSecTimer () {
 
         if (!doReactInBatVlt) Serial.print ("auto mode is disabled and / ");
         Serial.println ("no battery condition");
+        funTurnOffTimer(true);
       }
 
 
@@ -768,11 +794,17 @@ void oneSecTimer () {
 
           
           // Serial.println (getStatusText ());
-Fre
+
           
     }
 
 }
+
+void funTurnOffTimer (bool emableTimer) {/// turn off timer calculation
+      turnOffTimerMax = (int)turnOffTimerMaxConst + ((int)turnOffTimerUser);
+   if (emableTimer) turnOffTimer = turnOffTimerMax;
+}
+
 
 // turn on both relays
 void funInv_On_then_Output220 (String x  , bool silence) {
@@ -781,17 +813,20 @@ void funInv_On_then_Output220 (String x  , bool silence) {
      // digitalWrite (Inv_Output220, HIGH);
       // digitalWrite (Inv_On, HIGH);
       output5StateInvOutput = "on"; 
+      funTurnOffTimer (true);
 
       if (delay_Inv_Output220 == 0 && !doInv_Output220 ){ // pass value only one time when was turned on at least one time
          delay_Inv_Output220 = maxDelay_Inv_Output220; 
          delayAvoid_Inv_On = maxDelayAvoid_Inv_On;  // activate protection against turning on to fast and multiple times
          doPrg_on_button = true; // only for in sinck with website button
+         
         if (silence)  Serial.println ("funInv_On_then_Output220:on");
        }
 
       
-      }
+      } 
    else{
+
       digitalWrite (Inv_Output220, LOW);
       digitalWrite (Inv_On, LOW);
       digitalWrite (LED_Indicator, LOW);
@@ -905,7 +940,7 @@ String fun_CmdRead (String cmdRead /*input commands here*/)
         if (cmdRead == "help")
          { 
 
-           cmd_msgOut = "Awailable commands:,fixVltR-byte,clear,maxBatVlt-byte,minBatVlt-byte,status,restart,resetWifi-intpswrd, ";
+           cmd_msgOut = "Awailable commands:,fixVltR-byte,clear,fixTurnOffTimer-byte,maxBatVlt-byte,minBatVlt-byte,status,restart,resetWifi-intpswrd, ";
            Serial.println (cmd_msgOut);
          }
          else if (cmdRead == "fixVltR" ){
@@ -924,7 +959,19 @@ String fun_CmdRead (String cmdRead /*input commands here*/)
          }
 
 
-          else if (cmdRead == "clear" ){
+          else if (cmdRead == "fixTurnOffTimer" ){
+         if (cmdIsValidInt) 
+            {  
+              LED_IndicatorBlinkFast = LED_IndicatorBlinkFast_Common;
+              turnOffTimerUser = (byte)cmdGetSpecialInt;
+              cmd_msgOut+=" fixTurnOffTimer  a value: " + String (turnOffTimerUser) + " as " + String (turnOffTimerMax) + " timer ";
+              writeMemory(memturnOffTimer,(byte)turnOffTimerUser);
+
+            } 
+            else {cmd_msgOut+="Failed register fixTurnOffTimer a mem value: " + String (turnOffTimerUser) + " as " + String (turnOffTimerMax) + " timer max ";};
+         }
+
+         else if (cmdRead == "clear" ){
            cmd_msgOut = "";
             LED_IndicatorBlinkFast = LED_IndicatorBlinkFast_Common;
          }
@@ -958,7 +1005,7 @@ String fun_CmdRead (String cmdRead /*input commands here*/)
             cmd_msgOut = "Received, start restart os:";
             Serial.println (cmd_msgOut);
             ESP.restart();
-            M
+            
          }
          else if (cmdRead == "minBatVlt"){
            
