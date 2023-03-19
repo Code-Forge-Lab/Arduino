@@ -748,7 +748,20 @@ void oneSecTimer () {
               Serial.println ("turn on inv when voltage is in healthy level");
             }
          }
-      else if (voltAvrBattery.voltage <= minBatVlt)
+         
+          else if (!reactionFromASensors ())
+       { 
+          reactionFromASensors (true);
+          Serial.println ("Failed becouse of sensors ERR: " + desribtionsInText);
+          
+          funInv_On_then_Output220 ("off",false);
+          
+          doBatIsLow = false;
+          doBatBeHigh = false;
+          maxBatVltSustained_cnt = 0;
+
+       }
+      else if (voltAvrBattery.voltage <= minBatVlt )
       {
 
 
@@ -769,18 +782,7 @@ void oneSecTimer () {
           doBatIsLow = true;
           doBatBeHigh = false;
       }
-      else if (!reactionFromASensors ())
-      { 
-          reactionFromASensors (true);
-          Serial.println ("Failed becouse of sensors ERR: " + desribtionsInText);
-          
-          funInv_On_then_Output220 ("off",false);
-          
-          doBatIsLow = false;
-          doBatBeHigh = false;
-          maxBatVltSustained_cnt = 0;
-
-      }
+     
       else // if no any voltage is awailable
       {
         maxBatVltSustained_cnt = 0;
