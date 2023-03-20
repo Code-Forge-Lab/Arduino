@@ -245,6 +245,7 @@ byte turnOffTimerUser = 1; // store addition timer value , additional for a turn
 
 
 // Function declaration
+String getText (String index, bool conditionNaming);
 void funInv_On_then_Output220 (String x = "off" , bool silence = false);
 void oneSecTimer ();
 void quarterSecondTimer ();
@@ -254,6 +255,7 @@ bool avoidBatVltOutOfRangeThenMemCommit(); // avoid inputed voltage to be out of
 void getmemBatVlt ();
 void funTurnInvAutomaticallyByVoltage ();
 bool reactionFromASensors (bool react = false);
+void funTurnOnTimer(bool enableTimer = false);
 void funTurnOffTimer(bool enableTimer = false);
 
 // EEPROM memory address
@@ -310,6 +312,13 @@ const int output4 = Inv_On;
   // Local intialization. Once its business is done, there is no need to keep it around
   WiFiManager wifiManager;
   
+void updateMemoryBool (int16_t *memAddress, bool defaultValue , String text, bool *saveValueToVar ) {
+if (readMemoryByte(*memAddress)>=255) {writeMemory(*memAddress,defaultValue); Serial.println ( getText (text,defaultValue));} else{  *saveValueToVar = (bool)(readMemoryByte(*memAddress)); Serial.print (" Reveived!");}; // Works as potentiometer
+}
+void updateMemoryByte (int16_t *memAddress, byte defaultValue , String text, byte *saveValueToVar ) {
+Serial.println (text);
+if (readMemoryByte(*memAddress)>=255) {writeMemory(*memAddress,defaultValue); Serial.print (": "+ String (defaultValue));} else{ *saveValueToVar = (byte)(readMemoryByte(*memAddress));Serial.print (" Reveived!");} // Works as potentiometer
+}
 
 void setup() {
   Serial.begin(115200);
@@ -322,11 +331,17 @@ void setup() {
  if (readMemoryByte(memfixVltR)>=255) {writeMemory(memfixVltR,(byte)100); Serial.println ("Writing memfixVltR: 100");} else voltAvrBattery.FixVltR(readMemoryByte(memfixVltR)); // Works as potentiometer
  if (readMemoryByte(memReactInBatVlt)>=255) {writeMemory(memReactInBatVlt,true); Serial.println ("Writing memReactInBatVlt: true");} else doReactInBatVlt = (bool)(readMemoryByte(memReactInBatVlt)); // Works as potentiometer
  
- if (readMemoryByte(memInv_readAC)>=255) {writeMemory(memInv_readAC,true); Serial.println ("Writing memInv_readAC: true");} else                desctiptionUserInv_readAC = (bool)(readMemoryByte(memInv_readAC)); // ignore sensoring condition from a user leaved statements
- if (readMemoryByte(memInv_ReadSignal)>=255) {writeMemory(memInv_ReadSignal,true); Serial.println ("Writing memInv_ReadSignal: true");} else    desctiptionUserInv_ReadSignal = (bool)(readMemoryByte(memInv_ReadSignal)); // ignore sensoring condition from a user leaved statements
- if (readMemoryByte(memPrg_StopInv)>=255) {writeMemory(memPrg_StopInv,true); Serial.println ("Writing memPrg_StopInv: true");} else             desctiptionUserPrg_StopInv = (bool)(readMemoryByte(memPrg_StopInv)); // ignore sensoring condition from a user leaved statements
- if (readMemoryByte(memPrg_StopInvTemp)>=255) {writeMemory(memPrg_StopInvTemp,true); Serial.println ("Writing memPrg_StopInvTemp: true");} else desctiptionUserPrg_StopInvTemp = (bool)(readMemoryByte(memPrg_StopInvTemp)); // ignore sensoring condition from a user leaved statements
- if (readMemoryByte(memturnOffTimer)>=255) {writeMemory(memturnOffTimer,(byte)1); Serial.println ("Writing memturnOffTimer: 1");} else turnOffTimerUser = (byte)(readMemoryByte(memturnOffTimer)); 
+//  if (readMemoryByte(memInv_readAC)>=255) {writeMemory(memInv_readAC,true); Serial.println ("Writing memInv_readAC: true");} else                desctiptionUserInv_readAC = (bool)(readMemoryByte(memInv_readAC)); // ignore sensoring condition from a user leaved statements
+//  if (readMemoryByte(memInv_ReadSignal)>=255) {writeMemory(memInv_ReadSignal,true); Serial.println ("Writing memInv_ReadSignal: true");} else    desctiptionUserInv_ReadSignal = (bool)(readMemoryByte(memInv_ReadSignal)); // ignore sensoring condition from a user leaved statements
+//  if (readMemoryByte(memPrg_StopInv)>=255) {writeMemory(memPrg_StopInv,true); Serial.println ("Writing memPrg_StopInv: true");} else             desctiptionUserPrg_StopInv = (bool)(readMemoryByte(memPrg_StopInv)); // ignore sensoring condition from a user leaved statements
+//  if (readMemoryByte(memPrg_StopInvTemp)>=255) {writeMemory(memPrg_StopInvTemp,true); Serial.println ("Writing memPrg_StopInvTemp: true");} else desctiptionUserPrg_StopInvTemp = (bool)(readMemoryByte(memPrg_StopInvTemp)); // ignore sensoring condition from a user leaved statements
+//  if (readMemoryByte(memturnOffTimer)>=255) {writeMemory(memturnOffTimer,(byte)1); Serial.println ("Writing memturnOffTimer: 1");} else turnOffTimerUser = (byte)(readMemoryByte(memturnOffTimer)); 
+
+updateMemoryBool (&memInv_readAC, true , "memInv_readAC", &desctiptionUserInv_readAC );
+updateMemoryBool (&memInv_ReadSignal, true , "memInv_ReadSignal", &desctiptionUserInv_ReadSignal );
+updateMemoryBool (&memPrg_StopInv, true , "memPrg_StopInv", &desctiptionUserPrg_StopInv );
+updateMemoryBool (&memPrg_StopInvTemp, true , "memPrg_StopInvTemp", &desctiptionUserPrg_StopInvTemp );
+updateMemoryByte (&memturnOffTimer, 1 , "memturnOffTimer", &turnOffTimerUser );
 
 
  if (doReactInBatVlt)        output4State = "on"; // change graphical user interface
