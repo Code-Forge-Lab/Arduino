@@ -59,7 +59,7 @@ byte byteReadMemory = 0; // reduce reading noise
 
 // write to memory ones 
 byte readMemoryByte(int16_t address) {
-		   Serial.println("Read byte:" + String (EEPROM.read(address)) );
+		  //  Serial.println("Read byte by address->"+String (address)+": " + String (EEPROM.read(address)) );
 	return EEPROM.read(address);
 };
 

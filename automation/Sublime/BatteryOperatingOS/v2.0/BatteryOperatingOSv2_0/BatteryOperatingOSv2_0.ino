@@ -155,10 +155,22 @@ Relay Turn On Relay to 220v Output
 Can control 220v relay and also read inv live, is completly on with "Feed_Separate"
   GPIO5 (D1) = Inv.Output220        ->Realy { 220v Out [r__/ __] }
 */
+
+// int maxBatVltSustainedMax_sec = 60;
+// int maxBatVltSustained_cnt = 0; //  keep count of maxBatVltSustained_sec
+// int maxBatVltSustained_sec = maxBatVltSustainedMax_sec; //  if not interuption in 30 seconds have in reached by maximum voltage range then
+// byte maxBatVltSustained_User; 
+
 const static uint8_t Inv_Output220 = D1;
-uint8_t maxDelay_Inv_Output220  = 14; //max delay before turning on a relay to pass a power from inverter
-uint8_t delay_Inv_Output220;          //sec delay to pass power throw power relay from inverter
-bool    doInv_Output220 = false;      //sec delay to pass power throw power relay from inverter 
+
+int delay_Inv_Output220Max_sec = 20; //max delay before turning on a relay to pass a power from inverter
+int maxDelay_Inv_Output220_sec  = delay_Inv_Output220Max_sec; // align a values 
+int delay_Inv_Output220_cnt;          //sec delay to pass power throw power relay from inverter 
+byte    delay_Inv_Output220_User; // user saved value from a EEPROM memory
+bool    doInv_Output220 = false;      //sec delay to pass power throw power relay from inverter
+
+
+
 /*
 Relay Turn On Inverter
 Turn on invite. by powering throw relay
@@ -218,12 +230,17 @@ byte minBatVlt = 15;
 byte maxBatVlt = 16;
 byte fixBatVlt = 100; // 1 equil 0.01 * 5100 = 510  // fix voltage in 255 range
 bool doBatMaxVltReached = false; // enable when maximum voltage was reached and disable when minimum voltage is gained
-byte maxBatVltSustained_sec = 60; //  if not interuption in 30 seconds have in reached by maximum voltage range then
-byte maxBatVltSustained_cnt = 0; //  keep count of maxBatVltSustained_sec
+
 bool doBatIsLow = false; // save condition about battery low voltage in the scope
 bool doBatBeHigh = false; // save condition about battery high voltage in the scope
 bool doReactInBatVlt = true; // react in battery automaticly turn on inverter by changend voltage;
 
+// maximum time where are awaiting to initiate a program if  maximum voltage is tabley high  
+int maxBatVltSustainedMax_sec = 60;
+int maxBatVltSustained_cnt = 0; //  keep count of maxBatVltSustained_sec
+int maxBatVltSustained_sec = maxBatVltSustainedMax_sec; //  if not interuption in 30 seconds have in reached by maximum voltage range then
+byte maxBatVltSustained_User;
+// initiate after reached low voltage protection and this timing counters works as confirming that battery is low
 int turnOffTimer = 0 ;// to avoid turning on and very fast turning off a boiler thant create junp in voltage at nearly fully charget batery 
 int turnOffTimerMaxConst = 10; // not changing base value
 int turnOffTimerMax = turnOffTimerMaxConst ;// seconds 
@@ -255,19 +272,24 @@ bool avoidBatVltOutOfRangeThenMemCommit(); // avoid inputed voltage to be out of
 void getmemBatVlt ();
 void funTurnInvAutomaticallyByVoltage ();
 bool reactionFromASensors (bool react = false);
-void funTurnOnTimer(bool enableTimer = false);
+void funmaxBatVltSustained(bool enableTimer = false);
 void funTurnOffTimer(bool enableTimer = false);
+void funDelay_Inv_Output220 (bool enableTimer = false);
+    //sec delay to pass power throw power relay from inverter
+
 
 // EEPROM memory address
-int16_t memMinBatVlt = 1;
-int16_t memMaxBatVlt = 2;
-int16_t memfixVltR   = 3;
-int16_t memReactInBatVlt   = 5 ;
-int16_t memInv_readAC      = 6 ; // ignore sensoring condition from a user leaved statements     
-int16_t memInv_ReadSignal  = 7 ; // ignore sensoring condition from a user leaved statements  
-int16_t memPrg_StopInv     = 8 ; // ignore sensoring condition from a user leaved statements    
-int16_t memPrg_StopInvTemp = 9 ; // ignore sensoring condition from a user leaved statements
-int16_t memturnOffTimer    = 10; // turn off timeout saved at memory point from a user side
+int16_t memMinBatVlt           = 1;
+int16_t memMaxBatVlt           = 2;
+int16_t memfixVltR             = 3;
+int16_t memReactInBatVlt       = 5 ;
+int16_t memInv_readAC          = 6 ; // ignore sensoring condition from a user leaved statements     
+int16_t memInv_ReadSignal      = 7 ; // ignore sensoring condition from a user leaved statements  
+int16_t memPrg_StopInv         = 8 ; // ignore sensoring condition from a user leaved statements    
+int16_t memPrg_StopInvTemp     = 9 ; // ignore sensoring condition from a user leaved statements
+int16_t memturnOffTimer        = 10; // turn off timeout saved at memory point from a user side
+int16_t memBatVltSustained     = 11;
+int16_t memDelay_Inv_Output220 = 12; // aditional time from a user 
 
 //fast blink
 bool    LED_IndicatorBlink     = false;
@@ -313,38 +335,50 @@ const int output4 = Inv_On;
   WiFiManager wifiManager;
   
 void updateMemoryBool (int16_t *memAddress, bool defaultValue , String text, bool *saveValueToVar ) {
-if (readMemoryByte(*memAddress)>=255) {writeMemory(*memAddress,defaultValue); Serial.println ( getText (text,defaultValue));} else{  *saveValueToVar = (bool)(readMemoryByte(*memAddress)); Serial.print (" Reveived!");}; // Works as potentiometer
+// Serial.println (text); // doesnt work
+if (readMemoryByte(*memAddress)>=255) {writeMemory(*memAddress,defaultValue); Serial.println ( getText (text,defaultValue));} else{   *saveValueToVar = (bool)readMemoryByte(*memAddress); Serial.println (" Reveived bool: addr["+ String (*memAddress) + "]  " + text + ": " + String (*saveValueToVar));}; // Works as potentiometer
+Serial.print ("");
 }
 void updateMemoryByte (int16_t *memAddress, byte defaultValue , String text, byte *saveValueToVar ) {
-Serial.println (text);
-if (readMemoryByte(*memAddress)>=255) {writeMemory(*memAddress,defaultValue); Serial.print (": "+ String (defaultValue));} else{ *saveValueToVar = (byte)(readMemoryByte(*memAddress));Serial.print (" Reveived!");} // Works as potentiometer
+// Serial.println (text); // doesnt work
+if (readMemoryByte(*memAddress)>=255) {writeMemory(*memAddress,defaultValue); Serial.print (": "+ String (defaultValue));} else{  *saveValueToVar = (byte)readMemoryByte(*memAddress); Serial.println (" Reveived byte: addr["+ String (*memAddress) + "]  " + text + ": " + String (*saveValueToVar));} // Works as potentiometer
+Serial.print ("");
 }
 
 void setup() {
   Serial.begin(115200);
   Serial.println ("Starting setup . . .");
 
-  EEPROM32_INIT( 10);
+  EEPROM32_INIT( 15);
  delay (10);
  getmemBatVlt ();
 
  if (readMemoryByte(memfixVltR)>=255) {writeMemory(memfixVltR,(byte)100); Serial.println ("Writing memfixVltR: 100");} else voltAvrBattery.FixVltR(readMemoryByte(memfixVltR)); // Works as potentiometer
- if (readMemoryByte(memReactInBatVlt)>=255) {writeMemory(memReactInBatVlt,true); Serial.println ("Writing memReactInBatVlt: true");} else doReactInBatVlt = (bool)(readMemoryByte(memReactInBatVlt)); // Works as potentiometer
- 
+ // if (readMemoryByte(memReactInBatVlt)>=255) {writeMemory(memReactInBatVlt,true); Serial.println ("Writing memReactInBatVlt: true");} else doReactInBatVlt = (bool)(readMemoryByte(memReactInBatVlt)); // Works as potentiometer
+ Serial.print ("ROLER--------------------");
 //  if (readMemoryByte(memInv_readAC)>=255) {writeMemory(memInv_readAC,true); Serial.println ("Writing memInv_readAC: true");} else                desctiptionUserInv_readAC = (bool)(readMemoryByte(memInv_readAC)); // ignore sensoring condition from a user leaved statements
 //  if (readMemoryByte(memInv_ReadSignal)>=255) {writeMemory(memInv_ReadSignal,true); Serial.println ("Writing memInv_ReadSignal: true");} else    desctiptionUserInv_ReadSignal = (bool)(readMemoryByte(memInv_ReadSignal)); // ignore sensoring condition from a user leaved statements
 //  if (readMemoryByte(memPrg_StopInv)>=255) {writeMemory(memPrg_StopInv,true); Serial.println ("Writing memPrg_StopInv: true");} else             desctiptionUserPrg_StopInv = (bool)(readMemoryByte(memPrg_StopInv)); // ignore sensoring condition from a user leaved statements
 //  if (readMemoryByte(memPrg_StopInvTemp)>=255) {writeMemory(memPrg_StopInvTemp,true); Serial.println ("Writing memPrg_StopInvTemp: true");} else desctiptionUserPrg_StopInvTemp = (bool)(readMemoryByte(memPrg_StopInvTemp)); // ignore sensoring condition from a user leaved statements
 //  if (readMemoryByte(memturnOffTimer)>=255) {writeMemory(memturnOffTimer,(byte)1); Serial.println ("Writing memturnOffTimer: 1");} else turnOffTimerUser = (byte)(readMemoryByte(memturnOffTimer)); 
 
+updateMemoryBool (&memReactInBatVlt, true , "memReactInBatVlt", &doReactInBatVlt );
 updateMemoryBool (&memInv_readAC, true , "memInv_readAC", &desctiptionUserInv_readAC );
 updateMemoryBool (&memInv_ReadSignal, true , "memInv_ReadSignal", &desctiptionUserInv_ReadSignal );
 updateMemoryBool (&memPrg_StopInv, true , "memPrg_StopInv", &desctiptionUserPrg_StopInv );
 updateMemoryBool (&memPrg_StopInvTemp, true , "memPrg_StopInvTemp", &desctiptionUserPrg_StopInvTemp );
 updateMemoryByte (&memturnOffTimer, 1 , "memturnOffTimer", &turnOffTimerUser );
+updateMemoryByte (&memBatVltSustained, 1 , "memBatVltSustained", &maxBatVltSustained_User );
+updateMemoryByte (&memDelay_Inv_Output220, 1 , "memDelay_Inv_Output220", &delay_Inv_Output220_User );
 
 
+
+// recalculate value where was changed by user stored values in EEPROM memory
+funmaxBatVltSustained ();
+funDelay_Inv_Output220 ();
  if (doReactInBatVlt)        output4State = "on"; // change graphical user interface
+
+
 
  delay (10);
   // Initialize the output variables as outputs
@@ -524,10 +558,10 @@ void loop(){
                   client.println("<p><a href=\"/5/on\"><button class=\"button\">Low Battery!</button></a></p>");
               //------------------------------------------------------
 
-            } else {  //+(delay_Inv_Output220 > 0) ?+"P:"+String(delay_Inv_Output220): +"^"+
+            } else {  //+(delay_Inv_Output220_cnt > 0) ?+"P:"+String(delay_Inv_Output220_cnt): +"^"+
               
-              if (delay_Inv_Output220 > 2)
-                 client.println("<p><a href=\"/5/off\"><button class=\"button button2\">P:"+String(delay_Inv_Output220-2)+" Inv On</button></a></p>");
+              if (delay_Inv_Output220_cnt > 2)
+                 client.println("<p><a href=\"/5/off\"><button class=\"button button2\">P:"+String(delay_Inv_Output220_cnt-2)+" Inv On</button></a></p>");
               else if (turnOffTimer > 0 && doBatIsLow)
                   client.println("<p><a href=\"/5/off\"><button class=\"button\">Off After "+String(turnOffTimer)+"</button></a></p>");
               else if (doInv_Output220)
@@ -539,7 +573,7 @@ void loop(){
             } 
                
             // Display current state, and ON/OFF buttons for GPIO 4  
-            // client.println("<p>GPIO 4 - State " + output4State + " "+ String (delay_Inv_Output220) +" b:"+String (doInv_Output220)+"</p>" );
+            // client.println("<p>GPIO 4 - State " + output4State + " "+ String (delay_Inv_Output220_cnt) +" b:"+String (doInv_Output220)+"</p>" );
             // client.println("<p> "+ getStatusText () +"</p>" );
             
             // If the output4State is off, it displays the ON button       
@@ -693,7 +727,7 @@ void quarterSecondTimer () { //0.2 second
 
 
      //sec delay to pass power throw power relay from inverter
-     if (delay_Inv_Output220 < 3 &&  delay_Inv_Output220 >= 1) {
+     if (delay_Inv_Output220_cnt < 3 &&  delay_Inv_Output220_cnt >= 1) {
 
        doInv_Output220 = true; // to avoid cycling maxDelay 
 
@@ -754,7 +788,7 @@ void oneSecTimer () {
               maxBatVltSustained_cnt++;
 
 
-            Serial.println ("sustained max voltage: " + String (maxBatVltSustained_cnt) );
+            Serial.println ("sustained max voltage: " + String (maxBatVltSustained_cnt) + " of " +String (maxBatVltSustained_sec));
             doBatBeHigh = true; // sub condition, telling about high voltage at the moment
           if (maxBatVltSustained_cnt >= maxBatVltSustained_sec) // when voltage was sustained more then 60 seconds when turn on a inverter 
              {
@@ -863,17 +897,17 @@ void oneSecTimer () {
 
 
 ///////////////////////////// // second relay that pass power throw power 220v relay
-          if (delay_Inv_Output220 > 0){
-                delay_Inv_Output220--; // substrack when "inv_on" relay is activated
+          if (delay_Inv_Output220_cnt > 0){
+                delay_Inv_Output220_cnt--; // substrack when "inv_on" relay is activated
                 
 
                 // blink led while turning on a 220v relay 
-                if (!doInv_Output220 && delay_Inv_Output220 % 2 == 1 || doInv_Output220 )//blick when turning on relay
+                if (!doInv_Output220 && delay_Inv_Output220_cnt % 2 == 1 || doInv_Output220 )//blick when turning on relay
                    digitalWrite (LED_Indicator, HIGH);
                  else
                    digitalWrite (LED_Indicator, LOW);
 
-                 Serial.println ("delay_Inv_Output220: " + String (delay_Inv_Output220));
+                 Serial.println ("delay_Inv_Output220_cnt: " + String (delay_Inv_Output220_cnt));
                  //--------------------
               }
 
@@ -885,9 +919,26 @@ void oneSecTimer () {
 
 }
 
-void funTurnOffTimer (bool emableTimer) {/// turn off timer calculation
-      turnOffTimerMax = (int)turnOffTimerMaxConst * ((int)turnOffTimerUser);
-   if (emableTimer) turnOffTimer = turnOffTimerMax;
+
+/*int maxBatVltSustainedMax_sec = 60;
+int maxBatVltSustained_sec = maxBatVltSustainedMax_sec; //  if not interuption in 30 seconds have in reached by maximum voltage range then
+int maxBatVltSustained_cnt = 0; //  keep count of maxBatVltSustained_sec
+byte maxBatVltSustained_User;*/
+
+
+
+void funDelay_Inv_Output220 (bool enableTimer) {
+   maxDelay_Inv_Output220_sec = (int)delay_Inv_Output220Max_sec + ((int)delay_Inv_Output220_User);
+}
+
+void funmaxBatVltSustained (bool enableTimer) {
+    maxBatVltSustained_sec = (int)maxBatVltSustainedMax_sec + ((int)maxBatVltSustained_User);
+   // if (emableTimer) turnOffTimer = turnOffTimerMax; // cal working in other place
+}
+
+void funTurnOffTimer (bool enableTimer) {/// turn off timer calculation
+   if (!enableTimer)    turnOffTimerMax = (int)turnOffTimerMaxConst * ((int)turnOffTimerUser);
+   if (enableTimer)     turnOffTimer = turnOffTimerMax;
 }
 
 // turn on both relays
@@ -899,8 +950,8 @@ void funInv_On_then_Output220 (String x  , bool silence) {
       output5StateInvOutput = "on"; 
       funTurnOffTimer (true);
 
-      if (delay_Inv_Output220 == 0 && !doInv_Output220 ){ // pass value only one time when was turned on at least one time
-         delay_Inv_Output220 = maxDelay_Inv_Output220; 
+      if (delay_Inv_Output220_cnt == 0 && !doInv_Output220 ){ // pass value only one time when was turned on at least one time
+         delay_Inv_Output220_cnt = maxDelay_Inv_Output220_sec; 
          delayAvoid_Inv_On = maxDelayAvoid_Inv_On;  // activate protection against turning on to fast and multiple times
          doPrg_on_button = true; // only for in sinck with website button
         if (silence)  Serial.println ("funInv_On_then_Output220:on");
@@ -914,7 +965,7 @@ void funInv_On_then_Output220 (String x  , bool silence) {
       digitalWrite (LED_Indicator, LOW);
       output5StateInvOutput = "off"; // is opposite
        if (silence) Serial.println ("funInv_On_then_Output220:off");
-      delay_Inv_Output220 = 0;
+      delay_Inv_Output220_cnt = 0;
       doInv_Output220 = false;
       doPrg_on_button = false;
       doBatMaxVltReached = false;
@@ -1019,31 +1070,59 @@ String fun_CmdRead (String cmdRead /*input commands here*/)
           
          }
 
-
-        
+  
 
 
         if (cmdRead == "help")
          { 
 
-           cmd_msgOut = "Awailable commands:,fixVltR-byte,fixTurnOffTimer,maxBatVlt-byte,minBatVlt-byte,ignoreReadAC-bool,ignoreReadInvSignal-bool,IgnorePrgStopInv-bool,IgnorePrgStopInvTemp-bool,ignoreAllSensors,clear,status,restart,resetWifi-intpswrd, ";
+           cmd_msgOut = "Awailable commands:,fixVltR-byte,fixTurnOffLowVoltTimer-byte,fixSustainedMaxVoltTimer-byte,fixDelayInvOutputRelay220-byte,maxBatVlt-byte,minBatVlt-byte,ignoreReadAC-bool,ignoreReadInvSignal-bool,IgnorePrgStopInv-bool,IgnorePrgStopInvTemp-bool,ignoreAllSensors,clear,status,restart,resetWifi-intpswrd, ";
            Serial.println (cmd_msgOut);
          }
+//          delay turn on 220v relay to a home before chenking its all right with inverter         
+          else if (cmdRead == "fixDelayInvOutputRelay220" ){
+            funDelay_Inv_Output220 (); // refresh calculation values
+           if (cmdIsValidInt) 
+            {  
+              LED_IndicatorBlinkFast = LED_IndicatorBlinkFast_Common;
+              delay_Inv_Output220_User = (byte)cmdGetSpecialInt;
+              funDelay_Inv_Output220 (); // refresh calculation values
+              cmd_msgOut+= cmdRead + " a value: " + String (delay_Inv_Output220_User) + " as " + String (maxDelay_Inv_Output220_sec) + "s timer ";
+              writeMemory(memDelay_Inv_Output220,(byte)delay_Inv_Output220_User);
 
-          else if (cmdRead == "fixTurnOffTimer" ){
+            } 
+            else {cmd_msgOut+="Failed register "+cmdRead+" a mem value: " + String (delay_Inv_Output220_User) + " as " + String (maxDelay_Inv_Output220_sec) + "s timer ";};
+         }
+
+//          Low Voltage         
+          else if (cmdRead == "fixTurnOffLowVoltTimer" ){
             funTurnOffTimer (); // refresh calculation values
            if (cmdIsValidInt) 
             {  
               LED_IndicatorBlinkFast = LED_IndicatorBlinkFast_Common;
               turnOffTimerUser = (byte)cmdGetSpecialInt;
               funTurnOffTimer (); // refresh calculation values
-              cmd_msgOut+=" fixTurnOffTimer  a value: " + String (turnOffTimerUser) + " as " + String (turnOffTimerMax) + "s timer ";
+              cmd_msgOut+= cmdRead + " a value: " + String (turnOffTimerUser) + " as " + String (turnOffTimerMax) + "s timer ";
               writeMemory(memturnOffTimer,(byte)turnOffTimerUser);
 
             } 
-            else {cmd_msgOut+="Failed register fixTurnOffTimer a mem value: " + String (turnOffTimerUser) + " as " + String (turnOffTimerMax) + "s timer max ";};
+            else {cmd_msgOut+="Failed register "+cmdRead+" a mem value: " + String (turnOffTimerUser) + " as " + String (turnOffTimerMax) + "s timer ";};
          }
+//            High voltage 
+          else if (cmdRead == "fixSustainedMaxVoltTimer" ){
+            funmaxBatVltSustained (); // refresh calculation values
+           if (cmdIsValidInt) 
+            {  
+              LED_IndicatorBlinkFast = LED_IndicatorBlinkFast_Common;
+              maxBatVltSustained_User = (byte)cmdGetSpecialInt;
+              funmaxBatVltSustained (); // refresh calculation values
+              cmd_msgOut+= cmdRead + " a value: " + String (maxBatVltSustained_User) + " as " + String (maxBatVltSustained_sec) + "s timer ";
+              writeMemory(memBatVltSustained,(byte)maxBatVltSustained_User);
 
+            } 
+            else {cmd_msgOut+="Failed register "+cmdRead+" a mem value: " + String (maxBatVltSustained_User) + " as " + String (maxBatVltSustained_sec) + "s timer  ";};
+         }
+//        AC ~220 voltage sensor
          else if (cmdRead == "ignoreReadAC" ){
            if (cmdIsValidInt) 
             {
@@ -1054,6 +1133,7 @@ String fun_CmdRead (String cmdRead /*input commands here*/)
             }
           else { cmd_msgOut += cmdRead + " [not a byte],stored: "+ String (readMemoryByte (memInv_readAC))  ;};
         }
+//        Inverter read condtional sensor 
          else if (cmdRead == "ignoreReadInvSignal" ){
            if (cmdIsValidInt) 
             {
@@ -1065,6 +1145,8 @@ String fun_CmdRead (String cmdRead /*input commands here*/)
             }
           else { cmd_msgOut += cmdRead + " [not a byte],stored: "+ String (readMemoryByte (memInv_ReadSignal))  ;};
         }
+//        Stop inverter / Pause condtional sensor 
+
          else if (cmdRead == "IgnorePrgStopInv" ){
            if (cmdIsValidInt) 
             {
@@ -1076,6 +1158,8 @@ String fun_CmdRead (String cmdRead /*input commands here*/)
             }
           else { cmd_msgOut += cmdRead + " [not a byte],stored: "+ String (readMemoryByte (memPrg_StopInv))  ;};
         }
+//       Stop inverter by extreme cold or worm condtional sensor 
+
          else if (cmdRead == "IgnorePrgStopInvTemp" ){
            if (cmdIsValidInt) 
             {
@@ -1087,6 +1171,8 @@ String fun_CmdRead (String cmdRead /*input commands here*/)
             }
           else { cmd_msgOut += cmdRead + " [not a byte],stored: "+ String (readMemoryByte (memPrg_StopInvTemp))  ;};
         }
+
+//        Ignore all  condtional sensors 
 
          else if (cmdRead == "ignoreAllSensors") {
           writeMemory (memInv_readAC, true);
