@@ -335,12 +335,10 @@ const int output4 = Inv_On;
   WiFiManager wifiManager;
   
 void updateMemoryBool (int16_t *memAddress, bool defaultValue , String text, bool *saveValueToVar ) {
-// Serial.println (text); // doesnt work
 if (readMemoryByte(*memAddress)>=255) {writeMemory(*memAddress,defaultValue); Serial.println ( getText (text,defaultValue));} else{   *saveValueToVar = (bool)readMemoryByte(*memAddress); Serial.println (" Reveived bool: addr["+ String (*memAddress) + "]  " + text + ": " + String (*saveValueToVar));}; // Works as potentiometer
 Serial.print ("");
 }
 void updateMemoryByte (int16_t *memAddress, byte defaultValue , String text, byte *saveValueToVar ) {
-// Serial.println (text); // doesnt work
 if (readMemoryByte(*memAddress)>=255) {writeMemory(*memAddress,defaultValue); Serial.print (": "+ String (defaultValue));} else{  *saveValueToVar = (byte)readMemoryByte(*memAddress); Serial.println (" Reveived byte: addr["+ String (*memAddress) + "]  " + text + ": " + String (*saveValueToVar));} // Works as potentiometer
 Serial.print ("");
 }
@@ -356,6 +354,7 @@ void setup() {
  if (readMemoryByte(memfixVltR)>=255) {writeMemory(memfixVltR,(byte)100); Serial.println ("Writing memfixVltR: 100");} else voltAvrBattery.FixVltR(readMemoryByte(memfixVltR)); // Works as potentiometer
  // if (readMemoryByte(memReactInBatVlt)>=255) {writeMemory(memReactInBatVlt,true); Serial.println ("Writing memReactInBatVlt: true");} else doReactInBatVlt = (bool)(readMemoryByte(memReactInBatVlt)); // Works as potentiometer
  Serial.print ("ROLER--------------------");
+ Serial.print ("\n\n");
 //  if (readMemoryByte(memInv_readAC)>=255) {writeMemory(memInv_readAC,true); Serial.println ("Writing memInv_readAC: true");} else                desctiptionUserInv_readAC = (bool)(readMemoryByte(memInv_readAC)); // ignore sensoring condition from a user leaved statements
 //  if (readMemoryByte(memInv_ReadSignal)>=255) {writeMemory(memInv_ReadSignal,true); Serial.println ("Writing memInv_ReadSignal: true");} else    desctiptionUserInv_ReadSignal = (bool)(readMemoryByte(memInv_ReadSignal)); // ignore sensoring condition from a user leaved statements
 //  if (readMemoryByte(memPrg_StopInv)>=255) {writeMemory(memPrg_StopInv,true); Serial.println ("Writing memPrg_StopInv: true");} else             desctiptionUserPrg_StopInv = (bool)(readMemoryByte(memPrg_StopInv)); // ignore sensoring condition from a user leaved statements
@@ -363,13 +362,13 @@ void setup() {
 //  if (readMemoryByte(memturnOffTimer)>=255) {writeMemory(memturnOffTimer,(byte)1); Serial.println ("Writing memturnOffTimer: 1");} else turnOffTimerUser = (byte)(readMemoryByte(memturnOffTimer)); 
 
 updateMemoryBool (&memReactInBatVlt, true , "memReactInBatVlt", &doReactInBatVlt );
-updateMemoryBool (&memInv_readAC, true , "memInv_readAC", &desctiptionUserInv_readAC );
-updateMemoryBool (&memInv_ReadSignal, true , "memInv_ReadSignal", &desctiptionUserInv_ReadSignal );
-updateMemoryBool (&memPrg_StopInv, true , "memPrg_StopInv", &desctiptionUserPrg_StopInv );
-updateMemoryBool (&memPrg_StopInvTemp, true , "memPrg_StopInvTemp", &desctiptionUserPrg_StopInvTemp );
-updateMemoryByte (&memturnOffTimer, 1 , "memturnOffTimer", &turnOffTimerUser );
-updateMemoryByte (&memBatVltSustained, 1 , "memBatVltSustained", &maxBatVltSustained_User );
-updateMemoryByte (&memDelay_Inv_Output220, 1 , "memDelay_Inv_Output220", &delay_Inv_Output220_User );
+updateMemoryBool (&memInv_readAC, true ,    "memIgnoreInv_readAC", &desctiptionUserInv_readAC );
+updateMemoryBool (&memInv_ReadSignal, true , "memIgnoreInv_ReadSignal", &desctiptionUserInv_ReadSignal );
+updateMemoryBool (&memPrg_StopInv, true ,    "memIgnorePrg_StopInv", &desctiptionUserPrg_StopInv );
+updateMemoryBool (&memPrg_StopInvTemp, true ,"memIgnorePrg_StopInvTemp", &desctiptionUserPrg_StopInvTemp );
+updateMemoryByte (&memturnOffTimer, 1 ,     "memturnOffTimerLownVolt", &turnOffTimerUser );
+updateMemoryByte (&memBatVltSustained, 1 ,  "memBatVlotSustainedHighVolts", &maxBatVltSustained_User );
+updateMemoryByte (&memDelay_Inv_Output220, 1 , "memDelay_Inv_Output220Relay", &delay_Inv_Output220_User );
 
 
 
