@@ -260,21 +260,32 @@ byte turnOffTimerUser = 1; // store addition timer value , additional for a turn
    bool desctiptionUserPrg_StopInvTemp = false ; 
    String desribtionsInText = ""; // hold information about failed conditions from a sensors    
 
+// AI main decision logic vars 
+   bool    triggeredAction;  // comes from sensors , auto mode program actions
+   int     triggeredTimeoutMax = 600; //seconds, time where triggered actioct will be tracked   
+   int     triggeredTimeoutCnt = 0; // counting down a time after a trigger event is established
+   int     triggeredTracketEventsMax = 3; // tolerate 3 triggeredTracketEventsCnt before crucial desition to stop working inverter
+   int     triggeredTracketEventsCnt = 0 ; // Track every triggeredAction where accures at sensors or in  auto mode program for later to deside a crucial desition to stop working inverter for a long time 
+   bool    triggeredLongTimeReached = false ; //  rememeber a triggered long time is established
+   int  triggeredLongTimeMax     = 21610; //6h  maximum triggered long time where will set a triggeredLongTimeCnt to turn of inverter for a many hours 
+   int  triggeredLongTimeCnt     = 0; //  keep counting 
 
 // Function declaration
 String getText (String index, bool conditionNaming);
-void funInv_On_then_Output220 (String x = "off" , bool silence = false);
-void oneSecTimer ();
-void quarterSecondTimer ();
+void   funInv_On_then_Output220 (String x = "off" , bool silence = false);
+void   oneSecTimer ();
+void   quarterSecondTimer ();
 String fun_CmdRead (String);
-void setBatVltRange (uint8_t , uint8_t );
-bool avoidBatVltOutOfRangeThenMemCommit(); // avoid inputed voltage to be out of range;
-void getmemBatVlt ();
-void funTurnInvAutomaticallyByVoltage ();
-bool reactionFromASensors (bool react = false);
-void funmaxBatVltSustained(bool enableTimer = false);
-void funTurnOffTimer(bool enableTimer = false);
-void funDelay_Inv_Output220 (bool enableTimer = false);
+void   setBatVltRange (uint8_t , uint8_t );
+bool   avoidBatVltOutOfRangeThenMemCommit(); // avoid   inputed voltage to be out of range;
+void   getmemBatVlt ();
+void   funTurnInvAutomaticallyByVoltage ();
+bool   reactionFromASensors (bool react = false);
+void   funmaxBatVltSustained(bool enableTimer = false);
+void   funTurnOffTimer(bool enableTimer = false);
+void   funDelay_Inv_Output220 (bool enableTimer = false);
+String fungetfromatedTime (signed int seconds);
+
     //sec delay to pass power throw power relay from inverter
 
 
@@ -787,7 +798,7 @@ void oneSecTimer () {
               maxBatVltSustained_cnt++;
 
 
-            Serial.println ("sustained max voltage: " + String (maxBatVltSustained_cnt) + " of " +String (maxBatVltSustained_sec));
+            Serial.println ("sustained max voltage: " + String (maxBatVltSustained_cnt) + " of " +String (maxBatVltSustained_sec) + " as " + fungetfromatedTime (maxBatVltSustained_cnt) +  " :D " );
             doBatBeHigh = true; // sub condition, telling about high voltage at the moment
           if (maxBatVltSustained_cnt >= maxBatVltSustained_sec) // when voltage was sustained more then 60 seconds when turn on a inverter 
              {
@@ -838,7 +849,7 @@ void oneSecTimer () {
         doBatBeHigh = false;
 
         if (!doReactInBatVlt) Serial.print ("auto mode is disabled and / ");
-        Serial.println ("no battery condition");
+        Serial.println ("no battery condition " + fungetfromatedTime (triggeredLongTimeMax) );
         funTurnOffTimer(true);  
       }
 
@@ -1075,7 +1086,7 @@ String fun_CmdRead (String cmdRead /*input commands here*/)
         if (cmdRead == "help")
          { 
 
-           cmd_msgOut = "Awailable commands:,fixVltR-byte,fixTurnOffLowVoltTimer-byte,fixSustainedMaxVoltTimer-byte,fixDelayInvOutputRelay220-byte,maxBatVlt-byte,minBatVlt-byte,ignoreReadAC-bool,ignoreReadInvSignal-bool,IgnorePrgStopInv-bool,IgnorePrgStopInvTemp-bool,ignoreAllSensors,clear,status,restart,resetWifi-intpswrd, ";
+           cmd_msgOut = "Awailable commands:,fixVltR-byte,fixTurnOffLowVoltTimer-byte,fixSustainedMaxVoltTimer-byte,fixDelayInvOutputRelay220-byte,maxBatVlt-byte,minBatVlt-byte,IgnoreSensorReadAC-bool,IgnoreSensorReadInvSignal-bool,IgnoreSensorPrgStopInv-bool,IgnoreSensorPrgStopInvTemp-bool,IgnoreAllSensors,clear,status,restart,resetWifi-intpswrd, ";
            Serial.println (cmd_msgOut);
          }
 //          delay turn on 220v relay to a home before chenking its all right with inverter         
@@ -1122,7 +1133,7 @@ String fun_CmdRead (String cmdRead /*input commands here*/)
             else {cmd_msgOut+="Failed register "+cmdRead+" a mem value: " + String (maxBatVltSustained_User) + " as " + String (maxBatVltSustained_sec) + "s timer  ";};
          }
 //        AC ~220 voltage sensor
-         else if (cmdRead == "ignoreReadAC" ){
+         else if (cmdRead == "IgnoreSensorReadAC" ){
            if (cmdIsValidInt) 
             {
                  LED_IndicatorBlinkFast = LED_IndicatorBlinkFast_Common;
@@ -1133,7 +1144,7 @@ String fun_CmdRead (String cmdRead /*input commands here*/)
           else { cmd_msgOut += cmdRead + " [not a byte],stored: "+ String (readMemoryByte (memInv_readAC))  ;};
         }
 //        Inverter read condtional sensor 
-         else if (cmdRead == "ignoreReadInvSignal" ){
+         else if (cmdRead == "IgnoreSensorReadInvSignal" ){
            if (cmdIsValidInt) 
             {
                  LED_IndicatorBlinkFast = LED_IndicatorBlinkFast_Common;
@@ -1146,7 +1157,7 @@ String fun_CmdRead (String cmdRead /*input commands here*/)
         }
 //        Stop inverter / Pause condtional sensor 
 
-         else if (cmdRead == "IgnorePrgStopInv" ){
+         else if (cmdRead == "IgnoreSensorPrgStopInv" ){
            if (cmdIsValidInt) 
             {
                  LED_IndicatorBlinkFast = LED_IndicatorBlinkFast_Common;
@@ -1159,7 +1170,7 @@ String fun_CmdRead (String cmdRead /*input commands here*/)
         }
 //       Stop inverter by extreme cold or worm condtional sensor 
 
-         else if (cmdRead == "IgnorePrgStopInvTemp" ){
+         else if (cmdRead == "IgnoreSensorPrgStopInvTemp" ){
            if (cmdIsValidInt) 
             {
                  LED_IndicatorBlinkFast = LED_IndicatorBlinkFast_Common;
@@ -1171,9 +1182,9 @@ String fun_CmdRead (String cmdRead /*input commands here*/)
           else { cmd_msgOut += cmdRead + " [not a byte],stored: "+ String (readMemoryByte (memPrg_StopInvTemp))  ;};
         }
 
-//        Ignore all  condtional sensors 
+//        IgnoreSensor all  condtional sensors 
 
-         else if (cmdRead == "ignoreAllSensors") {
+         else if (cmdRead == "IgnoreAllSensors") {
           writeMemory (memInv_readAC, true);
           writeMemory (memInv_ReadSignal, true);
           writeMemory (memPrg_StopInv, true);
@@ -1403,3 +1414,30 @@ void getmemBatVlt () {
   }
 
 }
+
+
+
+// String h = (getHours() > 0) ? String(getHours()) +"h " : " " ;
+//               String m = (getMinutes() > 0) ? String(getMinutes()) +"m " : " " ;
+//               String s = (getSeconds() > 0) ? String(getSeconds()) +"s " : " " ;
+
+
+String fungetfromatedTime (signed  int seconds)
+ {
+  String txt;
+   int h = (seconds  % 86400L) / 3600;
+   int m = (seconds  % 3600) / 60;
+   int s = (seconds  % 60) ;
+
+   if (h > 0) //hours
+      txt +=String(h) + "h ";
+  
+   if (m > 0) // min
+      txt +=String(m) + "m ";
+  
+   if (s > 0) //seconds
+      txt += String(s) + "s" ;
+
+  return txt;
+ }
+
