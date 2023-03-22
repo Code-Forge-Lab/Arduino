@@ -261,8 +261,8 @@ byte turnOffTimerUser = 1; // store addition timer value , additional for a turn
    String desribtionsInText = ""; // hold information about failed conditions from a sensors    
 
 // AI main decision logic vars 
-   bool    triggeredAction;  // comes from sensors , auto mode program actions
-   int     triggeredTimeoutMax = 600; //seconds, time where triggered actioct will be tracked   
+   bool    triggeredAction;  // comes from sensors , auto mode program actions as a flag that enables triggeredTimeoutCnt = triggeredTimeoutMax
+   int     triggeredTimeoutMax = 600; //seconds, time where triggered actioct will be tracked  in 10 minutes period
    int     triggeredTimeoutCnt = 0; // counting down a time after a trigger event is established
    int     triggeredTracketEventsMax = 3; // tolerate 3 triggeredTracketEventsCnt before crucial desition to stop working inverter
    int     triggeredTracketEventsCnt = 0 ; // Track every triggeredAction where accures at sensors or in  auto mode program for later to deside a crucial desition to stop working inverter for a long time 
@@ -290,7 +290,8 @@ String fungetfromatedTime (signed int seconds);
 void   serialPrint1s (String txt);
 void   serialPrintln1s (String txt); 
 void   serialPrint3s (String txt); 
-void   serialPrintln3s (String txt); 
+void   serialPrintln3s (String txt);
+void   funResettriggeredAction (); 
 
     //sec delay to pass power throw power relay from inverter
 
@@ -497,7 +498,10 @@ void loop(){
 
                // second relay that pass power throw power 220v relay from inverter and also turn on inverter
               if (!doBatIsLow && reactionFromASensors ()) // turn on inverter when no battery voltage is to low
-               funInv_On_then_Output220 ("on") ; 
+               {
+                funInv_On_then_Output220 ("on") ;
+                funResettriggeredAction ();
+              } 
               else
                delayAvoid_Inv_On = maxDelayAvoid_Inv_On;  // activate protection against turning on to fast and multiple times
 
@@ -697,7 +701,9 @@ desribtionsInText = ""; // clear each time
   if (sensorDoPrg_StopInv    && !desctiptionUserPrg_StopInv)     {cnd = false; desctiptionPrg_StopInv =     true; descTxt("Prg. Stop Inverter ," , react);                    } else { desctiptionPrg_StopInv = false;};
   if (sensorPrg_StopInvTemp  && !desctiptionUserPrg_StopInvTemp) {cnd = false; desctiptionPrg_StopInvTemp = true; descTxt("Stop inverter of critical temperature ," , react); } else { desctiptionPrg_StopInvTemp = false;};
 
-  
+  if (cnd == false)
+    triggeredAction = true ; // if any sensor is detected , will trigger a error AI
+
   return cnd;
 }
 
@@ -893,8 +899,40 @@ void oneSecTimer () {
            }
 
 
+     // enable timeout only one time after a triggeredAction event
+    if (triggeredAction  && triggeredTimeoutCnt == 0) { 
+        triggeredTimeoutCnt = triggeredTimeoutMax;
+    }
+
+    // count down a timeout where more could be triggeredAction accures
+    if (triggeredTimeoutCnt > 0)  triggeredTimeoutCnt--;
+
+    //  time where triggered actioct will be tracked in 10 minutes period
+    if (triggeredTimeoutCnt > 0  && triggeredAction){
+
+            Serial.println ("Reached triggeredTracketEvents");
+      // keep counting triggered actioct
+      if (triggeredTracketEventsCnt < triggeredTracketEventsMax) triggeredTracketEventsCnt ++;
+      // reached maximum error AI level where will enable program waiting for a long time after many failures from a sensors or a program attempts to work propietly
+      else {Serial.println ("Maxed out triggeredTracketEventsMax"); triggeredLongTimeReached = true; };
+    }
+
+    // initiate long time timer
+    if (triggeredLongTimeReached && triggeredLongTimeCnt == 0)
+        triggeredLongTimeCnt = triggeredLongTimeMax;
+
+    // keep holding a progrom to work about 6h
+    if (triggeredLongTimeCnt > 0) triggeredLongTimeCnt--;
+    else 
+       triggeredLongTimeCnt = false; // reset AI  
+ 
 
 
+    // reset triggeredAction for another trigger event
+    triggeredAction = false;  
+// represent what happening in AI 
+if (triggeredTimeoutCnt > 0 && !triggeredLongTimeCnt)
+  Serial.println (" Initiated triggered timeout " + fungetfromatedTime (triggeredTimeoutCnt) + " " + String (triggeredTracketEventsCnt) + " / " + String (triggeredTracketEventsMax));
 
 //---------------Program Button are pressed------------------------------//
 
@@ -1480,6 +1518,12 @@ String fungetfromatedTime (signed  int seconds)
   return txt;
  }
 
+void funResettriggeredAction () {
+    triggeredTimeoutCnt = 0;
+    triggeredLongTimeCnt = 0;
+    triggeredLongTimeCnt = false;
+    triggeredAction = false;
+ }
 
 
 bool   timer1sec () {
