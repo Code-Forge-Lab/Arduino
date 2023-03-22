@@ -291,7 +291,7 @@ void   serialPrint1s (String txt);
 void   serialPrintln1s (String txt); 
 void   serialPrint3s (String txt); 
 void   serialPrintln3s (String txt);
-void   funResettriggeredAction (); 
+void   funResetTriggeredAction (); 
 
     //sec delay to pass power throw power relay from inverter
 
@@ -500,7 +500,7 @@ void loop(){
               if (!doBatIsLow && reactionFromASensors ()) // turn on inverter when no battery voltage is to low
                {
                 funInv_On_then_Output220 ("on") ;
-                funResettriggeredAction ();
+                funResetTriggeredAction ();
               } 
               else
                delayAvoid_Inv_On = maxDelayAvoid_Inv_On;  // activate protection against turning on to fast and multiple times
@@ -1525,10 +1525,11 @@ String fungetfromatedTime (signed  int seconds)
   return txt;
  }
 
-void funResettriggeredAction () {
+void funResetTriggeredAction () {
     triggeredTimeoutCnt = 0;
     triggeredLongAITimeCnt = 0;
     triggeredLongAITimeReached = false;
+    triggeredTracketEventsCnt = 0;
     triggeredAction = false;
  }
 
