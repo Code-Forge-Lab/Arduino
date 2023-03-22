@@ -266,9 +266,9 @@ byte turnOffTimerUser = 1; // store addition timer value , additional for a turn
    int     triggeredTimeoutCnt = 0; // counting down a time after a trigger event is established
    int     triggeredTracketEventsMax = 3; // tolerate 3 triggeredTracketEventsCnt before crucial desition to stop working inverter
    int     triggeredTracketEventsCnt = 0 ; // Track every triggeredAction where accures at sensors or in  auto mode program for later to deside a crucial desition to stop working inverter for a long time 
-   bool    triggeredLongTimeReached = false ; //  rememeber a triggered long time is established
-   int     triggeredLongTimeMax     = 21610; //6h  maximum triggered long time where will set a triggeredLongTimeCnt to turn of inverter for a many hours 
-   int     triggeredLongTimeCnt     = 0; //  keep counting 
+   bool    triggeredLongAITimeReached = false ; //  rememeber a triggered long time is established
+   int     triggeredLongAITimeMax     = 21610; //6h  maximum AI triggered long time where will set a triggeredLongAITimeCnt to turn of inverter for a many hours 
+   int     triggeredLongAITimeCnt     = 0; //  keep counting 
 
 // Function declaration
 bool   timer1sec ();
@@ -569,6 +569,7 @@ void loop(){
                   else if (desctiptionInv_ReadSignal)  client.println("<p><a href=\"/5/on\"><button class=\"button\">Inv. Read Signal!</button></a></p>");
                   else if (desctiptionPrg_StopInv)     client.println("<p><a href=\"/5/on\"><button class=\"button\">Prg. Stop Inverter!</button></a></p>");
                   else if (desctiptionPrg_StopInvTemp) client.println("<p><a href=\"/5/on\"><button class=\"button\">Temp. Protection!</button></a></p>");
+                  else if (triggeredLongAITimeReached) client.println("<p><a href=\"/5/on\"><button class=\"button\">Triggered AI Protection "+ fungetfromatedTime (triggeredLongAITimeCnt) + "!</button></a></p>");
                   else
                   client.println("<p><a href=\"/5/on\"><button class=\"button\">Inv Off</button></a></p>");
 
@@ -786,8 +787,8 @@ void quarterSecondTimer () { //0.2 second
 //---------------// React to turning on a inverter by voltage range ------------//660
 
 
-
-      if (doReactInBatVlt/*<auto on condition from user*/ && !doBatMaxVltReached && (voltAvrBattery.voltage >= maxBatVlt) && reactionFromASensors() /*and no reaction from a sensors*/) // turn on a inverter
+    String invTxt = "";
+      if (doReactInBatVlt/*<auto on condition from user*/ && !doBatMaxVltReached && (voltAvrBattery.voltage >= maxBatVlt) && reactionFromASensors() /*and no reaction from a sensors*/ && !triggeredLongAITimeReached /*AI not triggered*/) // turn on a inverter
         {
            
        if (timer1sec ())
@@ -855,8 +856,9 @@ void quarterSecondTimer () { //0.2 second
         doBatIsLow = false;
         doBatBeHigh = false;
 
-        if (!doReactInBatVlt ) serialPrint1s (" auto mode is disabled and / ");
-        if (triggeredLongTimeReached)serialPrint1s ("triggered AI protection :O "+ fungetfromatedTime (triggeredLongTimeCnt) + " and /");
+        if (!doReactInBatVlt ) serialPrintln3s (" auto mode is disabled and / ");
+        if (triggeredTimeoutCnt > 0 && !triggeredLongAITimeCnt) serialPrintln3s (" Initiated triggered timeout " + fungetfromatedTime (triggeredTimeoutCnt) + " " + String (triggeredTracketEventsCnt) + " / " + String (triggeredTracketEventsMax));
+        if (triggeredLongAITimeReached)serialPrintln3s ("triggered AI protection :O "+ fungetfromatedTime (triggeredLongAITimeCnt) + " and /");
 
         serialPrintln3s ("no battery condition " );
         funTurnOffTimer(true);  
@@ -912,27 +914,27 @@ void oneSecTimer () {
 
             Serial.println ("Reached triggeredTracketEvents");
       // keep counting triggered actioct
-      if (triggeredTracketEventsCnt < triggeredTracketEventsMax) triggeredTracketEventsCnt ++;
+      if (triggeredTracketEventsCnt <= triggeredTracketEventsMax) triggeredTracketEventsCnt ++;
       // reached maximum error AI level where will enable program waiting for a long time after many failures from a sensors or a program attempts to work propietly
-      else {Serial.println ("Maxed out triggeredTracketEventsMax"); triggeredLongTimeReached = true; };
+      else {Serial.println ("Maxed out triggeredTracketEventsMax"); triggeredLongAITimeReached = true; };
     }
 
     // initiate long time timer
-    if (triggeredLongTimeReached && triggeredLongTimeCnt == 0)
-        triggeredLongTimeCnt = triggeredLongTimeMax;
+    if (triggeredLongAITimeReached && triggeredLongAITimeCnt == 0)
+        triggeredLongAITimeCnt = triggeredLongAITimeMax;
 
     // keep holding a progrom to work about 6h
-    if (triggeredLongTimeCnt > 0) triggeredLongTimeCnt--;
+    if (triggeredLongAITimeCnt > 0) triggeredLongAITimeCnt--;
     else 
-       triggeredLongTimeCnt = false; // reset AI  
+       triggeredLongAITimeReached = false; // reset AI  
  
 
 
     // reset triggeredAction for another trigger event
     triggeredAction = false;  
 // represent what happening in AI 
-if (triggeredTimeoutCnt > 0 && !triggeredLongTimeCnt)
-  Serial.println (" Initiated triggered timeout " + fungetfromatedTime (triggeredTimeoutCnt) + " " + String (triggeredTracketEventsCnt) + " / " + String (triggeredTracketEventsMax));
+// if (triggeredTimeoutCnt > 0 && !triggeredLongAITimeCnt)
+//   Serial.println (" Initiated triggered timeout " + fungetfromatedTime (triggeredTimeoutCnt) + " " + String (triggeredTracketEventsCnt) + " / " + String (triggeredTracketEventsMax));
 
 //---------------Program Button are pressed------------------------------//
 
@@ -959,8 +961,10 @@ if (triggeredTimeoutCnt > 0 && !triggeredLongTimeCnt)
 
                     if (doPrg_on_button) // turn on inverter and passing power relay
                         funInv_On_then_Output220 ("on");
-                     else 
+                     else {
                         funInv_On_then_Output220 ("off");
+
+                     }
 
                   }
 
@@ -1056,6 +1060,7 @@ void funInv_On_then_Output220 (String x  , bool silence) {
       doInv_Output220 = false;
       doPrg_on_button = false;
       doBatMaxVltReached = false;
+      maxBatVltSustained_cnt = 0; // reset
 
 
    }
@@ -1520,8 +1525,8 @@ String fungetfromatedTime (signed  int seconds)
 
 void funResettriggeredAction () {
     triggeredTimeoutCnt = 0;
-    triggeredLongTimeCnt = 0;
-    triggeredLongTimeCnt = false;
+    triggeredLongAITimeCnt = 0;
+    triggeredLongAITimeReached = false;
     triggeredAction = false;
  }
 
