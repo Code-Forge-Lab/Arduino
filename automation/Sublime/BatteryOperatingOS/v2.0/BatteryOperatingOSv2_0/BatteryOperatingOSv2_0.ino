@@ -734,6 +734,13 @@ void quarterSecondTimer () { //0.2 second
           digitalWrite (LED_Indicator, HIGH);
         }
 
+      }else if (delay_Inv_Output220_cnt  == 0) { // ignoring a to interrput blinking light from a 220v relay ouput from inverter
+        // return to a current state of a program
+        if (output5StateInvOutput == "on")
+          digitalWrite (LED_Indicator, HIGH);
+        else
+          digitalWrite (LED_Indicator, LOW);
+
       }
 
 
@@ -817,7 +824,7 @@ void quarterSecondTimer () { //0.2 second
              if (turnOffTimer > 0) // avoid to turn off to fast
            {  
              
-              Serial.print ("turnOffTimer: " + String (turnOffTimer) + " , ");
+              serialPrintln1s ("turnOffTimer: " + String (turnOffTimer) + " , ");
              if (timer1sec ())    turnOffTimer--; // timer1sec () give as one second timer 
                 
            } else {
