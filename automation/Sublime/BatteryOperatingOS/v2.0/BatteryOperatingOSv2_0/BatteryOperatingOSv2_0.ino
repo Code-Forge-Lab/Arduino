@@ -242,7 +242,7 @@ int maxBatVltSustained_sec = maxBatVltSustainedMax_sec; //  if not interuption i
 byte maxBatVltSustained_User;
 // initiate after reached low voltage protection and this timing counters works as confirming that battery is low
 int turnOffTimer = 0 ;// to avoid turning on and very fast turning off a boiler thant create junp in voltage at nearly fully charget batery 
-int turnOffTimerMaxConst = 10; // not changing base value
+int turnOffTimerMaxConst = 0; // not changing base value
 int turnOffTimerMax = turnOffTimerMaxConst ;// seconds 
 byte turnOffTimerUser = 1; // store addition timer value , additional for a turnOffTimerMax
 
@@ -385,7 +385,7 @@ updateMemoryBool (&memInv_readAC, true ,    "memIgnoreInv_readAC", &desctiptionU
 updateMemoryBool (&memInv_ReadSignal, true , "memIgnoreInv_ReadSignal", &desctiptionUserInv_ReadSignal );
 updateMemoryBool (&memPrg_StopInv, true ,    "memIgnorePrg_StopInv", &desctiptionUserPrg_StopInv );
 updateMemoryBool (&memPrg_StopInvTemp, true ,"memIgnorePrg_StopInvTemp", &desctiptionUserPrg_StopInvTemp );
-updateMemoryByte (&memturnOffTimer, 1 ,     "memturnOffTimerLownVolt", &turnOffTimerUser );
+updateMemoryByte (&memturnOffTimer, 0 ,     "memturnOffTimerLownVolt", &turnOffTimerUser );
 updateMemoryByte (&memBatVltSustained, 1 ,  "memBatVlotSustainedHighVolts", &maxBatVltSustained_User );
 updateMemoryByte (&memDelay_Inv_Output220, 1 , "memDelay_Inv_Output220Relay", &delay_Inv_Output220_User );
 
@@ -394,6 +394,9 @@ updateMemoryByte (&memDelay_Inv_Output220, 1 , "memDelay_Inv_Output220Relay", &d
 // recalculate value where was changed by user stored values in EEPROM memory
 funmaxBatVltSustained ();
 funDelay_Inv_Output220 ();
+funTurnOffTimer (true); // refresh calculations
+// Serial.print ("Init turnOffTimer: " + String (turnOffTimer));
+
  if (doReactInBatVlt)        output4State = "on"; // change graphical user interface
 
 
@@ -570,6 +573,7 @@ void loop(){
                   else if (desctiptionPrg_StopInv)     client.println("<p><a href=\"/5/on\"><button class=\"button\">Prg. Stop Inverter!</button></a></p>");
                   else if (desctiptionPrg_StopInvTemp) client.println("<p><a href=\"/5/on\"><button class=\"button\">Temp. Protection!</button></a></p>");
                   else if (triggeredLongAITimeReached) client.println("<p><a href=\"/5/on\"><button class=\"button\">Triggered AI Protection "+ fungetfromatedTime (triggeredLongAITimeCnt) + "!</button></a></p>");
+                  else if (turnOffTimer > 0 && doBatIsLow) client.println("<p><a href=\"/5/off\"><button class=\"button\">Off After "+String(turnOffTimer)+"</button></a></p>");
                   else
                   client.println("<p><a href=\"/5/on\"><button class=\"button\">Inv Off</button></a></p>");
 
@@ -864,6 +868,7 @@ void quarterSecondTimer () { //0.2 second
         serialPrintln3s ("high battery condition " );
         else
         serialPrintln3s ("no battery condition " );
+        
         funTurnOffTimer(true);  
        
       }
@@ -1036,7 +1041,7 @@ void funmaxBatVltSustained (bool enableTimer) {
 }
 
 void funTurnOffTimer (bool enableTimer) {/// turn off timer calculation
-   if (!enableTimer)    turnOffTimerMax = (int)turnOffTimerMaxConst * ((int)turnOffTimerUser);
+       turnOffTimerMax = (int)turnOffTimerMaxConst + ((int)turnOffTimerUser);
    if (enableTimer)     turnOffTimer = turnOffTimerMax;
 }
 
