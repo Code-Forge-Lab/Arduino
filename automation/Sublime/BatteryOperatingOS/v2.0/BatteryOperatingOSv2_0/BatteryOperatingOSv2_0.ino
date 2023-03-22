@@ -271,6 +271,8 @@ byte turnOffTimerUser = 1; // store addition timer value , additional for a turn
    int     triggeredLongTimeCnt     = 0; //  keep counting 
 
 // Function declaration
+bool   timer1sec ();
+bool   timer3sec ();
 String getText (String index, bool conditionNaming);
 void   funInv_On_then_Output220 (String x = "off" , bool silence = false);
 void   oneSecTimer ();
@@ -313,7 +315,7 @@ uint8_t LED_IndicatorBlinkFast_Common = 4;
 uint8_t LED_IndicatorBlinkFast_Long = 8;
 uint8_t LED_IndicatorBlinkFast_CommonShort = 2;
 
-unsigned long clock_0_2sec = 0; // 0.2 seconds update
+unsigned long clock_0_1sec = 0; // 0.2 seconds update
 unsigned long clock_1secCounter = 0;// if x 5 then = 1 sec
 unsigned long clock_3secCounter = 0;// if x 5 then = 3 sec
 unsigned long clock_1sec = 0 ; 
@@ -704,11 +706,11 @@ void quarterSecondTimer () { //0.2 second
    __main();
 
 
-  if (((long)clock_0_2sec + 200UL) < millis())
+  if (((long)clock_0_1sec + 100UL) < millis())
 
   {
       //turnOnByButtonEvent ();
-      clock_0_2sec= millis();
+      clock_0_1sec= millis();
       clock_1secCounter  = clock_1secCounter + 1;
       clock_3secCounter  = clock_3secCounter + 1; 
 
@@ -775,11 +777,11 @@ void quarterSecondTimer () { //0.2 second
       if (doReactInBatVlt/*<auto on condition from user*/ && !doBatMaxVltReached && (voltAvrBattery.voltage >= maxBatVlt) && reactionFromASensors() /*and no reaction from a sensors*/) // turn on a inverter
         {
            
-       if (clock_1secCounter >=5)
+       if (timer1sec ())
          {
            serialPrintln1s ("Condition: senscor " + String (voltAvrBattery.voltage) +"v is more then maximum batery voltage " + String ( maxBatVlt) + "v " );
            funTurnOffTimer(true);
-          if (maxBatVltSustained_cnt <= maxBatVltSustained_sec && clock_1secCounter >=5) // keep counting in each second clock_1secCounter >=5
+          if (maxBatVltSustained_cnt <= maxBatVltSustained_sec && timer1sec ()) // keep counting in each second timer1sec ()
               maxBatVltSustained_cnt++;
 
 
@@ -816,7 +818,7 @@ void quarterSecondTimer () { //0.2 second
            {  
              
               Serial.print ("turnOffTimer: " + String (turnOffTimer) + " , ");
-             if (clock_1secCounter >=5)    turnOffTimer--; // clock_1secCounter >=5 give as one second timer 
+             if (timer1sec ())    turnOffTimer--; // timer1sec () give as one second timer 
                 
            } else {
                  doBatMaxVltReached = false;
@@ -862,12 +864,12 @@ void oneSecTimer () {
      quarterSecondTimer () ;
      
      
-  if (clock_3secCounter >= 15)
+  if (timer3sec ())
             clock_3secCounter = 0; //reset
 
             
 
- if (clock_1secCounter >=5){
+ if (timer1sec ()){
           clock_1secCounter = 0;
         
        
@@ -1473,23 +1475,31 @@ String fungetfromatedTime (signed  int seconds)
 
 
 
+bool   timer1sec () {
+  if (clock_1secCounter >=10) return true; else return false;
+}
+bool   timer3sec (){
+  if (clock_3secCounter >= 30 ) return true; else return false;
+}
+
+
 void   serialPrint1s (String txt){
-if (clock_1secCounter >=5)
+if (timer1sec ())
     Serial.print (txt);
 }
 void   serialPrintln1s (String txt){
-if (clock_1secCounter >=5)
+if (timer1sec ())
     Serial.println (txt);
 }
 
 void   serialPrint3s (String txt) 
 {
-  if (clock_3secCounter >= 15)
+  if (timer3sec ())
     Serial.print (txt);
 }
 
 void   serialPrintln3s (String txt) 
 {
-  if (clock_3secCounter >= 15)
+  if (timer3sec ())
     Serial.println (txt);
 }
