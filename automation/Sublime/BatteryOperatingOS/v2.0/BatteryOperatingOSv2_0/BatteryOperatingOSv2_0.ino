@@ -965,7 +965,10 @@ void oneSecTimer () {
                     doPrg_on_button = !doPrg_on_button; // here change bolean condition
 
                     if (doPrg_on_button) // turn on inverter and passing power relay
+                        {
                         funInv_On_then_Output220 ("on");
+                        funResetTriggeredAction ();
+                        }
                      else {
                         funInv_On_then_Output220 ("off");
 
