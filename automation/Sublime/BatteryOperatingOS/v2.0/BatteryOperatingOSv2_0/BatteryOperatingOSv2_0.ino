@@ -267,8 +267,8 @@ byte turnOffTimerUser = 1; // store addition timer value , additional for a turn
    int     triggeredTracketEventsMax = 3; // tolerate 3 triggeredTracketEventsCnt before crucial desition to stop working inverter
    int     triggeredTracketEventsCnt = 0 ; // Track every triggeredAction where accures at sensors or in  auto mode program for later to deside a crucial desition to stop working inverter for a long time 
    bool    triggeredLongTimeReached = false ; //  rememeber a triggered long time is established
-   int  triggeredLongTimeMax     = 21610; //6h  maximum triggered long time where will set a triggeredLongTimeCnt to turn of inverter for a many hours 
-   int  triggeredLongTimeCnt     = 0; //  keep counting 
+   int     triggeredLongTimeMax     = 21610; //6h  maximum triggered long time where will set a triggeredLongTimeCnt to turn of inverter for a many hours 
+   int     triggeredLongTimeCnt     = 0; //  keep counting 
 
 // Function declaration
 String getText (String index, bool conditionNaming);
@@ -285,6 +285,10 @@ void   funmaxBatVltSustained(bool enableTimer = false);
 void   funTurnOffTimer(bool enableTimer = false);
 void   funDelay_Inv_Output220 (bool enableTimer = false);
 String fungetfromatedTime (signed int seconds);
+void   serialPrint1s (String txt);
+void   serialPrintln1s (String txt); 
+void   serialPrint3s (String txt); 
+void   serialPrintln3s (String txt); 
 
     //sec delay to pass power throw power relay from inverter
 
@@ -311,6 +315,7 @@ uint8_t LED_IndicatorBlinkFast_CommonShort = 2;
 
 unsigned long clock_0_2sec = 0; // 0.2 seconds update
 unsigned long clock_1secCounter = 0;// if x 5 then = 1 sec
+unsigned long clock_3secCounter = 0;// if x 5 then = 3 sec
 unsigned long clock_1sec = 0 ; 
 
 // Set web server port number to 80
@@ -698,12 +703,14 @@ void quarterSecondTimer () { //0.2 second
 
    __main();
 
+
   if (((long)clock_0_2sec + 200UL) < millis())
 
   {
       //turnOnByButtonEvent ();
       clock_0_2sec= millis();
       clock_1secCounter  = clock_1secCounter + 1;
+      clock_3secCounter  = clock_3secCounter + 1; 
 
       voltAvrBattery.VoltageMeterUpdate (true); // update with each passed clock
       
@@ -755,6 +762,95 @@ void quarterSecondTimer () { //0.2 second
     }
     //---------------------------------------------------------------
 
+  
+
+
+
+
+
+//---------------// React to turning on a inverter by voltage range ------------//660
+
+
+
+      if (doReactInBatVlt/*<auto on condition from user*/ && !doBatMaxVltReached && (voltAvrBattery.voltage >= maxBatVlt) && reactionFromASensors() /*and no reaction from a sensors*/) // turn on a inverter
+        {
+           
+       if (clock_1secCounter >=5)
+         {
+           serialPrintln1s ("Condition: senscor " + String (voltAvrBattery.voltage) +"v is more then maximum batery voltage " + String ( maxBatVlt) + "v " );
+           funTurnOffTimer(true);
+          if (maxBatVltSustained_cnt <= maxBatVltSustained_sec && clock_1secCounter >=5) // keep counting in each second clock_1secCounter >=5
+              maxBatVltSustained_cnt++;
+
+
+            serialPrintln1s ("sustaining max voltage: " + String (maxBatVltSustained_cnt) + " of " +String (maxBatVltSustained_sec) + " as " + fungetfromatedTime (maxBatVltSustained_cnt) +  " -_- " );
+            doBatBeHigh = true; // sub condition, telling about high voltage at the moment
+          if (maxBatVltSustained_cnt >= maxBatVltSustained_sec) // when voltage was sustained more then 60 seconds when turn on a inverter 
+             {
+              doBatMaxVltReached = true;
+              funInv_On_then_Output220 ("on",false);
+
+              serialPrintln1s ("turn on inv when voltage is in healthy level :)");
+             }
+          }
+         }
+   //one of the sensor is activated       
+          else if (!reactionFromASensors ())
+       { 
+          
+          reactionFromASensors (true);
+          serialPrintln1s ("Failed becouse of sensors ERR: " + desribtionsInText);
+          
+
+          funInv_On_then_Output220 ("off",false);
+          
+          doBatIsLow = false;
+          doBatBeHigh = false;
+          maxBatVltSustained_cnt = 0;
+       }
+      else if (voltAvrBattery.voltage <= minBatVlt )
+      {
+
+
+             if (turnOffTimer > 0) // avoid to turn off to fast
+           {  
+             
+              Serial.print ("turnOffTimer: " + String (turnOffTimer) + " , ");
+             if (clock_1secCounter >=5)    turnOffTimer--; // clock_1secCounter >=5 give as one second timer 
+                
+           } else {
+                 doBatMaxVltReached = false;
+                 maxBatVltSustained_cnt = 0;
+                 funInv_On_then_Output220 ("off",false);
+           }
+
+          if (!doReactInBatVlt) serialPrint1s ("auto mode is disabled and / ");
+                                
+                                serialPrintln1s ("inv is off when low battery");
+
+          doBatIsLow = true;
+          doBatBeHigh = false;
+      }
+     
+      else  // if no any voltage is awailable
+      {
+
+     
+        maxBatVltSustained_cnt = 0;
+        doBatIsLow = false;
+        doBatBeHigh = false;
+
+        if (!doReactInBatVlt ) serialPrint1s (" auto mode is disabled and / ");
+        if (triggeredLongTimeReached)serialPrint1s ("triggered AI protection :O "+ fungetfromatedTime (triggeredLongTimeCnt) + " and /");
+
+        serialPrintln3s ("no battery condition " );
+        funTurnOffTimer(true);  
+       
+      }
+
+
+
+
   }
 
 }
@@ -766,10 +862,15 @@ void oneSecTimer () {
      quarterSecondTimer () ;
      
      
+  if (clock_3secCounter >= 15)
+            clock_3secCounter = 0; //reset
+
+            
 
  if (clock_1secCounter >=5){
           clock_1secCounter = 0;
-
+        
+       
           
           if ( cmd_received.length() > 0)
           {
@@ -781,77 +882,6 @@ void oneSecTimer () {
           if (delayAvoid_Inv_On > 0){
             delayAvoid_Inv_On--; // delay given to avoid turn on to fast
            }
-
-
-
-
-
-
-//---------------// React to turning on a inverter by voltage range ------------//660
-
-
-      if (doReactInBatVlt/*<auto on condition from user*/ && !doBatMaxVltReached && (voltAvrBattery.voltage >= maxBatVlt) && reactionFromASensors() /*and no reaction from a sensors*/) // turn on a inverter
-         {
-           Serial.println ("Condition: senscor " + String (voltAvrBattery.voltage) +"v >= batery then max " + String ( maxBatVlt) + "v " );
-           funTurnOffTimer(true);
-          if (maxBatVltSustained_cnt <= maxBatVltSustained_sec) // keep counting 
-              maxBatVltSustained_cnt++;
-
-
-            Serial.println ("sustained max voltage: " + String (maxBatVltSustained_cnt) + " of " +String (maxBatVltSustained_sec) + " as " + fungetfromatedTime (maxBatVltSustained_cnt) +  " :D " );
-            doBatBeHigh = true; // sub condition, telling about high voltage at the moment
-          if (maxBatVltSustained_cnt >= maxBatVltSustained_sec) // when voltage was sustained more then 60 seconds when turn on a inverter 
-             {
-              doBatMaxVltReached = true;
-              funInv_On_then_Output220 ("on",false);
-              Serial.println ("turn on inv when voltage is in healthy level");
-            }
-         }
-         
-          else if (!reactionFromASensors ())
-       { 
-          reactionFromASensors (true);
-          Serial.println ("Failed becouse of sensors ERR: " + desribtionsInText);
-          
-          funInv_On_then_Output220 ("off",false);
-          
-          doBatIsLow = false;
-          doBatBeHigh = false;
-          maxBatVltSustained_cnt = 0;
-
-       }
-      else if (voltAvrBattery.voltage <= minBatVlt )
-      {
-
-
-             if (turnOffTimer > 0) // avoid to turn off to fast
-           {  
-              Serial.print ("turnOffTimer: " + String (turnOffTimer) + " , ");
-                 turnOffTimer--;
-                
-           } else {
-                 doBatMaxVltReached = false;
-                 maxBatVltSustained_cnt = 0;
-                 funInv_On_then_Output220 ("off",false);
-           }
-
-          if (!doReactInBatVlt) Serial.print ("auto mode is disabled and / ");
-          Serial.println ("inv is off when low battery");
-
-          doBatIsLow = true;
-          doBatBeHigh = false;
-      }
-     
-      else // if no any voltage is awailable
-      {
-        maxBatVltSustained_cnt = 0;
-        doBatIsLow = false;
-        doBatBeHigh = false;
-
-        if (!doReactInBatVlt) Serial.print ("auto mode is disabled and / ");
-        Serial.println ("no battery condition " + fungetfromatedTime (triggeredLongTimeMax) );
-        funTurnOffTimer(true);  
-      }
 
 
 
@@ -917,7 +947,7 @@ void oneSecTimer () {
                  else
                    digitalWrite (LED_Indicator, LOW);
 
-                 Serial.println ("delay_Inv_Output220_cnt: " + String (delay_Inv_Output220_cnt));
+                 Serial.println ("delay_Inv_Output220_cnt: " + fungetfromatedTime (delay_Inv_Output220_cnt));
                  //--------------------
               }
 
@@ -1441,3 +1471,25 @@ String fungetfromatedTime (signed  int seconds)
   return txt;
  }
 
+
+
+void   serialPrint1s (String txt){
+if (clock_1secCounter >=5)
+    Serial.print (txt);
+}
+void   serialPrintln1s (String txt){
+if (clock_1secCounter >=5)
+    Serial.println (txt);
+}
+
+void   serialPrint3s (String txt) 
+{
+  if (clock_3secCounter >= 15)
+    Serial.print (txt);
+}
+
+void   serialPrintln3s (String txt) 
+{
+  if (clock_3secCounter >= 15)
+    Serial.println (txt);
+}

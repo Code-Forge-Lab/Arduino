@@ -965,7 +965,7 @@ String fun_CmdRead (String cmdRead /*input commands here*/)
             {  
               LED_IndicatorBlinkFast = LED_IndicatorBlinkFast_Common;
               turnOffTimerUser = (byte)cmdGetSpecialInt;
-              funTurnOffTimer (); // refresh calculation values
+              funTurnOffTimer (); // refresh calculation valu es
               cmd_msgOut+=" fixTurnOffTimer  a value: " + String (turnOffTimerUser) + " as " + String (turnOffTimerMax) + "s timer ";
               writeMemory(memturnOffTimer,(byte)turnOffTimerUser);
 
