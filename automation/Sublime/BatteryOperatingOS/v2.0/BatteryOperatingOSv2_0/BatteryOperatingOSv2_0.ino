@@ -857,8 +857,8 @@ void quarterSecondTimer () { //0.2 second
         doBatBeHigh = false;
 
         if (!doReactInBatVlt ) serialPrintln3s (" auto mode is disabled and / ");
-        if (triggeredTimeoutCnt > 0 && !triggeredLongAITimeCnt) serialPrintln3s (" Initiated triggered timeout " + fungetfromatedTime (triggeredTimeoutCnt) + " " + String (triggeredTracketEventsCnt) + " / " + String (triggeredTracketEventsMax));
-        if (triggeredLongAITimeReached)serialPrintln3s ("triggered AI protection :O "+ fungetfromatedTime (triggeredLongAITimeCnt) + " and /");
+        if (!triggeredLongAITimeReached) serialPrintln3s ("-->Initiated triggered timeout " + fungetfromatedTime (triggeredTimeoutCnt) + " " + String (triggeredTracketEventsCnt) + " / " + String (triggeredTracketEventsMax));
+        else serialPrintln3s ("triggered AI protection :O "+ fungetfromatedTime (triggeredLongAITimeCnt) + " and /");
 
         serialPrintln3s ("no battery condition " );
         funTurnOffTimer(true);  
@@ -914,7 +914,7 @@ void oneSecTimer () {
 
             Serial.println ("Reached triggeredTracketEvents");
       // keep counting triggered actioct
-      if (triggeredTracketEventsCnt <= triggeredTracketEventsMax) triggeredTracketEventsCnt ++;
+      if (triggeredTracketEventsCnt < triggeredTracketEventsMax - 1) triggeredTracketEventsCnt ++;
       // reached maximum error AI level where will enable program waiting for a long time after many failures from a sensors or a program attempts to work propietly
       else {Serial.println ("Maxed out triggeredTracketEventsMax"); triggeredLongAITimeReached = true; };
     }
@@ -925,8 +925,10 @@ void oneSecTimer () {
 
     // keep holding a progrom to work about 6h
     if (triggeredLongAITimeCnt > 0) triggeredLongAITimeCnt--;
-    else 
-       triggeredLongAITimeReached = false; // reset AI  
+    else{ 
+       triggeredLongAITimeReached = false; // reset AI 
+       triggeredTimeoutCnt = 0;
+       } 
  
 
 
