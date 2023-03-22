@@ -860,6 +860,9 @@ void quarterSecondTimer () { //0.2 second
         if (!triggeredLongAITimeReached) serialPrintln3s ("-->Initiated triggered timeout " + fungetfromatedTime (triggeredTimeoutCnt) + " " + String (triggeredTracketEventsCnt) + " / " + String (triggeredTracketEventsMax));
         else serialPrintln3s ("triggered AI protection :O "+ fungetfromatedTime (triggeredLongAITimeCnt) + " and /");
 
+        if (voltAvrBattery.voltage >= maxBatVlt)
+        serialPrintln3s ("high battery condition " );
+        else
         serialPrintln3s ("no battery condition " );
         funTurnOffTimer(true);  
        
