@@ -19,7 +19,7 @@ class VoltMeter {
 const static int   NUM_SAMPLES = 10;
 		int sample_count;
 		int sum;                    // sum of samples taken
-		unsigned long clock_10msec = 0 ; 
+		unsigned long clock_1msec = 0 ; 
 	public:	
 		float voltage;            // calculated voltage
 		
@@ -47,10 +47,10 @@ const static int   NUM_SAMPLES = 10;
 		// 10mlSecond Delay
    public:float VoltageMeterUpdate (bool byCount = false) { 
 			 // take a number of analog samples and add them up
-			 if (!byCount && ((long)clock_10msec + 10UL) < millis())
+			 if (!byCount && ((long)clock_1msec + 100UL) < millis())
 
              {
-     			 clock_10msec= millis();
+     			 clock_1msec= millis();
 
 				 sum += analogRead(pin);
 				 sample_count++;

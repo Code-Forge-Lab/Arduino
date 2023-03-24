@@ -725,7 +725,8 @@ void quarterSecondTimer () { //0.2 second
       clock_1secCounter  = clock_1secCounter + 1;
       clock_3secCounter  = clock_3secCounter + 1; 
 
-      voltAvrBattery.VoltageMeterUpdate (true); // update with each passed clock
+      
+   voltAvrBattery.VoltageMeterUpdate (true); // update with each passed clock 
       
 
       if (output5StateInvOutput == "on")
@@ -845,8 +846,11 @@ void quarterSecondTimer () { //0.2 second
            }
 
           if (!doReactInBatVlt) serialPrint1s ("auto mode is disabled and / ");
-                                
+          if (!triggeredLongAITimeReached) serialPrintln3s ("-->Initiated triggered timeout " + fungetfromatedTime (triggeredTimeoutCnt) + " " + String (triggeredTracketEventsCnt) + " / " + String (triggeredTracketEventsMax));
+          else serialPrintln3s ("triggered AI protection :O "+ fungetfromatedTime (triggeredLongAITimeCnt) + " and /");
+                   
                                 serialPrintln1s ("inv is off when low battery");
+
 
           doBatIsLow = true;
           doBatBeHigh = false;
