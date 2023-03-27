@@ -1,52 +1,66 @@
 <!DOCTYPE html>
 <html>
+
 <style>
 
-html { font-family: Helvetica; display: inline-block; margin: 0px auto; text-align: center;background: #ffffEE;}
+html { font-family: Helvetica; display: inline-block; margin: 0px auto; text-align: center;background: #ffffEE;} 
 
-#myturn{
-  border: none;
-  height:30px;
-  width:300px;
-  background: green;
-  position:relative;
+
+
+
+
+
+#myProgress {
+  width: 360px;
+  background-color: #ddd;
+  display: inline-block;
 }
 
-#myturn::before{
-  position:absolute;
-  height:30px;
-  background:blue;
-  content:"Custom text or 70%";
-  top:0;
-  left:0;
-  width:70%;
-  display:flex;
-  color:white;
-  align-items:center;
-  justify-content:flex-end;
-  padding-right:10px;
-
+#myBar {
+  border: 10px;
+  margin: 5px;
+  /*width: 10%;*/
+  height: 80px;
+  line-height: 80px;
+  /*text-align: center;*/
+  color: white;
+  background-color: #04AA6D;
 }
-
 </style>
-
-
-
 <body>
 
- <script>
- function funfact ( ){
-  document.getElementById("myturn").style.backgroundColor = "green";
-  }
+<button onclick="myFunction(80)">Try it</button>
+
+
+              
+
+<h1>JavaScript Progress Bar</h1>
+
+<div id="myProgress">
+  <div id="myBar">?</div>
+</div>
+
+
+<script>
+function myFunction(proc) {
+   var procToByteRed =  255 - 2.55 * proc;
+   var procToByteGreen = 255 - (proc + 155);
+   var procf=proc;
+  
+    if (proc > 30)
+      document.getElementById("myBar").style.backgroundColor = "rgba("+procToByteGreen+",70 , 0, 0.8)";
+    else
+      document.getElementById("myBar").style.backgroundColor = "rgba("+procToByteRed+",0, 0, 0.8)";
+    if (proc > 95) procf = proc - 4; /*fix visual*/
+
+
+    document.getElementById("myBar").style.width  = procf + "%"; /*position bar*/
+    document.getElementById("myBar").innerHTML = proc + "%";
+}
+  myFunction(20);
 </script>
-
-
-
-<h1>The progress element</h1>
-<button onclick="funfact()">Try it</button>
-<div class="joe" funfact() ><h1>Sad person</h1></div>
-
-<progress align="center" class="turnbox2 turnbar" id="myturn"></progress>
 
 </body>
 </html>
+
+

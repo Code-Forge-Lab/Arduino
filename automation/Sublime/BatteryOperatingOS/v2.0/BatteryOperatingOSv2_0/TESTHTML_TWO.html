@@ -26,10 +26,15 @@ html { font-family: Helvetica; display: inline-block; margin: 0px auto; text-ali
   color: white;
   background-color: #04AA6D;
 }
+
+.submit {
+
+}
+
 </style>
 <body>
 
-<button onclick="myFunction(0)">Try it</button>
+<button onclick="myFunction(80)">Try it</button>
 
 
               
@@ -39,7 +44,6 @@ html { font-family: Helvetica; display: inline-block; margin: 0px auto; text-ali
 <div id="myProgress">
   <div id="myBar">?</div>
 </div>
-
 
 <script>
 function myFunction(proc) {
@@ -57,64 +61,16 @@ function myFunction(proc) {
     document.getElementById("myBar").style.width  = procf + "%"; /*position bar*/
     document.getElementById("myBar").innerHTML = proc + "%";
 }
+  myFunction(20);
 </script>
+\\\asd
+<div>
+<form  style= "padding: 12px 20px;" action="/configurations"><label for="finput"></label><input type="text" id="finput" name="finput"><input style="padding: 10px" type="submit" value="Submit"></form>
+</div>
+             
+            
 
 </body>
 </html>
 
 
-
-
-<!-- ------------Older-------------- -->
-<!-- 
-
-<!DOCTYPE html>
-<html>
-
-<style>
-
-html { font-family: Helvetica; display: inline-block; margin: 0px auto; text-align: center;background: #ffffEE;}
-
-
-#myProgress {
-  width: 300px;
-  background-color: #ddd;
-  display: inline-block;
-}
-
-#myBar {
-  width: 10%;
-  height: 30px;
-  background-color: #04AA6D;
-
-  text-align: center;
-  line-height: 30px;
-  color: white;
-}
-</style>
-<body>
-
-<button onclick="myFunction(59)">Try it</button>
-
-<h1>JavaScript Progress Bar</h1>
-
-<div id="myProgress">
-  <div id="myBar">80%</div>
-</div>
-
-
-<script>
-function myFunction(proc) {
-   var proc_green = proc + 100;
-   if (proc > 90)
-    document.getElementById("myBar").style.backgroundColor = "green";
-   else
-    document.getElementById("myBar").style.backgroundColor = "rgba(200,"+proc_green+", 0, 0.8)";
-
-    document.getElementById("myBar").style.width  = proc + "%";
-    document.getElementById("myBar").innerHTML = proc + " @";
-}
-</script>
-
-</body>
-</html> -->

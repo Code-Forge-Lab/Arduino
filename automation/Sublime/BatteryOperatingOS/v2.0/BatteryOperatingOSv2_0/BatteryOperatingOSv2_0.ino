@@ -550,14 +550,13 @@ void loop(){
             client.println("<link rel=\"icon\" href=\"data:,\">");
             // CSS to style the on/off buttons 
             // Feel free to change the background-color and font-size attributes to fit your preferences
-            client.println("<style>html { font-family: Helvetica; display: inline-block; margin: 0px auto; text-align: center;background: #15635A;}");
-            // client.println("body {font: 18px/20px \"Lucida Grande\", Tahoma, Verdana, sans-serif;color: #404040;background: #2a2a2a;}");
+            client.println("<style>html { font-family: Helvetica; display: inline-block; margin: 0px auto; text-align: center;}");
             client.println(".button { background-color: #77878A; border: none; color: white; padding: 16px 40px;");
             client.println("text-decoration: none; font-size: 30px; margin: 2px; cursor: pointer;}");
-            // client.println ("#myturn{ font-size: 30px; height:80px; width:200px; background-color:orange;position:relative;}"); // progressbar
-           
-            // client.println("#myturn::before{position:absolute;height:80px;background:green;content:\'70%\';top:0;left:0;width:70%;display:flex;color:white;align-items:center;justify-content:flex-end;padding-right:10px;}"); // progress bar
-            // client.  println("#myProgress {width: 200px; background-color: #ddd; position:relative;} #myBar {width: 50%;height: 30px;background-color: #04AA6D;text-align: center;line-height: 30px;color: white;}"); // cusntom progress bar
+            client.println ("#myturn{ font-size: 30px; height:80px; width:200px; background-color:orange;position:relative;}"); 
+
+            // battery indicator
+            client.println("#myProgress {width: 360px;background-color: #ddd;display: inline-block;}#myBar {border: 10px;margin: 5px;/*width: 10%;*/height: 80px;line-height: 80px;/*text-align: center;*/color: white;background-color: #04AA6D;}");
             client.println(".button2 {background-color:MediumSeaGreen ;}</style></head>");
             
             // Web Page Heading
@@ -615,16 +614,17 @@ void loop(){
               client.println("<p><a href=\"/4/off\"><button class=\"button button2\">Activated "+String (voltAvrBattery.voltage)+"v</button></a></p>");
             }
             //Input configurations
-              client.println ("<p style= \"font-size: 30px\" >Battery</p>");
-              // client.println("<progress align=\"left\" class=\"turnbox2 turnbar\" id=\"myturn\"></progress>");
-              client.println ("<div id=\"myProgress\"><div id=\"myBar\">80%</div></div>");// cusntom progress bar
-
-              client.println ("<form action=\"/configurations\"><label for=\"finput\">cmd:</label><input type=\"text\" id=\"finput\" name=\"finput\"><br><br><input type=\"submit\" value=\"Submit\"></form>");
+              // Battery indicator
+              client.println("<div id=\"myProgress\"><div id=\"myBar\">?</div></div>");
+              //input bar
+              client.println ("<form style= \"margin-top:10px\" action=\"/configurations\"><label for=\"finput\">cmd:</label><input type=\"text\" id=\"finput\" name=\"finput\"><br><br><input class=\"button\" type=\"submit\" value=\"Submit\"></form>");
               
               //test cmd_received output
               //client.println("<p>NVD" + cmd_received + "  inderxf "+ String (cmd_received.indexOf ("=")) + "  http>" + String (cmd_received.indexOf ("HTTP"))  + "</p>");
               client.println("<p>Pout> " + /*cmd_received*/  cmd_msgOut + "</p>");
 
+              // battery indicator
+              client.println("<script> function myFunction(proc) { var procToByteRed =  255 - 2.55 * proc; var procToByteGreen = 255 - (proc + 155); var procf=proc; if (proc > 30) document.getElementById(\"myBar\").style.backgroundColor = \"rgba(\"+procToByteGreen+\",70 , 0, 0.8)\";else document.getElementById(\"myBar\").style.backgroundColor = \"rgba(\"+procToByteRed+\",0, 0, 0.8)\";if (proc > 95) procf = proc - 4; /*fix visual*/document.getElementById(\"myBar\").style.width  = procf + \"%\"; /*position bar*/document.getElementById(\"myBar\").innerHTML = proc + \"%\";}myFunction(20);</script>");
             client.println("</body></html>");
             
             // The HTTP response ends with another blank line
