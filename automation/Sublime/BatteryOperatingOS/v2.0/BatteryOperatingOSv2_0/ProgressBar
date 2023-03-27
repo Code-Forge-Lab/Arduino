@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html>
+<style>
+
+#myturn{
+  height:30px;
+  width:300px;
+  background-color:orange;
+  position:relative;
+}
+
+#myturn::before{
+  position:absolute;
+  height:30px;
+  background:blue;
+  content:"Custom text or 70%";
+  top:0;
+  left:0;
+  width:70%;
+  display:flex;
+  color:white;
+  align-items:center;
+  justify-content:flex-end;
+  padding-right:10px;
+}
+
+</style>
+
+
+
+<body>
+
+<h1>The progress element</h1>
+
+
+<progress align="left" class="turnbox2 turnbar" id="myturn"></progress>
+
+</body>
+</html>
+
+
+
+
+--------------------------------------
+<!DOCTYPE html>
+<html>
+<style>
+
+
+progress {
+  border: none;
+  width: 400px;
+  height: 60px;
+  background: crimson;
+  content:"70%";
+}
+
+progress {
+  color: lightblue;
+}
+
+progress::-moz-progress-bar {
+  background: lightblue;
+}
+
+progress::-webkit-progress-value {
+  background: red;
+}
+
+progress::-webkit-progress-bar {
+  background: blue;
+}
+
+
+
+</style>
+
+<body>
+
+
+  <h1>The progress element</h1>
+
+
+
+<div>
+  <progress min="0" max="100" value="10" />
+</div>
+
+
+   <!-- background-color: hsl(90deg, 70%, 50%);; -->
+
+</body>
+</html>
+
+---------------------------------------
+
+
+#myturn{ height:30px; width:300px; background-color:orange;position:relative;}
+
+#myturn::before{position:absolute;height:30px;background:blue;content:'Custom text or 70%';//add your texttop:0;left:0;width:70%;display:flex;color:white;align-items:center;justify-content:flex-end;padding-right:10px;}
+
+</style>
+
+
+
+
+----------------------------------------   
+
+
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+.batteryContainer {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.batteryOuter {
+  border-radius: 3px;
+  border: 1px solid #444;
+  padding: 1px;
+  width: 200px;
+  height: 50px;
+}
+
+.batteryBump {
+  border-radius: 2px;
+  background-color: #444;
+  margin: 2px;
+  width: 1px;
+  height: 3px;
+}
+
+#batteryLevel {
+  border-radius: 2px;
+  background-color: #73AD21;
+  width: 189px;
+  height: 50px;
+}
+</style>
+</head>
+<body>
+
+<h1 style= "font-size: 40px" >This is heading 1</h1>
+
+<div class="batteryContainer">
+  <div class="batteryOuter"><div id="batteryLevel"></div></div>
+  <div class="batteryBump"></div>
+</div>
+
+</body>
+</html>
+
+
+
+
+
+---------------------------Animation only-------
+<!DOCTYPE html>
+<html>
+<head>
+<style> 
+div {
+  width: 100px;
+  height: 100px;
+  background: red;
+  position: relative;
+  animation: mymove 5s infinite;
+}
+
+@keyframes mymove {
+  0%   {top: 0px; background: red; width: 100px;}
+  100% {top: 200px; background: yellow; width: 300px;}
+}
+</style>
+</head>
+<body>
+
+<h1>The @keyframes Rule</h1>
+
+<div></div>
+
+</body>
+</html>
+----------------------------------
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Document</title>
+    <style>
+        
+    </style>
+</head>
+<body>
+    <p class="gfg">GeeksforGeeks</p>
+  
+</body>
+</html>
+--------------------------------
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>GYA</title>
+    <style>
+       .progress {
+  border:1px solid #888;
+  background-color:#eee;
+  height: 50px;
+  width:100%;
+}
+.bar {
+  height:100%;
+  width:100%;
+}
+    </style>
+</head>
+<body>
+    <script>
+  
+
+  function shadeColor(color, percent) {
+var R = parseInt(color.substring(1,3),16);
+var G = parseInt(color.substring(3,5),16);
+var B = parseInt(color.substring(5,7),16);
+
+R = parseInt(R * (100 + percent) / 100);
+G = parseInt(G * (100 + percent) / 100);
+B = parseInt(B * (100 + percent) / 100);
+
+R = (R<255)?R:255;
+G = (G<255)?G:255;
+B = (B<255)?B:255;
+
+var RR = ((R.toString(16).length==1)?"0"+R.toString(16):R.toString(16));
+var GG = ((G.toString(16).length==1)?"0"+G.toString(16):G.toString(16));
+var BB = ((B.toString(16).length==1)?"0"+B.toString(16):B.toString(16));
+
+return "#"+RR+GG+BB;
+}
+
+    </script>
+    <p class="gfg">WHy so AGGGGAYYYY</p>
+    <div class="progress"><div onClick='shadeColor(#ffffff, 60)' class="bar"></div></div>
+    <div class="progress"><div onClick='load(this, 50)'  class="bar"></div></div>
+  
+</body>
+</html>
+
+
+------------------------------------------- With Only Divs---Custom Progress Bar-------------------------------------------------------------------------
+<!DOCTYPE html>
+<html>
+<style>
+#myProgress {
+  width: 100%;
+  background-color: #ddd;
+}
+
+#myBar {
+  width: 50%;
+  height: 30px;
+  background-color: #04AA6D;
+  text-align: center;
+  line-height: 30px;
+  color: white;
+}
+</style>
+<body>
+
+<h1>JavaScript Progress Bar</h1>
+
+<div id="myProgress">
+  <div id="myBar">80%</div>
+</div>
+
+</body>
+</html>
+
+
+-------------------------------------------Cool Progress Bar---------------https://alvarotrigo.com/blog/progress-bar-css/
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Document</title>
+    <style>
+      /*
+ * Copyright (c) 2012-2013 Thibaut Courouble
+ * http://www.cssflow.com
+ * Licensed under the MIT License
+ *
+ * Sass/SCSS source: https://goo.gl/UhXKg
+ * PSD by Vin Thomas: https://goo.gl/n1M2e
+ */
+
+body {
+  font: 18px/20px "Lucida Grande", Tahoma, Verdana, sans-serif;
+  color: #404040;
+  background: #2a2a2a;
+}
+
+h1 {
+  color: #ccc;
+  text-align: center;
+  font-size: 40px;
+  margin-bottom: 30px;
+}
+
+input {
+  text-align: center;
+  font-size: 24px;
+  margin: 0 5px 30px;
+  
+    background-color: #aaa;
+    border: none;
+    border-radius: 10px;
+}
+
+.container {
+  margin: 60px auto;
+  width: 60%;
+  text-align: left;
+}
+
+.radio {
+  display: none;
+}
+
+.half {
+  font-size: 14px;
+  color: #7c7c7c;
+}
+
+.label {
+  display: inline-block;
+  margin: 0 0 20px 0;
+  padding: 5px 0;
+  width: 52px;
+  color: #aaa;
+  text-shadow: 0 1px black;
+  border-radius: 3px;
+  cursor: pointer;
+  text-align: center;
+}
+
+.radio:checked + .label {
+  color: white;
+  background: rgba(0, 0, 0, 0.25);
+}
+
+.progress {
+  margin: 0 auto;
+  margin-left: -3%;
+  width: 100%;
+}
+
+.progress {
+  padding: 4px;
+  background: rgba(0, 0, 0, 0.25);
+  border-radius: 6px;
+  -webkit-box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.25), 0 1px rgba(255, 255, 255, 0.08);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.25), 0 1px rgba(255, 255, 255, 0.08);
+}
+
+.progress-bar {
+  height: 30px;
+  border-radius: 4px;
+  background-image: -webkit-linear-gradient(top, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.05));
+  background-image: -moz-linear-gradient(top, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.05));
+  background-image: -o-linear-gradient(top, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.05));
+  background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.05));
+  -webkit-transition: 0.4s linear;
+  -moz-transition: 0.4s linear;
+  -o-transition: 0.4s linear;
+  transition: 0.4s linear;
+  -webkit-transition-property: width, background-color;
+  -moz-transition-property: width, background-color;
+  -o-transition-property: width, background-color;
+  transition-property: width, background-color;
+  -webkit-box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.25), inset 0 1px rgba(255, 255, 255, 0.1);
+  box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.25), inset 0 1px rgba(255, 255, 255, 0.1);
+}
+
+/*
+ * Note: using adjacent or general sibling selectors combined with
+ *       pseudo classes doesn't work in Safari 5.0 and Chrome 12.
+ *       See this article for more info and a potential fix:
+ *       https://css-tricks.com/webkit-sibling-bug/
+ */
+
+#zero:checked ~ .progress > .progress-bar {
+  width: 5%;
+  background-color: #f21111;
+}
+
+#ten:checked ~ .progress > .progress-bar {
+  width: 10%;
+  background-color: #f21111;
+}
+
+#ten-half:checked ~ .progress > .progress-bar {
+  width: 15%;
+  background-color: #f21111;
+}
+
+#twenty:checked ~ .progress > .progress-bar {
+  width: 20%;
+  background-color: #f23711;
+}
+
+#twenty-half:checked ~ .progress > .progress-bar {
+  width: 25%;
+  background-color: #f23711;
+}
+
+#thirty:checked ~ .progress > .progress-bar {
+  width: 30%;
+  background-color: #f25c11;
+}
+
+#thirty-half:checked ~ .progress > .progress-bar {
+  width: 35%;
+  background-color: #f25c11;
+}
+
+#fourty:checked ~ .progress > .progress-bar {
+  width: 40%;
+  background-color: #f28211;
+}
+
+#fourty-half:checked ~ .progress > .progress-bar {
+  width: 45%;
+  background-color: #f28211;
+}
+
+#fifty:checked ~ .progress > .progress-bar {
+  width: 50%;
+  background-color: #f2a711;
+}
+
+#fifty-half:checked ~ .progress > .progress-bar {
+  width: 55%;
+  background-color: #f2a711;
+}
+
+#sixty:checked ~ .progress > .progress-bar {
+  width: 60%;
+  background-color: #f2cc11;
+}
+
+#sixty-half:checked ~ .progress > .progress-bar {
+  width: 65%;
+  background-color: #f2cc11;
+}
+
+#seventy:checked ~ .progress > .progress-bar {
+  width: 70%;
+  background-color: #f2f211;
+}
+
+#seventy-half:checked ~ .progress > .progress-bar {
+  width: 75%;
+  background-color: #f2f211;
+}
+
+#eighty:checked ~ .progress > .progress-bar {
+  width: 80%;
+  background-color: #cdf211;
+}
+
+#eighty-half:checked ~ .progress > .progress-bar {
+  width: 85%;
+  background-color: #cdf211;
+}
+
+#ninety:checked ~ .progress > .progress-bar {
+  width: 90%;
+  background-color: #a7f211;
+}
+
+#ninety-half:checked ~ .progress > .progress-bar {
+  width: 95%;
+  background-color: #a7f211;
+}
+
+#onehundred:checked ~ .progress > .progress-bar {
+  width: 100%;
+  background-color: #82f211;
+}
+
+    </style>
+</head>
+<body>
+  
+  <div class="container">
+  
+  <h1>BLACK HAWKS #77 Kirby Dach</h1>
+
+  <input type="radio" class="radio" name="progress" value="zero" id="zero" checked>
+  <label for="zero" class="label half">5</label>
+  
+  <input type="radio" class="radio" name="progress" value="" id="ten">
+  <label for="ten" class="label">10</label>
+
+  <input type="radio" class="radio" name="progress" value="ten-half" id="ten-half">
+  <label for="ten-half" class="label half">5</label>
+
+  <input type="radio" class="radio" name="progress" value="twenty" id="twenty">
+  <label for="twenty" class="label">20</label>
+  
+  <input type="radio" class="radio" name="progress" value="twenty-half" id="twenty-half">
+  <label for="twenty-half" class="label half">5</label>
+
+  <input type="radio" class="radio" name="progress" value="thirty" id="thirty">
+  <label for="thirty" class="label">30</label>
+  
+  <input type="radio" class="radio" name="progress" value="thirty-half" id="thirty-half">
+  <label for="thirty-half" class="label half">5</label>
+
+  <input type="radio" class="radio" name="progress" value="fourty" id="fourty">
+  <label for="fourty" class="label">40</label>
+  
+  <input type="radio" class="radio" name="progress" value="fourty-half" id="fourty-half">
+  <label for="fourty-half" class="label half">5</label>
+
+  <input type="radio" class="radio" name="progress" value="fifty" id="fifty">
+  <label for="fifty" class="label">50</label>
+  
+  <input type="radio" class="radio" name="progress" value="fifty-half" id="fifty-half">
+  <label for="fifty-half" class="label half">5</label>
+
+  <input type="radio" class="radio" name="progress" value="sixty" id="sixty">
+  <label for="sixty" class="label">60</label>
+  
+  <input type="radio" class="radio" name="progress" value="sixty-half" id="sixty-half">
+  <label for="sixty-half" class="label half">5</label>
+
+  <input type="radio" class="radio" name="progress" value="seventy" id="seventy">
+  <label for="seventy" class="label">70</label>
+  
+  <input type="radio" class="radio" name="progress" value="seventy-half" id="seventy-half">
+  <label for="seventy-half" class="label half">5</label>
+  
+  <input type="radio" class="radio" name="progress" value="eighty" id="eighty">
+  <label for="eighty" class="label">80</label>
+  
+  <input type="radio" class="radio" name="progress" value="eighty-half" id="eighty-half">
+  <label for="eighty-half" class="label half">5</label>
+  
+  <input type="radio" class="radio" name="progress" value="ninety" id="ninety">
+  <label for="ninety" class="label">90</label>
+  
+  <input type="radio" class="radio" name="progress" value="ninety-half" id="ninety-half">
+  <label for="ninety-half" class="label half">5</label>
+
+  <input type="radio" class="radio" name="progress" value="onehundred" id="onehundred">
+  <label for="onehundred" class="label">100</label>
+
+  <div class="progress">
+    <div class="progress-bar"></div>
+  </div>
+</div>
+
+  
+</body>
+</html>
+
+--------------------------------------------------------
+
+
+/**
+ * You may use this function with both 2 or 3 interval colors for your gradient.
+ * For example, you want to have a gradient between Bootstrap's danger-warning-success colors.
+ */
+function colorGradient(fadeFraction, rgbColor1, rgbColor2, rgbColor3) {
+    var color1 = rgbColor1;
+    var color2 = rgbColor2;
+    var fade = fadeFraction;
+
+    // Do we have 3 colors for the gradient? Need to adjust the params.
+    if (rgbColor3) {
+      fade = fade * 2;
+
+      // Find which interval to use and adjust the fade percentage
+      if (fade >= 1) {
+        fade -= 1;
+        color1 = rgbColor2;
+        color2 = rgbColor3;
+      }
+    }
+
+    var diffRed = color2.red - color1.red;
+    var diffGreen = color2.green - color1.green;
+    var diffBlue = color2.blue - color1.blue;
+
+    var gradient = {
+      red: parseInt(Math.floor(color1.red + (diffRed * fade)), 10),
+      green: parseInt(Math.floor(color1.green + (diffGreen * fade)), 10),
+      blue: parseInt(Math.floor(color1.blue + (diffBlue * fade)), 10),
+    };
+
+    return 'rgb(' + gradient.red + ',' + gradient.green + ',' + gradient.blue + ')';
+  }
+
+
+  function shadeColor(color, percent) {
+var R = parseInt(color.substring(1,3),16);
+var G = parseInt(color.substring(3,5),16);
+var B = parseInt(color.substring(5,7),16);
+
+R = parseInt(R * (100 + percent) / 100);
+G = parseInt(G * (100 + percent) / 100);
+B = parseInt(B * (100 + percent) / 100);
+
+R = (R<255)?R:255;
+G = (G<255)?G:255;
+B = (B<255)?B:255;
+
+var RR = ((R.toString(16).length==1)?"0"+R.toString(16):R.toString(16));
+var GG = ((G.toString(16).length==1)?"0"+G.toString(16):G.toString(16));
+var BB = ((B.toString(16).length==1)?"0"+B.toString(16):B.toString(16));
+
+return "#"+RR+GG+BB;
+}

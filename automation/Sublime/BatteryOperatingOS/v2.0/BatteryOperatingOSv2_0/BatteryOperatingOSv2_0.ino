@@ -550,9 +550,14 @@ void loop(){
             client.println("<link rel=\"icon\" href=\"data:,\">");
             // CSS to style the on/off buttons 
             // Feel free to change the background-color and font-size attributes to fit your preferences
-            client.println("<style>html { font-family: Helvetica; display: inline-block; margin: 0px auto; text-align: center;}");
+            client.println("<style>html { font-family: Helvetica; display: inline-block; margin: 0px auto; text-align: center;background: #15635A;}");
+            // client.println("body {font: 18px/20px \"Lucida Grande\", Tahoma, Verdana, sans-serif;color: #404040;background: #2a2a2a;}");
             client.println(".button { background-color: #77878A; border: none; color: white; padding: 16px 40px;");
             client.println("text-decoration: none; font-size: 30px; margin: 2px; cursor: pointer;}");
+            // client.println ("#myturn{ font-size: 30px; height:80px; width:200px; background-color:orange;position:relative;}"); // progressbar
+           
+            // client.println("#myturn::before{position:absolute;height:80px;background:green;content:\'70%\';top:0;left:0;width:70%;display:flex;color:white;align-items:center;justify-content:flex-end;padding-right:10px;}"); // progress bar
+            // client.  println("#myProgress {width: 200px; background-color: #ddd; position:relative;} #myBar {width: 50%;height: 30px;background-color: #04AA6D;text-align: center;line-height: 30px;color: white;}"); // cusntom progress bar
             client.println(".button2 {background-color:MediumSeaGreen ;}</style></head>");
             
             // Web Page Heading
@@ -597,6 +602,7 @@ void loop(){
 
 
             } 
+            
                
             // Display current state, and ON/OFF buttons for GPIO 4  
             // client.println("<p>GPIO 4 - State " + output4State + " "+ String (delay_Inv_Output220_cnt) +" b:"+String (doInv_Output220)+"</p>" );
@@ -609,8 +615,10 @@ void loop(){
               client.println("<p><a href=\"/4/off\"><button class=\"button button2\">Activated "+String (voltAvrBattery.voltage)+"v</button></a></p>");
             }
             //Input configurations
+              client.println ("<p style= \"font-size: 30px\" >Battery</p>");
+              // client.println("<progress align=\"left\" class=\"turnbox2 turnbar\" id=\"myturn\"></progress>");
+              client.println ("<div id=\"myProgress\"><div id=\"myBar\">80%</div></div>");// cusntom progress bar
 
-        
               client.println ("<form action=\"/configurations\"><label for=\"finput\">cmd:</label><input type=\"text\" id=\"finput\" name=\"finput\"><br><br><input type=\"submit\" value=\"Submit\"></form>");
               
               //test cmd_received output

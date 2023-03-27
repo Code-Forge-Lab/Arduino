@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<style>
+
+html { font-family: Helvetica; display: inline-block; margin: 0px auto; text-align: center;background: #ffffEE;}
+
+#myturn{
+  border: none;
+  height:30px;
+  width:300px;
+  background: green;
+  position:relative;
+}
+
+#myturn::before{
+  position:absolute;
+  height:30px;
+  background:blue;
+  content:"Custom text or 70%";
+  top:0;
+  left:0;
+  width:70%;
+  display:flex;
+  color:white;
+  align-items:center;
+  justify-content:flex-end;
+  padding-right:10px;
+
+}
+
+</style>
+
+
+
+<body>
+
+ <script>
+ function funfact ( ){
+  document.getElementById("myturn").style.backgroundColor = "green";
+  }
+</script>
+
+
+
+<h1>The progress element</h1>
+<button onclick="funfact()">Try it</button>
+<div class="joe" funfact() ><h1>Sad person</h1></div>
+
+<progress align="center" class="turnbox2 turnbar" id="myturn"></progress>
+
+</body>
+</html>
