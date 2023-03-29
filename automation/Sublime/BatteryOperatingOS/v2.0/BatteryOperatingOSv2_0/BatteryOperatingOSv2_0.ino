@@ -544,6 +544,7 @@ void loop(){
               LED_IndicatorBlinkFast = LED_IndicatorBlinkFast_CommonShort;
             }
             
+            
             // Display the HTML web page
             client.println("<!DOCTYPE html><html>");
             client.println("<head><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">");
@@ -601,6 +602,12 @@ void loop(){
 
 
             } 
+
+            client.println("\n"
+"<div>\n"
+"<form  style= \"padding: 12px 20px;\" action=\"/configurations\"><label for=\"finput\"></label><input type=\"text\" id=\"finput\" name=\"finput\"><input style=\"padding: 10px\" type=\"submit\" value=\"Submit\"></form>\n"
+"</div>\n"
+"       ");
             
                
             // Display current state, and ON/OFF buttons for GPIO 4  
@@ -617,14 +624,14 @@ void loop(){
               // Battery indicator
               client.println("<div id=\"myProgress\"><div id=\"myBar\">?</div></div>");
               //input bar
-              client.println ("<form style= \"margin-top:10px\" action=\"/configurations\"><label for=\"finput\">cmd:</label><input type=\"text\" id=\"finput\" name=\"finput\"><br><br><input class=\"button\" type=\"submit\" value=\"Submit\"></form>");
+              client.println("<script> function myFunction(proc) { var procToByteRed =  255 - 2.55 * proc; var procToByteGreen = 255 - (proc + 155); var procf=proc; if (proc > 30) document.getElementById(\"myBar\").style.backgroundColor = \"rgba(\"+procToByteGreen+\",70 , 0, 0.8)\";else document.getElementById(\"myBar\").style.backgroundColor = \"rgba(\"+procToByteRed+\",0, 0, 0.8)\";if (proc > 95) procf = proc - 4; /*fix visual*/document.getElementById(\"myBar\").style.width  = procf + \"%\"; /*position bar*/document.getElementById(\"myBar\").innerHTML = proc + \"%\";}myFunction(20);</script>");
+              client.println ("<form style= \"margin-top:10px\" action=\"/configurations\"><label for=\"finput\"></label><input type=\"text\" id=\"finput\" name=\"finput\"><br><br><input class=\"button\" type=\"submit\" value=\"Submit\"></form>");
               
               //test cmd_received output
               //client.println("<p>NVD" + cmd_received + "  inderxf "+ String (cmd_received.indexOf ("=")) + "  http>" + String (cmd_received.indexOf ("HTTP"))  + "</p>");
               client.println("<p>Pout> " + /*cmd_received*/  cmd_msgOut + "</p>");
 
               // battery indicator
-              client.println("<script> function myFunction(proc) { var procToByteRed =  255 - 2.55 * proc; var procToByteGreen = 255 - (proc + 155); var procf=proc; if (proc > 30) document.getElementById(\"myBar\").style.backgroundColor = \"rgba(\"+procToByteGreen+\",70 , 0, 0.8)\";else document.getElementById(\"myBar\").style.backgroundColor = \"rgba(\"+procToByteRed+\",0, 0, 0.8)\";if (proc > 95) procf = proc - 4; /*fix visual*/document.getElementById(\"myBar\").style.width  = procf + \"%\"; /*position bar*/document.getElementById(\"myBar\").innerHTML = proc + \"%\";}myFunction(20);</script>");
             client.println("</body></html>");
             
             // The HTTP response ends with another blank line

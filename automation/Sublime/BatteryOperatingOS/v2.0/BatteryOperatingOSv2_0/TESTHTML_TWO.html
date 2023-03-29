@@ -5,70 +5,60 @@
 
 html { font-family: Helvetica; display: inline-block; margin: 0px auto; text-align: center;background: #ffffEE;} 
 
-
-
-
-
-
-#myProgress {
-  width: 360px;
-  background-color: #ddd;
-  display: inline-block;
+.batteryContainer {
+ 
+  
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  text-align: center;
+  margin: 0px auto;
+  /* display: inline-block; */
+  /* flex-direction: row; */
+  /* align-items: center; */
 }
 
-#myBar {
-  border: 10px;
-  margin: 5px;
-  /*width: 10%;*/
-  height: 80px;
-  line-height: 80px;
-  /*text-align: center;*/
-  color: white;
-  background-color: #04AA6D;
+.batteryOuter {
+  border-radius: 3px;
+  border: 1px solid #444;
+  padding: 1px;
+  width: 25px;
+  height: 9px;
 }
 
-.submit {
+.batteryBump {
 
+  border-radius: 2px;
+  background-color: #444;
+  margin: 2px;
+  width: 1px;
+  height: 3px;
 }
+
+
+
+#batteryLevel {
+  border-radius: 2px;
+  background-color: #73AD21;
+  width: 50%;
+  height: 9px;
+}
+
 
 </style>
 <body>
 
-<button onclick="myFunction(80)">Try it</button>
+<button onclick="batIndicator(100)">Try it</button>
 
 
+<div class="batteryContainer">
+  <h1 class="batteryContainer">JavaScript Progress Bar </h1>
+  <div class="batteryOuter"><div id="batteryLevel"></div></div>
+  <div class="batteryBump"></div>
+</div>
               
 
-<h1>JavaScript Progress Bar</h1>
-
-<div id="myProgress">
-  <div id="myBar">?</div>
-</div>
-
-<script>
-function myFunction(proc) {
-   var procToByteRed =  255 - 2.55 * proc;
-   var procToByteGreen = 255 - (proc + 155);
-   var procf=proc;
-  
-    if (proc > 30)
-      document.getElementById("myBar").style.backgroundColor = "rgba("+procToByteGreen+",70 , 0, 0.8)";
-    else
-      document.getElementById("myBar").style.backgroundColor = "rgba("+procToByteRed+",0, 0, 0.8)";
-    if (proc > 95) procf = proc - 4; /*fix visual*/
-
-
-    document.getElementById("myBar").style.width  = procf + "%"; /*position bar*/
-    document.getElementById("myBar").innerHTML = proc + "%";
-}
-  myFunction(20);
-</script>
-\\\asd
-<div>
-<form  style= "padding: 12px 20px;" action="/configurations"><label for="finput"></label><input type="text" id="finput" name="finput"><input style="padding: 10px" type="submit" value="Submit"></form>
-</div>
-             
-            
 
 </body>
 </html>

@@ -246,7 +246,7 @@ return "#"+RR+GG+BB;
 }
 
     </script>
-    <p class="gfg">WHy so AGGGGAYYYY</p>
+    <p class="gfg"></p>
     <div class="progress"><div onClick='shadeColor(#ffffff, 60)' class="bar"></div></div>
     <div class="progress"><div onClick='load(this, 50)'  class="bar"></div></div>
   
@@ -571,6 +571,109 @@ input {
 </body>
 </html>
 
+
+
+
+
+
+
+
+
+-------------------------------------------------------
+<!DOCTYPE html>
+<html>
+
+<style>
+
+html { font-family: Helvetica; display: inline-block; margin: 0px auto; text-align: center;background: #ffffEE;} 
+
+
+
+
+
+
+#myProgress {
+  /*position: absolute;*/
+  width: 360px;
+  background-color: #ddd;
+  display: inline-block;
+  /*transform: translate(-20%,-50%);*/ 
+}
+
+#myBar {
+  border: 10px;
+  margin: 5px;
+  /*width: 10%;*/
+  height: 80px;
+  line-height: 80px;
+  /*text-align: center;*/
+  color: white;
+  background-color: #04AA6D;
+}
+
+#myBar::after{
+  /*content: '';*/
+ /* position: absolute;
+  top: calc(50%-8px);
+  right: -5px;
+  width: 5px;
+  height: 16px;
+  background: #ffffff;
+  border-top-right-radius : 5px;
+  border-bottom-right-radius : 5px;*/
+
+}
+
+.submit {
+
+}
+
+</style>
+<body>
+
+<button onclick="batIndicator(100)">Try it</button>
+
+
+              
+
+<h1>JavaScript Progress Bar</h1>
+
+<div id="myProgress">
+  <div id="myBar">?</div>
+</div>
+
+<script>
+function batIndicator(proc) {
+   if (proc > 100) proc = 100; 
+   var procToByteInv =  255 - 2.55 * proc;
+   var procToByteRel =  1.9 * proc;
+   var procToByteGreen = 255 - (proc + 155);
+   var procf=proc;
+  
+    if (proc > 30)
+      document.getElementById("myBar").style.backgroundColor = "rgba("+procToByteInv+","+procToByteRel+" , 25 , 0.8)";
+    else
+      document.getElementById("myBar").style.backgroundColor = "rgba("+procToByteInv+","+ 0 +", 25, 0.8)";
+    if (proc > 95) procf = proc - 4; /*fix visual*/
+
+
+    document.getElementById("myBar").style.width  = procf + "%"; /*position bar*/
+    document.getElementById("myBar").innerHTML = proc + "%";
+}
+  batIndicator(20);
+</script>
+
+<div>
+<form  style= "padding: 12px 20px;" action="/configurations"><label for="finput"></label><input type="text" id="finput" name="finput"><input style="padding: 10px" type="submit" value="Submit"></form>
+</div>
+             
+            
+
+</body>
+</html>
+
+
+
 --------------------------------------------------------
 
 
@@ -628,3 +731,8 @@ var BB = ((B.toString(16).length==1)?"0"+B.toString(16):B.toString(16));
 
 return "#"+RR+GG+BB;
 }
+
+
+
+
+

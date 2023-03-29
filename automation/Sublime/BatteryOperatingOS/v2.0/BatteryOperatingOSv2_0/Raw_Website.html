@@ -1,0 +1,94 @@
+
+
+
+
+
+
+ // Display the HTML web page
+            client.println("<!DOCTYPE html><html>");
+            client.println("<head><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">");
+            client.println("<link rel=\"icon\" href=\"data:,\">");
+            // CSS to style the on/off buttons 
+            // Feel free to change the background-color and font-size attributes to fit your preferences
+            client.println("<style>html { font-family: Helvetica; display: inline-block; margin: 0px auto; text-align: center;}");
+            client.println(".button { background-color: #77878A; border: none; color: white; padding: 16px 40px;");
+            client.println("text-decoration: none; font-size: 30px; margin: 2px; cursor: pointer;}");
+            client.println ("#myturn{ font-size: 30px; height:80px; width:200px; background-color:orange;position:relative;}"); 
+
+            // battery indicator
+            client.println("#myProgress {width: 360px;background-color: #ddd;display: inline-block;}#myBar {border: 10px;margin: 5px;/*width: 10%;*/height: 80px;line-height: 80px;/*text-align: center;*/color: white;background-color: #04AA6D;}");
+            client.println(".button2 {background-color:MediumSeaGreen ;}</style></head>");
+            
+            // Web Page Heading
+            client.println("<body><h1>BatteryOperationOS</h1>");
+            
+            // Display current state, and ON/OFF buttons for GPIO 5  
+            // client.println("<p>Inv_On - State " + output5StateInvOutput + " Avoid: " + String(delayAvoid_Inv_On) + "</p>");
+            
+            // If the output5StateInvOutput is off, it displays the ON button       
+            if (output5StateInvOutput=="off") {
+              // indicate about turning on an Inverter
+             if (!doAvoidInv_On)
+
+                  if(doBatBeHigh) client.println("<p><a href=\"/5/on\"><button class=\"button\">Inv Off / High Battery</button></a></p>");
+                 
+                  else if (desctiptionInv_readAC)      client.println("<p><a href=\"/5/on\"><button class=\"button\">No ~220v Output!</button></a></p>");
+                  else if (desctiptionInv_ReadSignal)  client.println("<p><a href=\"/5/on\"><button class=\"button\">Inv. Read Signal!</button></a></p>");
+                  else if (desctiptionPrg_StopInv)     client.println("<p><a href=\"/5/on\"><button class=\"button\">Prg. Stop Inverter!</button></a></p>");
+                  else if (desctiptionPrg_StopInvTemp) client.println("<p><a href=\"/5/on\"><button class=\"button\">Temp. Protection!</button></a></p>");
+                  else if (triggeredLongAITimeReached) client.println("<p><a href=\"/5/on\"><button class=\"button\">Triggered AI Protection "+ fungetfromatedTime (triggeredLongAITimeCnt) + "!</button></a></p>");
+                  else if (turnOffTimer > 0 && doBatIsLow) client.println("<p><a href=\"/5/off\"><button class=\"button\">Off After "+String(turnOffTimer)+"</button></a></p>");
+                  else
+                  client.println("<p><a href=\"/5/on\"><button class=\"button\">Inv Off</button></a></p>");
+
+              else// give numeric timeout visualatation
+                 if(!doBatIsLow)
+                  client.println("<p><a href=\"/5/on\"><button class=\"button\">"+String(delayAvoid_Inv_On)+"!</button></a></p>");
+                  else
+                  client.println("<p><a href=\"/5/on\"><button class=\"button\">Low Battery!</button></a></p>");
+              //------------------------------------------------------
+
+            } else {  //+(delay_Inv_Output220_cnt > 0) ?+"P:"+String(delay_Inv_Output220_cnt): +"^"+
+              
+              if (delay_Inv_Output220_cnt > 2)
+                 client.println("<p><a href=\"/5/off\"><button class=\"button button2\">P:"+String(delay_Inv_Output220_cnt-2)+" Inv On</button></a></p>");
+              else if (turnOffTimer > 0 && doBatIsLow)
+                  client.println("<p><a href=\"/5/off\"><button class=\"button\">Off After "+String(turnOffTimer)+"</button></a></p>");
+              else if (doInv_Output220)
+                 client.println("<p><a href=\"/5/off\"><button class=\"button button2\">^Inv On</button></a></p>");
+              else 
+                 client.println("<p><a href=\"/5/off\"><button class=\"button button2\">xInv On</button></a></p>");
+
+
+            } 
+
+            client.println("\n"
+"<div>\n"
+"<form  style= \"padding: 12px 20px;\" action=\"/configurations\"><label for=\"finput\"></label><input type=\"text\" id=\"finput\" name=\"finput\"><input style=\"padding: 10px\" type=\"submit\" value=\"Submit\"></form>\n"
+"</div>\n"
+"       ");
+            
+               
+            // Display current state, and ON/OFF buttons for GPIO 4  
+            // client.println("<p>GPIO 4 - State " + output4State + " "+ String (delay_Inv_Output220_cnt) +" b:"+String (doInv_Output220)+"</p>" );
+            // client.println("<p> "+ getStatusText () +"</p>" );
+            
+            // If the output4State is off, it displays the ON button       
+            if (output4State=="off") {
+              client.println("<p><a href=\"/4/on\"><button class=\"button\">Disabled Auto</button></a></p>");
+            } else {
+              client.println("<p><a href=\"/4/off\"><button class=\"button button2\">Activated "+String (voltAvrBattery.voltage)+"v</button></a></p>");
+            }
+            //Input configurations
+              // Battery indicator
+              client.println("<div id=\"myProgress\"><div id=\"myBar\">?</div></div>");
+              //input bar
+              client.println("<script> function myFunction(proc) { var procToByteRed =  255 - 2.55 * proc; var procToByteGreen = 255 - (proc + 155); var procf=proc; if (proc > 30) document.getElementById(\"myBar\").style.backgroundColor = \"rgba(\"+procToByteGreen+\",70 , 0, 0.8)\";else document.getElementById(\"myBar\").style.backgroundColor = \"rgba(\"+procToByteRed+\",0, 0, 0.8)\";if (proc > 95) procf = proc - 4; /*fix visual*/document.getElementById(\"myBar\").style.width  = procf + \"%\"; /*position bar*/document.getElementById(\"myBar\").innerHTML = proc + \"%\";}myFunction(20);</script>");
+              client.println ("<form style= \"margin-top:10px\" action=\"/configurations\"><label for=\"finput\"></label><input type=\"text\" id=\"finput\" name=\"finput\"><br><br><input class=\"button\" type=\"submit\" value=\"Submit\"></form>");
+              
+              //test cmd_received output
+              //client.println("<p>NVD" + cmd_received + "  inderxf "+ String (cmd_received.indexOf ("=")) + "  http>" + String (cmd_received.indexOf ("HTTP"))  + "</p>");
+              client.println("<p>Pout> " + /*cmd_received*/  cmd_msgOut + "</p>");
+
+              // battery indicator
+            client.println("</body></html>");
