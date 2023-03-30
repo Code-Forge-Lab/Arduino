@@ -9,8 +9,6 @@ html { font-family: Helvetica; display: inline-block; margin: 0px auto; text-ali
 
 
 .batteryContainer {
- 
-  
  display: -webkit-box;
  display: -moz-box;
  display: -ms-flexbox;
@@ -18,26 +16,20 @@ html { font-family: Helvetica; display: inline-block; margin: 0px auto; text-ali
  text-align: center;
   margin: 0px auto;
 }
-
 .batteryOuter {
  border-radius: 3px;
- border: 1px solid #444;
- padding: 1px;
+ border: 2px solid #444;
+ padding: 2px;
  width: 45px;
  height: 20px;
 }
-
 .batteryBump {
-
   border-radius: 2px;
  background-color: #444;
- margin-top: 8px;
+ margin-top: 9px;
  width: 2px;
- height: 8px;
+ height: 9px;
 }
-
-
-
 #batteryLevel {
  border-radius: 2px;
  background-color: #73AD21;
@@ -51,39 +43,39 @@ html { font-family: Helvetica; display: inline-block; margin: 0px auto; text-ali
 
 
 
-
-<div class="batteryContainer">
- <h1 class="batteryContainer">JavaScript Progress</h1>
- <div class="batteryOuter"><div id="batteryLevel"></div></div>
- <div class="batteryBump"></div>
-</div>
-
-<button onclick="batIndicator(120)">Try it</button>
-
-<script>
+  
+  <div class="batteryContainer">
+    <h1 class="batteryContainer" style="position: relative; left: 50px;">BatteryOperationOS</h1>
+    <div class="batteryOuter"><div id="batteryLevel"></div></div>
+    <div class="batteryBump"></div>
+  </div>
+  
+  
+  <script>
 function batIndicator(proc) {
   if(proc>100) proc=100;
    var procToByteInv =  255 - 2.55 * proc;
    var procToByteRel =  1.9 * proc;
    var procToByteGreen = 255 - (proc + 155);
    var procf=proc;
-  
-    if (proc > 30)
-      document.getElementById("batteryLevel").style.backgroundColor = "rgba("+procToByteInv+","+procToByteRel+" , 25 , 0.8)";
+   
+   if (proc > 30)
+   document.getElementById("batteryLevel").style.backgroundColor = "rgba("+procToByteInv+","+procToByteRel+" , 25 , 0.8)";
     else
       document.getElementById("batteryLevel").style.backgroundColor = "rgba("+procToByteInv+","+ 0 +", 25, 0.8)";
+      
 
-
-    document.getElementById("batteryLevel").style.width  = procf + "%"; /*position bar*/
-    document.getElementById("batteryLevel").innerHTML = proc + "%";
-}
-  batIndicator(20);
+      document.getElementById("batteryLevel").style.width  = procf + "%"; /*position bar*/
+      document.getElementById("batteryLevel").innerHTML = proc + "%";
+    }
+  batIndicator(50.81);
 </script>
 
 <div>
-<form  style= "padding: 12px 20px;" action="/configurations"><label for="finput"></label><input type="text" id="finput" name="finput"><input style="padding: 10px" type="submit" value="Submit"></form>
+<form style="margin:5px;" action="/configurations"><label for="finput"></label><input style="padding:10px;" type="submit" value="Submit"><input style="padding:10px; width: 160px;"  type="text" id="finput" name="finput"></form>
 </div>
-             
+
+<button style="margin: 20px;" onclick="batIndicator(120)">Try it</button>
             
 
 </body>

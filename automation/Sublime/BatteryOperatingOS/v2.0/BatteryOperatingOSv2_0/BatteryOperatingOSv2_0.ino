@@ -551,18 +551,18 @@ void loop(){
             client.println("<link rel=\"icon\" href=\"data:,\">");
             // CSS to style the on/off buttons 
             // Feel free to change the background-color and font-size attributes to fit your preferences
-            client.println("<style>html { font-family: Helvetica; display: inline-block; margin: 0px auto; text-align: center;}");
+            client.println("<style>html { font-family: Helvetica; display: inline-block; margin: 0px auto; text-align: center; background: #ffffEE;}");
             client.println(".button { background-color: #77878A; border: none; color: white; padding: 16px 40px;");
             client.println("text-decoration: none; font-size: 30px; margin: 2px; cursor: pointer;}");
-            client.println ("#myturn{ font-size: 30px; height:80px; width:200px; background-color:orange;position:relative;}"); 
+            client.println("p{margin 5px auto;}"); // all paragraph tountered as not tall
 
             // battery indicator
-            client.println("#myProgress {width: 360px;background-color: #ddd;display: inline-block;}#myBar {border: 10px;margin: 5px;/*width: 10%;*/height: 80px;line-height: 80px;/*text-align: center;*/color: white;background-color: #04AA6D;}");
+            client.println("\n.batteryContainer {\n display: -webkit-box;\n display: -moz-box;\n display: -ms-flexbox;\n display: -webkit-flex;\n text-align: center;\n  margin: 0px auto;\n}\n.batteryOuter {\n border-radius: 3px;\n border: 2px solid #444;\n padding: 2px;\n width: 45px;\n height: 20px;\n}\n.batteryBump {\n  border-radius: 2px;\n background-color: #444;\n margin-top: 9px;\n width: 2px;\n height: 9px;\n}\n#batteryLevel {\n border-radius: 2px;\n background-color: #73AD21;\n width: 80%;\n height: 20px;\n}");
             client.println(".button2 {background-color:MediumSeaGreen ;}</style></head>");
-            
-            // Web Page Heading
-            client.println("<body><h1>BatteryOperationOS</h1>");
-            
+
+            // Battery indicator with Web Page Heading
+            client.println("<div class=\"batteryContainer\">\n    <h1 class=\"batteryContainer\" style=\" position: relative; left: 8 px; \">BatteryOperationOS</h1>\n    <div class=\"batteryOuter\"><div id=\"batteryLevel\"></div></div>\n    <div class=\"batteryBump\"></div>\n  </div>");
+
             // Display current state, and ON/OFF buttons for GPIO 5  
             // client.println("<p>Inv_On - State " + output5StateInvOutput + " Avoid: " + String(delayAvoid_Inv_On) + "</p>");
             
@@ -601,37 +601,37 @@ void loop(){
                  client.println("<p><a href=\"/5/off\"><button class=\"button button2\">xInv On</button></a></p>");
 
 
-            } 
-
-            client.println("\n"
-"<div>\n"
-"<form  style= \"padding: 12px 20px;\" action=\"/configurations\"><label for=\"finput\"></label><input type=\"text\" id=\"finput\" name=\"finput\"><input style=\"padding: 10px\" type=\"submit\" value=\"Submit\"></form>\n"
-"</div>\n"
-"       ");
-            
-               
-            // Display current state, and ON/OFF buttons for GPIO 4  
-            // client.println("<p>GPIO 4 - State " + output4State + " "+ String (delay_Inv_Output220_cnt) +" b:"+String (doInv_Output220)+"</p>" );
-            // client.println("<p> "+ getStatusText () +"</p>" );
-            
-            // If the output4State is off, it displays the ON button       
-            if (output4State=="off") {
-              client.println("<p><a href=\"/4/on\"><button class=\"button\">Disabled Auto</button></a></p>");
-            } else {
-              client.println("<p><a href=\"/4/off\"><button class=\"button button2\">Activated "+String (voltAvrBattery.voltage)+"v</button></a></p>");
             }
-            //Input configurations
-              // Battery indicator
-              client.println("<div id=\"myProgress\"><div id=\"myBar\">?</div></div>");
-              //input bar
-              client.println("<script> function myFunction(proc) { var procToByteRed =  255 - 2.55 * proc; var procToByteGreen = 255 - (proc + 155); var procf=proc; if (proc > 30) document.getElementById(\"myBar\").style.backgroundColor = \"rgba(\"+procToByteGreen+\",70 , 0, 0.8)\";else document.getElementById(\"myBar\").style.backgroundColor = \"rgba(\"+procToByteRed+\",0, 0, 0.8)\";if (proc > 95) procf = proc - 4; /*fix visual*/document.getElementById(\"myBar\").style.width  = procf + \"%\"; /*position bar*/document.getElementById(\"myBar\").innerHTML = proc + \"%\";}myFunction(20);</script>");
-              client.println ("<form style= \"margin-top:10px\" action=\"/configurations\"><label for=\"finput\"></label><input type=\"text\" id=\"finput\" name=\"finput\"><br><br><input class=\"button\" type=\"submit\" value=\"Submit\"></form>");
-              
-              //test cmd_received output
-              //client.println("<p>NVD" + cmd_received + "  inderxf "+ String (cmd_received.indexOf ("=")) + "  http>" + String (cmd_received.indexOf ("HTTP"))  + "</p>");
-              client.println("<p>Pout> " + /*cmd_received*/  cmd_msgOut + "</p>");
 
-              // battery indicator
+
+                // Display current state, and ON/OFF buttons for GPIO 4
+                // client.println("<p>GPIO 4 - State " + output4State + " "+ String (delay_Inv_Output220_cnt) +" b:"+String (doInv_Output220)+"</p>" );
+                // client.println("<p> "+ getStatusText () +"</p>" );
+
+                // If the output4State is off, it displays the ON button
+                if (output4State == "off")
+            {
+              client.println("<p style=\"margin-bottom:1px\"><a href=\"/4/on\"><button s class=\"button\">Disabled Auto</button></a></p>");
+            }
+            else
+            {
+              client.println("<p style=\"margin-bottom:1px\" ><a href=\"/4/off\"><button  class=\"button button2\">Activated " + String(voltAvrBattery.voltage) + "v</button></a></p>");
+            }
+
+            //Javascript Battery Indicator in the top right corner
+            client.println("\n  <script>\nfunction batIndicator(proc) {\n  if(proc>100) proc=100;\n   var procToByteInv =  255 - 2.55 * proc;\n   var procToByteRel =  1.9 * proc;\n   var procToByteGreen = 255 - (proc + 155);\n   var procf=proc;\n   \n   if (proc > 30)\n   document.getElementById(\"batteryLevel\").style.backgroundColor = \"rgba(\"+procToByteInv+\",\"+procToByteRel+\" , 25 , 0.8)\";\n    else\n      document.getElementById(\"batteryLevel\").style.backgroundColor = \"rgba(\"+procToByteInv+\",\"+ 0 +\", 25, 0.8)\";\n      \n\n      document.getElementById(\"batteryLevel\").style.width  = procf + \"%\"; /*position bar*/\n      document.getElementById(\"batteryLevel\").innerHTML = proc + \"%\";\n    }\n</script>\n");
+            // cal Javascript function that show procentage in the battery in top right corner
+            client.println("<script>batIndicator(" +String( (int)(((voltAvrBattery.voltage - minBatVlt) * 100) / (maxBatVlt  - minBatVlt)) )  +") </script>"); // recipe ((input - min) * 100) / (max - min)
+            //Input configurations
+            // Configuration input with submit
+            client.println("<div>\n<form style=\"margin:5px;\" action=\"/configurations\"><label for=\"finput\"></label><input style=\"padding:10px;\" type=\"submit\" value=\"Command\"><input style=\"padding:10px; width: 160px;\"  type=\"text\" id=\"finput\" name=\"finput\"></form>\n</div>");
+            // client.println("<form action=\"/configurations\"><input style= \"margin-top:2px\"  type=\"text\" id=\"finput\" name=\"finput\"><input  type=\"submit\" value=\"Submit\"><br></form><label for=\"finput\"></label>");
+
+            // test cmd_received output
+            // client.println("<p>NVD" + cmd_received + "  inderxf "+ String (cmd_received.indexOf ("=")) + "  http>" + String (cmd_received.indexOf ("HTTP"))  + "</p>");
+            client.println("<p>Pout> " + /*cmd_received*/ cmd_msgOut + "</p>");
+
+            // battery indicator
             client.println("</body></html>");
             
             // The HTTP response ends with another blank line
