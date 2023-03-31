@@ -318,8 +318,9 @@ uint8_t LED_IndicatorBlinkFast_CommonShort = 2;
 
 unsigned long clock_0_1sec = 0; // 0.2 seconds update
 unsigned long clock_1secCounter = 0;// if x 5 then = 1 sec
-unsigned long clock_3secCounter = 0;// if x 5 then = 3 sec
-unsigned long clock_1sec = 0 ; 
+unsigned long clock_3secCounter = 0;// if x 15 then = 3 sec
+unsigned long clock_1sec = 0 ;
+unsigned long clock_volatge = 0; // seconds update
 
 // Set web server port number to 80
 WiFiServer server(80);
@@ -619,7 +620,7 @@ void loop(){
             }
 
             //Javascript Battery Indicator in the top right corner
-            client.println("\n  <script>\nfunction batIndicator(proc) {\n  if(proc>100) proc=100;\n   var procToByteInv =  255 - 2.55 * proc;\n   var procToByteRel =  1.9 * proc;\n   var procToByteGreen = 255 - (proc + 155);\n   var procf=proc;\n   \n   if (proc > 30)\n   document.getElementById(\"batteryLevel\").style.backgroundColor = \"rgba(\"+procToByteInv+\",\"+procToByteRel+\" , 25 , 0.8)\";\n    else\n      document.getElementById(\"batteryLevel\").style.backgroundColor = \"rgba(\"+procToByteInv+\",\"+ 0 +\", 25, 0.8)\";\n      \n\n      document.getElementById(\"batteryLevel\").style.width  = procf + \"%\"; /*position bar*/\n      document.getElementById(\"batteryLevel\").innerHTML = proc + \"%\";\n    }\n</script>\n");
+            client.println("\n  <script>\nfunction batIndicator(proc) {\n  if(proc>100 ) proc=100;if(proc<0 ) proc=0;\n   var procToByteInv =  255 - 2.55 * proc;\n   var procToByteRel =  1.9 * proc;\n   var procToByteGreen = 255 - (proc + 155);\n   var procf=proc;\n   \n   if (proc > 30)\n   document.getElementById(\"batteryLevel\").style.backgroundColor = \"rgba(\"+procToByteInv+\",\"+procToByteRel+\" , 25 , 0.8)\";\n    else\n      document.getElementById(\"batteryLevel\").style.backgroundColor = \"rgba(\"+procToByteInv+\",\"+ 0 +\", 25, 0.8)\";\n      \n\n      document.getElementById(\"batteryLevel\").style.width  = procf + \"%\"; /*position bar*/\n      document.getElementById(\"batteryLevel\").innerHTML = proc + \"%\";\n    }\n</script>\n");
             // cal Javascript function that show procentage in the battery in top right corner
             client.println("<script>batIndicator(" +String( (int)(((voltAvrBattery.voltage - minBatVlt) * 100) / (maxBatVlt  - minBatVlt)) )  +") </script>"); // recipe ((input - min) * 100) / (max - min)
             //Input configurations
@@ -661,14 +662,18 @@ void loop(){
 
   }else {
 
+    if (((long)clock_volatge + 2UL) < millis()) //1 miliseconds
+    {
+      clock_volatge=millis();
 
-  // btnPrg_on.scaning();
+      voltAvrBattery.VoltageMeterUpdate(true); // update with each passed clock
 
-  oneSecTimer ();
+    }
+      // btnPrg_on.scaning();
 
-  
-  
-   // btnPrg_on.endScaning();
+      oneSecTimer();
+
+    // btnPrg_on.endScaning();
 
 
    
@@ -727,7 +732,7 @@ desribtionsInText = ""; // clear each time
   return cnd;
 }
 
-void quarterSecondTimer () { //0.2 second
+void quarterSecondTimer () { //0.1 second
 
    __main();
 
@@ -740,8 +745,7 @@ void quarterSecondTimer () { //0.2 second
       clock_1secCounter  = clock_1secCounter + 1;
       clock_3secCounter  = clock_3secCounter + 1; 
 
-      
-   voltAvrBattery.VoltageMeterUpdate (true); // update with each passed clock 
+
       
 
       if (output5StateInvOutput == "on")
@@ -813,7 +817,7 @@ void quarterSecondTimer () { //0.2 second
            
        if (timer1sec ())
          {
-           serialPrintln1s ("Condition: senscor " + String (voltAvrBattery.voltage) +"v is more then maximum batery voltage " + String ( maxBatVlt) + "v " );
+           serialPrintln1s ("Condition: sensor " + String (voltAvrBattery.voltage) +"v is more then maximum batery voltage " + String ( maxBatVlt) + "v " );
            funTurnOffTimer(true);
           if (maxBatVltSustained_cnt <= maxBatVltSustained_sec && timer1sec ()) // keep counting in each second timer1sec ()
               maxBatVltSustained_cnt++;
@@ -844,7 +848,7 @@ void quarterSecondTimer () { //0.2 second
           doBatBeHigh = false;
           maxBatVltSustained_cnt = 0;
        }
-      else if (voltAvrBattery.voltage <= minBatVlt )
+      else if (voltAvrBattery.voltage <= minBatVlt ) // when battery is to low then turn of inverter and relay 
       {
 
 
@@ -863,15 +867,14 @@ void quarterSecondTimer () { //0.2 second
           if (!doReactInBatVlt) serialPrint1s ("auto mode is disabled and / ");
           if (!triggeredLongAITimeReached) serialPrintln3s ("-->Initiated triggered timeout " + fungetfromatedTime (triggeredTimeoutCnt) + " " + String (triggeredTracketEventsCnt) + " / " + String (triggeredTracketEventsMax));
           else serialPrintln3s ("triggered AI protection :O "+ fungetfromatedTime (triggeredLongAITimeCnt) + " and /");
-                   
-                                serialPrintln1s ("inv is off when low battery");
 
+          serialPrintln1s("inv is off when low battery v " + String(voltAvrBattery.voltage));
 
           doBatIsLow = true;
           doBatBeHigh = false;
       }
-     
-      else  // if no any voltage is awailable
+
+      else // if voltage between low or high or reached high voltage by itself and exit from that condition after sustained 'maxBatVltSustained_cnt' time
       {
 
      
@@ -886,8 +889,8 @@ void quarterSecondTimer () { //0.2 second
         if (voltAvrBattery.voltage >= maxBatVlt)
         serialPrintln3s ("high battery condition " );
         else
-        serialPrintln3s ("no battery condition " );
-        
+        serialPrintln3s("no battery condition v " + String(voltAvrBattery.voltage));
+
         funTurnOffTimer(true);  
        
       }

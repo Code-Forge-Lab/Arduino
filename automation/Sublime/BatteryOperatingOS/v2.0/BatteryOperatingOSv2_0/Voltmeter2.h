@@ -16,7 +16,7 @@ class VoltMeter {
 
 		
 		//// number of analog samples to take per reading
-const static int   NUM_SAMPLES = 10;
+const static int   NUM_SAMPLES = 100;
 		int sample_count;
 		int sum;                    // sum of samples taken
 		unsigned long clock_1msec = 0 ; 
@@ -47,20 +47,20 @@ const static int   NUM_SAMPLES = 10;
 		// 10mlSecond Delay
    public:float VoltageMeterUpdate (bool byCount = false) { 
 			 // take a number of analog samples and add them up
-			 if (!byCount && ((long)clock_1msec + 100UL) < millis())
+			//  if (!byCount && ((long)clock_1msec + 100UL) < millis())// timer doesnt works , needs fixing 
 
-             {
-     			 clock_1msec= millis();
+            //  {
+     		// 	 clock_1msec= millis();
 
-				 sum += analogRead(pin);
-				 sample_count++;
+			// 	 sum += analogRead(pin);
+			// 	 sample_count++;
 				 
-			 } else{
+			//  } else{
 			 	//by count, placed to a external clock brach`
 
 			 	 sum += analogRead(pin);
 				 sample_count++;
-			 }
+			// }
 
 			 if (sample_count >= NUM_SAMPLES) {
 			 //Serial.println ("R_Fix R2: " + String (R2) +" fix value - " + String (fRb) + " , R1: " + String (R1));	
@@ -72,7 +72,7 @@ const static int   NUM_SAMPLES = 10;
 			 // voltage multiplied by 11 when using voltage divider that
 			 // divides by 11. 11.132 is the calibrated voltage divide
 			 // value
-			
+			// Serial.println("Voltage sampling is comleted ------------------------+++ ");
 			
 			
 			 voltage =  voltage / (R2 / ( R1+R2 ) );
