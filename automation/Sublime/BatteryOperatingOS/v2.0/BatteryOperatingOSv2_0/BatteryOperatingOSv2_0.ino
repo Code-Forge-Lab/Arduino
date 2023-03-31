@@ -721,9 +721,9 @@ desribtionsInText = ""; // clear each time
   //  desctiptionPrg_StopInv    
   //  desctiptionPrg_StopInvTemp   
 
-  if (!sensorDoInv_readAC    && !desctiptionUserInv_readAC)      {cnd = false;     desctiptionInv_readAC =  true; descTxt("No Inv.~220v output ," , react);                   } else { desctiptionInv_readAC = false;};
+  if (!sensorDoInv_readAC    && !desctiptionUserInv_readAC)      {cnd = false; desctiptionInv_readAC     =  true; descTxt("No Inv.~220v output ," , react);                   } else { desctiptionInv_readAC = false;};
   if (sensorDoInv_ReadSignal && !desctiptionUserInv_ReadSignal)  {cnd = false; desctiptionInv_ReadSignal =  true; descTxt("Read Inv. Signal ," , react);                      } else { desctiptionInv_ReadSignal = false;};
-  if (sensorDoPrg_StopInv    && !desctiptionUserPrg_StopInv)     {cnd = false; desctiptionPrg_StopInv =     true; descTxt("Prg. Stop Inverter ," , react);                    } else { desctiptionPrg_StopInv = false;};
+  if (sensorDoPrg_StopInv    && !desctiptionUserPrg_StopInv)     {cnd = false; desctiptionPrg_StopInv    =  true; descTxt("Prg. Stop Inverter ," , react);                    } else { desctiptionPrg_StopInv = false;};
   if (sensorPrg_StopInvTemp  && !desctiptionUserPrg_StopInvTemp) {cnd = false; desctiptionPrg_StopInvTemp = true; descTxt("Stop inverter of critical temperature ," , react); } else { desctiptionPrg_StopInvTemp = false;};
 
   if (cnd == false)
