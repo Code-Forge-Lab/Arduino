@@ -436,10 +436,10 @@ void InteractionCountinerGlobalUseOneTime () { // inportant function to be place
 };
 
 // reaction time where react to a sensor to a trigger triggeredAction
-timingIntervalsObj ObjTriggerInv_Output220("Inv_Output220");     // reaction time where react to a sensor
-timingIntervalsObj ObjTriggerInv_ReadSignal("Inv_ReadSignal");   // reaction time where react to a sensor
-timingIntervalsObj ObjTriggerPrg_StopInv("Prg_StopInv/Pause");   // reaction time where react to a sensor
-timingIntervalsObj ObjTriggerPrg_StopInvTemp("Prg_StopInvTemp"); // reaction time where react to a sensor
+timingIntervalsObj ObjTriggerInv_Output220("Inv_Output220",6);     // reaction time where react to a sensor
+timingIntervalsObj ObjTriggerInv_ReadSignal("Inv_ReadSignal",4);   // reaction time where react to a sensor
+timingIntervalsObj ObjTriggerPrg_StopInv("Prg_StopInv/Pause",5);   // reaction time where react to a sensor
+timingIntervalsObj ObjTriggerPrg_StopInvTemp("Prg_StopInvTemp",4); // reaction time where react to a sensor
 
 //AI   END ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -866,7 +866,7 @@ else if (ObjTriggerInv_Output220.getTriggeredAIReached())         client.println
 else if (ObjTriggerInv_ReadSignal.getTriggeredAIReached())        client.println("<p><a href=\"/5/on\"><button class=\"button\">Triggered:Inv Read Signal " + fungetfromatedTime(triggeredLongAITimeCnt) + "!</button></a></p>");
 else if (ObjTriggerPrg_StopInv.getTriggeredAIReached())           client.println("<p><a href=\"/5/on\"><button class=\"button\">Triggered:Prg. Stop Inverter " + fungetfromatedTime(triggeredLongAITimeCnt) + "!</button></a></p>");
 else if (ObjTriggerPrg_StopInvTemp.getTriggeredAIReached())       client.println("<p><a href=\"/5/on\"><button class=\"button\">Triggered:Temperature " + fungetfromatedTime(triggeredLongAITimeCnt) + "!</button></a></p>");
-                  else if (triggeredLongAITimeReached)            client.println("<p><a href=\"/5/on\"><button class=\"button\">Triggered:Triggered AI  " + fungetfromatedTime(triggeredLongAITimeCnt) + "!</button></a></p>");
+                  else if (triggeredLongAITimeReached)            client.println("<p><a href=\"/5/on\"><button class=\"button\">Triggered:Protection AI  " + fungetfromatedTime(triggeredLongAITimeCnt) + "!</button></a></p>");
                   else if (turnOffTimer > 0 && doBatIsLow)        client.println("<p><a href=\"/5/off\"><button class=\"button\">Off After "+String(turnOffTimer)+"</button></a></p>");
                   else
                   client.println("<p><a href=\"/5/on\"><button class=\"button\">Inv Off</button></a></p>");
