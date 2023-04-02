@@ -860,10 +860,10 @@ void loop(){
                   else if (desctiptionInv_ReadSignal)             client.println("<p><a href=\"/5/on\"><button class=\"button\">S-Inv. Read Signal!</button></a></p>");
                   else if (desctiptionPrg_StopInv)                client.println("<p><a href=\"/5/on\"><button class=\"button\">S-Prg. Stop Inverter!</button></a></p>");
                   else if (desctiptionPrg_StopInvTemp)            client.println("<p><a href=\"/5/on\"><button class=\"button\">S-Temp. Protection!</button></a></p>");
-else if (ObjTriggerInv_Output220.getTriggeredAIReached())         client.println("<p><a href=\"/5/on\"><button class=\"button\">Protection:Inv Read Signal " + fungetfromatedTime(triggeredLongAITimeCnt) + "!</button></a></p>");
+else if (ObjTriggerInv_Output220.getTriggeredAIReached())         client.println("<p><a href=\"/5/on\"><button class=\"button\">Protection:~220v Output " + fungetfromatedTime(triggeredLongAITimeCnt) + "!</button></a></p>");
 else if (ObjTriggerInv_ReadSignal.getTriggeredAIReached())        client.println("<p><a href=\"/5/on\"><button class=\"button\">Protection:Inv Read Signal " + fungetfromatedTime(triggeredLongAITimeCnt) + "!</button></a></p>");
-else if (ObjTriggerPrg_StopInv.getTriggeredAIReached())           client.println("<p><a href=\"/5/on\"><button class=\"button\">Protection:Inv Read Signal " + fungetfromatedTime(triggeredLongAITimeCnt) + "!</button></a></p>");
-else if (ObjTriggerPrg_StopInvTemp.getTriggeredAIReached())       client.println("<p><a href=\"/5/on\"><button class=\"button\">Protection:Inv Read Signal " + fungetfromatedTime(triggeredLongAITimeCnt) + "!</button></a></p>");
+else if (ObjTriggerPrg_StopInv.getTriggeredAIReached())           client.println("<p><a href=\"/5/on\"><button class=\"button\">Protection:Prg. Stop Inverter " + fungetfromatedTime(triggeredLongAITimeCnt) + "!</button></a></p>");
+else if (ObjTriggerPrg_StopInvTemp.getTriggeredAIReached())       client.println("<p><a href=\"/5/on\"><button class=\"button\">Protection:Prg. Stop InverterTemp " + fungetfromatedTime(triggeredLongAITimeCnt) + "!</button></a></p>");
                   else if (triggeredLongAITimeReached)            client.println("<p><a href=\"/5/on\"><button class=\"button\">Protection:Triggered AI  " + fungetfromatedTime(triggeredLongAITimeCnt) + "!</button></a></p>");
                   else if (turnOffTimer > 0 && doBatIsLow)        client.println("<p><a href=\"/5/off\"><button class=\"button\">Off After "+String(turnOffTimer)+"</button></a></p>");
                   else
@@ -1033,7 +1033,11 @@ desribtionsInTextSensing = ""; // clear each time
 }
 
 void cPrint () {
+          if (ObjTriggerInv_Output220.getTriggeredTracketEventsAny()) serialPrintln5s(ObjTriggerInv_Output220.getStatementStr());
           if (ObjTriggerInv_ReadSignal.getTriggeredTracketEventsAny()) serialPrintln5s(ObjTriggerInv_ReadSignal.getStatementStr());
+          if (ObjTriggerPrg_StopInv.getTriggeredTracketEventsAny()) serialPrintln5s(ObjTriggerPrg_StopInv.getStatementStr());
+          if (ObjTriggerPrg_StopInvTemp.getTriggeredTracketEventsAny()) serialPrintln5s(ObjTriggerPrg_StopInvTemp.getStatementStr());
+          
           if (!doReactInBatVlt) serialPrint1s ("auto mode is disabled and / ");
           // if (triggeredLongAITimeReached) serialPrintln3s ("-->Initiated  triggered timeout " + fungetfromatedTime (triggeredTimeoutCnt) + " " + String (triggeredTracketEventsCnt) + " / " + String (triggeredTracketEventsMax));
            if (triggeredLongAITimeReached) serialPrintln5s ("triggered AI protection :O "+ fungetfromatedTime (triggeredLongAITimeCnt) + " and /");
