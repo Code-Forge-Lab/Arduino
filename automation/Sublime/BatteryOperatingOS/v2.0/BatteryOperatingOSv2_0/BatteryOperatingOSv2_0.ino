@@ -213,7 +213,7 @@ void funResetTriggeredAction();
   int triggeredTracketEventsMax = 3;       // tolerate 3 triggeredTracketEventsCnt before crucial desition to stop working inverter
   int triggeredTracketEventsCnt = 0;       // Track every triggeredAction where accures at sensors or in  auto mode program for later to deside a crucial desition to stop working inverter for a long time
   bool triggeredLongAITimeReached = false; //  rememeber a triggered long time is established
-  int triggeredLongAITimeMax = 21610;      // 6h  maximum AI triggered long time where will set a triggeredLongAITimeCnt to turn of inverter for a many hours
+  int triggeredLongAITimeMax = 350;      // 6h  maximum AI triggered long time where will set a triggeredLongAITimeCnt to turn of inverter for a many hours
   int triggeredLongAITimeCnt = 0;          //  keep counting
   String desribtionsInTextAI = "";         // hold information about failed conditions from a  sensors in AI frame 0 / 3
 
@@ -243,142 +243,134 @@ void funTriggeredLongTimeCounter ()
     bool __triggeredAction;                 // comes from sensors , auto mode program actions as a flag that enables triggeredTimeoutCnt = triggeredTimeoutMax
     int __triggeredTimeoutCnt = 0;       // counting down a time after a trigger event is established
     int __triggeredTracketEventsCnt = 0; // Track every triggeredAction where accures at sensors or in  auto mode program for later to deside a crucial desition to stop working inverter for a long time
-    int __triggeredTracketEventsMax = 6;   // tolerate 3 triggeredTracketEventsCnt before crucial desition to stop working inverter
+    int __triggeredTracketEventsMax = 3;   // tolerate 3 triggeredTracketEventsCnt before crucial desition to stop working inverter
     bool __triggeredLongAITimeReached = false; //  rememeber a triggered long time is established
 
-    int triggerActionCnt = 0; // after sensor is triggered , keep countting in small unit to give more time to confirm assignment
+    int __triggerActionCnt = 0; // after sensor is triggered , keep countting in small unit to give more time to confirm assignment
     String name;
 
   public:
-    timingIntervalsObj(String abbreviation) // contructor
+    timingIntervalsObj(String abbreviation, int maxAIEventProtectionTime = 3) // contructor
     {
       name = abbreviation;
+      __triggeredTracketEventsMax = maxAIEventProtectionTime;
     }
 
+void InteractionCountinerGlobalUseOneTime () { // inportant function to be placed in raw base counting invorement
 
+      // 0 keep discounting time from AI from 6h
+      //  keep holding a progrom to work about 6h
+      if (triggeredLongAITimeCnt > 0)
+      {
+        if (timer1sec())
+          triggeredLongAITimeCnt--;
+        // if (triggeredLongAITimeCnt == 2)
+        //   desribtionsInTextAI = ""; // clear text
+      }
+}
 
  // main function
-    bool InteractionTime(bool isSensorSensing, int suspendTriggerSeconds = 1)
+    bool InteractionTime(bool isSensorSensing, int suspendTriggerMiliSeconds = 20)
     {
 /////////////////// Long Time Waiting Logic
       if (timer1sec())
         
         {        
-              __triggeredAction = false; // keep reseting until condition accurace
+              
 
 
-              // enable timeout only one time after a triggeredAction event
-              if (triggerActionCnt && __triggeredTimeoutCnt == 0)
-              {
-                __triggeredTimeoutCnt = triggeredTimeoutMax /* * clock_1secValue */;
-              }
+             
 
-              // count down a timeout where more could accures triggeredAction
-            if (__triggeredTimeoutCnt > 0)  __triggeredTimeoutCnt--;
+              // count down a timeout where more could accures triggeredAction 10min
+              if (__triggeredTimeoutCnt > 0)  __triggeredTimeoutCnt--;
           
-              else if (!__triggeredLongAITimeReached) // reset inspection event counter if not reached __triggeredLongAITimeReached
+              else if (!triggeredLongAITimeReached) // reset inspection event counter if not reached __triggeredLongAITimeReached
               {
-                  __triggeredTracketEventsCnt = 0;
+                
+                __triggeredTracketEventsCnt = 0;
+                desribtionsInTextAI = "";
               }
 
-            
-
-              // // after holding a progrom for a 6h then reset everything
-              // if (triggeredLongAITimeCnt == 0)
-              // {
-              //     triggeredLongAITimeReached = false; // reset AI
-              //     triggeredTimeoutCnt = 0;
-              //     resetErrors();
-              // }
-
-              // keep holding a progrom to work about 6h
-              if (triggeredLongAITimeCnt > 0)
+              if (triggeredLongAITimeCnt == 0 && __triggeredTimeoutCnt == 0)
               {
-                  triggeredLongAITimeCnt--;
-                  // if (triggeredLongAITimeCnt == 2)
-                  //   desribtionsInTextAI = ""; // clear text
-              }
-
-              else
-              {
-                  triggeredLongAITimeReached = false; // reset AI
+                    triggeredLongAITimeReached = false; // reset AI
+                  __triggeredLongAITimeReached = false;
                   triggeredTimeoutCnt = 0;
-                  resetErrors();
+                  // Serial.println(name + " Finished Long Time Waiting ");
+                   resetErrors();
               }
 
                   // Long Time Waiting AI protection
 
-                  if (triggeredLongAITimeReached && triggeredLongAITimeCnt == 0)
-                      triggeredLongAITimeCnt = triggeredLongAITimeMax;
+             
 
-              //////////////////////////////////////Event timeout/////////////////////////////////////////////
-
-              //  time where triggered actioct will be tracked in 10 minutes period
-              if (__triggeredTimeoutCnt > 0 && __triggeredAction)
-              {
-
-                  Serial.println("Reached triggeredTracketEvents");
-                  // keep counting triggered actioct
-                  if (__triggeredTracketEventsCnt < __triggeredTracketEventsMax - 1)
-                    __triggeredTracketEventsCnt++;
-                  // reached maximum error AI level where will enable program waiting for a long time after many failures from a sensors or a program attempts to work propietly
-                  else
-                  {
-                    Serial.println("Maxed out triggeredTracketEventsMax");
-                    triggeredLongAITimeReached = true;
-                  };
-            }
-
+             
         } // end timer1sec()
 
- /// Sensing category       
 
-      if (isSensorSensing) // if sensor is triggered
-      {
-
-        if (triggerActionCnt >= (/* clock_1secValue *  */suspendTriggerSeconds))
+ /// Sensing category
+        __triggeredAction = false; // keep reseting until condition accurace
+        if (isSensorSensing)       // if sensor is triggered
         {
-          // triggerActionCnt = clock_1secValue * 5;
-          // trigger by sensor event only one time
 
-          if (!__supportTriggeredAction) // trigger single time a about reached  condition
-          {
-           __triggeredAction = true;
-            __supportTriggeredAction = true;
-
-            if (!getIsReachedTriggeredEventsMax()) // while not reched maximum event count , keep counting 
-              __triggeredTracketEventsCnt++;
-            else // Maxed out triggeredTracketEventsMax
+            if (__triggerActionCnt >= (/* clock_1secValue +  */suspendTriggerMiliSeconds))
             {
-              __triggeredLongAITimeReached = true;
+                      // __triggerActionCnt = clock_1secValue * 5;
+                      // trigger by sensor event only one time
+
+                      if (!__supportTriggeredAction) // trigger only single time a about reached  condition
+                      {
+                       // 1 trigger one time
+                        __triggeredAction = true;
+                        __supportTriggeredAction = true;
+
+                        // 2 valuate 10min timer
+                        // enable timeout only one time after a triggeredAction event
+                        if (/* __triggerAction &&  */ __triggeredTimeoutCnt == 0)
+                        {
+                          __triggeredTimeoutCnt =  300/* triggeredTimeoutMax */ /* * clock_1secValue */;
+                        }
+                       // 3 Count AI errors , after 10min reset all
+                       // reached maximum error AI level where will enable program waiting for a long time after many failures from a sensors or a program attempts to work propietly
+                         if (!getIsReachedTriggeredEventsMax()) // while not reched maximum event count , keep counting
+                          __triggeredTracketEventsCnt++;
+
+                         if (getIsReachedTriggeredEventsMax()) // Maxed out triggeredTracketEventsMax
+                         {
+                          triggeredLongAITimeReached = true;
+                          __triggeredLongAITimeReached = true;
+                          Serial.println ("REACHED AI!!");
+                        }
+                        // 4 set 6h AI time if getIsReachedTriggeredEventsMax reached
+
+                        if (triggeredLongAITimeReached /*||  __triggeredLongAITimeReached */ && triggeredLongAITimeCnt == 0)
+                         { 
+                          triggeredLongAITimeCnt = triggeredLongAITimeMax;
+                         }
+
+                          // print text
+                         if (!getIsReachedTriggeredEventsMax()) // save  every happened condition into a string
+                          desribtionsInTextAI += String(__triggeredTracketEventsCnt) + " " + name + " ";
+                        
+                           Serial.println(getStatementStr());
+                      }
             }
-              
-            
-
-            if (__triggeredTracketEventsCnt != triggeredTracketEventsMax) // save  every happened condition into a string
-              desribtionsInTextAI += String(__triggeredTracketEventsCnt) + " " + name + " ";
-            Serial.println(getStatementStr());
-          }
-
-
-        }
-        else
-        {
-          triggerActionCnt++; // count when exsepted a sensoring
-          Serial.println(name + "Counting Action: " + String(triggerActionCnt));
-        }
+            else
+            {
+                      __triggerActionCnt++; // count when exsepted a sensoring
+                      Serial.println(name + " Counting Action: " + String(__triggerActionCnt));
+            }
       }
-      else if (triggerActionCnt > 0) // keep substracting triggered action
+      else if (__triggerActionCnt > 0) // keep substracting triggered action
       {
-        if (timer1sec()) // keep substracting in one second intervals 
-          triggerActionCnt--;
+          __triggerActionCnt--;
 
-        Serial.println(name + " Remove Counted Action: " + String(triggerActionCnt));
+        Serial.println(name + " Remove Counted Action: " + String(__triggerActionCnt));
       }
       else // reset triggered action if completed a cycle
       {
 
-        if ( __triggeredAction)
+        if (__supportTriggeredAction)
           Serial.println(name + "------------------>>  Reset  triggered " + String (__triggeredAction) ); // print last time
         __supportTriggeredAction = false;                                                                 // when time nothing happening then reset boolean
       }
@@ -388,7 +380,7 @@ void funTriggeredLongTimeCounter ()
     };
 
     String getStatementStr () {
-      return ("[ " + name + " ]" /* + getText("Triggered condition  ", __triggeredAction) */ + "  Events Cnt " + String(__triggeredTracketEventsCnt) + " / " + String(__triggeredTracketEventsMax) + " [10m counter]: " + String(__triggeredTimeoutCnt) + getText(" is Reached 6h protection ", triggeredLongAITimeReached));
+      return ("[ " + name + " ]" /* + getText("Triggered condition  ", __triggeredAction) */ + "  Events Cnt " + String(__triggeredTracketEventsCnt) + " / " + String(__triggeredTracketEventsMax) + " [10m counter]: " + String(__triggeredTimeoutCnt) + getText(" is Reached 6h protection local ", __triggeredLongAITimeReached) + getText(" global ", triggeredLongAITimeReached) + " time left: " + fungetfromatedTime (triggeredLongAITimeCnt) );
     }
 
     bool getIsReachedTriggeredEventsMax () {
@@ -396,22 +388,55 @@ void funTriggeredLongTimeCounter ()
     }
 
     bool getTriggeredTracketEventsAny () {
-      return __triggeredTracketEventsCnt > 0;
+      return __triggeredTracketEventsCnt > 0 || __triggeredTimeoutCnt > 0;
     }
-        void
-        resetErrors()
+
+     void resetErrors()
     {
-
+       __triggeredTimeoutCnt = 0;      
+       __triggeredTracketEventsCnt = 0; 
+       __triggeredLongAITimeReached = false;
+       desribtionsInTextAI = "";
     }
 
-      String getAbbreviationName() { return name; };
-      void cleardesribtionsInTextAI() { desribtionsInTextAI = "";};
+    void resetErrorsAll()
+    {
+      triggeredTimeoutCnt = 0;
+      triggeredLongAITimeCnt = 0;
+      triggeredLongAITimeReached = false;
+      triggeredTracketEventsCnt = 0;
+      triggeredAction = false;
+      resetErrors();
+    }
+
+    String fungetfromatedTime(signed int seconds)
+    {
+      String txt;
+      int h = (seconds % 86400L) / 3600;
+      int m = (seconds % 3600) / 60;
+      int s = (seconds % 60);
+
+      if (h > 0) // hours
+        txt += String(h) + "h ";
+
+      if (m > 0 && h == 0) // min  // m == 0 to save space and only show hours
+        txt += String(m) + "m ";
+
+      if (s > 0 && h == 0 && m == 0) // seconds then minints and last will be a seconds
+        txt += String(s) + "s";
+
+      return txt;
+    }
+
+    bool getTriggeredAIReached() {return __triggeredLongAITimeReached;};
+        String getAbbreviationName() { return name; };
+    void cleardesribtionsInTextAI() { desribtionsInTextAI = ""; };
 };
 
 // reaction time where react to a sensor to a trigger triggeredAction
 timingIntervalsObj ObjTriggerInv_Output220("Inv_Output220");     // reaction time where react to a sensor
-timingIntervalsObj ObjTriggerInv_On("Inv_On");                   // reaction time where react to a sensor
 timingIntervalsObj ObjTriggerInv_ReadSignal("Inv_ReadSignal");   // reaction time where react to a sensor
+timingIntervalsObj ObjTriggerPrg_StopInv("Prg_StopInv/Pause");   // reaction time where react to a sensor
 timingIntervalsObj ObjTriggerPrg_StopInvTemp("Prg_StopInvTemp"); // reaction time where react to a sensor
 
 //AI   END ///////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -825,14 +850,22 @@ void loop(){
               // indicate about turning on an Inverter
              if (!doAvoidInv_On)
 
+                //  ObjTriggerInv_Output220;
+                //  ObjTriggerInv_ReadSignal
+                //  ObjTriggerPrg_StopInv
+                //  ObjTriggerPrg_StopInvTemp;
                   if(doBatBeHigh) client.println("<p><a href=\"/5/on\"><button class=\"button\">Inv Off / High Battery</button></a></p>");
-                 
-                  else if (desctiptionInv_readAC)      client.println("<p><a href=\"/5/on\"><button class=\"button\">No ~220v Output!</button></a></p>");
-                  else if (desctiptionInv_ReadSignal)  client.println("<p><a href=\"/5/on\"><button class=\"button\">Inv. Read Signal!</button></a></p>");
-                  else if (desctiptionPrg_StopInv)     client.println("<p><a href=\"/5/on\"><button class=\"button\">Prg. Stop Inverter!</button></a></p>");
-                  else if (desctiptionPrg_StopInvTemp) client.println("<p><a href=\"/5/on\"><button class=\"button\">Temp. Protection!</button></a></p>");
-                  else if (triggeredLongAITimeReached) client.println("<p><a href=\"/5/on\"><button class=\"button\">Triggered AI Protection "+ fungetfromatedTime (triggeredLongAITimeCnt) + "!</button></a></p>");
-                  else if (turnOffTimer > 0 && doBatIsLow) client.println("<p><a href=\"/5/off\"><button class=\"button\">Off After "+String(turnOffTimer)+"</button></a></p>");
+                  
+                  else if (desctiptionInv_readAC)                 client.println("<p><a href=\"/5/on\"><button class=\"button\">S-No ~220v Output!</button></a></p>");
+                  else if (desctiptionInv_ReadSignal)             client.println("<p><a href=\"/5/on\"><button class=\"button\">S-Inv. Read Signal!</button></a></p>");
+                  else if (desctiptionPrg_StopInv)                client.println("<p><a href=\"/5/on\"><button class=\"button\">S-Prg. Stop Inverter!</button></a></p>");
+                  else if (desctiptionPrg_StopInvTemp)            client.println("<p><a href=\"/5/on\"><button class=\"button\">S-Temp. Protection!</button></a></p>");
+else if (ObjTriggerInv_Output220.getTriggeredAIReached())         client.println("<p><a href=\"/5/on\"><button class=\"button\">Protection:Inv Read Signal " + fungetfromatedTime(triggeredLongAITimeCnt) + "!</button></a></p>");
+else if (ObjTriggerInv_ReadSignal.getTriggeredAIReached())        client.println("<p><a href=\"/5/on\"><button class=\"button\">Protection:Inv Read Signal " + fungetfromatedTime(triggeredLongAITimeCnt) + "!</button></a></p>");
+else if (ObjTriggerPrg_StopInv.getTriggeredAIReached())           client.println("<p><a href=\"/5/on\"><button class=\"button\">Protection:Inv Read Signal " + fungetfromatedTime(triggeredLongAITimeCnt) + "!</button></a></p>");
+else if (ObjTriggerPrg_StopInvTemp.getTriggeredAIReached())       client.println("<p><a href=\"/5/on\"><button class=\"button\">Protection:Inv Read Signal " + fungetfromatedTime(triggeredLongAITimeCnt) + "!</button></a></p>");
+                  else if (triggeredLongAITimeReached)            client.println("<p><a href=\"/5/on\"><button class=\"button\">Protection:Triggered AI  " + fungetfromatedTime(triggeredLongAITimeCnt) + "!</button></a></p>");
+                  else if (turnOffTimer > 0 && doBatIsLow)        client.println("<p><a href=\"/5/off\"><button class=\"button\">Off After "+String(turnOffTimer)+"</button></a></p>");
                   else
                   client.println("<p><a href=\"/5/on\"><button class=\"button\">Inv Off</button></a></p>");
 
@@ -976,31 +1009,34 @@ desribtionsInTextSensing = ""; // clear each time
 //  desctiptionPrg_StopInv
 //  desctiptionPrg_StopInvTemp
 // ObjTriggerInv_Output220;
-// ObjTriggerInv_On;
-// ObjTriggerInv_ReadSignal.InteractionTime();
+// ObjTriggerInv_ReadSignal
+// ObjTriggerPrg_StopInv
 // ObjTriggerPrg_StopInvTemp;
 
-  if (!sensorDoInv_readAC && !desctiptionUserInv_readAC)         {cnd = false;desctiptionInv_readAC = true ;descTxt("No Inv.~220v output ,", react);} else { desctiptionInv_readAC = false;};
-  if (sensorDoInv_ReadSignal && !desctiptionUserInv_ReadSignal)  {cnd = false;desctiptionInv_ReadSignal = true ;descTxt("Read Inv. Signal ,", react);}else{desctiptionInv_ReadSignal = false;};
-  if (sensorDoPrg_StopInv    && !desctiptionUserPrg_StopInv)     {cnd = false; desctiptionPrg_StopInv    = true ; descTxt("Prg. Stop Inverter ," , react);                    } else { desctiptionPrg_StopInv = false;};
-  if (sensorPrg_StopInvTemp  && !desctiptionUserPrg_StopInvTemp) {cnd = false; desctiptionPrg_StopInvTemp = true ; descTxt("Stop inverter of critical temperature ," , react); } else { desctiptionPrg_StopInvTemp = false;};
+  if (!sensorDoInv_readAC && !desctiptionUserInv_readAC)         {/* cnd = false; */ desctiptionInv_readAC = true ;descTxt("No Inv.~220v output ,", react);} else { desctiptionInv_readAC = false;};
+  if (sensorDoInv_ReadSignal && !desctiptionUserInv_ReadSignal)  {/* cnd = false; */ desctiptionInv_ReadSignal = true ;descTxt("Read Inv. Signal ,", react);}else{desctiptionInv_ReadSignal = false;};
+  if (sensorDoPrg_StopInv    && !desctiptionUserPrg_StopInv)     {/* cnd = false; */ desctiptionPrg_StopInv    = true ; descTxt("Prg. Stop Inverter ," , react);                    } else { desctiptionPrg_StopInv = false;};
+  if (sensorPrg_StopInvTemp  && !desctiptionUserPrg_StopInvTemp) {/* cnd = false; */ desctiptionPrg_StopInvTemp = true ; descTxt("Stop inverter of critical temperature ," , react); } else { desctiptionPrg_StopInvTemp = false;};
 
   // triggeredTracketEventsMax
   //  if (cnd == false)
   //    triggeredAction = true ; // if any sensor is detected , will trigger a error AI but must be controlled with correct intervals becouse this go directly into counter without a stop
+       ObjTriggerInv_ReadSignal.InteractionCountinerGlobalUseOneTime (); // must be used one time from any object
+
+  if (ObjTriggerInv_Output220.InteractionTime(desctiptionInv_readAC)) {cnd = false;};
+  if (ObjTriggerInv_ReadSignal.InteractionTime(desctiptionInv_ReadSignal)){cnd = false;}
+  if (ObjTriggerPrg_StopInv.InteractionTime(desctiptionPrg_StopInv)) {cnd = false;};
+  if (ObjTriggerPrg_StopInvTemp.InteractionTime(desctiptionPrg_StopInvTemp)) {cnd = false;};
   
-  if (ObjTriggerInv_ReadSignal.InteractionTime(desctiptionInv_ReadSignal))
-  {
-    triggeredAction = false;
-  }
+
   return cnd;
 }
 
 void cPrint () {
           if (ObjTriggerInv_ReadSignal.getTriggeredTracketEventsAny()) serialPrintln5s(ObjTriggerInv_ReadSignal.getStatementStr());
           if (!doReactInBatVlt) serialPrint1s ("auto mode is disabled and / ");
-          if (!triggeredLongAITimeReached) serialPrintln3s ("-->Initiated triggered timeout " + fungetfromatedTime (triggeredTimeoutCnt) + " " + String (triggeredTracketEventsCnt) + " / " + String (triggeredTracketEventsMax));
-          else serialPrintln3s ("triggered AI protection :O "+ fungetfromatedTime (triggeredLongAITimeCnt) + " and /");
+          // if (triggeredLongAITimeReached) serialPrintln3s ("-->Initiated  triggered timeout " + fungetfromatedTime (triggeredTimeoutCnt) + " " + String (triggeredTracketEventsCnt) + " / " + String (triggeredTracketEventsMax));
+           if (triggeredLongAITimeReached) serialPrintln5s ("triggered AI protection :O "+ fungetfromatedTime (triggeredLongAITimeCnt) + " and /");
 
 }
 void quarterSecondTimer () { //0.1 second
@@ -1105,8 +1141,9 @@ void quarterSecondTimer () { //0.1 second
          }
    //one of the sensor is activated       
           else if (!reactionFromASensors ())
-       { 
-          
+       {
+
+          cPrint(); // output print conditions
           reactionFromASensors (true);
           serialPrintln5s("Failed becouse of sensors ERR: " + desribtionsInTextSensing + " full condition: " + desribtionsInTextAI);
 
@@ -1201,40 +1238,40 @@ void oneSecTimer () {
             delayAvoid_Inv_On--; // delay given to avoid turn on to fast
            }
 ///////////////////////////////////////////////////////////////////////////////////   AI Section  ///////////////////////////////////////////////////////////////////////////
-     // enable timeout only one time after a triggeredAction event
-    if (triggeredAction  && triggeredTimeoutCnt == 0) { 
-        triggeredTimeoutCnt = triggeredTimeoutMax;
-    }
+    //  // enable timeout only one time after a triggeredAction event
+    // if (triggeredAction  && triggeredTimeoutCnt == 0) { 
+    //     triggeredTimeoutCnt = triggeredTimeoutMax;
+    // }
 
-    // count down a timeout where more could accures triggeredAction
-    if (triggeredTimeoutCnt > 0)  triggeredTimeoutCnt--;
+    // // count down a timeout where more could accures triggeredAction
+    // if (triggeredTimeoutCnt > 0)  triggeredTimeoutCnt--;
 
-    //  time where triggered actioct will be tracked in 10 minutes period
-    if (triggeredTimeoutCnt > 0  && triggeredAction){
+    // //  time where triggered actioct will be tracked in 10 minutes period
+    // if (triggeredTimeoutCnt > 0  && triggeredAction){
 
-            Serial.println ("Reached triggeredTracketEvents");
-      // keep counting triggered actioct
-      if (triggeredTracketEventsCnt < triggeredTracketEventsMax - 1) triggeredTracketEventsCnt ++;
-      // reached maximum error AI level where will enable program waiting for a long time after many failures from a sensors or a program attempts to work propietly
-      else {Serial.println ("Maxed out triggeredTracketEventsMax"); triggeredLongAITimeReached = true; };
-    }
+    //         Serial.println ("Reached triggeredTracketEvents");
+    //   // keep counting triggered actioct
+    //   if (triggeredTracketEventsCnt < triggeredTracketEventsMax - 1) triggeredTracketEventsCnt ++;
+    //   // reached maximum error AI level where will enable program waiting for a long time after many failures from a sensors or a program attempts to work propietly
+    //   else {Serial.println ("Maxed out triggeredTracketEventsMax"); triggeredLongAITimeReached = true; };
+    // }
 
-    // initiate long time timer
-    if (triggeredLongAITimeReached && triggeredLongAITimeCnt == 0)
-        triggeredLongAITimeCnt = triggeredLongAITimeMax;
+    // // initiate long time timer
+    // if (triggeredLongAITimeReached && triggeredLongAITimeCnt == 0)
+    //     triggeredLongAITimeCnt = triggeredLongAITimeMax;
 
-    // keep holding a progrom to work about 6h
-    if (triggeredLongAITimeCnt > 0) {
+    // // keep holding a progrom to work about 6h
+    // if (triggeredLongAITimeCnt > 0) {
 
-            triggeredLongAITimeCnt--;
-        if (triggeredLongAITimeCnt == 2)
-            desribtionsInTextAI = "" ;// clear text
-        }
+    //         triggeredLongAITimeCnt--;
+    //     if (triggeredLongAITimeCnt == 2)
+    //         desribtionsInTextAI = "" ;// clear text
+    //     }
 
-    else{ 
-       triggeredLongAITimeReached = false; // reset AI 
-       triggeredTimeoutCnt = 0;
-       }
+    // else{ 
+    //    triggeredLongAITimeReached = false; // reset AI 
+    //    triggeredTimeoutCnt = 0;
+    //    }
  ///////////////////////////////////////////////////////////////////////////////////AI Section END///////////////////////////////////////////////////////////////////////////
 
        // reset triggeredAction for another trigger event
@@ -1822,10 +1859,10 @@ String fungetfromatedTime (signed  int seconds)
    if (h > 0) //hours
       txt +=String(h) + "h ";
   
-   if (m > 0) // min
+   if (m > 0 && h == 0) // min  // m == 0 to save space and only show hours
       txt +=String(m) + "m ";
   
-   if (s > 0) //seconds
+   if (s > 0 && h == 0 && m == 0) //seconds then minints and last will be a seconds
       txt += String(s) + "s" ;
 
   return txt;
@@ -1837,6 +1874,11 @@ void funResetTriggeredAction () {
     triggeredLongAITimeReached = false;
     triggeredTracketEventsCnt = 0;
     triggeredAction = false;
+
+    ObjTriggerInv_Output220.resetErrors();
+    ObjTriggerInv_ReadSignal.resetErrors();
+    ObjTriggerPrg_StopInv.resetErrors();
+    ObjTriggerPrg_StopInvTemp.resetErrors();
  }
 
 
