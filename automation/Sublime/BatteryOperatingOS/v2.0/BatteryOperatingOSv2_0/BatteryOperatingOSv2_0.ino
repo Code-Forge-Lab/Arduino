@@ -208,7 +208,7 @@ void funResetTriggeredAction();
   // AI main decision logic vars
 
   bool triggeredAction;                    // comes from sensors , auto mode program actions as a flag that enables triggeredTimeoutCnt = triggeredTimeoutMax
-  int triggeredTimeoutMax = 600;           // seconds, time where triggered actioct will be tracked  in 10 minutes period
+  int triggeredTimeoutMax = 800;           // seconds, time where triggered actioct will be tracked  in 10 minutes period
   int triggeredTimeoutCnt = 0;             // counting down a time after a trigger event is established
   int triggeredTracketEventsMax = 3;       // tolerate 3 triggeredTracketEventsCnt before crucial desition to stop working inverter
   int triggeredTracketEventsCnt = 0;       // Track every triggeredAction where accures at sensors or in  auto mode program for later to deside a crucial desition to stop working inverter for a long time
