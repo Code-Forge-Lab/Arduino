@@ -16,7 +16,7 @@ class VoltMeter {
 
 		
 		//// number of analog samples to take per reading
-const static int   NUM_SAMPLES = 100;
+const static int   NUM_SAMPLES = 50;
 		int sample_count;
 		int sum;                    // sum of samples taken
 		unsigned long clock_1msec = 0 ; 
