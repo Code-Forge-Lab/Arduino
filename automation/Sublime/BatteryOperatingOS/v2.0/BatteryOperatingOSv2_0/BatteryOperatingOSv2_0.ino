@@ -213,7 +213,7 @@ void funResetTriggeredAction();
   int triggeredTracketEventsMax = 3;       // tolerate 3 triggeredTracketEventsCnt before crucial desition to stop working inverter
   int triggeredTracketEventsCnt = 0;       // Track every triggeredAction where accures at sensors or in  auto mode program for later to deside a crucial desition to stop working inverter for a long time
   bool triggeredLongAITimeReached = false; //  rememeber a triggered long time is established
-  int triggeredLongAITimeMax = 350;      // 6h  maximum AI triggered long time where will set a triggeredLongAITimeCnt to turn of inverter for a many hours
+  int triggeredLongAITimeMax = 21660;    // 6h  maximum AI triggered long time where will set a triggeredLongAITimeCnt to turn of inverter for a many hours
   int triggeredLongAITimeCnt = 0;          //  keep counting
   String desribtionsInTextAI = "";         // hold information about failed conditions from a  sensors in AI frame 0 / 3
 
@@ -270,7 +270,7 @@ void InteractionCountinerGlobalUseOneTime () { // inportant function to be place
 }
 
  // main function
-    bool InteractionTime(bool isSensorSensing, int suspendTriggerMiliSeconds = 20)
+    bool InteractionTime(bool isSensorSensing, bool returnTrueTrigger  = false ,/* output not a pulse*/ int suspendTriggerMiliSeconds = 20)
     {
 /////////////////// Long Time Waiting Logic
       if (timer1sec())
@@ -328,7 +328,7 @@ void InteractionCountinerGlobalUseOneTime () { // inportant function to be place
                         // enable timeout only one time after a triggeredAction event
                         if (/* __triggerAction &&  */ __triggeredTimeoutCnt == 0)
                         {
-                          __triggeredTimeoutCnt =  300/* triggeredTimeoutMax */ /* * clock_1secValue */;
+                          __triggeredTimeoutCnt = triggeredTimeoutMax  /* * clock_1secValue */;
                         }
                        // 3 Count AI errors , after 10min reset all
                        // reached maximum error AI level where will enable program waiting for a long time after many failures from a sensors or a program attempts to work propietly
@@ -339,7 +339,7 @@ void InteractionCountinerGlobalUseOneTime () { // inportant function to be place
                          {
                           triggeredLongAITimeReached = true;
                           __triggeredLongAITimeReached = true;
-                          Serial.println ("REACHED AI!!");
+                          // Serial.println ("REACHED AI!!");
                         }
                         // 4 set 6h AI time if getIsReachedTriggeredEventsMax reached
 
@@ -375,8 +375,10 @@ void InteractionCountinerGlobalUseOneTime () { // inportant function to be place
         __supportTriggeredAction = false;                                                                 // when time nothing happening then reset boolean
       }
 
-
-      return __triggeredAction;
+      if (returnTrueTrigger)
+        return __supportTriggeredAction;
+    // else 
+        return __triggeredAction;
     };
 
     String getStatementStr () {
@@ -859,12 +861,12 @@ void loop(){
                   else if (desctiptionInv_readAC)                 client.println("<p><a href=\"/5/on\"><button class=\"button\">S-No ~220v Output!</button></a></p>");
                   else if (desctiptionInv_ReadSignal)             client.println("<p><a href=\"/5/on\"><button class=\"button\">S-Inv. Read Signal!</button></a></p>");
                   else if (desctiptionPrg_StopInv)                client.println("<p><a href=\"/5/on\"><button class=\"button\">S-Prg. Stop Inverter!</button></a></p>");
-                  else if (desctiptionPrg_StopInvTemp)            client.println("<p><a href=\"/5/on\"><button class=\"button\">S-Temp. Protection!</button></a></p>");
-else if (ObjTriggerInv_Output220.getTriggeredAIReached())         client.println("<p><a href=\"/5/on\"><button class=\"button\">Protection:~220v Output " + fungetfromatedTime(triggeredLongAITimeCnt) + "!</button></a></p>");
-else if (ObjTriggerInv_ReadSignal.getTriggeredAIReached())        client.println("<p><a href=\"/5/on\"><button class=\"button\">Protection:Inv Read Signal " + fungetfromatedTime(triggeredLongAITimeCnt) + "!</button></a></p>");
-else if (ObjTriggerPrg_StopInv.getTriggeredAIReached())           client.println("<p><a href=\"/5/on\"><button class=\"button\">Protection:Prg. Stop Inverter " + fungetfromatedTime(triggeredLongAITimeCnt) + "!</button></a></p>");
-else if (ObjTriggerPrg_StopInvTemp.getTriggeredAIReached())       client.println("<p><a href=\"/5/on\"><button class=\"button\">Protection:Prg. Stop InverterTemp " + fungetfromatedTime(triggeredLongAITimeCnt) + "!</button></a></p>");
-                  else if (triggeredLongAITimeReached)            client.println("<p><a href=\"/5/on\"><button class=\"button\">Protection:Triggered AI  " + fungetfromatedTime(triggeredLongAITimeCnt) + "!</button></a></p>");
+                  else if (desctiptionPrg_StopInvTemp)            client.println("<p><a href=\"/5/on\"><button class=\"button\">S-Temp.Stop!</button></a></p>");
+else if (ObjTriggerInv_Output220.getTriggeredAIReached())         client.println("<p><a href=\"/5/on\"><button class=\"button\">Triggered:No ~220v Output " + fungetfromatedTime(triggeredLongAITimeCnt) + "!</button></a></p>");
+else if (ObjTriggerInv_ReadSignal.getTriggeredAIReached())        client.println("<p><a href=\"/5/on\"><button class=\"button\">Triggered:Inv Read Signal " + fungetfromatedTime(triggeredLongAITimeCnt) + "!</button></a></p>");
+else if (ObjTriggerPrg_StopInv.getTriggeredAIReached())           client.println("<p><a href=\"/5/on\"><button class=\"button\">Triggered:Prg. Stop Inverter " + fungetfromatedTime(triggeredLongAITimeCnt) + "!</button></a></p>");
+else if (ObjTriggerPrg_StopInvTemp.getTriggeredAIReached())       client.println("<p><a href=\"/5/on\"><button class=\"button\">Triggered:Temperature " + fungetfromatedTime(triggeredLongAITimeCnt) + "!</button></a></p>");
+                  else if (triggeredLongAITimeReached)            client.println("<p><a href=\"/5/on\"><button class=\"button\">Triggered:Triggered AI  " + fungetfromatedTime(triggeredLongAITimeCnt) + "!</button></a></p>");
                   else if (turnOffTimer > 0 && doBatIsLow)        client.println("<p><a href=\"/5/off\"><button class=\"button\">Off After "+String(turnOffTimer)+"</button></a></p>");
                   else
                   client.println("<p><a href=\"/5/on\"><button class=\"button\">Inv Off</button></a></p>");
@@ -1023,10 +1025,10 @@ desribtionsInTextSensing = ""; // clear each time
   //    triggeredAction = true ; // if any sensor is detected , will trigger a error AI but must be controlled with correct intervals becouse this go directly into counter without a stop
        ObjTriggerInv_ReadSignal.InteractionCountinerGlobalUseOneTime (); // must be used one time from any object
 
-  if (ObjTriggerInv_Output220.InteractionTime(desctiptionInv_readAC)) {cnd = false;};
-  if (ObjTriggerInv_ReadSignal.InteractionTime(desctiptionInv_ReadSignal)){cnd = false;}
-  if (ObjTriggerPrg_StopInv.InteractionTime(desctiptionPrg_StopInv)) {cnd = false;};
-  if (ObjTriggerPrg_StopInvTemp.InteractionTime(desctiptionPrg_StopInvTemp)) {cnd = false;};
+  if (ObjTriggerInv_Output220.InteractionTime(desctiptionInv_readAC, true ,3)) {cnd = false;};
+  if (ObjTriggerInv_ReadSignal.InteractionTime(desctiptionInv_ReadSignal, true , 15)){cnd = false;}
+  if (ObjTriggerPrg_StopInv.InteractionTime(desctiptionPrg_StopInv, true , 10)) {cnd = false;};
+  if (ObjTriggerPrg_StopInvTemp.InteractionTime(desctiptionPrg_StopInvTemp,true , 12)) {cnd = false;};
   
 
   return cnd;
@@ -1037,7 +1039,7 @@ void cPrint () {
           if (ObjTriggerInv_ReadSignal.getTriggeredTracketEventsAny()) serialPrintln5s(ObjTriggerInv_ReadSignal.getStatementStr());
           if (ObjTriggerPrg_StopInv.getTriggeredTracketEventsAny()) serialPrintln5s(ObjTriggerPrg_StopInv.getStatementStr());
           if (ObjTriggerPrg_StopInvTemp.getTriggeredTracketEventsAny()) serialPrintln5s(ObjTriggerPrg_StopInvTemp.getStatementStr());
-          
+
           if (!doReactInBatVlt) serialPrint1s ("auto mode is disabled and / ");
           // if (triggeredLongAITimeReached) serialPrintln3s ("-->Initiated  triggered timeout " + fungetfromatedTime (triggeredTimeoutCnt) + " " + String (triggeredTracketEventsCnt) + " / " + String (triggeredTracketEventsMax));
            if (triggeredLongAITimeReached) serialPrintln5s ("triggered AI protection :O "+ fungetfromatedTime (triggeredLongAITimeCnt) + " and /");
