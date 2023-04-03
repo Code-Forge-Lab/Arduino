@@ -58,7 +58,23 @@ html { font-family: Helvetica; display: inline-block; margin: 0px auto; text-ali
 </script>
 
 <!-- refresh works but is slow sometime -->
-<script>window.history.replaceState({}, document.title, "/" + "refresh");</script> 
+<script>await timer(5000);  window.history.replaceState({}, document.title, "/" + "refresh");</script> 
+ 
+ <!-- delay// example -->
+ <script> 
+      setTimeout(()=> {
+        window.history.replaceState({}, document.title, "/" + "refresh");
+      }
+      ,3000);
+   </script>
+
+<!-- delay// example -->
+<script>
+  setTimeout(() => {
+    document.getElementById("result").innerHTML = "Hello, I am here";
+  }
+    , 3000);
+</script>
 
 
 <script>

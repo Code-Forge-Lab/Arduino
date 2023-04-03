@@ -828,7 +828,7 @@ void loop(){
             
             // Display the HTML web page
             client.println("<!DOCTYPE html><html>");
-            client.println("<script>window.history.replaceState({}, document.title, \"/\" + \"refresh\");</script>"); // refresh works but is slow sometimes 
+            client.println("<script> \n      setTimeout(()=> {\n        window.history.replaceState({}, document.title, \"/\" + \"refresh\");\n      }\n      ,5000);\n   </script>"); // refresh page with new default values after some time
             client.println("<head><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">");
             client.println("<link rel=\"icon\" href=\"data:,\">");
             // CSS to style the on/off buttons 
