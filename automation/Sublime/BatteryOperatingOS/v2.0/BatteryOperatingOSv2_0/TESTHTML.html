@@ -42,6 +42,31 @@ html { font-family: Helvetica; display: inline-block; margin: 0px auto; text-ali
 <body>
 
 
+  <script> 
+   function refreshPage() {
+      console.log(location.href + ":: Redirecting page++++++++++++++++++");
+     // prints the current URL 
+     location.href = 'https://code.tutsplus.com';
+     
+   }
+     refreshPage();
+  </script>
+
+<!-- // keep looping redirection  -->
+<script>
+    location.href = 'http://192.168.0.107/refresh'; 
+</script>
+
+<!-- refresh works but is slow sometime -->
+<script>window.history.replaceState({}, document.title, "/" + "refresh");</script> 
+
+
+<script>
+     console.log(WiFi.localIP() + ":: Redirecting page++++++++++++++++++");
+      // prints the current URL 
+      location.href = 'https://code.tutsplus.com';
+</script>
+
 
   
   <div class="batteryContainer">
@@ -76,6 +101,7 @@ function batIndicator(proc) {
 </div>
 
 <button style="margin: 20px;" onclick="batIndicator(120)">Try it</button>
+<button style="margin: 20px;" onclick="refreshPage()">Try REFRESH</button>
             
 
 </body>

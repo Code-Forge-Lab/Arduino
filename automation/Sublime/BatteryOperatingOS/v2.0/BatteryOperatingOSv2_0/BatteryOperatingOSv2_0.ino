@@ -828,6 +828,7 @@ void loop(){
             
             // Display the HTML web page
             client.println("<!DOCTYPE html><html>");
+            client.println("<script>window.history.replaceState({}, document.title, \"/\" + \"refresh\");</script>"); // refresh works but is slow sometimes 
             client.println("<head><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">");
             client.println("<link rel=\"icon\" href=\"data:,\">");
             // CSS to style the on/off buttons 
@@ -840,15 +841,17 @@ void loop(){
             // battery indicator
             client.println("\n.batteryContainer {\n display: -webkit-box;\n display: -moz-box;\n display: -ms-flexbox;\n display: -webkit-flex;\n text-align: center;\n  margin: 0px auto;\n}\n.batteryOuter {\n border-radius: 3px;\n border: 2px solid #444;\n padding: 2px;\n width: 45px;\n height: 20px;\n}\n.batteryBump {\n  border-radius: 2px;\n background-color: #444;\n margin-top: 9px;\n width: 2px;\n height: 9px;\n}\n#batteryLevel {\n border-radius: 2px;\n background-color: #73AD21;\n width: 80%;\n height: 20px;\n}");
             client.println(".button2 {background-color:MediumSeaGreen ;}</style></head>");
-
+            client.println("<div>");
             // Battery indicator with Web Page Heading
             client.println("<div class=\"batteryContainer\">\n    <h1 class=\"batteryContainer\" style=\" position: relative; left: 8 px; \">BatteryOperationOS</h1>\n    <div class=\"batteryOuter\"><div id=\"batteryLevel\"></div></div>\n    <div class=\"batteryBump\"></div>\n  </div>");
 
             // Display current state, and ON/OFF buttons for GPIO 5  
             // client.println("<p>Inv_On - State " + output5StateInvOutput + " Avoid: " + String(delayAvoid_Inv_On) + "</p>");
-            
-            // If the output5StateInvOutput is off, it displays the ON button       
-            if (output5StateInvOutput=="off") {
+            //clear URL
+            // client.println("\n<script>\n     console.log(" + (WiFi.localIP().toString()) + "\":: Redirecting page++++++++++++++++++\");\n      // prints the current URL \n      location.href = " + "'http://" + (WiFi.localIP().toString()) + "/refresh';\n</script>\n");
+            // If the output5StateInvOutput is off, it displays the ON button
+            if (output5StateInvOutput == "off")
+            {
               // indicate about turning on an Inverter
              if (!doAvoidInv_On)
 
@@ -877,9 +880,10 @@ else if (ObjTriggerPrg_StopInvTemp.getTriggeredAIReached())       client.println
                   else
                   client.println("<p><a href=\"/5/on\"><button class=\"button\">Low Battery!</button></a></p>");
               //------------------------------------------------------
+            }
+            else
+            { //+(delay_Inv_Output220_cnt > 0) ?+"P:"+String(delay_Inv_Output220_cnt): +"^"+
 
-            } else {  //+(delay_Inv_Output220_cnt > 0) ?+"P:"+String(delay_Inv_Output220_cnt): +"^"+
-              
               if (delay_Inv_Output220_cnt > 2)
                  client.println("<p><a href=\"/5/off\"><button class=\"button button2\">P:"+String(delay_Inv_Output220_cnt-2)+" Inv On</button></a></p>");
               else if (turnOffTimer > 0 && doBatIsLow)
@@ -888,11 +892,7 @@ else if (ObjTriggerPrg_StopInvTemp.getTriggeredAIReached())       client.println
                  client.println("<p><a href=\"/5/off\"><button class=\"button button2\">^Inv On</button></a></p>");
               else 
                  client.println("<p><a href=\"/5/off\"><button class=\"button button2\">xInv On</button></a></p>");
-
-
             }
-
-
                 // Display current state, and ON/OFF buttons for GPIO 4
                 // client.println("<p>GPIO 4 - State " + output4State + " "+ String (delay_Inv_Output220_cnt) +" b:"+String (doInv_Output220)+"</p>" );
                 // client.println("<p> "+ getStatusText () +"</p>" );
