@@ -574,7 +574,7 @@ byte turnOffTimerUser = 1; // store addition timer value , additional for a turn
    String desribtionsInTextSensing = ""; // hold information about failed current from a sensors that failed
   //  String desribtionsInTextAI = ""; // hold information about failed conditions from a  sensors in AI frame 0 / 3
    int regulateComandLineOutput = 0;
-   int regulateComandLineOutputMax = 50;
+   int regulateComandLineOutputMax = 250;
 
    // sec delay to pass power throw power relay from inverter
 
