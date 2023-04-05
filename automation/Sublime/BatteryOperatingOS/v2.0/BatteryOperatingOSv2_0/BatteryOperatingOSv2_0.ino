@@ -573,8 +573,8 @@ byte turnOffTimerUser = 1; // store addition timer value , additional for a turn
    bool desctiptionUserPrg_StopInvTemp = false ; 
    String desribtionsInTextSensing = ""; // hold information about failed current from a sensors that failed
   //  String desribtionsInTextAI = ""; // hold information about failed conditions from a  sensors in AI frame 0 / 3
-
-   
+   int regulateComandLineOutput = 0;
+   int regulateComandLineOutputMax = 50;
 
    // sec delay to pass power throw power relay from inverter
 
@@ -1242,14 +1242,20 @@ void oneSecTimer () {
 
  if (timer1sec ()){
           clock_1secCounter = 0;
-        
-       
-          
-          if ( cmd_received.length() > 0)
+
+          if (regulateComandLineOutput > 0)
           {
-            fun_CmdRead (cmd_received);
-             cmd_received = "";
+            regulateComandLineOutput--;
+          }else
+          {
+            cmd_msgOut = ""; //reset Pout command text
           }
+
+        if (cmd_received.length() > 0)
+        {
+        fun_CmdRead(cmd_received);
+        cmd_received = "";
+        }
 
 
           if (delayAvoid_Inv_On > 0){
@@ -1494,14 +1500,18 @@ String fun_CmdRead (String cmdRead /*input commands here*/)
    bool sP = false;
     // Serial.println ("+++++++++++++++++++++++++++full link> " + cmdRead);
 
-    if (cmdRead.length() > 0 ){// read comed arround
-       
-         // cmdRead = cmdRead.substring (0,cmdRead.length()-1); //to  remove incoming '\n'   
-         // Serial.println ("------------found Text:" + cmdRead);
-       
-           cmd_msgOut = ""; // reset
+   regulateComandLineOutput = regulateComandLineOutputMax; // set timeout for clearing  cmd_msgOut text
 
-        if (cmdRead.lastIndexOf("-") > 0) {
+   if (cmdRead.length() > 0)
+   { // read comed arround
+
+    // cmdRead = cmdRead.substring (0,cmdRead.length()-1); //to  remove incoming '\n'
+    // Serial.println ("------------found Text:" + cmdRead);
+
+    cmd_msgOut = ""; // reset
+
+    if (cmdRead.lastIndexOf("-") > 0)
+    {
           cmdGetSpecial = cmdRead.substring (cmdRead.lastIndexOf("-") + 1 ,cmdRead.length()); //separate text after-
           cmdRead = cmdRead.substring (0,cmdRead.indexOf("-"));
 
@@ -1744,9 +1754,7 @@ String fun_CmdRead (String cmdRead /*input commands here*/)
                       Serial.println ("Unable to proceed");
                       cmd_msgOut+= " [err:Unable to proceed , no integer]";
               }
-
-
-    }
+   }
 
   return "   ";
 }
