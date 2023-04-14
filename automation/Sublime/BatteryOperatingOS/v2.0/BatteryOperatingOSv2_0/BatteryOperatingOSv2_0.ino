@@ -167,55 +167,54 @@ void serialPrint3s(String txt);
 void serialPrint5s(String txt);
 void serialPrintln3s(String txt);
 void funResetTriggeredAction();
+void funTimeClient();
 
-/*    // enable timeout only one time after a triggeredAction event
-    if (triggeredAction  && triggeredTimeoutCnt == 0) {
-        triggeredTimeoutCnt = triggeredTimeoutMax;
-    }
-
-    // count down a timeout where more could accures triggeredAction
-    if (triggeredTimeoutCnt > 0)  triggeredTimeoutCnt--;
-
-    //  time where triggered actioct will be tracked in 10 minutes period
-    if (triggeredTimeoutCnt > 0  && triggeredAction){
-
-            Serial.println ("Reached triggeredTracketEvents");
-      // keep counting triggered actioct
-      if (triggeredTracketEventsCnt < triggeredTracketEventsMax - 1) triggeredTracketEventsCnt ++;
-      // reached maximum error AI level where will enable program waiting for a long time after many failures from a sensors or a program attempts to work propietly
-      else {Serial.println ("Maxed out triggeredTracketEventsMax"); triggeredLongAITimeReached = true; };
-    }
-
-    // initiate long time timer
-    if (triggeredLongAITimeReached && triggeredLongAITimeCnt == 0)
-        triggeredLongAITimeCnt = triggeredLongAITimeMax;
-
-    // keep holding a progrom to work about 6h
-    if (triggeredLongAITimeCnt > 0) {
-
-            triggeredLongAITimeCnt--;
-        if (triggeredLongAITimeCnt == 2)
-            desribtionsInTextAI = "" ;// clear text
+    /*    // enable timeout only one time after a triggeredAction event
+        if (triggeredAction  && triggeredTimeoutCnt == 0) {
+            triggeredTimeoutCnt = triggeredTimeoutMax;
         }
 
-    else{
-       triggeredLongAITimeReached = false; // reset AI
-       triggeredTimeoutCnt = 0;
-       }*/
-       
+        // count down a timeout where more could accures triggeredAction
+        if (triggeredTimeoutCnt > 0)  triggeredTimeoutCnt--;
 
+        //  time where triggered actioct will be tracked in 10 minutes period
+        if (triggeredTimeoutCnt > 0  && triggeredAction){
 
-  // AI main decision logic vars
+                Serial.println ("Reached triggeredTracketEvents");
+          // keep counting triggered actioct
+          if (triggeredTracketEventsCnt < triggeredTracketEventsMax - 1) triggeredTracketEventsCnt ++;
+          // reached maximum error AI level where will enable program waiting for a long time after many failures from a sensors or a program attempts to work propietly
+          else {Serial.println ("Maxed out triggeredTracketEventsMax"); triggeredLongAITimeReached = true; };
+        }
 
-  bool triggeredAction;                    // comes from sensors , auto mode program actions as a flag that enables triggeredTimeoutCnt = triggeredTimeoutMax
-  int triggeredTimeoutMax = 800;           // seconds, time where triggered actioct will be tracked  in 10 minutes period
-  int triggeredTimeoutCnt = 0;             // counting down a time after a trigger event is established
-  int triggeredTracketEventsMax = 3;       // tolerate 3 triggeredTracketEventsCnt before crucial desition to stop working inverter
-  int triggeredTracketEventsCnt = 0;       // Track every triggeredAction where accures at sensors or in  auto mode program for later to deside a crucial desition to stop working inverter for a long time
-  bool triggeredLongAITimeReached = false; //  rememeber a triggered long time is established
-  int triggeredLongAITimeMax = 25300;    // 6h  maximum AI triggered long time where will set a triggeredLongAITimeCnt to turn of inverter for a many hours
-  int triggeredLongAITimeCnt = 0;          //  keep counting
-  String desribtionsInTextAI = "";         // hold information about failed conditions from a  sensors in AI frame 0 / 3
+        // initiate long time timer
+        if (triggeredLongAITimeReached && triggeredLongAITimeCnt == 0)
+            triggeredLongAITimeCnt = triggeredLongAITimeMax;
+
+        // keep holding a progrom to work about 6h
+        if (triggeredLongAITimeCnt > 0) {
+
+                triggeredLongAITimeCnt--;
+            if (triggeredLongAITimeCnt == 2)
+                desribtionsInTextAI = "" ;// clear text
+            }
+
+        else{
+           triggeredLongAITimeReached = false; // reset AI
+           triggeredTimeoutCnt = 0;
+           }*/
+
+    // AI main decision logic vars
+
+    bool triggeredAction;                // comes from sensors , auto mode program actions as a flag that enables triggeredTimeoutCnt = triggeredTimeoutMax
+int triggeredTimeoutMax = 800;           // seconds, time where triggered actioct will be tracked  in 10 minutes period
+int triggeredTimeoutCnt = 0;             // counting down a time after a trigger event is established
+int triggeredTracketEventsMax = 3;       // tolerate 3 triggeredTracketEventsCnt before crucial desition to stop working inverter
+int triggeredTracketEventsCnt = 0;       // Track every triggeredAction where accures at sensors or in  auto mode program for later to deside a crucial desition to stop working inverter for a long time
+bool triggeredLongAITimeReached = false; //  rememeber a triggered long time is established
+int triggeredLongAITimeMax = 25300;      // 6h  maximum AI triggered long time where will set a triggeredLongAITimeCnt to turn of inverter for a many hours
+int triggeredLongAITimeCnt = 0;          //  keep counting
+String desribtionsInTextAI = "";         // hold information about failed conditions from a  sensors in AI frame 0 / 3
 
 
 void funTriggeredLongTimeCounter ()
@@ -451,10 +450,19 @@ timingIntervalsObj ObjSuddenVoltageChange("SuddenVoltageChange", 7, 16); // reac
 // #include <ESP8266WebServer.h> // not needy
 
 //B
+
 #include <WiFiManager.h>  //         // https://github.com/tzapu/WiFiManager
 #include "Voltmeter2.h"
 #include "buttons.h"
 #include "EEPROM32.h"
+#include <NTPClient.h>
+// char daysOfTheWeek[7][12] = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
+char daysOfTheWeekLT[7][20] = {"Sek", "Pir", "Ant", "Tre", "Ket", "Pen", "Ses"};
+String currentTimeHeader;
+// Define NTP Client to get time
+WiFiUDP ntpUDP;
+const long utcOffsetInSeconds = 7200; // 10800 // time zone offset
+NTPClient timeClient(ntpUDP, "europe.pool.ntp.org", utcOffsetInSeconds);
 
 /*  About program
 Inspect where inv. is on and output strong 220vac
@@ -477,7 +485,8 @@ const static uint8_t Inv_Output220 = D1;
 
 int delay_Inv_Output220Max_sec = 20; //max delay before turning on a relay to pass a power from inverter
 int maxDelay_Inv_Output220_sec  = delay_Inv_Output220Max_sec; // align a values 
-int delay_Inv_Output220_cnt;          //sec delay to pass power throw power relay from inverter 
+int delay_Inv_Output220_cnt;          //sec delay to pass power throw power relay from inverter
+float delay_Inv_Output220_ReactRatio = 0.2; // esp start to react to inverter output after 20% time left ,  maxDelay_Inv_Output220_sec < (delay_Inv_Output220Max_sec * maxDelay_Inv_Output220_ReactRatio)
 byte    delay_Inv_Output220_User; // user saved value from a EEPROM memory
 bool    doInv_Output220 = false;      //sec delay to pass power throw power relay from inverter
 
@@ -837,9 +846,9 @@ void loop(){
             // CSS to style the on/off buttons 
             // Feel free to change the background-color and font-size attributes to fit your preferences
             client.println("<style>html { font-family: Helvetica; display: inline-block; margin: 0px auto; text-align: center; background: #ffffEE;}");
-            client.println(".button { background-color: #77878A; border: none; color: white; padding: 16px 40px;");
+            client.println(".button { background-color: #77878A;  border: none; color: white; padding: 16px 40px;");
             client.println("text-decoration: none; font-size: 30px; margin: 2px; cursor: pointer;}");
-            client.println("p{margin 5px auto;}"); // all paragraph tountered as not tall
+            client.println("p{margin 5px auto; margin-top: 0px;}"); // all paragraph tountered as not tall
 
             // battery indicator
             client.println("\n.batteryContainer {\n display: -webkit-box;\n display: -moz-box;\n display: -ms-flexbox;\n display: -webkit-flex;\n text-align: center;\n  margin: 0px auto;\n}\n.batteryOuter {\n border-radius: 3px;\n border: 2px solid #444;\n padding: 2px;\n width: 45px;\n height: 20px;\n}\n.batteryBump {\n  border-radius: 2px;\n background-color: #444;\n margin-top: 9px;\n width: 2px;\n height: 9px;\n}\n#batteryLevel {\n border-radius: 2px;\n background-color: #73AD21;\n width: 80%;\n height: 20px;\n}");
@@ -847,10 +856,10 @@ void loop(){
             client.println("<div>");
             // Battery indicator with Web Page Heading
             client.println("<div class=\"batteryContainer\">\n    <h1 class=\"batteryContainer\" style=\" position: relative; left: 8 px; \">BatteryOperationOS</h1>\n    <div class=\"batteryOuter\"><div id=\"batteryLevel\"></div></div>\n    <div class=\"batteryBump\"></div>\n  </div>");
-
-            // Display current state, and ON/OFF buttons for GPIO 5  
+            client.println("<div style = \"position: relative; text-align: right; \">" + currentTimeHeader + "</div>");
+            // Display current state, and ON/OFF buttons for GPIO 5
             // client.println("<p>Inv_On - State " + output5StateInvOutput + " Avoid: " + String(delayAvoid_Inv_On) + "</p>");
-            //clear URL
+            // clear URL
             // client.println("\n<script>\n     console.log(" + (WiFi.localIP().toString()) + "\":: Redirecting page++++++++++++++++++\");\n      // prints the current URL \n      location.href = " + "'http://" + (WiFi.localIP().toString()) + "/refresh';\n</script>\n");
             // If the output5StateInvOutput is off, it displays the ON button
             if (output5StateInvOutput == "off")
@@ -1023,7 +1032,7 @@ desribtionsInTextSensing = ""; // clear each time
 // desctiptionSuddenVoltageChange
 
 
-  if (!sensorDoInv_readAC && !desctiptionUserInv_readAC)         {/* cnd = false; */ desctiptionInv_readAC = true ;descTxt("No Inv.~220v output ,", react);} else { desctiptionInv_readAC = false;};
+  if (!sensorDoInv_readAC && !desctiptionUserInv_readAC  && delay_Inv_Output220_cnt < int(maxDelay_Inv_Output220_sec * delay_Inv_Output220_ReactRatio))         {/* cnd = false; */ desctiptionInv_readAC = true ;descTxt("No Inv.~220v output ,", react);} else { desctiptionInv_readAC = false;};
   if (sensorDoInv_ReadSignal && !desctiptionUserInv_ReadSignal)  {/* cnd = false; */ desctiptionInv_ReadSignal = true ;descTxt("Read Inv. Signal ,", react);}else{desctiptionInv_ReadSignal = false;};
   if (sensorDoPrg_StopInv    && !desctiptionUserPrg_StopInv)     {/* cnd = false; */ desctiptionPrg_StopInv    = true ; descTxt("Prg. Stop Inverter ," , react);                    } else { desctiptionPrg_StopInv = false;};
   if (sensorPrg_StopInvTemp  && !desctiptionUserPrg_StopInvTemp) {/* cnd = false; */ desctiptionPrg_StopInvTemp = true ; descTxt("Stop inverter of critical temperature ," , react); } else { desctiptionPrg_StopInvTemp = false;};
@@ -1233,8 +1242,10 @@ void oneSecTimer () {
 
   quarterSecondTimer () ;
      
-  if (timer5sec())
+  if (timer5sec()) {
             clock_5secCounter = 0;
+            funTimeClient();
+  }
 
 
   if (timer3sec ())
@@ -1479,12 +1490,12 @@ String getStatusText () {
   + getText ("  IgnoreInv_ReadSignal", desctiptionUserInv_ReadSignal ) 
   + getText ("  IgnorePrg_StopInv", desctiptionUserPrg_StopInv ) 
   + getText ("  IgnorePrg_StopInvTemp", desctiptionUserPrg_StopInvTemp ) 
+  // +          "  Inv_TimeReact~%" + String( maxDelay_Inv_Output220_sec * delay_Inv_Output220_ReactRatio ) 
+  +          "  doInv_Output220 = " + doInv_Output220
   + getText ("  doReactInBatVlt", doReactInBatVlt ) 
   + "//" );
 
-            
-
-
+ 
 }
 
 // int intDataTipe (int & changeOriginal , String  ) {
@@ -1552,11 +1563,11 @@ String fun_CmdRead (String cmdRead /*input commands here*/)
               LED_IndicatorBlinkFast = LED_IndicatorBlinkFast_Common;
               delay_Inv_Output220_User = (byte)cmdGetSpecialInt;
               funDelay_Inv_Output220 (); // refresh calculation values
-              cmd_msgOut+= cmdRead + " a value: " + String (delay_Inv_Output220_User) + " as " + String (maxDelay_Inv_Output220_sec) + "s timer ";
+              cmd_msgOut += cmdRead + " a value: " + String(delay_Inv_Output220_User) + " as " + String(maxDelay_Inv_Output220_sec) + "s timer  and start to check if inverter output 220v after " + String(int(maxDelay_Inv_Output220_sec * delay_Inv_Output220_ReactRatio)) + "s left.";
               writeMemory(memDelay_Inv_Output220,(byte)delay_Inv_Output220_User);
 
             } 
-            else {cmd_msgOut+="Failed register "+cmdRead+" a mem value: " + String (delay_Inv_Output220_User) + " as " + String (maxDelay_Inv_Output220_sec) + "s timer ";};
+            else {cmd_msgOut+="Failed register "+cmdRead+" a mem value: " + String (delay_Inv_Output220_User) + " as " + String (maxDelay_Inv_Output220_sec) + "s timer  and start to check if inverter output 220v after " + String(int(maxDelay_Inv_Output220_sec * delay_Inv_Output220_ReactRatio)) + "s left.";};
          }
 
 //          Low Voltage         
@@ -1718,8 +1729,8 @@ String fun_CmdRead (String cmdRead /*input commands here*/)
 
              }
             else 
-              sP = true; // failed to proceed whithout a proper number
-
+              // sP = true; // failed to proceed whithout a proper number
+                 cmd_msgOut += cmdRead + " [not a byte],stored: " + String(readMemoryByte(memMinBatVlt) + "v");
          }
          else if (cmdRead == "maxBatVlt"){
             
@@ -1735,7 +1746,8 @@ String fun_CmdRead (String cmdRead /*input commands here*/)
                  Serial.println ("max out");
              }
             else
-              sP = true; // failed to proceed whithout a proper number
+              // sP = true; // failed to proceed whithout a proper number
+                 cmd_msgOut += cmdRead + " [not a byte],stored: " + String(readMemoryByte(memMaxBatVlt) + "v");
          }
 
          else 
@@ -1752,7 +1764,7 @@ String fun_CmdRead (String cmdRead /*input commands here*/)
               if (sP) 
               {
                       Serial.println ("Unable to proceed");
-                      cmd_msgOut+= " [err:Unable to proceed , no integer]";
+                      cmd_msgOut += cmdRead + " [err:Unable to proceed , no integer] ";
               }
    }
 
@@ -1863,7 +1875,7 @@ void getmemBatVlt () {
     writeMemory(memMinBatVlt,minBatVlt);
     writeMemory(memMaxBatVlt,maxBatVlt);
 
-    Serial.println ("Chaning bad boundaries having values" );
+    Serial.println("Changing bad boundaries having values");
   }
 
 }
@@ -1908,6 +1920,26 @@ void funResetTriggeredAction () {
     ObjSuddenVoltageChange.resetErrors();
  }
 
+ void funTimeClient()
+ {
+
+    timeClient.update();
+    /*
+    //Serial.print(daysOfTheWeekLT[timeClient.getDay()]);
+    //Serial.print(", ");
+    //Serial.print(timeClient.getHours());
+    //Serial.print(":");
+    //Serial.print(timeClient.getMinutes());
+    //Serial.print(":");
+    //Serial.println(timeClient.getSeconds());
+    */
+
+    // currentTimeHeader = String(daysOfTheWeekLT[timeClient.getDay()]) + "<br> " + timeClient.getFormattedTime(); // String(daysOfTheWeekLT[timeClient.getDay()]) + ", " + String(timeClient.getHours()) + ": " + String(timeClient.getMinutes()) + ":" + String(timeClient.getSeconds());
+    currentTimeHeader = String(daysOfTheWeekLT[timeClient.getDay()]) + " " + String(timeClient.getHours()) + ":" + String(timeClient.getMinutes());
+    
+    // Serial.print (currentTimeHeader);
+    // delay (1000);
+ }
 
 bool   timer1sec () {
   if (clock_1secCounter >= clock_1secValue) return true; else return false;
