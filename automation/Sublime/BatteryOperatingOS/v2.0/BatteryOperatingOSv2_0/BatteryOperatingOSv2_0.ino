@@ -1047,7 +1047,7 @@ desribtionsInTextSensing = ""; // clear each time
   //    triggeredAction = true ; // if any sensor is detected , will trigger a error AI but must be controlled with correct intervals becouse this go directly into counter without a stop
        ObjTriggerInv_ReadSignal.InteractionCountinerGlobalUseOneTime (); // must be used one time from any object
 
-  if (ObjTriggerInv_Output220.InteractionTime(desctiptionInv_readACActive, true ,1)) {cnd = false;};
+  if (ObjTriggerInv_Output220.InteractionTime(desctiptionInv_readACActive, true ,10)) {cnd = false;};
   if (ObjTriggerInv_ReadSignal.InteractionTime(desctiptionInv_ReadSignal, true , 6)){cnd = false;}
   if (ObjTriggerPrg_StopInv.InteractionTime(desctiptionPrg_StopInv, true , 10)) {cnd = false;};
   if (ObjTriggerPrg_StopInvTemp.InteractionTime(desctiptionPrg_StopInvTemp,true , 12)) {cnd = false;};
@@ -1447,6 +1447,7 @@ void funInv_On_then_Output220 (String x  , bool silence) {
       doPrg_on_button = false;
       doBatMaxVltReached = false;
       maxBatVltSustained_cnt = 0; // reset
+      desctiptionInv_readAC = false; // only this sensor repot requared to reset
    }
 }
 
