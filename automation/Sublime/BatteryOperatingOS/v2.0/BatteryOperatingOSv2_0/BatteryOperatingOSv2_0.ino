@@ -240,6 +240,7 @@ void funTriggeredLongTimeCounter ()
   {
     bool __supportTriggeredAction;           // Sustain triggeredAction to be enable only one time 
     bool __triggeredAction;                 // comes from sensors , auto mode program actions as a flag that enables triggeredTimeoutCnt = triggeredTimeoutMax
+    int __triggeredTimeoutMax = 800;
     int __triggeredTimeoutCnt = 0;       // counting down a time after a trigger event is established
     int __triggeredTracketEventsCnt = 0; // Track every triggeredAction where accures at sensors or in  auto mode program for later to deside a crucial desition to stop working inverter for a long time
     int __triggeredTracketEventsMax = 3;   // tolerate 3 triggeredTracketEventsCnt before crucial desition to stop working inverter
@@ -249,11 +250,12 @@ void funTriggeredLongTimeCounter ()
     String name;
 
   public:
-    timingIntervalsObj(String abbreviation, int maxAIEventProtectionTime = 3, int maxAITime = 6 /*6h*/) // contructor
+    timingIntervalsObj(String abbreviation, int maxAIEventProtectionCount = 3, int maxAITimer = 6 /*6h*/ , int triggerTimeout = 800) // contructor
     {
       name = abbreviation;
-      __triggeredTracketEventsMax = maxAIEventProtectionTime;
-      __triggeredLongAITimeMax = maxAITime * 3600 + 100;
+      __triggeredTracketEventsMax = maxAIEventProtectionCount;
+      __triggeredLongAITimeMax = maxAITimer * 3600 + 100;
+      __triggeredTimeoutMax = triggerTimeout;
     }
 
 void InteractionCountinerGlobalUseOneTime () { // inportant function to be placed in raw base counting invorement
@@ -328,7 +330,7 @@ void InteractionCountinerGlobalUseOneTime () { // inportant function to be place
                         // enable timeout only one time after a triggeredAction event
                         if (/* __triggerAction &&  */ __triggeredTimeoutCnt == 0)
                         {
-                          __triggeredTimeoutCnt = triggeredTimeoutMax  /* * clock_1secValue */;
+                          __triggeredTimeoutCnt = __triggeredTimeoutMax /* * clock_1secValue */;
                         }
                        // 3 Count AI errors , after 10min reset all
                        // reached maximum error AI level where will enable program waiting for a long time after many failures from a sensors or a program attempts to work propietly
@@ -436,7 +438,7 @@ void InteractionCountinerGlobalUseOneTime () { // inportant function to be place
 };
 
 // reaction time where react to a sensor to a trigger triggeredAction
-timingIntervalsObj ObjTriggerInv_Output220("Inv_Output220",6);     // reaction time where react to a sensor
+timingIntervalsObj ObjTriggerInv_Output220("Inv_Output220",5,10,1300);     // reaction time where react to a sensor
 timingIntervalsObj ObjTriggerInv_ReadSignal("Inv_ReadSignal",4);   // reaction time where react to a sensor
 timingIntervalsObj ObjTriggerPrg_StopInv("Prg_StopInv/Pause",5);   // reaction time where react to a sensor
 timingIntervalsObj ObjTriggerPrg_StopInvTemp("Prg_StopInvTemp", 4); // reaction time where react to a sensor
@@ -569,7 +571,8 @@ byte turnOffTimerUser = 1; // store addition timer value , additional for a turn
 
 // conditional desribtions statements from a program
 
-   bool desctiptionInv_readAC = false ;      
+   bool desctiptionInv_readAC = false ;
+   bool desctiptionInv_readACActive = false;
    bool desctiptionInv_ReadSignal = false ;   
    bool desctiptionPrg_StopInv = false ;     
    bool desctiptionPrg_StopInvTemp = false ;
@@ -874,11 +877,11 @@ void loop(){
                 //  ObjSuddenVoltageChange;
                   if(doBatBeHigh) client.println("<p><a href=\"/5/on\"><button class=\"button\">Inv Off / High Battery</button></a></p>");
                   
-                  else if (desctiptionInv_readAC)                 client.println("<p><a href=\"/5/on\"><button class=\"button\">S-No ~220v Output!</button></a></p>");
                   else if (desctiptionInv_ReadSignal)             client.println("<p><a href=\"/5/on\"><button class=\"button\">S-Inv. Read Signal!</button></a></p>");
                   else if (desctiptionPrg_StopInv)                client.println("<p><a href=\"/5/on\"><button class=\"button\">S-Prg. Stop Inverter!</button></a></p>");
                   else if (desctiptionPrg_StopInvTemp)            client.println("<p><a href=\"/5/on\"><button class=\"button\">S-Temp.Stop!</button></a></p>");
 else if (ObjTriggerInv_Output220.getTriggeredAIReached())         client.println("<p><a href=\"/5/on\"><button class=\"button\">Triggered:No ~220v Output " + fungetfromatedTime(triggeredLongAITimeCnt) + "!</button></a></p>");
+                  else if (desctiptionInv_readAC)                 client.println("<p><a href=\"/5/on\"><button class=\"button\">S-No ~220v Output!</button></a></p>");
 else if (ObjTriggerInv_ReadSignal.getTriggeredAIReached())        client.println("<p><a href=\"/5/on\"><button class=\"button\">Triggered:Inv Read Signal " + fungetfromatedTime(triggeredLongAITimeCnt) + "!</button></a></p>");
 else if (ObjTriggerPrg_StopInv.getTriggeredAIReached())           client.println("<p><a href=\"/5/on\"><button class=\"button\">Triggered:Prg. Stop Inverter " + fungetfromatedTime(triggeredLongAITimeCnt) + "!</button></a></p>");
 else if (ObjTriggerPrg_StopInvTemp.getTriggeredAIReached())       client.println("<p><a href=\"/5/on\"><button class=\"button\">Triggered:Temperature " + fungetfromatedTime(triggeredLongAITimeCnt) + "!</button></a></p>");
@@ -1032,7 +1035,7 @@ desribtionsInTextSensing = ""; // clear each time
 // desctiptionSuddenVoltageChange
 
 
-  if (!sensorDoInv_readAC && !desctiptionUserInv_readAC  && delay_Inv_Output220_cnt < int(maxDelay_Inv_Output220_sec * delay_Inv_Output220_ReactRatio))         {/* cnd = false; */ desctiptionInv_readAC = true ;descTxt("No Inv.~220v output ,", react);} else { desctiptionInv_readAC = false;};
+  if (!sensorDoInv_readAC && !desctiptionUserInv_readAC  && output5StateInvOutput == "on"   && delay_Inv_Output220_cnt < int(maxDelay_Inv_Output220_sec * delay_Inv_Output220_ReactRatio))         {/* cnd = false; */ desctiptionInv_readAC = true ; desctiptionInv_readACActive = true;  descTxt("No Inv.~220v output ,", react);}  else { desctiptionInv_readACActive = false; /* desctiptionInv_readAC = false; */}; 
   if (sensorDoInv_ReadSignal && !desctiptionUserInv_ReadSignal)  {/* cnd = false; */ desctiptionInv_ReadSignal = true ;descTxt("Read Inv. Signal ,", react);}else{desctiptionInv_ReadSignal = false;};
   if (sensorDoPrg_StopInv    && !desctiptionUserPrg_StopInv)     {/* cnd = false; */ desctiptionPrg_StopInv    = true ; descTxt("Prg. Stop Inverter ," , react);                    } else { desctiptionPrg_StopInv = false;};
   if (sensorPrg_StopInvTemp  && !desctiptionUserPrg_StopInvTemp) {/* cnd = false; */ desctiptionPrg_StopInvTemp = true ; descTxt("Stop inverter of critical temperature ," , react); } else { desctiptionPrg_StopInvTemp = false;};
@@ -1044,7 +1047,7 @@ desribtionsInTextSensing = ""; // clear each time
   //    triggeredAction = true ; // if any sensor is detected , will trigger a error AI but must be controlled with correct intervals becouse this go directly into counter without a stop
        ObjTriggerInv_ReadSignal.InteractionCountinerGlobalUseOneTime (); // must be used one time from any object
 
-  if (ObjTriggerInv_Output220.InteractionTime(desctiptionInv_readAC, true ,3)) {cnd = false;};
+  if (ObjTriggerInv_Output220.InteractionTime(desctiptionInv_readACActive, true ,1)) {cnd = false;};
   if (ObjTriggerInv_ReadSignal.InteractionTime(desctiptionInv_ReadSignal, true , 6)){cnd = false;}
   if (ObjTriggerPrg_StopInv.InteractionTime(desctiptionPrg_StopInv, true , 10)) {cnd = false;};
   if (ObjTriggerPrg_StopInvTemp.InteractionTime(desctiptionPrg_StopInvTemp,true , 12)) {cnd = false;};
@@ -1146,7 +1149,9 @@ void quarterSecondTimer () { //0.1 second
     String invTxt = "";
       if (doReactInBatVlt/*<auto on condition from user*/ && !doBatMaxVltReached && (voltAvrBattery.voltage >= maxBatVlt) && reactionFromASensors() /*and no reaction from a sensors*/ && !triggeredLongAITimeReached /*AI not triggered*/) // turn on a inverter
         {
-           
+      
+       if (ObjTriggerInv_Output220.getTriggeredTracketEventsAny()) serialPrintln5s(ObjTriggerInv_Output220.getStatementStr()); // just print about what its happening with inverter 220v output
+       
        if (timer1sec ())
          {
            serialPrintln1s ("Condition: sensor " + String (voltAvrBattery.voltage) +"v is more then maximum batery voltage " + String ( maxBatVlt) + "v " );
@@ -1418,6 +1423,7 @@ void funInv_On_then_Output220 (String x  , bool silence) {
      // digitalWrite (Inv_Output220, HIGH);
       // digitalWrite (Inv_On, HIGH);
       output5StateInvOutput = "on"; 
+      desctiptionInv_readAC = false; // only this sensor repot requared to reset 
       funTurnOffTimer (true);
 
       if (delay_Inv_Output220_cnt == 0 && !doInv_Output220 ){ // pass value only one time when was turned on at least one time
@@ -1441,8 +1447,6 @@ void funInv_On_then_Output220 (String x  , bool silence) {
       doPrg_on_button = false;
       doBatMaxVltReached = false;
       maxBatVltSustained_cnt = 0; // reset
-
-
    }
 }
 
@@ -1490,8 +1494,9 @@ String getStatusText () {
   + getText ("  IgnoreInv_ReadSignal", desctiptionUserInv_ReadSignal ) 
   + getText ("  IgnorePrg_StopInv", desctiptionUserPrg_StopInv ) 
   + getText ("  IgnorePrg_StopInvTemp", desctiptionUserPrg_StopInvTemp ) 
-  // +          "  Inv_TimeReact~%" + String( maxDelay_Inv_Output220_sec * delay_Inv_Output220_ReactRatio ) 
-  +          "  doInv_Output220 = " + doInv_Output220
+  +          "  Inv_TimeReact~%" + ( maxDelay_Inv_Output220_sec * delay_Inv_Output220_ReactRatio ) 
+  +          "  delay_Inv_Output220_cnt: " + delay_Inv_Output220_cnt
+  + getText ("  doInv_Output220 = " , doInv_Output220)
   + getText ("  doReactInBatVlt", doReactInBatVlt ) 
   + "//" );
 
