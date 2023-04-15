@@ -438,7 +438,7 @@ void InteractionCountinerGlobalUseOneTime () { // inportant function to be place
 };
 
 // reaction time where react to a sensor to a trigger triggeredAction
-timingIntervalsObj ObjTriggerInv_Output220("Inv_Output220",5,10,1300);     // reaction time where react to a sensor
+timingIntervalsObj ObjTriggerInv_Output220("Inv_Output220",5,10,1400);     // reaction time where react to a sensor
 timingIntervalsObj ObjTriggerInv_ReadSignal("Inv_ReadSignal",4);   // reaction time where react to a sensor
 timingIntervalsObj ObjTriggerPrg_StopInv("Prg_StopInv/Pause",5);   // reaction time where react to a sensor
 timingIntervalsObj ObjTriggerPrg_StopInvTemp("Prg_StopInvTemp", 4); // reaction time where react to a sensor
