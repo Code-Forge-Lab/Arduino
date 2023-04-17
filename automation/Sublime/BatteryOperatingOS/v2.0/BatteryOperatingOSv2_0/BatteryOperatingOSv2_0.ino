@@ -360,20 +360,20 @@ void InteractionCountinerGlobalUseOneTime () { // inportant function to be place
             else
             {
                       __triggerActionCnt++; // count when exsepted a sensoring
-                      Serial.println(name + " Counting Action: " + String(__triggerActionCnt));
+                  //    Serial.println(name + " Counting Action: " + String(__triggerActionCnt));  // show interaction with a sencor
             }
       }
       else if (__triggerActionCnt > 0) // keep substracting triggered action
       {
           __triggerActionCnt--;
 
-        Serial.println(name + " Remove Counted Action: " + String(__triggerActionCnt));
+      //  Serial.println(name + " Remove Counted Action: " + String(__triggerActionCnt));  // show interaction with a sencor
       }
       else // reset triggered action if completed a cycle
       {
 
         if (__supportTriggeredAction)
-          Serial.println(name + "------------------>>  Reset  triggered " + String (__triggeredAction) ); // print last time
+     //  Serial.println(name + "------------------>>  Reset  triggered " + String (__triggeredAction) ); // print last time
         __supportTriggeredAction = false;                                                                 // when time nothing happening then reset boolean
       }
 
@@ -485,7 +485,7 @@ Can control 220v relay and also read inv live, is completly on with "Feed_Separa
 
 const static uint8_t Inv_Output220 = D1;
 
-int delay_Inv_Output220Max_sec = 20; //max delay before turning on a relay to pass a power from inverter
+int delay_Inv_Output220Max_sec = 30; //max delay before turning on a relay to pass a power from inverter
 int maxDelay_Inv_Output220_sec  = delay_Inv_Output220Max_sec; // align a values 
 int delay_Inv_Output220_cnt;          //sec delay to pass power throw power relay from inverter
 float delay_Inv_Output220_ReactRatio = 0.2; // esp start to react to inverter output after 20% time left ,  maxDelay_Inv_Output220_sec < (delay_Inv_Output220Max_sec * maxDelay_Inv_Output220_ReactRatio)
@@ -588,6 +588,8 @@ byte turnOffTimerUser = 1; // store addition timer value , additional for a turn
    int regulateComandLineOutput = 0;
    int regulateComandLineOutputMax = 250;
 
+
+   
    // sec delay to pass power throw power relay from inverter
 
    // EEPROM memory address
@@ -602,6 +604,7 @@ byte turnOffTimerUser = 1; // store addition timer value , additional for a turn
    int16_t memturnOffTimer = 10;   // turn off timeout saved at memory point from a user side
    int16_t memBatVltSustained = 11;
    int16_t memDelay_Inv_Output220 = 12; // aditional time from a user
+   int16_t memSustain220vReactionTime = 13;
 
    // fast blink
    bool LED_IndicatorBlink = false;
@@ -626,6 +629,8 @@ byte turnOffTimerUser = 1; // store addition timer value , additional for a turn
    /// input commands from user
    String cmd_received;
    String cmd_msgOut; // write to user what condition have hit on the webserver
+
+  byte Sustain220vReactionTimeUser = 7; // React to a 220v output where was lower then expected in the of a certain time.
 
    // Auxiliar variables to store the current output state
    String output5StateInvOutput = "off";
@@ -684,6 +689,7 @@ updateMemoryBool (&memPrg_StopInvTemp, true ,"memIgnorePrg_StopInvTemp", &descti
 updateMemoryByte (&memturnOffTimer, 0 ,     "memturnOffTimerLownVolt", &turnOffTimerUser );
 updateMemoryByte (&memBatVltSustained, 1 ,  "memBatVlotSustainedHighVolts", &maxBatVltSustained_User );
 updateMemoryByte (&memDelay_Inv_Output220, 1 , "memDelay_Inv_Output220Relay", &delay_Inv_Output220_User );
+updateMemoryByte (&memSustain220vReactionTime, 7 , "memSustain220vReactionTime", &Sustain220vReactionTimeUser );
 
 
 
@@ -696,19 +702,20 @@ funTurnOffTimer (true); // refresh calculations
  if (doReactInBatVlt)        output4State = "on"; // change graphical user interface
 
 
-
  delay (10);
-  // Initialize the output variables as outputs
-  pinMode (Inv_readAC,           INPUT);
-  pinMode (Inv_Output220,        OUTPUT);// output
-  pinMode (Inv_On,               OUTPUT);// output
-  pinMode (Prg_on_button,        INPUT);
-  pinMode (LED_Indicator,        OUTPUT);// output
-  pinMode (Inv_ReadSignal,       INPUT);
-  pinMode (Prg_StopInv,          INPUT);
-  pinMode (Prg_StopInvTemp,      INPUT);
-  pinMode (Read_Battery_Volt,    INPUT);
-  // Set outputs to LOW
+ funInv_On_then_Output220("off", false); // fix low voltage bug when program booted first time , doesnt worked
+ delay(10);
+ // Initialize the output variables as outputs
+ pinMode(Inv_readAC, INPUT);
+ pinMode(Inv_Output220, OUTPUT); // output
+ pinMode(Inv_On, OUTPUT);        // output
+ pinMode(Prg_on_button, INPUT);
+ pinMode(LED_Indicator, OUTPUT); // output
+ pinMode(Inv_ReadSignal, INPUT);
+ pinMode(Prg_StopInv, INPUT);
+ pinMode(Prg_StopInvTemp, INPUT);
+ pinMode(Read_Battery_Volt, INPUT);
+ // Set outputs to LOW
  // digitalWrite(output5, LOW);
  // digitalWrite(output4, LOW);
 
@@ -1047,7 +1054,7 @@ desribtionsInTextSensing = ""; // clear each time
   //    triggeredAction = true ; // if any sensor is detected , will trigger a error AI but must be controlled with correct intervals becouse this go directly into counter without a stop
        ObjTriggerInv_ReadSignal.InteractionCountinerGlobalUseOneTime (); // must be used one time from any object
 
-  if (ObjTriggerInv_Output220.InteractionTime(desctiptionInv_readACActive, true ,10)) {cnd = false;};
+  if (ObjTriggerInv_Output220.InteractionTime(desctiptionInv_readACActive, true ,int(Sustain220vReactionTimeUser))) {cnd = false;};
   if (ObjTriggerInv_ReadSignal.InteractionTime(desctiptionInv_ReadSignal, true , 6)){cnd = false;}
   if (ObjTriggerPrg_StopInv.InteractionTime(desctiptionPrg_StopInv, true , 10)) {cnd = false;};
   if (ObjTriggerPrg_StopInvTemp.InteractionTime(desctiptionPrg_StopInvTemp,true , 12)) {cnd = false;};
@@ -1556,13 +1563,13 @@ String fun_CmdRead (String cmdRead /*input commands here*/)
 
 
         if (cmdRead == "help")
-         { 
+         {
 
-           cmd_msgOut = "Awailable commands:,fixVltR-byte,fixTurnOffLowVoltTimer-byte,fixSustainedMaxVoltTimer-byte,fixDelayInvOutputRelay220-byte,maxBatVlt-byte,minBatVlt-byte,IgnoreSensorReadAC-bool,IgnoreSensorReadInvSignal-bool,IgnoreSensorPrgStopInv-bool,IgnoreSensorPrgStopInvTemp-bool,IgnoreAllSensors,clear,status,restart,resetWifi-intpswrd, ";
-           Serial.println (cmd_msgOut);
+          cmd_msgOut = "Awailable commands:,fixVltR-byte,fixTurnOffLowVoltTimer-byte,fixSustainedMaxVoltTimer-byte,fixDelayInvOutputRelay220v-byte,Sustain220vReactionTime,maxBatVlt-byte,minBatVlt-byte,IgnoreSensorReadAC-bool,IgnoreSensorReadInvSignal-bool,IgnoreSensorPrgStopInv-bool,IgnoreSensorPrgStopInvTemp-bool,IgnoreAllSensors,clear,status,restart,resetWifi-intpswrd, ";
+          Serial.println(cmd_msgOut);
          }
 //          delay turn on 220v relay to a home before chenking its all right with inverter         
-          else if (cmdRead == "fixDelayInvOutputRelay220" ){
+          else if (cmdRead == "fixDelayInvOutputRelay220v" ){
             funDelay_Inv_Output220 (); // refresh calculation values
            if (cmdIsValidInt) 
             {  
@@ -1683,6 +1690,21 @@ String fun_CmdRead (String cmdRead /*input commands here*/)
            Serial.println (cmd_msgOut);
          }
 
+         else if (cmdRead == "Sustain220vReactionTime")
+         {
+           cmd_msgOut = "React to a 220v output where was lower then expected in the of a certain time ";
+           if (cmdIsValidInt)
+           {
+                LED_IndicatorBlinkFast = LED_IndicatorBlinkFast_Common;
+                cmd_msgOut += cmdRead + " [" + String((byte)cmdGetSpecialInt * clock_1secValue * 10) + "ms]" + "from a was value: " + String(readMemoryByte(memSustain220vReactionTime) * clock_1secValue * 10) + "ms";
+                writeMemory(memSustain220vReactionTime, (byte)cmdGetSpecialInt);
+                Sustain220vReactionTimeUser = byte(cmdGetSpecialInt);
+           }
+           else
+           {
+                cmd_msgOut += cmdRead + " [not a byte],stored: " + String(readMemoryByte(memSustain220vReactionTime) * clock_1secValue * 10) + "ms";
+           };
+         }
 
           else if (cmdRead == "clear" ){
            cmd_msgOut = "";
