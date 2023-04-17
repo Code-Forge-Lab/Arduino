@@ -548,7 +548,9 @@ bool sensorPrg_StopInvTemp = false;
 const static uint8_t Read_Battery_Volt = A0;
 int sensorRead_Battery_Volt = 0;  // value read from the pot
 //(uint8_t pin_input = A0 ,              float broken_voltage = 0.0        ,  float R1 = 100000.0 , float R2 = 10000.0  )
-VoltMeter voltAvrBattery  (Read_Battery_Volt, 0.0 ,   680000.0 ,5100.0  );
+// VoltMeter voltAvrBattery  (Read_Battery_Volt, 0.0 ,   680000.0 ,5100.0  ); // my home  its good only for 48v becouse at 48v is only 120 bits
+// VoltMeter voltAvrBattery(Read_Battery_Volt, 0.0, 2001000.0, 56200.0);        // else 2M-56.2k-| // working shit , values to high and give non lineal result
+VoltMeter voltAvrBattery(Read_Battery_Volt, 0.0, 681000.0, 15000.0); // ELSE2 maybe ok , 320bits ant 53v
 byte minBatVlt = 15;
 byte maxBatVlt = 16;
 byte fixBatVlt = 100; // 1 equil 0.01 * 5100 = 510  // fix voltage in 255 range
@@ -1056,8 +1058,8 @@ desribtionsInTextSensing = ""; // clear each time
 
   if (ObjTriggerInv_Output220.InteractionTime(desctiptionInv_readACActive, true ,int(Sustain220vReactionTimeUser))) {cnd = false;};
   if (ObjTriggerInv_ReadSignal.InteractionTime(desctiptionInv_ReadSignal, true , 6)){cnd = false;}
-  if (ObjTriggerPrg_StopInv.InteractionTime(desctiptionPrg_StopInv, true , 10)) {cnd = false;};
-  if (ObjTriggerPrg_StopInvTemp.InteractionTime(desctiptionPrg_StopInvTemp,true , 12)) {cnd = false;};
+  if (ObjTriggerPrg_StopInv.InteractionTime(desctiptionPrg_StopInv, true , 5)) {cnd = false;};
+  if (ObjTriggerPrg_StopInvTemp.InteractionTime(desctiptionPrg_StopInvTemp,true , 6)) {cnd = false;};
   if (ObjSuddenVoltageChange.InteractionTime(desctiptionSuddenVoltageChange,true , 1) && ObjSuddenVoltageChange.getTriggeredAIReached()) {cnd = false;}; // react to a sudden voltage change from low to hign in wery short period of time 
   
 
