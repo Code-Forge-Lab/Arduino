@@ -412,7 +412,7 @@ void InteractionCountinerGlobalUseOneTime () { // inportant function to be place
       triggeredAction = false;
       resetErrors();
     }
-
+     int getTriggerActionCnt () {return __triggerActionCnt;};
     String fungetfromatedTime(signed int seconds)
     {
       String txt;
@@ -539,6 +539,10 @@ Prg.StopInvTemp _/_
 */
 const static uint8_t Prg_StopInvTemp = D7; 
 bool sensorPrg_StopInvTemp = false;
+
+/*Control Solar input to a inverter*/
+const static uint8_t Solar_CtrlInput = D8; 
+bool sensorSolar_CtrlInput = false;
 
 
 /*
@@ -1504,12 +1508,10 @@ String getStatusText () {
   + getText ("  IgnoreInv_ReadSignal", desctiptionUserInv_ReadSignal ) 
   + getText ("  IgnorePrg_StopInv", desctiptionUserPrg_StopInv ) 
   + getText ("  IgnorePrg_StopInvTemp", desctiptionUserPrg_StopInvTemp ) 
-  +          "  Inv_TimeReact~%" + ( maxDelay_Inv_Output220_sec * delay_Inv_Output220_ReactRatio ) 
-  +          "  delay_Inv_Output220_cnt: " + delay_Inv_Output220_cnt
-  + getText ("  doInv_Output220 = " , doInv_Output220)
+  +          "  Inv_TimeReact~220v ->" + ( maxDelay_Inv_Output220_sec * delay_Inv_Output220_ReactRatio ) + "s before transfer relay is on"
+  + getText ("  doInv_Output220v  " , sensorDoInv_readAC) + " -> reacted: " + ObjTriggerInv_Output220.getTriggerActionCnt() * 100 + "ms"
   + getText ("  doReactInBatVlt", doReactInBatVlt ) 
   + "//" );
-
  
 }
 
