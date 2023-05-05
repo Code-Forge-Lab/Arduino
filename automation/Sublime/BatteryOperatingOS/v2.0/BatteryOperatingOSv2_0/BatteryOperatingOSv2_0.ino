@@ -1762,7 +1762,7 @@ String fun_CmdRead (String cmdRead /*input commands here*/)
              }
             else 
               // sP = true; // failed to proceed whithout a proper number
-                 cmd_msgOut += cmdRead + " [not a byte],stored: " + String(readMemoryByte(memMinBatVlt) + "v");
+                 cmd_msgOut += cmdRead + " [not a byte],stored value: " + String(readMemoryByte(memMinBatVlt)) + "v";
          }
          else if (cmdRead == "maxBatVlt"){
             
@@ -1779,7 +1779,7 @@ String fun_CmdRead (String cmdRead /*input commands here*/)
              }
             else
               // sP = true; // failed to proceed whithout a proper number
-                 cmd_msgOut += cmdRead + " [not a byte],stored: " + String(readMemoryByte(memMaxBatVlt) + "v");
+                 cmd_msgOut += cmdRead + " [not a byte],stored value : " + String(readMemoryByte(memMaxBatVlt)) + "v";
          }
 
          else 
