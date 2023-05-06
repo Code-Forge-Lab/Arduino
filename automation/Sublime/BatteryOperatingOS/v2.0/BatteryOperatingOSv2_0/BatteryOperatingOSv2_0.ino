@@ -552,9 +552,9 @@ bool sensorSolar_CtrlInput = false;
 const static uint8_t Read_Battery_Volt = A0;
 int sensorRead_Battery_Volt = 0;  // value read from the pot
 //(uint8_t pin_input = A0 ,              float broken_voltage = 0.0        ,  float R1 = 100000.0 , float R2 = 10000.0  )
-// VoltMeter voltAvrBattery  (Read_Battery_Volt, 0.0 ,   680000.0 ,5100.0  ); // my home  its good only for 48v becouse at 48v is only 120 bits
-// VoltMeter voltAvrBattery(Read_Battery_Volt, 0.0, 2001000.0, 56200.0);        // else 2M-56.2k-| // working shit , values to high and give non lineal result
-VoltMeter voltAvrBattery(Read_Battery_Volt, 0.0, 681000.0, 15000.0); // ELSE2 maybe ok , 320bits ant 53v
+VoltMeter voltAvrBattery  (Read_Battery_Volt, 0.0 ,   680000.0 ,5100.0  ); // my home  its good only for 48v becouse at 48v is only 120 bits
+// VoltMeter voltAvrBattery(Read_Battery_Volt, 0.0, 2001000.0, 56200.0);        // else 2M-56.2k-| // working shit , values to high and give absolut non lineal result
+// VoltMeter voltAvrBattery(Read_Battery_Volt, 0.0, 681000.0, 15000.0); // ELSE2 maybe ok , 320bits ant 53v
 byte minBatVlt = 15;
 byte maxBatVlt = 16;
 byte fixBatVlt = 100; // 1 equil 0.01 * 5100 = 510  // fix voltage in 255 range
@@ -611,6 +611,7 @@ byte turnOffTimerUser = 1; // store addition timer value , additional for a turn
    int16_t memBatVltSustained = 11;
    int16_t memDelay_Inv_Output220 = 12; // aditional time from a user
    int16_t memSustain220vReactionTime = 13;
+   int16_t memActivate220vReactionTime = 14;
 
    // fast blink
    bool LED_IndicatorBlink = false;
@@ -637,32 +638,32 @@ byte turnOffTimerUser = 1; // store addition timer value , additional for a turn
    String cmd_msgOut; // write to user what condition have hit on the webserver
 
   byte Sustain220vReactionTimeUser = 7; // React to a 220v output where was lower then expected in the of a certain time.
+  bool Activate220vReactionTimeUser = true; //activate triggered protection if user allowed in the setting 
+      // Auxiliar variables to store the current output state
+      String output5StateInvOutput = "off";
+  String output4State = "off";
 
-   // Auxiliar variables to store the current output state
-   String output5StateInvOutput = "off";
-   String output4State = "off";
+  // Assign output variables to GPIO pins
+  const int output5 = Inv_Output220;
+  const int output4 = Inv_On;
 
-   // Assign output variables to GPIO pins
-   const int output5 = Inv_Output220;
-   const int output4 = Inv_On;
+  // WiFiManager
+  // Local intialization. Once its business is done, there is no need to keep it around
+  WiFiManager wifiManager;
 
-   // WiFiManager
-   // Local intialization. Once its business is done, there is no need to keep it around
-   WiFiManager wifiManager;
-
-   void updateMemoryBool(int16_t *memAddress, bool defaultValue, String text, bool *saveValueToVar)
-   {
-      if (readMemoryByte(*memAddress) >= 255)
-      {
-    writeMemory(*memAddress, defaultValue);
-    Serial.println(getText(text, defaultValue));
-      }
-      else
-      {
-    *saveValueToVar = (bool)readMemoryByte(*memAddress);
-    Serial.println(" Reveived bool: addr[" + String(*memAddress) + "]  " + text + ": " + String(*saveValueToVar));
-      }; // Works as potentiometer
-      Serial.print("");
+  void updateMemoryBool(int16_t *memAddress, bool defaultValue, String text, bool *saveValueToVar)
+  {
+    if (readMemoryByte(*memAddress) >= 255)
+    {
+      writeMemory(*memAddress, defaultValue);
+      Serial.println(getText(text, defaultValue));
+    }
+    else
+    {
+      *saveValueToVar = (bool)readMemoryByte(*memAddress);
+      Serial.println(" Reseived bool: addr[" + String(*memAddress) + "]  " + text + ": " + String(*saveValueToVar));
+    }; // Works as potentiometer
+    Serial.print("");
 }
 void updateMemoryByte (int16_t *memAddress, byte defaultValue , String text, byte *saveValueToVar ) {
 if (readMemoryByte(*memAddress)>=255) {writeMemory(*memAddress,defaultValue); Serial.print (": "+ String (defaultValue));} else{  *saveValueToVar = (byte)readMemoryByte(*memAddress); Serial.println (" Reveived byte: addr["+ String (*memAddress) + "]  " + text + ": " + String (*saveValueToVar));} // Works as potentiometer
@@ -673,7 +674,7 @@ void setup() {
   Serial.begin(115200);
   Serial.println ("Starting setup . . .");
 
-  EEPROM32_INIT( 15);
+  EEPROM32_INIT( 18);
  delay (10);
  getmemBatVlt ();
 
@@ -696,8 +697,7 @@ updateMemoryByte (&memturnOffTimer, 0 ,     "memturnOffTimerLownVolt", &turnOffT
 updateMemoryByte (&memBatVltSustained, 1 ,  "memBatVlotSustainedHighVolts", &maxBatVltSustained_User );
 updateMemoryByte (&memDelay_Inv_Output220, 1 , "memDelay_Inv_Output220Relay", &delay_Inv_Output220_User );
 updateMemoryByte (&memSustain220vReactionTime, 7 , "memSustain220vReactionTime", &Sustain220vReactionTimeUser );
-
-
+updateMemoryBool(&memActivate220vReactionTime, true, "memActivate220vReactionTime", &Activate220vReactionTimeUser);
 
 // recalculate value where was changed by user stored values in EEPROM memory
 funmaxBatVltSustained ();
@@ -1060,7 +1060,8 @@ desribtionsInTextSensing = ""; // clear each time
   //    triggeredAction = true ; // if any sensor is detected , will trigger a error AI but must be controlled with correct intervals becouse this go directly into counter without a stop
        ObjTriggerInv_ReadSignal.InteractionCountinerGlobalUseOneTime (); // must be used one time from any object
 
-  if (ObjTriggerInv_Output220.InteractionTime(desctiptionInv_readACActive, true ,int(Sustain220vReactionTimeUser))) {cnd = false;};
+  if ( ObjTriggerInv_Output220.InteractionTime(desctiptionInv_readACActive, true ,int(Sustain220vReactionTimeUser)) && Activate220vReactionTimeUser ) {cnd = false;}; // only works if user is activated triggered protection
+  if (!Activate220vReactionTimeUser &&  desctiptionInv_readACActive) {cnd = false;};
   if (ObjTriggerInv_ReadSignal.InteractionTime(desctiptionInv_ReadSignal, true , 6)){cnd = false;}
   if (ObjTriggerPrg_StopInv.InteractionTime(desctiptionPrg_StopInv, true , 5)) {cnd = false;};
   if (ObjTriggerPrg_StopInvTemp.InteractionTime(desctiptionPrg_StopInvTemp,true , 6)) {cnd = false;};
@@ -1368,7 +1369,7 @@ void oneSecTimer () {
        else if (delayPrg_on_button == maxDelayPrg_on_button)
        { // fast blink then reached a condtion
         LED_IndicatorBlinkFast = LED_IndicatorBlinkFast_Common;
-        Serial.print("  it fast blinks +++  button: " + String(doPrg_on_button));
+        // Serial.print("  it fast blinks +++  button: " + String(doPrg_on_button));
        }
 
              
@@ -1569,7 +1570,7 @@ String fun_CmdRead (String cmdRead /*input commands here*/)
         if (cmdRead == "help")
          {
 
-          cmd_msgOut = "Awailable commands:,fixVltR-byte,fixTurnOffLowVoltTimer-byte,fixSustainedMaxVoltTimer-byte,fixDelayInvOutputRelay220v-byte,Sustain220vReactionTime,maxBatVlt-byte,minBatVlt-byte,IgnoreSensorReadAC-bool,IgnoreSensorReadInvSignal-bool,IgnoreSensorPrgStopInv-bool,IgnoreSensorPrgStopInvTemp-bool,IgnoreAllSensors,clear,status,restart,resetWifi-intpswrd, ";
+          cmd_msgOut = "Awailable commands:,fixVltR-byte,fixTurnOffLowVoltTimer-byte,fixSustainedMaxVoltTimer-byte,fixDelayInvOutputRelay220v-byte,Sustain220vReactionTime,maxBatVlt-byte,minBatVlt-byte,IgnoreSensorReadAC-bool,IgnoreSensorReadInvSignal-bool,ActivateTriggeredAC220vProtection-bool,IgnoreSensorPrgStopInv-bool,IgnoreSensorPrgStopInvTemp-bool,IgnoreAllSensors,clear,status,restart,resetWifi-intpswrd, ";
           Serial.println(cmd_msgOut);
          }
 //          delay turn on 220v relay to a home before chenking its all right with inverter         
@@ -1615,17 +1616,34 @@ String fun_CmdRead (String cmdRead /*input commands here*/)
             } 
             else {cmd_msgOut+="Failed register "+cmdRead+" a mem value: " + String (maxBatVltSustained_User) + " as " + String (maxBatVltSustained_sec) + "s timer  ";};
          }
-//        AC ~220 voltage sensor
-         else if (cmdRead == "IgnoreSensorReadAC" ){
-           if (cmdIsValidInt) 
+    
+             //        AC ~220 voltage sensor
+             else if (cmdRead == "IgnoreSensorReadAC")
+         {
+            if (cmdIsValidInt) 
             {
                  LED_IndicatorBlinkFast = LED_IndicatorBlinkFast_Common;
                  cmd_msgOut+= cmdRead + " ["+  String ((byte)cmdGetSpecialInt) + "]" + "from a was value: " + String (readMemoryByte (memInv_readAC) );
                  writeMemory (memInv_readAC, (byte)cmdGetSpecialInt);
                  desctiptionUserInv_readAC = bool (cmdGetSpecialInt);
             }
-          else { cmd_msgOut += cmdRead + " [not a byte],stored: "+ String (readMemoryByte (memInv_readAC))  ;};
-        }
+          else { cmd_msgOut += cmdRead + " [not a bool],stored: "+ String (readMemoryByte (memInv_readAC))  ;};
+         }
+         //     Enable  AC ~220 voltage triggered protection
+         else if (cmdRead == "ActivateTriggeredAC220vProtection")
+         {
+          if (cmdIsValidInt)
+          {
+                 LED_IndicatorBlinkFast = LED_IndicatorBlinkFast_Common;
+                 cmd_msgOut += cmdRead + " [" + String((bool)cmdGetSpecialInt) + "]" + "from a was value: " + String(readMemoryBool(memActivate220vReactionTime));
+                 writeMemory(memActivate220vReactionTime, (bool)cmdGetSpecialInt);
+                 Activate220vReactionTimeUser = bool(cmdGetSpecialInt);
+          }
+          else
+          {
+                 cmd_msgOut += cmdRead + " [not a bool],stored: " + String(readMemoryBool(memActivate220vReactionTime)) + " works as enabling for a triggered protection";
+          };
+         }
 //        Inverter read condtional sensor 
          else if (cmdRead == "IgnoreSensorReadInvSignal" ){
            if (cmdIsValidInt) 
@@ -1636,7 +1654,9 @@ String fun_CmdRead (String cmdRead /*input commands here*/)
                  desctiptionUserInv_ReadSignal = bool (cmdGetSpecialInt);
 
             }
-          else { cmd_msgOut += cmdRead + " [not a byte],stored: "+ String (readMemoryByte (memInv_ReadSignal))  ;};
+          else {
+                 cmd_msgOut += cmdRead + " [not a bool],stored: " + String(readMemoryByte(memInv_ReadSignal));
+          };
         }
 //        Stop inverter / Pause condtional sensor 
 
@@ -1649,7 +1669,9 @@ String fun_CmdRead (String cmdRead /*input commands here*/)
                  desctiptionUserPrg_StopInv = bool (cmdGetSpecialInt);
 
             }
-          else { cmd_msgOut += cmdRead + " [not a byte],stored: "+ String (readMemoryByte (memPrg_StopInv))  ;};
+          else {
+                 cmd_msgOut += cmdRead + " [not a bool],stored: " + String(readMemoryByte(memPrg_StopInv));
+          };
         }
 //       Stop inverter by extreme cold or worm condtional sensor 
 
@@ -1662,7 +1684,9 @@ String fun_CmdRead (String cmdRead /*input commands here*/)
                  desctiptionUserPrg_StopInvTemp = bool (cmdGetSpecialInt);
 
             }
-          else { cmd_msgOut += cmdRead + " [not a byte],stored: "+ String (readMemoryByte (memPrg_StopInvTemp))  ;};
+          else {
+                 cmd_msgOut += cmdRead + " [not a bool],stored: " + String(readMemoryByte(memPrg_StopInvTemp));
+          };
         }
 
 //        IgnoreSensor all  condtional sensors 
