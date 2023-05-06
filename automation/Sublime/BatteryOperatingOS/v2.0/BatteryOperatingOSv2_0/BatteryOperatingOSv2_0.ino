@@ -247,6 +247,7 @@ void funTriggeredLongTimeCounter ()
     bool __triggeredLongAITimeReached = false; //  rememeber a triggered long time is established
     int __triggeredLongAITimeMax = 25300;
     int __triggerActionCnt = 0; // after sensor is triggered , keep countting in small unit to give more time to confirm assignment
+    bool __enableTriggerEvents = true; // keep reacting until triggered event has accure if this var is enable
     String name;
 
   public:
@@ -334,7 +335,7 @@ void InteractionCountinerGlobalUseOneTime () { // inportant function to be place
                         }
                        // 3 Count AI errors , after 10min reset all
                        // reached maximum error AI level where will enable program waiting for a long time after many failures from a sensors or a program attempts to work propietly
-                         if (!getIsReachedTriggeredEventsMax()) // while not reched maximum event count , keep counting
+                        if (!getIsReachedTriggeredEventsMax() && __enableTriggerEvents) // while not reched maximum event count , keep counting
                           __triggeredTracketEventsCnt++;
 
                          if (getIsReachedTriggeredEventsMax()) // Maxed out triggeredTracketEventsMax
@@ -394,8 +395,8 @@ void InteractionCountinerGlobalUseOneTime () { // inportant function to be place
     bool getTriggeredTracketEventsAny () {
       return __triggeredTracketEventsCnt > 0 || __triggeredTimeoutCnt > 0;
     }
-
-     void resetErrors()
+    void setEnableTriggerEvents(bool cond) { __enableTriggerEvents  = cond;};
+    void resetErrors()
     {
        __triggeredTimeoutCnt = 0;      
        __triggeredTracketEventsCnt = 0; 
@@ -1048,7 +1049,7 @@ desribtionsInTextSensing = ""; // clear each time
 // desctiptionSuddenVoltageChange
 
 
-  if (!sensorDoInv_readAC && !desctiptionUserInv_readAC  && output5StateInvOutput == "on"   && delay_Inv_Output220_cnt < int(maxDelay_Inv_Output220_sec * delay_Inv_Output220_ReactRatio))         {/* cnd = false; */ desctiptionInv_readAC = true ; desctiptionInv_readACActive = true;  descTxt("No Inv.~220v output ,", react);}  else { desctiptionInv_readACActive = false; /* desctiptionInv_readAC = false; */}; 
+  if (!sensorDoInv_readAC && !desctiptionUserInv_readAC  && output5StateInvOutput == "on"   && delay_Inv_Output220_cnt < int(maxDelay_Inv_Output220_sec * delay_Inv_Output220_ReactRatio))         {/* if (!Activate220vReactionTimeUser) {cnd = false;}; no reaction time ! *//* cnd = false; */ desctiptionInv_readAC = true ; desctiptionInv_readACActive = true;  descTxt("No Inv.~220v output ,", react);}  else { desctiptionInv_readACActive = false; /* desctiptionInv_readAC = false; */}; 
   if (sensorDoInv_ReadSignal && !desctiptionUserInv_ReadSignal)  {/* cnd = false; */ desctiptionInv_ReadSignal = true ;descTxt("Read Inv. Signal ,", react);}else{desctiptionInv_ReadSignal = false;};
   if (sensorDoPrg_StopInv    && !desctiptionUserPrg_StopInv)     {/* cnd = false; */ desctiptionPrg_StopInv    = true ; descTxt("Prg. Stop Inverter ," , react);                    } else { desctiptionPrg_StopInv = false;};
   if (sensorPrg_StopInvTemp  && !desctiptionUserPrg_StopInvTemp) {/* cnd = false; */ desctiptionPrg_StopInvTemp = true ; descTxt("Stop inverter of critical temperature ," , react); } else { desctiptionPrg_StopInvTemp = false;};
@@ -1059,9 +1060,10 @@ desribtionsInTextSensing = ""; // clear each time
   //  if (cnd == false)
   //    triggeredAction = true ; // if any sensor is detected , will trigger a error AI but must be controlled with correct intervals becouse this go directly into counter without a stop
        ObjTriggerInv_ReadSignal.InteractionCountinerGlobalUseOneTime (); // must be used one time from any object
-
-  if ( ObjTriggerInv_Output220.InteractionTime(desctiptionInv_readACActive, true ,int(Sustain220vReactionTimeUser)) && Activate220vReactionTimeUser ) {cnd = false;}; // only works if user is activated triggered protection
-  if (!Activate220vReactionTimeUser &&  desctiptionInv_readACActive) {cnd = false;};
+       
+       ObjTriggerInv_Output220.setEnableTriggerEvents(Activate220vReactionTimeUser); // enable or disable in the trigger errors event
+  if ( ObjTriggerInv_Output220.InteractionTime(desctiptionInv_readACActive, true ,int(Sustain220vReactionTimeUser))) {cnd = false;}; // only works if user is activated triggered protection
+  // if (!Activate220vReactionTimeUser &&  !desctiptionInv_readACActive) {cnd = false;}; // doest work
   if (ObjTriggerInv_ReadSignal.InteractionTime(desctiptionInv_ReadSignal, true , 6)){cnd = false;}
   if (ObjTriggerPrg_StopInv.InteractionTime(desctiptionPrg_StopInv, true , 5)) {cnd = false;};
   if (ObjTriggerPrg_StopInvTemp.InteractionTime(desctiptionPrg_StopInvTemp,true , 6)) {cnd = false;};
