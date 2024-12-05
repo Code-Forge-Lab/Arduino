@@ -1,12 +1,30 @@
-/*********
-  Rui Santos
+ /*
+ Rui Santos
   Complete project details at https://randomnerdtutorials.com  
 *********/
 
-// #include <ESP8266WiFi.h>
+//#include <ESP8266WiFi.h>
+//#include <WiFiUdp.h>
+//#include <NTPClient.h>
+#include <EEPROM.h>
 // #include <DNSServer.h>
 // #include <ESP8266WebServer.h>
-#include <WiFiManager.h>         // https://github.com/tzapu/WiFiManager
+ #include <WiFiManager.h>         // https://github.com/tzapu/WiFiManager
+const char* ssid     = "a";
+const char* password = "b";
+
+//functctions
+void funTimeClient ();
+
+
+String currentTimeHeader;
+const long utcOffsetInSeconds = 10800; // 10800
+//char daysOfTheWeek[7][12] = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
+char daysOfTheWeekLT[7][20] = {"Sekmadienis", "Pirmadienis", "Antradienis", "Treciadienis", "Ketvirtadienis", "Penktadienis", "Sestadienis"};
+// Define NTP Client to get time
+WiFiUDP ntpUDP;
+//NTPClient timeClient(ntpUDP, "europe.pool.ntp.org", utcOffsetInSeconds);
+
 
 // Set web server port number to 80
 WiFiServer server(80);
@@ -19,12 +37,8 @@ String output5State = "off";
 String output4State = "off";
 
 // Assign output variables to GPIO pins
- const int output5 = 5;
- const int output4 = 4;
-
- // WiFiManager
-  // Local intialization. Once its business is done, there is no need to keep it around
-  WiFiManager wifiManager;
+const int output5 = 5;
+const int output4 = 4;
 
 void setup() {
   Serial.begin(115200);
@@ -36,46 +50,43 @@ void setup() {
   digitalWrite(output5, LOW);
   digitalWrite(output4, LOW);
 
- 
+  // WiFiManager
+  // Local intialization. Once its business is done, there is no need to keep it around
+  //WiFiManager wifiManager;
   
   // Uncomment and run it once, if you want to erase all the stored information
-  // wifiManager.resetSettings();
+  //wifiManager.resetSettings();
   
   // set custom ip for portal
   //wifiManager.setAPConfig(IPAddress(10,0,1,1), IPAddress(10,0,1,1), IPAddress(255,255,255,0));
 
   // fetches ssid and pass from eeprom and tries to connect
   // if it does not connect it starts an access point with the specified name
-  
-  wifiManager.setConfigPortalTimeout(280);
   // here  "AutoConnectAP"
   // and goes into a blocking loop awaiting configuration
-  wifiManager.autoConnect("Inverter Manager");
+  //wifiManager.autoConnect("AutoConnectAP");
   // or use this for auto generated name ESP + ChipID
   //wifiManager.autoConnect();
   
+  timeClient.begin();
+  timeClient.setUpdateInterval(10000UL); // 10 seconds interval to update a time
 
-
-
-  //B
-  //Serial.print("Connecting to ");
-  //Serial.println(ssid);
-  //WiFi.begin(ssid, password);
-  // while (WiFi.status() != WL_CONNECTED) {
-  //   delay(500);
-  //   Serial.print(".");
-  // }
-
-
-  //Serial.println (WiFiManager.localIP());
   // if you get here you have connected to the WiFi
-  Serial.println("Connected________________________");
-  Serial.println("");
-  Serial.println("WiFi connected.");
-  Serial.println("IP address: ");
-  Serial.println(WiFi.localIP());
+  Serial.println("Connected.");
+  
+   Serial.print("Connecting to ");
+  Serial.println(ssid);
+  WiFi.begin(ssid, password);
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+  }
+
   server.begin();
+  funTimeClient();
 }
+
+
 
 void loop(){
   WiFiClient client = server.available();   // Listen for incoming clients
@@ -170,4 +181,26 @@ void loop(){
     Serial.println("Client disconnected.");
     Serial.println("");
   }
+}
+
+
+
+
+void funTimeClient () {
+ 
+  timeClient.update();
+
+Serial.print(daysOfTheWeekLT[timeClient.getDay()]);
+Serial.print(", ");
+Serial.print(timeClient.getHours());
+Serial.print(":");
+Serial.print(timeClient.getMinutes());
+Serial.print(":");
+Serial.println(timeClient.getSeconds());
+
+
+currentTimeHeader = String(daysOfTheWeekLT[timeClient.getDay()]) + "<br> " + timeClient.getFormattedTime() ; //String(daysOfTheWeekLT[timeClient.getDay()]) + ", " + String(timeClient.getHours()) + ": " + String(timeClient.getMinutes()) + ":" + String(timeClient.getSeconds());
+
+Serial.print (currentTimeHeader);
+ //delay (1000);
 }
