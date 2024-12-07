@@ -14,7 +14,8 @@ int counter1 = 0;
 int counter2 = 0;
 
 
-int LED_BUILTIN = 2;
+#define LED_BUILTIN 1
+bool __led_toggle = false;
 
 unsigned long clock_1sec = 0; 
 
@@ -30,7 +31,7 @@ void notFound(AsyncWebServerRequest *request) {
 }
 
 void setup() {
-    pinMode(LED_BUILTIN, OUTPUT);
+    
 
      lcd.init();                       // Initialize the LCD
      lcd.backlight();                  // Turn on the backlight
@@ -77,7 +78,9 @@ void setup() {
 
       server.on("/led_toggle", HTTP_GET, [](AsyncWebServerRequest * request) {
     Serial.println("LED Toggled!!!");
-    digitalWrite(LED_BUILTIN, !digitalRead(LED_BUILTIN));
+    // digitalWrite(LED_BUILTIN, !digitalRead(LED_BUILTIN));
+    digitalWrite(LED_BUILTIN, __led_toggle);
+    __led_toggle = !__led_toggle;
     request->send(200, "text/html", "");
   });
 
@@ -91,7 +94,8 @@ void setup() {
   server.onNotFound(notFound);
   server.begin();
 
-                    // Clear the LCD screen
+  pinMode(LED_BUILTIN, OUTPUT);
+  // digitalWrite(LED_BUILTIN, true);
 }
 
 void loop() {
@@ -111,7 +115,11 @@ if (((long)clock_1sec + 1000UL) < millis())
 
   lcdPrint ("nCounter: " + String(nCounter) + "c" , false , 0 , 2);
 
+  lcdPrint ("toggleBtn: " + String(__led_toggle) + "!" , false , 0 , 3);
 
+
+    
 
     }
+    
 }
