@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pellet Burner Temperature Control</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+        }
+        .container {
+            margin: 50px auto;
+            max-width: 400px;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .temperature-display {
+            font-size: 2em;
+            margin: 20px 0;
+        }
+        .slider {
+            width: 100%;
+        }
+        label {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Pellet Burner Control</h1>
+        <label for="temperature-slider">Set Temperature (°C):</label>
+        <input 
+            type="range" 
+            id="temperature-slider" 
+            class="slider" 
+            min="50" 
+            max="300" 
+            value="150" 
+            step="1">
+        <div class="temperature-display">
+            Current Temperature: <span id="temperature-value">150</span>°C
+        </div>
+    </div>
+
+    <script>
+        const slider = document.getElementById('temperature-slider');
+        const tempDisplay = document.getElementById('temperature-value');
+
+        // Update the temperature display as the slider moves
+        slider.addEventListener('input', () => {
+            tempDisplay.textContent = slider.value;
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pellet Burner Control</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            max-width: 400px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .status {
+            font-size: 18px;
+            margin: 10px 0;
+            padding: 10px;
+            background-color: #e0e0e0;
+            width: 100%;
+            text-align: center;
+            border-radius: 5px;
+        }
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+        }
+        .controls button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .controls button:hover {
+            background-color: #45a049;
+        }
+        .temp-control, .fan-control {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
+        .temp-control input, .fan-control input {
+            padding: 10px;
+            font-size: 16px;
+            text-align: center;
+            width: 100px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Pellet Burner Control</h1>
+        
+        <!-- Status Section -->
+        <div id="status" class="status">Status: OFF</div>
+
+        <!-- Burner On/Off Controls -->
+        <div class="controls">
+            <button onclick="toggleBurner()">Turn On</button>
+            <button onclick="toggleBurner()">Turn Off</button>
+        </div>
+        
+        <!-- Temperature Control -->
+        <div class="temp-control">
+            <h2>Temperature</h2>
+            <label for="temperature">Set Temperature (°C):</label>
+            <input type="number" id="temperature" value="20" min="5" max="60">
+        </div>
+
+        <!-- Fan Control -->
+        <div class="fan-control">
+            <h2>Fan Speed</h2>
+            <label for="fan-speed">Set Fan Speed (%):</label>
+            <input type="number" id="fan-speed" value="50" min="0" max="100">
+        </div>
+    </div>
+
+    <script>
+        let burnerStatus = false;
+        let statusElement = document.getElementById('status');
+
+        // Toggle burner on and off
+        function toggleBurner() {
+            burnerStatus = !burnerStatus;
+            if (burnerStatus) {
+                statusElement.textContent = 'Status: ON';
+            } else {
+                statusElement.textContent = 'Status: OFF';
+            }
+        }
+    </script>
+</body>
+</html>

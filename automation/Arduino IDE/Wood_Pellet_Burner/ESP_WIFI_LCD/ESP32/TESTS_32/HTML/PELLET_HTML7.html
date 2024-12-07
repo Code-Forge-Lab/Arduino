@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pellet Burner Control Panel</title>
+    <style>
+        body {
+            font-family: "Arial", sans-serif;
+            background: linear-gradient(to bottom, #f0f4ff, #d0e3ff);
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .panel {
+            background: #fff;
+            border-radius: 12px;
+            padding: 20px;
+            width: 350px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            display: grid;
+            grid-template-areas:
+                "screen screen"
+                "menu pellet"
+                "blue1 blue2";
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        .screen {
+            grid-area: screen;
+            background: #003366;
+            color: #fff;
+            font-size: 16px;
+            border-radius: 8px;
+            padding: 10px;
+            text-align: center;
+            height: 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.3);
+        }
+        .button {
+            border: none;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 14px;
+            font-weight: bold;
+            text-align: center;
+            padding: 10px;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+        }
+        .button:active {
+            transform: scale(0.95);
+        }
+        .menu {
+            grid-area: menu;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .menu .black {
+            background: #333;
+        }
+        .menu .red {
+            background: #c0392b;
+        }
+        .pellet {
+            grid-area: pellet;
+            background: #e74c3c;
+        }
+        .blue1 {
+            grid-area: blue1;
+            background: #3498db;
+        }
+        .blue2 {
+            grid-area: blue2;
+            background: #2980b9;
+        }
+    </style>
+</head>
+<body>
+
+<div class="panel">
+    <!-- Screen Section -->
+    <div class="screen">
+        <div id="temperature-display">Temperature: 150°C</div>
+        <div id="fire-intensity-display">Fire Intensity: High</div>
+        <div id="fuel-left-display">Fuel Left: 75%</div>
+    </div>
+
+    <!-- Menu Buttons -->
+    <div class="menu">
+        <button class="button black" onclick="navigateMenu('up')">Menu ↑</button>
+        <button class="button black" onclick="navigateMenu('down')">Menu ↓</button>
+        <button class="button red" onclick="menuEnter()">Enter</button>
+    </div>
+
+    <!-- Momentary Pellet Push -->
+    <button class="button pellet" onclick="pelletPush()">Pellet Push</button>
+
+    <!-- Auger and Fan Buttons -->
+    <button class="button blue1" onclick="toggleAuger()">Auger</button>
+    <button class="button blue2" onclick="toggleFan()">Fan</button>
+</div>
+
+<script>
+    function toggleAuger() {
+        alert("Auger toggled!");
+    }
+
+    function toggleFan() {
+        alert("Fan toggled!");
+    }
+
+    function pelletPush() {
+        alert("Pellet Push activated!");
+    }
+
+    function navigateMenu(direction) {
+        alert(`Menu moved ${direction}!`);
+    }
+
+    function menuEnter() {
+        alert("Menu Enter selected!");
+    }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Pellet Burner Control Panel</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #2c3e50;
+            color: #fff;
+            padding: 10px 20px;
+            text-align: center;
+        }
+        .container {
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .status, .controls, .intensities {
+            margin-bottom: 20px;
+        }
+        .status {
+            display: flex;
+            justify-content: space-between;
+            background-color: #e7eaf6;
+            border-radius: 8px;
+            padding: 15px;
+        }
+        .status div {
+            flex: 1;
+            text-align: center;
+        }
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            gap: 10px;
+        }
+        .controls button, .intensities div {
+            padding: 15px;
+            font-size: 16px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            text-align: center;
+        }
+        .controls button:hover {
+            background-color: #2980b9;
+        }
+        .controls button:active {
+            transform: scale(0.95);
+        }
+        .temperature-scale {
+            position: relative;
+            display: inline-block;
+        }
+        .temperature-scale .scale {
+            width: 150px;
+            height: 20px;
+            background: linear-gradient(to right, blue, red);
+            border-radius: 5px;
+            margin-top: 5px;
+        }
+        .fan {
+            animation: spin 2s linear infinite;
+            width: 40px;
+            height: 40px;
+            border: 6px solid #3498db;
+            border-top: 6px solid #fff;
+            border-radius: 50%;
+            margin: 0 auto;
+        }
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        .pellet-button {
+            font-size: 16px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 5px;
+        }
+        .pellet-icon {
+            width: 20px;
+            height: 20px;
+            background: #964b00;
+            border-radius: 50%;
+        }
+        footer {
+            text-align: center;
+            padding: 10px;
+            background-color: #2c3e50;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Advanced Pellet Burner Control Panel</h1>
+</header>
+
+<div class="container">
+    <!-- Status Section -->
+    <div class="status">
+        <div>
+            <h3>Current Temperature</h3>
+            <div class="temperature-scale">
+                <button onclick="alert('Temperature adjusted')">Adjust Temp</button>
+                <div class="scale"></div>
+            </div>
+        </div>
+        <div>
+            <h3>Burner Status</h3>
+            <p id="status">Offline</p>
+        </div>
+    </div>
+
+    <!-- Intensities Section -->
+    <div class="intensities">
+        <div>
+            <h3>Fuel Intensity</h3>
+            <div id="fuel-bar" style="background: #27ae60; width: 60%; height: 20px; border-radius: 5px;"></div>
+        </div>
+        <div>
+            <h3>Fire Intensity</h3>
+            <div id="fire-bar" style="background: orange; width: 80%; height: 20px; border-radius: 5px;"></div>
+        </div>
+    </div>
+
+    <!-- Controls Section -->
+    <div class="controls">
+        <button onclick="toggleIgnition()">Ignition</button>
+        <button onclick="toggleFan()">Fan Control</button>
+        <div id="fan-icon" class="fan"></div>
+        <button class="pellet-button" onclick="addPellets()">
+            Add Pellets <div class="pellet-icon"></div>
+        </button>
+    </div>
+</div>
+
+<footer>
+    <p>&copy; 2024 Pellet Burner Co. All rights reserved.</p>
+</footer>
+
+<script>
+    // JavaScript for Button Functionality
+    function toggleIgnition() {
+        const status = document.getElementById('status');
+        status.textContent = status.textContent === 'Offline' ? 'Ignition On' : 'Offline';
+        alert('Ignition toggled!');
+    }
+
+    function toggleFan() {
+        const fan = document.getElementById('fan-icon');
+        const isSpinning = fan.style.animationPlayState !== 'paused';
+        fan.style.animationPlayState = isSpinning ? 'paused' : 'running';
+        alert('Fan toggled!');
+    }
+
+    function addPellets() {
+        alert('Pellets added!');
+    }
+</script>
+
+</body>
+</html>

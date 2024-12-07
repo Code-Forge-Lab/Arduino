@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pellet Burner Control</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .container {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            margin: auto;
+            padding: 30px;
+        }
+        .status {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+            font-size: 18px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            color: #fff;
+            font-weight: bold;
+        }
+        .status.on {
+            background-color: #4CAF50;
+        }
+        .status.off {
+            background-color: #f44336;
+        }
+        .status.standby {
+            background-color: #ff9800;
+        }
+        .control-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .control-panel input[type="range"] {
+            width: 100%;
+        }
+        .control-panel input[type="number"] {
+            width: 80px;
+            padding: 5px;
+            font-size: 16px;
+            text-align: center;
+            margin-top: 10px;
+        }
+        .control-panel button {
+            padding: 12px 25px;
+            background-color: #2196F3;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .control-panel button:hover {
+            background-color: #1976D2;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Pellet Burner Control</h1>
+
+        <!-- Status Indicator -->
+        <div id="status" class="status off">
+            OFF
+        </div>
+
+        <!-- Control Panel -->
+        <div class="control-panel">
+            <!-- On/Off Button -->
+            <button id="powerBtn" onclick="togglePower()">Turn On</button>
+            
+            <!-- Temperature Control -->
+            <label for="temperature">Temperature (°C):</label>
+            <input type="range" id="temperature" min="5" max="60" value="20" oninput="updateTemperature()">
+            <input type="number" id="tempValue" value="20" min="5" max="60" onchange="updateSliderTemp()">
+
+            <!-- Fan Speed Control -->
+            <label for="fanSpeed">Fan Speed (%):</label>
+            <input type="range" id="fanSpeed" min="0" max="100" value="50" oninput="updateFanSpeed()">
+            <input type="number" id="fanSpeedValue" value="50" min="0" max="100" onchange="updateSliderFan()">
+        </div>
+    </div>
+
+    <script>
+        // Burner state
+        let burnerStatus = false;
+        const statusElement = document.getElementById('status');
+        const powerButton = document.getElementById('powerBtn');
+
+        // Handle On/Off power button
+        function togglePower() {
+            burnerStatus = !burnerStatus;
+
+            if (burnerStatus) {
+                statusElement.className = 'status on';
+                statusElement.textContent = 'ON';
+                powerButton.textContent = 'Turn Off';
+            } else {
+                statusElement.className = 'status off';
+                statusElement.textContent = 'OFF';
+                powerButton.textContent = 'Turn On';
+            }
+        }
+
+        // Temperature control slider & input synchronization
+        function updateTemperature() {
+            const slider = document.getElementById('temperature');
+            const tempInput = document.getElementById('tempValue');
+            tempInput.value = slider.value;
+        }
+
+        function updateSliderTemp() {
+            const tempInput = document.getElementById('tempValue');
+            const slider = document.getElementById('temperature');
+            slider.value = tempInput.value;
+        }
+
+        // Fan speed control slider & input synchronization
+        function updateFanSpeed() {
+            const slider = document.getElementById('fanSpeed');
+            const fanSpeedInput = document.getElementById('fanSpeedValue');
+            fanSpeedInput.value = slider.value;
+        }
+
+        function updateSliderFan() {
+            const fanSpeedInput = document.getElementById('fanSpeedValue');
+            const slider = document.getElementById('fanSpeed');
+            slider.value = fanSpeedInput.value;
+        }
+    </script>
+
+</body>
+</html>

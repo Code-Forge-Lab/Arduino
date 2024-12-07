@@ -1,4 +1,4 @@
-# Adafruit ILI9341 Arduino Library [![Build Status](https://travis-ci.com/adafruit/Adafruit_ILI9341.svg?branch=master)](https://travis-ci.com/adafruit/Adafruit_ILI9341)
+# Adafruit ILI9341 Arduino Library [![Build Status](https://github.com/adafruit/Adafruit_ILI9341/workflows/Arduino%20Library%20CI/badge.svg)](https://github.com/adafruit/Adafruit_ILI9341/actions)[![Documentation](https://github.com/adafruit/ci-arduino/blob/master/assets/doxygen_badge.svg)](http://adafruit.github.io/Adafruit_ILI9341/html/index.html)
 
 This is a library for the Adafruit ILI9341 display products
 
@@ -35,4 +35,4 @@ To download. click the DOWNLOADS button in the top right corner, rename the unco
 
 Place the Adafruit_ILI9341 library folder your arduinosketchfolder/libraries/ folder. You may need to create the libraries subfolder if its your first library. Restart the IDE
 
-Also requires the Adafruit_GFX library for Arduino.
+Also requires the [Adafruit_GFX](https://github.com/adafruit/Adafruit-GFX-Library) library for Arduino.

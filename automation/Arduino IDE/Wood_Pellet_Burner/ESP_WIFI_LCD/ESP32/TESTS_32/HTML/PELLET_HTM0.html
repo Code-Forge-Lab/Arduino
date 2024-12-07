@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pellet Burner Control Panel</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #2c3e50;
+            color: #fff;
+            padding: 10px 20px;
+            text-align: center;
+        }
+        .container {
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .status {
+            display: flex;
+            justify-content: space-between;
+            background-color: #e7eaf6;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        .status div {
+            flex: 1;
+            text-align: center;
+        }
+        .controls {
+            display: flex;
+            justify-content: space-around;
+        }
+        .controls button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .controls button:hover {
+            background-color: #2980b9;
+        }
+        footer {
+            text-align: center;
+            padding: 10px;
+            background-color: #2c3e50;
+            color: white;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Pellet Burner Control Panel</h1>
+</header>
+
+<div class="container">
+    <!-- Status Section -->
+    <div class="status">
+        <div>
+            <h3>Current Temperature</h3>
+            <p id="temperature">-- °C</p>
+        </div>
+        <div>
+            <h3>Burner Status</h3>
+            <p id="status">Offline</p>
+        </div>
+        <div>
+            <h3>Fuel Level</h3>
+            <p id="fuel">--%</p>
+        </div>
+    </div>
+
+    <!-- Controls Section -->
+    <div class="controls">
+        <button onclick="startBurner()">Start</button>
+        <button onclick="stopBurner()">Stop</button>
+        <button onclick="reloadFuel()">Reload Fuel</button>
+    </div>
+</div>
+
+<footer>
+    <p>&copy; 2024 Pellet Burner Co. All rights reserved.</p>
+</footer>
+
+<script>
+    // Example JavaScript functions for controls
+    function startBurner() {
+        document.getElementById('status').textContent = "Running";
+        alert("Burner started!");
+    }
+
+    function stopBurner() {
+        document.getElementById('status').textContent = "Stopped";
+        alert("Burner stopped!");
+    }
+
+    function reloadFuel() {
+        document.getElementById('fuel').textContent = "100%";
+        alert("Fuel reloaded!");
+    }
+</script>
+
+</body>
+</html>
