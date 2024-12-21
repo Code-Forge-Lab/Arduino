@@ -65,7 +65,7 @@ const char index_html[] PROGMEM = R"rawliteral(
             // Here you can add the code to toggle the LED.
             // For demonstration, we just log to the console.
             
-            alert('LED toggled');  // Showing an alert for visual feedback
+            // alert('LED toggled');  // Showing an alert for visual feedback
             xhttp.open("GET", "led_toggle", true);
             xhttp.send();
         }
@@ -94,3 +94,21 @@ const char index_html[] PROGMEM = R"rawliteral(
 </html>
 
 )rawliteral";
+
+
+
+
+
+
+
+
+
+
+
+
+server.on("/data", HTTP_GET, [](AsyncWebServerRequest* request) {
+        String json = "{\"temperature\":" + String(temperature) + 
+                        ",\"status\":\"" + burnerStatus + "\" " + 
+                        ",\"adcFireValue\":" + String(temperature)+
+                        ",\"adcFuelValue\":" + String(temperature);"}";
+                                                              

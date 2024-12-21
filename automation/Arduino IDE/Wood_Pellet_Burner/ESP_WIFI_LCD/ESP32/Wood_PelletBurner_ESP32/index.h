@@ -1,3 +1,4 @@
+const char index_html[] PROGMEM = R"rawliteral(
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -62,7 +63,7 @@
             fetch("/status")
                 .then(response => response.json())
                 .then(data => {
-                    document.getElementById("currentTemp").innerText = `${data.temperature} °C`;
+                    document.getElementById("currentTemp").innerText = `${data.temperature} C`;
                     document.getElementById("burnerStatus").innerText = data.burnerStatus ? "ON" : "OFF";
                     document.getElementById("fireStrength").innerText = `${data.fireStrength}`;
                     document.getElementById("fuelLeft").innerText = `${data.fuelLeft}%`;
@@ -97,7 +98,7 @@
 <body>
     <div class="card">
         <h1>Pellet Burner Control</h1>
-        <div class="info">Current Temperature: <span id="currentTemp">-- °C</span></div>
+        <div class="info">Current Temperature: <span id="currentTemp">-- C</span></div>
         <div class="info">Burner Status: <span id="burnerStatus">--</span></div>
         <div class="info">Fire Strength: <span id="fireStrength">--</span></div>
         <div class="info">Fuel Left: <span id="fuelLeft">--%</span></div>
@@ -116,3 +117,4 @@
     </div>
 </body>
 </html>
+)rawliteral";

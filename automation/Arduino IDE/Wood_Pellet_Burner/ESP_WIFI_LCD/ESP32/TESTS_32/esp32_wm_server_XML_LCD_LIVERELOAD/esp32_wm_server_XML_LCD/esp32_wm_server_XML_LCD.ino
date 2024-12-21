@@ -9,8 +9,9 @@
 #include "findLCD.h"
 
 
-int counter = 0;
-int counter1 = 0;
+int WaterTempRequired = 35;
+int WaterTempOut = 0;
+int WaterTempIn = 0;
 int counter2 = 0;
 
 
@@ -71,18 +72,53 @@ void setup() {
     request->send_P(200, "text/html", index_html, NULL);
   });
   
-    server.on("/adc_value", HTTP_GET, [](AsyncWebServerRequest * request) {
-    nCounter ++;
-    request->send(200, "text/html", String(nCounter));
+
+
+
+server.on("/__adc_TEMP_REQUIRED", HTTP_GET, [](AsyncWebServerRequest * request) {
+    
+    request->send(200, "text/html", String(WaterTempRequired));
   });
 
+
+  server.on("/__adc_TEMP_HOT", HTTP_GET, [](AsyncWebServerRequest * request) {
+    
+    request->send(200, "text/html", String(WaterTempIn));
+  });
+
+  server.on("/__adc_TEMP_COLD", HTTP_GET, [](AsyncWebServerRequest * request) {
+    
+    request->send(200, "text/html", String(WaterTempOut));
+  });
+
+
+
+
       server.on("/led_toggle", HTTP_GET, [](AsyncWebServerRequest * request) {
-    Serial.println("LED Toggled!!!");
+    Serial.print("LED Toggled!!!");
     // digitalWrite(LED_BUILTIN, !digitalRead(LED_BUILTIN));
     digitalWrite(LED_BUILTIN, __led_toggle);
     __led_toggle = !__led_toggle;
     request->send(200, "text/html", "");
   });
+
+
+/// Change Required Temperature
+  server.on("/__requiredTempPlus", HTTP_GET, [](AsyncWebServerRequest * request) {
+    Serial.print("Temp Required Increased!!!");
+    WaterTempRequired = WaterTempRequired + 1;
+    request->send(200, "text/html", "");
+  });
+
+    server.on("/__requiredTempMinus", HTTP_GET, [](AsyncWebServerRequest * request) {
+    Serial.print("Temp Required Decreased");
+    WaterTempRequired = WaterTempRequired - 1;
+
+    request->send(200, "text/html", "");
+  });
+
+
+
 
   server.on("/get", HTTP_GET, [] (AsyncWebServerRequest * request) {
     String inputMessage;
@@ -106,19 +142,26 @@ if (((long)clock_1sec + 1000UL) < millis())
 
       findLCD ();
       lcd.setCursor(0, 0);               // Set the cursor to the first column and first row
+   
+  lcdPrint ("Temp Required: "+ String(WaterTempRequired) + "C" , true , 0 , 0);
 
-  lcdPrint ("Temperature: "+ String(counter) + "C" , true , 0 , 0);
-  counter = counter + 1;
+  lcdPrint ("Temp Out: "+ String(WaterTempOut) + "C" , false , 0 , 1);
+  WaterTempOut = WaterTempOut + 2;
 
-  lcdPrint ("Fire: "+ String(counter1) + "LX" , false , 0 , 1);
-  counter1 = counter1 + 2;
+  lcdPrint ("Temp In: "+ String(WaterTempIn) + "C" , false , 0 , 2);
+  WaterTempIn = WaterTempIn + 1;
 
-  lcdPrint ("nCounter: " + String(nCounter) + "c" , false , 0 , 2);
+  // lcdPrint ("nCounter: " + String(nCounter) + "c" , false , 0 , 2);
 
   lcdPrint ("toggleBtn: " + String(__led_toggle) + "!" , false , 0 , 3);
 
 
-    
+    if (WaterTempRequired < (WaterTempOut + WaterTempIn)/2 ) // reset values at selected tem[erature limit
+       {
+        WaterTempIn = 0;
+        WaterTempOut = 0;
+        Serial.print("Reseted By Requared Max Value !");
+       }
 
     }
     

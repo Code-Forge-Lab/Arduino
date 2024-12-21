@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pellet Burner Control</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        header {
+            background: #007BFF;
+            color: white;
+            padding: 1em 0;
+        }
+        .container {
+            margin: 20px auto;
+            width: 90%;
+            max-width: 600px;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+        .status {
+            font-size: 1.2em;
+            margin: 10px 0;
+        }
+        button, input[type="text"] {
+            padding: 10px 20px;
+            margin: 10px;
+            font-size: 1em;
+            border: none;
+            border-radius: 5px;
+        }
+        button {
+            background: #007BFF;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        input[type="text"] {
+            width: 70%;
+            border: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Pellet Burner Controller</h1>
+    </header>
+    <div class="container">
+        <p class="status">Current Temperature: <span id="temperature">--</span>°C</p>
+        <p class="status">Burner Status: <span id="status">OFF</span></p>
+
+        <button onclick="sendCommand('start')">Start Burner</button>
+        <button onclick="sendCommand('stop')">Stop Burner</button>
+
+        <div class="slider-container">
+            <label for="heatLevel">Heat Level:</label>
+            <input type="range" id="heatLevel" min="1" max="10" value="5" onchange="updateHeatLevel(this.value)">
+            <span id="heatLevelValue">5</span>
+        </div>
+
+        <div class="custom-command">
+            <h3>Send Custom Command</h3>
+            <input type="text" id="customCommand" placeholder="Enter your command here">
+            <button onclick="sendCustomCommand()">Send</button>
+        </div>
+    </div>
+
+    <script>
+        const temperatureDisplay = document.getElementById('temperature');
+        const statusDisplay = document.getElementById('status');
+        const heatLevelDisplay = document.getElementById('heatLevelValue');
+        const customCommandInput = document.getElementById('customCommand');
+
+        // Update heat level
+        function updateHeatLevel(level) {
+            heatLevelDisplay.textContent = level;
+            fetch(`/setHeatLevel?level=${level}`);
+        }
+
+        // Send start/stop commands
+        function sendCommand(command) {
+            fetch(`/${command}`).then(response => response.text()).then(data => {
+                console.log(data);
+            });
+        }
+
+        // Send a custom command
+        function sendCustomCommand() {
+            const command = customCommandInput.value;
+            if (command) {
+                fetch(`/sendCommand?command=${encodeURIComponent(command)}`)
+                    .then(response => response.text())
+                    .then(data => {
+                        alert("Response: " + data);
+                        customCommandInput.value = ""; // Clear the input
+                    });
+            } else {
+                alert("Please enter a command.");
+            }
+        }
+
+        // Fetch real-time data
+        function fetchData() {
+            fetch('/data').then(response => response.json()).then(data => {
+                temperatureDisplay.textContent = data.temperature;
+                statusDisplay.textContent = data.status;
+            });
+        }
+
+        // Poll data every 2 seconds
+        setInterval(fetchData, 2000);
+    </script>
+</body>
+</html>

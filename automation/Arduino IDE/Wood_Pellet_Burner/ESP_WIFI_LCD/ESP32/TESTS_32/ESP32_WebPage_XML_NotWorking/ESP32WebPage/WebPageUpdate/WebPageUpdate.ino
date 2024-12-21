@@ -133,7 +133,7 @@ void setup() {
   Serial.println("starting server");
 
   // if you have this #define USE_INTRANET,  you will connect to your home intranet, again makes debugging easier
-#ifdef USE_INTRANET
+// #ifdef USE_INTRANET
   WiFi.begin(LOCAL_SSID, LOCAL_PASS);
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
@@ -141,7 +141,7 @@ void setup() {
   }
   Serial.print("IP address: "); Serial.println(WiFi.localIP());
   Actual_IP = WiFi.localIP();
-#endif
+// #endif
 
   // if you don't have #define USE_INTRANET, here's where you will creat and access point
   // an intranet with no internet connection. But Clients can connect to your intranet and see
