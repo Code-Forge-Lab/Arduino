@@ -13,7 +13,7 @@ int WaterTempRequired = 35;
 int WaterTempOut = 0;
 int WaterTempIn = 0;
 int counter2 = 0;
-
+byte cMenu = 0;
 
 #define LED_BUILTIN 1
 bool __led_toggle = false;
@@ -22,6 +22,9 @@ unsigned long clock_1sec = 0;
 
 const char* http_username = "admin";
 const char* http_password = "admin";
+
+// Variable to store the received command
+String receivedCommand;
 
 AsyncWebServer server(80);    // Create an instance of the AsyncWebServer
 
@@ -55,6 +58,9 @@ void setup() {
     // res = wm.autoConnect("AutoConnectAP"); // anonymous ap
     res = wm.autoConnect("AutoConnectAP","password"); // password protected ap
 
+  Serial.println(WiFi.localIP());
+  Serial.println(WiFi.localIP());
+  Serial.println(WiFi.localIP());
     if(!res) {
         Serial.println("Failed to connect");
         // ESP.restart();
@@ -77,7 +83,7 @@ void setup() {
 
 server.on("/__adc_TEMP_REQUIRED", HTTP_GET, [](AsyncWebServerRequest * request) {
     
-    request->send(200, "text/html", String(WaterTempRequired));
+    request->send(200, "text/html", String(WaterTempRequired)+"C");
   });
 
 
@@ -117,13 +123,37 @@ server.on("/__adc_TEMP_REQUIRED", HTTP_GET, [](AsyncWebServerRequest * request) 
     request->send(200, "text/html", "");
   });
 
+//command input
+//  server.on("/command", HTTP_POST, [](AsyncWebServerRequest *request){
+//     if (request->hasParam("command", true)) {
+//       receivedCommand = request->getParam("command", true)->value();
+//       Serial.println("Received Command: " + receivedCommand);
+//       cMenu=11;
+//       // Respond back to the client
+//       // String response = "Command received: " + receivedCommand;
+//       // request->send(200, "text/plain", response);
+//      } 
+//      //else 
+//     //   request->send(400, "text/plain", "Command not received");
+//   });
 
+server.on("/command", HTTP_POST, [](AsyncWebServerRequest *request){
+    if (request->hasParam("command", true)) {
+      cMenu=11;
+      receivedCommand = request->getParam("command", true)->value();
+      Serial.println("Received Command: " + receivedCommand);
 
-
+      // Send a response back to the client
+      String response = "Command received: " + receivedCommand;
+      request->send(200, "text/plain", response);
+    } else {
+      request->send(400, "text/plain", "Command not received");
+    }
+  });
   server.on("/get", HTTP_GET, [] (AsyncWebServerRequest * request) {
     String inputMessage;
     String inputParam;
-
+    
     Serial.println(inputMessage);
     request->send(200, "text/html", index_html);
   });
@@ -134,6 +164,7 @@ server.on("/__adc_TEMP_REQUIRED", HTTP_GET, [](AsyncWebServerRequest * request) 
   // digitalWrite(LED_BUILTIN, true);
 }
 
+
 void loop() {
   // nono bloking clock
 if (((long)clock_1sec + 1000UL) < millis())
@@ -142,19 +173,24 @@ if (((long)clock_1sec + 1000UL) < millis())
 
       findLCD ();
       lcd.setCursor(0, 0);               // Set the cursor to the first column and first row
-   
-  lcdPrint ("Temp Required: "+ String(WaterTempRequired) + "C" , true , 0 , 0);
+   if(cMenu<=1){
+        lcdPrint ("Temp Required: "+ String(WaterTempRequired) + "C" , true , 0 , 0);
 
-  lcdPrint ("Temp Out: "+ String(WaterTempOut) + "C" , false , 0 , 1);
-  WaterTempOut = WaterTempOut + 2;
+        lcdPrint ("Temp Out: "+ String(WaterTempOut) + "C" , false , 0 , 1);
+        WaterTempOut = WaterTempOut + 2;
 
-  lcdPrint ("Temp In: "+ String(WaterTempIn) + "C" , false , 0 , 2);
-  WaterTempIn = WaterTempIn + 1;
+        lcdPrint ("Temp In: "+ String(WaterTempIn) + "C" , false , 0 , 2);
+        WaterTempIn = WaterTempIn + 1;
 
-  // lcdPrint ("nCounter: " + String(nCounter) + "c" , false , 0 , 2);
+        // lcdPrint ("nCounter: " + String(nCounter) + "c" , false , 0 , 2);
 
-  lcdPrint ("toggleBtn: " + String(__led_toggle) + "!" , false , 0 , 3);
-
+        // lcdPrint ("toggleBtn: " + String(__led_toggle) + "!" , false , 0 , 3);
+        lcdPrint ("IP: " + WiFi.localIP().toString() + "!" , false , 0 , 3);
+        
+   }else{
+     if(cMenu>1)cMenu--;
+     lcdPrint ( String(receivedCommand) + "C" , true , 0 , 0);
+   }
 
     if (WaterTempRequired < (WaterTempOut + WaterTempIn)/2 ) // reset values at selected tem[erature limit
        {

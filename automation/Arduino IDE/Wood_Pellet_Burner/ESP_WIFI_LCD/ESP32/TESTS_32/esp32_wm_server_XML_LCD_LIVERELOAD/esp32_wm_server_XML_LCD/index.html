@@ -62,13 +62,13 @@ const char index_html[] PROGMEM = R"rawliteral(
 <body>
     <div class="center-content">
         <h1>Pellet Burner</h1>
-        <div class="adc-value">Water Temp Required <span id="adc_TEMP_REQUIRED">0</span>C</div>
-        <div class="adc-value">Water Temp. Output: <span id="adc_TEMP_HOT">0</span>C > Return: <span id="adc_TEMP_COLD">0</span></div>
+        <div class="adc-value">Water Temp Required <span class="adc_TEMP_REQUIRED">0</span>C</div>
+        <div class="adc-value">Water Temp. Output: <span id="adc_TEMP_HOT">0</span>C > Return: <span id="adc_TEMP_COLD">0</span>C </div>
         <div class="adc-value">Fire: <span id="adc_TEMP_HOT">50</span>%  Fuel: <span id="adc_TEMP_COLD">60</span>% FUELD [ <span id="adc_TEMP_COLD">YES</span> ]</div>
 
         <div class="adc-value">
 	        <button class="button style= margin-top: 10px;" onclick="toggleRequiredTemp_Plus()">+</button>
-	        <span   id="adc_TEMP_REQUIRED2">80</span>
+	        <span   class="adc_TEMP_REQUIRED">80C</span>
 	        <button class="button style= margin-top: 30px;"  onclick="toggleRequiredTemp_Minus()">-<br></button>
     	</div>
     	<div>
@@ -80,38 +80,16 @@ const char index_html[] PROGMEM = R"rawliteral(
         	<button class="button_small " onclick="toggleLED()">Fan Spin</button>
         	<button class="button_small " onclick="toggleLED()">Boost</button>
         </div>
-        	 <form onsubmit="sendCommand(event)">
-             <label for="command">Enter Command:</label><br>
-             <input type="text" id="command" name="command" required><br><br>
-             <input type="submit" value="Send">
-          </form>
+        	 <form action="/command" method="POST">
+      		  <label for="command">Enter Command:</label><br>
+      		  <input type="text" id="command" name="command" required><br><br>
+        	  <input type="submit" value="Send">
+    		</form>
     	</div>
     </div>
     	
     <script>
-
         
-        // Receive command without redirecting it.
-        function sendCommand(event) {
-            event.preventDefault(); // Prevent form redirection
-
-            const command = document.getElementById("command").value;
-
-            // Send the command via an AJAX POST request
-            fetch("/command", {
-                method: "POST",
-                headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                body: `command=${encodeURIComponent(command)}`
-            })
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById("response").innerText = data; // Show the response
-            })
-            .catch(error => {
-                console.error("Error:", error);
-                document.getElementById("response").innerText = "Failed to send command.";
-            });
-        }
 
          function toggleRequiredTemp_Plus() {
             var xhttp = new XMLHttpRequest();
@@ -143,9 +121,6 @@ const char index_html[] PROGMEM = R"rawliteral(
         xhttp.onreadystatechange = function() {
           if (this.readyState == 4 && this.status == 200) {
             document.getElementById("adc_TEMP_REQUIRED").innerHTML =
-            this.responseText;
-
-            document.getElementById("adc_TEMP_REQUIRED2").innerHTML =
             this.responseText;
           }
         };
