@@ -57,6 +57,37 @@ const char index_html[] PROGMEM = R"rawliteral(
             background-color: #21a1f1;
             color: white;
         }
+
+        .button_small:hover {
+            background-color: #21a1f1;
+            color: white;
+        }
+
+        
+        
+        
+        input[type=submit] {
+          width: 85%;
+          color: white;
+          padding: 14px 20px;
+          margin: 8px 0;
+          border: none;
+          border-radius: 4px;
+          cursor: pointer;
+          background-color: #61dafb;
+          color: #282c34;
+          transition: background-color 0.3s, color 0.3s;
+          }
+
+          input[type=text], select {
+          width: 85%;
+          padding: 12px 20px;
+          margin: 8px 0;
+          display: inline-block;
+          border: 1px solid #ccc;
+          border-radius: 4px;
+          box-sizing: border-box;
+
     </style>
 </head>
 <body>
@@ -67,27 +98,28 @@ const char index_html[] PROGMEM = R"rawliteral(
         <div class="adc-value">Fire: <span id="adc_TEMP_HOT">50</span>%  Fuel: <span id="adc_TEMP_COLD">60</span>% FUELD [ <span id="adc_TEMP_COLD">YES</span> ]</div>
 
         <div class="adc-value">
-	        <button class="button style= margin-top: 10px;" onclick="toggleRequiredTemp_Plus()">+</button>
-	        <span   id="adc_TEMP_REQUIRED2">80</span>
-	        <button class="button style= margin-top: 30px;"  onclick="toggleRequiredTemp_Minus()">-<br></button>
-    	</div>
-    	<div>
-
-        	<button class="button center-contentx" onclick="toggleLED()">Burner ONN</button>
-    	<div>
-    		<p class="adc-value" >Pellet [<span id="adc_PELLET_ISACTIVE">OFF</span>] Fan [<span id="adc_FAN_ISACTIVE">OFF</span>] Boost [<span id="adc_FAN_BOOST">NO</span>]</p>
-        	<button class="button_small " onclick="toggleLED()">Pellet Push</button>
-        	<button class="button_small " onclick="toggleLED()">Fan Spin</button>
-        	<button class="button_small " onclick="toggleLED()">Boost</button>
+            <button class="button style= margin-top: 10px;" onclick="toggleRequiredTemp_Plus()">+</button>
+            <span   id="adc_TEMP_REQUIRED2">80</span>
+            <button class="button style= margin-top: 30px;"  onclick="toggleRequiredTemp_Minus()">-<br></button>
         </div>
-        	 <form onsubmit="sendCommand(event)">
-             <label for="command">Enter Command:</label><br>
-             <input type="text" id="command" name="command" required><br><br>
-             <input type="submit" value="Send">
-          </form>
-    	</div>
+        <div>
+
+            <button class="button center-contentx" onclick="toggleLED()">Burner ONN</button>
+        <div>
+            <p class="adc-value" >Pellet [<span id="adc_PELLET_ISACTIVE">OFF</span>] Fan [<span id="adc_FAN_ISACTIVE">OFF</span>] Boost [<span id="adc_FAN_BOOST">NO</span>]</p>
+            <button class="button_small " onclick="toggleLED()">Pellet Push</button>
+            <button class="button_small " onclick="toggleLED()">Fan Spin</button>
+            <button class="button_small " onclick="toggleLED()">Boost</button>
+        </div>
+             <form onsubmit="sendCommand(event)">
+             <!-- <label for="command"></label><br> -->
+             <input class="button_small " type="submit" value="Send">
+             <input type="text" id="command" name="command" placeholder="Input Command" required>
+            </form>
+             <p>Response: <span id="adc_CommandOut" style="color: blue;">??</span></p>
+        </div>
     </div>
-    	
+        
     <script>
 
         
@@ -105,13 +137,17 @@ const char index_html[] PROGMEM = R"rawliteral(
             })
             .then(response => response.text())
             .then(data => {
-                document.getElementById("response").innerText = data; // Show the response
+                document.getElementById("adc_CommandOut").innerText = data; // Update the <span> with the response
             })
             .catch(error => {
                 console.error("Error:", error);
-                document.getElementById("response").innerText = "Failed to send command.";
+                document.getElementById("adc_CommandOut").innerText = "Error sending command.";
             });
-        }
+
+           }
+
+
+
 
          function toggleRequiredTemp_Plus() {
             var xhttp = new XMLHttpRequest();

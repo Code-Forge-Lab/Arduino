@@ -137,19 +137,23 @@ server.on("/__adc_TEMP_REQUIRED", HTTP_GET, [](AsyncWebServerRequest * request) 
 //     //   request->send(400, "text/plain", "Command not received");
 //   });
 
-server.on("/command", HTTP_POST, [](AsyncWebServerRequest *request){
+ // Handle command submission
+  server.on("/command", HTTP_POST, [](AsyncWebServerRequest *request){
+    
     if (request->hasParam("command", true)) {
-      cMenu=11;
+      cMenu=10;
       receivedCommand = request->getParam("command", true)->value();
       Serial.println("Received Command: " + receivedCommand);
 
-      // Send a response back to the client
-      String response = "Command received: " + receivedCommand;
-      request->send(200, "text/plain", response);
+      // Simulate processing and create a response
+      String response =  receivedCommand;
+      request->send(200, "text/plain", response); // Send response back
     } else {
-      request->send(400, "text/plain", "Command not received");
+      request->send(400, "text/plain", "Invalid Command");
     }
   });
+
+  
   server.on("/get", HTTP_GET, [] (AsyncWebServerRequest * request) {
     String inputMessage;
     String inputParam;
@@ -189,7 +193,7 @@ if (((long)clock_1sec + 1000UL) < millis())
         
    }else{
      if(cMenu>1)cMenu--;
-     lcdPrint ( String(receivedCommand) + "C" , true , 0 , 0);
+     lcdPrint ( String(receivedCommand) , true , 0 , 0);
    }
 
     if (WaterTempRequired < (WaterTempOut + WaterTempIn)/2 ) // reset values at selected tem[erature limit
