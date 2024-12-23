@@ -87,12 +87,68 @@ const char index_html[] PROGMEM = R"rawliteral(
           border: 1px solid #ccc;
           border-radius: 4px;
           box-sizing: border-box;
+          }
 
+
+
+        /* Common button styles */
+        #burnerButton {
+            padding: 15px 30px;
+            font-size: 18px;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        /* Styles for OFF state */
+        .off {
+/*            background-color: red;*/
+            background-color: #61daab;
+            color: white;
+        }
+
+        /* Styles for ON state */
+       /* .on {
+            background-color: green;
+            color: white;
+        }*/
+
+
+
+        
     </style>
 </head>
 <body>
+    <script>
+        function toggleBurner(button) {
+                  if (button.classList.contains("off")) {
+                      button.classList.remove("off");
+                      button.classList.add("on");
+                      button.innerText = "Burner ONN";
+                      sendBurnerState("ON");
+                  } else {
+                      button.classList.remove("on");
+                      button.classList.add("off");
+                      button.innerText = "Burner OFF";
+                      sendBurnerState("OFF");
+                  }
+              }
+
+              function sendBurnerState(state) {
+                  fetch(`/burner?state=${state}`)
+                      .then(response => response.text())
+                      .then(data => console.log("ESP32 Response:", data))
+                      .catch(error => console.error("Error:", error));
+              }
+    </script>
+    
     <div class="center-content">
         <h1>Pellet Burner</h1>
+        
+        
+
         <div class="adc-value">Water Temp Required <span id="adc_TEMP_REQUIRED">0</span>C</div>
         <div class="adc-value">Water Temp. Output: <span id="adc_TEMP_HOT">0</span>C > Return: <span id="adc_TEMP_COLD">0</span></div>
         <div class="adc-value">Fire: <span id="adc_TEMP_HOT">50</span>%  Fuel: <span id="adc_TEMP_COLD">60</span>% FUELD [ <span id="adc_TEMP_COLD">YES</span> ]</div>
@@ -102,14 +158,14 @@ const char index_html[] PROGMEM = R"rawliteral(
             <span   id="adc_TEMP_REQUIRED2">80</span>
             <button class="button style= margin-top: 30px;"  onclick="toggleRequiredTemp_Minus()">-<br></button>
         </div>
-        <div>
-
-            <button class="button center-contentx" onclick="toggleLED()">Burner ONN</button>
+        
+            <button class="button" class="off" onclick="toggleBurner(this)">Burner OFF</button>
+            
         <div>
             <p class="adc-value" >Pellet [<span id="adc_PELLET_ISACTIVE">OFF</span>] Fan [<span id="adc_FAN_ISACTIVE">OFF</span>] Boost [<span id="adc_FAN_BOOST">NO</span>]</p>
-            <button class="button_small " onclick="toggleLED()">Pellet Push</button>
-            <button class="button_small " onclick="toggleLED()">Fan Spin</button>
-            <button class="button_small " onclick="toggleLED()">Boost</button>
+            <button class="button_small " onclick="PelletPush()">Pellet Push</button>
+            <button class="button_small " onclick="FanSpin()">Fan Spin</button>
+            <button class="button_small " onclick="FanBoost()">Boost</button>
         </div>
              <form onsubmit="sendCommand(event)">
              <!-- <label for="command"></label><br> -->
@@ -117,35 +173,11 @@ const char index_html[] PROGMEM = R"rawliteral(
              <input type="text" id="command" name="command" placeholder="Input Command" required>
             </form>
              <p>Response: <span id="adc_CommandOut" style="color: blue;">??</span></p>
-        </div>
-    </div>
-        
+      </div>
+    
     <script>
 
-        
-        // Receive command without redirecting it.
-        function sendCommand(event) {
-            event.preventDefault(); // Prevent form redirection
-
-            const command = document.getElementById("command").value;
-
-            // Send the command via an AJAX POST request
-            fetch("/command", {
-                method: "POST",
-                headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                body: `command=${encodeURIComponent(command)}`
-            })
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById("adc_CommandOut").innerText = data; // Update the <span> with the response
-            })
-            .catch(error => {
-                console.error("Error:", error);
-                document.getElementById("adc_CommandOut").innerText = "Error sending command.";
-            });
-
-           }
-
+      
 
 
 
@@ -162,6 +194,40 @@ const char index_html[] PROGMEM = R"rawliteral(
             xhttp.open("GET", "__requiredTempMinus", true);
             xhttp.send();
         }
+
+
+
+/////////////////////
+        function PelletPush() {
+            var xhttp = new XMLHttpRequest();
+            // Here you can add the code to toggle the LED.
+            // For demonstration, we just log to the console.
+            
+            // alert('LED toggled');  // Showing an alert for visual feedback
+            xhttp.open("GET", "__adc_PELLET_PUSH", true);
+            xhttp.send();
+        }
+        function FanSpin() {
+            var xhttp = new XMLHttpRequest();
+            // Here you can add the code to toggle the LED.
+            // For demonstration, we just log to the console.
+            
+            // alert('LED toggled');  // Showing an alert for visual feedback
+            xhttp.open("GET", "__adc_FAN_SPIN", true);
+            xhttp.send();
+        }
+    
+        function FanBoost() {
+            var xhttp = new XMLHttpRequest();
+            // Here you can add the code to toggle the LED.
+            // For demonstration, we just log to the console.
+            
+            // alert('LED toggled');  // Showing an alert for visual feedback
+            xhttp.open("GET", "__adc_FAN_BOOST", true);
+            xhttp.send();
+        }
+//////////////////    
+
 
 
         function toggleLED() {
@@ -214,6 +280,29 @@ const char index_html[] PROGMEM = R"rawliteral(
         xhttp.open("GET", "__adc_TEMP_COLD", true);
         xhttp.send();
       }
+        
+
+
+     function sendCommand(event) {
+            event.preventDefault(); // Prevent form redirection
+
+            const command = document.getElementById("command").value;
+
+            // Send the command via an AJAX POST request
+            fetch("/command", {
+                method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                body: `command=${encodeURIComponent(command)}`
+            })
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById("adc_CommandOut").innerText = data; // Update the <span> with the response
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                document.getElementById("adc_CommandOut").innerText = "Error sending command.";
+            });
+        }
         
         // Simulate ADC value update
         setInterval(() => {

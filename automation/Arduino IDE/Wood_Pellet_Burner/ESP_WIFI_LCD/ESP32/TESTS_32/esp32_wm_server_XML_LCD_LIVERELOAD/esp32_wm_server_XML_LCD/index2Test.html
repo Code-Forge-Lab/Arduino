@@ -1,0 +1,149 @@
+const char index_html[] PROGMEM = R"rawliteral( 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pellet Burner</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            height: 100vh;
+            margin: 0;
+            background-color: #282c34;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+        .center-content {
+            text-align: center;
+            margin-top: 50px;
+        }
+        h1 {
+            font-size: 4em;
+            margin-bottom: 20px;
+        }
+        .adc-value {
+            margin: 2px 0;
+            font-size: 1em;
+            font-weight: bold;
+            color: #61dafb;
+        }
+        .button {
+            margin: 10px;
+            padding: 20px 40px;
+            font-size: 2em;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background-color: #61dafb;
+            color: #282c34;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .button_small {
+            margin: 5px;
+            padding: 10px 20px;
+            font-size: 1em;
+            cursor: pointer;
+            border: none;
+            border-radius: 2px;
+            background-color: #61dafb;
+            color: #282c34;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .button:hover, .button_small:hover {
+            background-color: #21a1f1;
+            color: white;
+        }
+        #burnerButton {
+            padding: 15px 30px;
+            font-size: 18px;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        .off {
+            background-color: red;
+            color: white;
+        }
+        .on {
+            background-color: green;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="center-content">
+        <h1>Pellet Burner</h1>
+        <div class="adc-value">Water Temp Required <span id="adc_TEMP_REQUIRED">0</span>C</div>
+        <div class="adc-value">Water Temp. Output: <span id="adc_TEMP_HOT">0</span>C > Return: <span id="adc_TEMP_COLD">0</span></div>
+        <div class="adc-value">
+            <button class="button" onclick="toggleRequiredTemp_Plus()">+</button>
+            <span id="adc_TEMP_REQUIRED2">80</span>
+            <button class="button" onclick="toggleRequiredTemp_Minus()">-</button>
+        </div>
+        <div>
+            <button id="burnerButton" class="off" onclick="toggleBurner(this)">Burner OFF</button>
+        </div>
+        <div>
+            <p class="adc-value">Pellet [<span id="adc_PELLET_ISACTIVE">OFF</span>] Fan [<span id="adc_FAN_ISACTIVE">OFF</span>] Boost [<span id="adc_FAN_BOOST">NO</span>]</p>
+            <button class="button_small" onclick="PelletPush()">Pellet Push</button>
+            <button class="button_small" onclick="FanSpin()">Fan Spin</button>
+            <button class="button_small" onclick="FanBoost()">Boost</button>
+        </div>
+        <form onsubmit="sendCommand(event)">
+            <input type="text" id="command" name="command" placeholder="Input Command" required>
+            <input class="button_small" type="submit" value="Send">
+        </form>
+        <p>Response: <span id="adc_CommandOut" style="color: blue;">??</span></p>
+    </div>
+    <script>
+        function toggleBurner(button) {
+            if (button.classList.contains("off")) {
+                button.classList.remove("off");
+                button.classList.add("on");
+                button.innerText = "Burner ON";
+                sendBurnerState("ON");
+            } else {
+                button.classList.remove("on");
+                button.classList.add("off");
+                button.innerText = "Burner OFF";
+                sendBurnerState("OFF");
+            }
+        }
+        function sendBurnerState(state) {
+            fetch(`/burner?state=${state}`)
+                .then(response => response.text())
+                .then(data => console.log("ESP32 Response:", data))
+                .catch(error => console.error("Error:", error));
+        }
+        function toggleRequiredTemp_Plus() {
+            fetch("/requiredTempPlus").catch(error => console.error("Error:", error));
+        }
+        function toggleRequiredTemp_Minus() {
+            fetch("/requiredTempMinus").catch(error => console.error("Error:", error));
+        }
+        function PelletPush() {
+            fetch("/pelletPush").catch(error => console.error("Error:", error));
+        }
+        function FanSpin() {
+            fetch("/fanSpin").catch(error => console.error("Error:", error));
+        }
+        function FanBoost() {
+            fetch("/fanBoost").catch(error => console.error("Error:", error));
+        }
+        function sendCommand(event) {
+            event.preventDefault();
+            const command = document.getElementById("command").value;
+            fetch(`/command?value=${command}`)
+                .then(response => response.text())
+                .then(data => document.getElementById("adc_CommandOut").innerText = data)
+                .catch(error => console.error("Error:", error));
+        }
+    </script>
+</body>
+</html>
+)rawliteral";
