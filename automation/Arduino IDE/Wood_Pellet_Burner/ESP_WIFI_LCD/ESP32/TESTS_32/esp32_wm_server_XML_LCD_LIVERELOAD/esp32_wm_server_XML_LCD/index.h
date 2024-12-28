@@ -122,26 +122,18 @@ const char index_html[] PROGMEM = R"rawliteral(
 </head>
 <body>
     <script>
-        function toggleBurner(button) {
-                  if (button.classList.contains("off")) {
-                      button.classList.remove("off");
-                      button.classList.add("on");
-                      button.innerText = "Burner ONN";
-                      sendBurnerState("ON");
-                  } else {
-                      button.classList.remove("on");
-                      button.classList.add("off");
-                      button.innerText = "Burner OFF";
-                      sendBurnerState("OFF");
-                  }
-              }
-
-              function sendBurnerState(state) {
-                  fetch(`/burner?state=${state}`)
-                      .then(response => response.text())
-                      .then(data => console.log("ESP32 Response:", data))
-                      .catch(error => console.error("Error:", error));
-              }
+        // function checkForRefresh() {
+        //     alert('REFRESH PAGE');
+        //     fetch('/refresh')
+        //       .then(response => response.text())
+        //       .then(data => {
+        //         if (data === "REFRESH") {
+        //           location.reload();
+        //         }
+        //       })
+        //       .catch(err => console.error(err));
+        //   }
+        //   window.onload = checkForRefresh;
     </script>
     
     <div class="center-content">
@@ -177,7 +169,28 @@ const char index_html[] PROGMEM = R"rawliteral(
     
     <script>
 
-      
+
+
+        function toggleBurner(button) {
+                  if (button.classList.contains("off")) {
+                      button.classList.remove("off");
+                      button.classList.add("on");
+                      button.innerText = "Burner ONN";
+                      sendBurnerState("ON");
+                  } else {
+                      button.classList.remove("on");
+                      button.classList.add("off");
+                      button.innerText = "Burner OFF";
+                      sendBurnerState("OFF");
+                  }
+              }
+
+              function sendBurnerState(state) {
+                  fetch(`/burner?state=${state}`)
+                      .then(response => response.text())
+                      .then(data => console.log("ESP32 Response:", data))
+                      .catch(error => console.error("Error:", error));
+              }
 
 
 
@@ -194,6 +207,7 @@ const char index_html[] PROGMEM = R"rawliteral(
             xhttp.open("GET", "__requiredTempMinus", true);
             xhttp.send();
         }
+
 
 
 
@@ -240,6 +254,19 @@ const char index_html[] PROGMEM = R"rawliteral(
             xhttp.send();
         }
         
+         function GETDATAT_TEXT(index,element) {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+          if (this.readyState == 4 && this.status == 200) {
+            document.getElementById(element).innerHTML =
+            this.responseText;
+          }
+        };
+        xhttp.open("GET", index+element , true);
+        xhttp.send();
+      }
+
+
         function getadc_TEMP_REQUIRED() {
         var xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function() {
@@ -255,31 +282,32 @@ const char index_html[] PROGMEM = R"rawliteral(
         xhttp.send();
       }
 
-      function getADC_TEMP_HOT() {
-        var xhttp = new XMLHttpRequest();
-        xhttp.onreadystatechange = function() {
-          if (this.readyState == 4 && this.status == 200) {
-            document.getElementById("adc_TEMP_HOT").innerHTML =
-            this.responseText;
-          }
-        };
-        xhttp.open("GET", "__adc_TEMP_HOT", true);
-        xhttp.send();
-      }
+      // function getADC_TEMP_HOT() {
+      //   var xhttp = new XMLHttpRequest();
+      //   xhttp.onreadystatechange = function() {
+      //     if (this.readyState == 4 && this.status == 200) {
+      //       document.getElementById("adc_TEMP_HOT").innerHTML =
+      //       this.responseText;
+      //     }
+      //   };
+      //   xhttp.open("GET", "__adc_TEMP_HOT", true);
+      //   xhttp.send();
+      // }
 
 
       
-      function getADC_TEMP_COLD() {
-        var xhttp = new XMLHttpRequest();
-        xhttp.onreadystatechange = function() {
-          if (this.readyState == 4 && this.status == 200) {
-            document.getElementById("adc_TEMP_COLD").innerHTML =
-            this.responseText;
-          }
-        };
-        xhttp.open("GET", "__adc_TEMP_COLD", true);
-        xhttp.send();
-      }
+      // function getADC_TEMP_COLD() {
+      //   var xhttp = new XMLHttpRequest();
+      //   xhttp.onreadystatechange = function() {
+      //     if (this.readyState == 4 && this.status == 200) {
+      //       document.getElementById("adc_TEMP_COLD").innerHTML =
+      //       this.responseText;
+      //     }
+      //   };
+      //   xhttp.open("GET", "__adc_TEMP_COLD", true);
+      //   xhttp.send();
+      // }
+        
         
 
 
@@ -309,10 +337,25 @@ const char index_html[] PROGMEM = R"rawliteral(
             // Generate a random ADC value for demonstration
             //const adc_TEMP_REQUIRED = Math.floor(Math.random() * 1024);
             //document.getElementById('adc_TEMP_REQUIRED').innerText = adc_TEMP_REQUIRED;
+            // getadc_TEMP_REQUIRED();
+            // getADC_TEMP_HOT();
+            // getADC_TEMP_COLD();
+
+            // GETDATAT_TEXT("__","adc_TEMP_REQUIRED");
             getadc_TEMP_REQUIRED();
-            getADC_TEMP_HOT();
-            getADC_TEMP_COLD();
+           
+           
+             // sendBurnerState("ONN"); // error with burnerstate
         }, 1000);  // Update every second
+        setInterval(() => {
+
+            GETDATAT_TEXT("__","adc_TEMP_HOT");
+            GETDATAT_TEXT("__","adc_TEMP_COLD");
+            GETDATAT_TEXT("__","adc_PELLET_ISACTIVE");
+            GETDATAT_TEXT("__","adc_FAN_ISACTIVE");
+            GETDATAT_TEXT("__","adc_FAN_BOOST");
+
+        }, 5000);
     </script>
 </body>
 </html>

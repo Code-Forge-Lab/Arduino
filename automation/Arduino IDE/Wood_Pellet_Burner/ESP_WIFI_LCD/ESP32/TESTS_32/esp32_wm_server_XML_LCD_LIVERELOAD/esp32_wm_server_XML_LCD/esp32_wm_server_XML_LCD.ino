@@ -15,7 +15,9 @@ int WaterTempIn = 0;
 int counter2 = 0;
 byte cMenu = 0;
 
+
 String burnerState = "OFF";
+bool shouldRefreshPage = true; // Flag to indicate a page refresh is needed
 
 #define LED_BUILTIN 1
 bool __led_toggle = false;
@@ -35,6 +37,14 @@ int nCounter;
 void notFound(AsyncWebServerRequest *request) {
   request->send(404, "text/plain", "Not found");
 }
+
+// void GET_RECEIVE( char server_on[] , char varOutput[] ) {
+//    server.on(server_on, HTTP_GET, [](AsyncWebServerRequest * request) {
+   
+//     request->send(200, "text/html", varOutput );
+//   });
+
+// }
 
 void setup() {
     
@@ -83,22 +93,12 @@ void setup() {
 
 
 
-server.on("/__adc_TEMP_REQUIRED", HTTP_GET, [](AsyncWebServerRequest * request) {
-    
-    request->send(200, "text/html", String(WaterTempRequired)+"C");
-  });
-
-
-  server.on("/__adc_TEMP_HOT", HTTP_GET, [](AsyncWebServerRequest * request) {
-    
-    request->send(200, "text/html", String(WaterTempIn));
-  });
-
-  server.on("/__adc_TEMP_COLD", HTTP_GET, [](AsyncWebServerRequest * request) {
-    
-    request->send(200, "text/html", String(WaterTempOut));
-  });
-
+  server.on("/__adc_TEMP_REQUIRED", HTTP_GET, [](AsyncWebServerRequest * request) {request->send(200, "text/html", String(WaterTempRequired)+"C");});
+  server.on("/__adc_TEMP_HOT", HTTP_GET, [](AsyncWebServerRequest * request) {request->send(200, "text/html", String(WaterTempIn));});
+  server.on("/__adc_TEMP_COLD", HTTP_GET, [](AsyncWebServerRequest * request) {request->send(200, "text/html", String(WaterTempOut));});
+  server.on("/__adc_PELLET_ISACTIVE", HTTP_GET, [](AsyncWebServerRequest * request) {request->send(200, "text/html", String(WaterTempRequired));});
+  server.on("/__adc_FAN_ISACTIVE", HTTP_GET, [](AsyncWebServerRequest * request) {request->send(200, "text/html", String(WaterTempIn));});
+  server.on("/__adc_FAN_BOOST", HTTP_GET, [](AsyncWebServerRequest * request) {request->send(200, "text/html", String(WaterTempOut));});
 
 
 
@@ -162,13 +162,22 @@ server.on("/__adc_TEMP_REQUIRED", HTTP_GET, [](AsyncWebServerRequest * request) 
     if (request->hasParam("state")) {
       burnerState = request->getParam("state")->value();
       Serial.println("Burner State: " + burnerState);
-      request->send(200, "text/plain", "Burner State Updated to " + burnerState);
+      request->send(200, "text/plain", burnerState); //"Burner State Updated to " + 
     } else {
       request->send(400, "text/plain", "Missing state parameter");
     }
   });
 
 
+  // Endpoint to check if a refresh is needed
+  server.on("/refresh", HTTP_GET, [](AsyncWebServerRequest *request) {
+    if (shouldRefreshPage) {
+      request->send(200, "text/plain", "REFRESH");
+      shouldRefreshPage = false; // Disable future refreshes
+    } else {
+      request->send(200, "text/plain", "NO_REFRESH");
+    }
+  });
 
   
   server.on("/get", HTTP_GET, [] (AsyncWebServerRequest * request) {
@@ -183,6 +192,7 @@ server.on("/__adc_TEMP_REQUIRED", HTTP_GET, [](AsyncWebServerRequest * request) 
 
   pinMode(LED_BUILTIN, OUTPUT);
   // digitalWrite(LED_BUILTIN, true);
+  
 }
 
 
@@ -200,7 +210,7 @@ if (((long)clock_1sec + 1000UL) < millis())
         lcdPrint ("Temp In: "+ String(WaterTempIn) + "C" , false , 0 , 1);
         WaterTempIn = WaterTempIn + 2;
         
-        lcdPrint ("Temp Out: "+ String(WaterTempOut) + "C" , false , 0 , 2);
+        lcdPrint ("Temp Out: "+ String(WaterTempOut ) + "C" , false , 0 , 2);
         WaterTempOut = WaterTempOut + 1;
 
         // lcdPrint ("nCounter: " + String(nCounter) + "c" , false , 0 , 2);
