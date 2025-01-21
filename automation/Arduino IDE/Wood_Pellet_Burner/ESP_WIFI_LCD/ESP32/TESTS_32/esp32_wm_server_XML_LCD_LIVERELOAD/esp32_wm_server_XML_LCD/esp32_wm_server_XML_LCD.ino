@@ -12,6 +12,9 @@
 int WaterTempRequired = 35;
 int WaterTempOut = 0;
 int WaterTempIn = 0;
+bool BurnerBoost = false;
+bool PelletPush = false;
+bool FanSpin = false;
 int counter2 = 0;
 byte cMenu = 0;
 
@@ -46,6 +49,13 @@ void notFound(AsyncWebServerRequest *request) {
 
 // }
 
+String toText(bool input) {
+  if (input) {
+    return "ON";
+  } else {
+    return "OFF";
+  }
+}
 void setup() {
     
 
@@ -68,7 +78,15 @@ void setup() {
     bool res;
     // res = wm.autoConnect(); // auto generated AP name from chipid
     // res = wm.autoConnect("AutoConnectAP"); // anonymous ap
-    res = wm.autoConnect("AutoConnectAP","password"); // password protected ap
+    // res = wm.autoConnect("AutoConnectAP","password"); // password protected ap
+
+    res = wm.autoConnect("Granulinis"); // password protected ap
+
+
+
+    // Uncomment and run it once, if you want to erase all the stored information
+        // wm.resetSettings();
+
 
   Serial.println(WiFi.localIP());
   Serial.println(WiFi.localIP());
@@ -91,6 +109,11 @@ void setup() {
   });
   
 
+
+  server.on("/__adc_BURNER_STATE", HTTP_GET, [](AsyncWebServerRequest * request) {request->send(200, "text/html", String((burnerState)));});
+  server.on("/__adc_PELLET_PUSH", HTTP_GET, [](AsyncWebServerRequest * request) {request->send(200, "text/html", String((PelletPush)));});
+  server.on("/__adc_FAN_SPIN", HTTP_GET, [](AsyncWebServerRequest * request) {request->send(200, "text/html", String((FanSpin)));});
+  server.on("/__adc_BURNER_BOOST", HTTP_GET, [](AsyncWebServerRequest * request) {request->send(200, "text/html", String((BurnerBoost)));});
 
 
   server.on("/__adc_TEMP_REQUIRED", HTTP_GET, [](AsyncWebServerRequest * request) {request->send(200, "text/html", String(WaterTempRequired)+"C");});
@@ -127,18 +150,47 @@ void setup() {
 
 
 
+
+/// Others Buttons
+server.on("/__btn_PELLET_PUSH", HTTP_GET, [](AsyncWebServerRequest * request) {
+    PelletPush = !PelletPush;
+    request->send(200, "text/html", "");
+  });
+
+
+server.on("/__btn_FAN_SPIN", HTTP_GET, [](AsyncWebServerRequest * request) {
+    FanSpin = !FanSpin;
+    request->send(200, "text/html", "");
+  });
+
+
+  
+server.on("/__btn_BURNER_PUSH", HTTP_GET, [](AsyncWebServerRequest * request) {
+    BurnerBoost = !BurnerBoost;
+    request->send(200, "text/html", "");
+  });
+
+
+
+
+
   
 
  // Handle command submission
   server.on("/command", HTTP_POST, [](AsyncWebServerRequest *request){
     String receivedCommand;
+    bool isCMD = false;
     if (request->hasParam("command", true)) {
       cMenu = 10;
       receivedCommand = request->getParam("command", true)->value();
       Serial.println("Received Command: " + receivedCommand);
 
+      if (receivedCommand == "burnerState-ON"){burnerState = "ONN"; isCMD = true;}
+      if (receivedCommand == "burnerState-OFF"){burnerState = "OFF"; isCMD = true;}
+
       // Simulate processing and create a response
-      String response = "Processed Command: " + receivedCommand;
+      String response = "Processed Command: " + receivedCommand + " , completed " + String (isCMD);
+      isCMD = false;
       request->send(200, "text/plain", response); // Send response back
     } else {
       request->send(400, "text/plain", "Invalid Command");

@@ -144,6 +144,9 @@ const char index_html[] PROGMEM = R"rawliteral(
         <div class="adc-value">Water Temp Required <span id="adc_TEMP_REQUIRED">0</span>C</div>
         <div class="adc-value">Water Temp. Output: <span id="adc_TEMP_HOT">0</span>C > Return: <span id="adc_TEMP_COLD">0</span></div>
         <div class="adc-value">Fire: <span id="adc_TEMP_HOT">50</span>%  Fuel: <span id="adc_TEMP_COLD">60</span>% FUELD [ <span id="adc_TEMP_COLD">YES</span> ]</div>
+        
+        <div class="adc-value">Burner: <span id="adc_BURNER_STATE">?</span> Pellet-Push: <span id="adc_PELLET_PUSH"></span>? Fan-Spin <span id="adc_FAN_SPIN">?</span> Burner-Boost <span id="adc_BURNER_BOOST">?</span></div>
+
 
         <div class="adc-value">
             <button class="button style= margin-top: 10px;" onclick="toggleRequiredTemp_Plus()">+</button>
@@ -157,7 +160,7 @@ const char index_html[] PROGMEM = R"rawliteral(
             <p class="adc-value" >Pellet [<span id="adc_PELLET_ISACTIVE">OFF</span>] Fan [<span id="adc_FAN_ISACTIVE">OFF</span>] Boost [<span id="adc_FAN_BOOST">NO</span>]</p>
             <button class="button_small " onclick="PelletPush()">Pellet Push</button>
             <button class="button_small " onclick="FanSpin()">Fan Spin</button>
-            <button class="button_small " onclick="FanBoost()">Boost</button>
+            <button class="button_small " onclick="BurnerBoost()">Boost</button>
         </div>
              <form onsubmit="sendCommand(event)">
              <!-- <label for="command"></label><br> -->
@@ -218,7 +221,7 @@ const char index_html[] PROGMEM = R"rawliteral(
             // For demonstration, we just log to the console.
             
             // alert('LED toggled');  // Showing an alert for visual feedback
-            xhttp.open("GET", "__adc_PELLET_PUSH", true);
+            xhttp.open("GET", "__btn_PELLET_PUSH", true);
             xhttp.send();
         }
         function FanSpin() {
@@ -227,22 +230,26 @@ const char index_html[] PROGMEM = R"rawliteral(
             // For demonstration, we just log to the console.
             
             // alert('LED toggled');  // Showing an alert for visual feedback
-            xhttp.open("GET", "__adc_FAN_SPIN", true);
+            xhttp.open("GET", "__btn_FAN_SPIN", true);
             xhttp.send();
         }
     
-        function FanBoost() {
+        function BurnerBoost() {
             var xhttp = new XMLHttpRequest();
             // Here you can add the code to toggle the LED.
             // For demonstration, we just log to the console.
             
             // alert('LED toggled');  // Showing an alert for visual feedback
-            xhttp.open("GET", "__adc_FAN_BOOST", true);
+            xhttp.open("GET", "__btn_BURNER_PUSH", true);
             xhttp.send();
         }
 //////////////////    
 
-
+        function GETDATAT_TEXTFUN(index,elementFunction) {
+            var xhttp = new XMLHttpRequest();
+            xhttp.open("GET", index+elementFunction, true);
+            xhttp.send();
+        }
 
         function toggleLED() {
             var xhttp = new XMLHttpRequest();
@@ -348,14 +355,24 @@ const char index_html[] PROGMEM = R"rawliteral(
              // sendBurnerState("ONN"); // error with burnerstate
         }, 1000);  // Update every second
         setInterval(() => {
+            
 
+            
+
+
+            GETDATAT_TEXT("__","adc_BURNER_STATE");
+            GETDATAT_TEXT("__","adc_PELLET_PUSH");
+            GETDATAT_TEXT("__","adc_FAN_SPIN");
+            GETDATAT_TEXT("__","adc_BURNER_BOOST");
+            
+            GETDATAT_TEXT("__","adc_BURNER_STATE");
             GETDATAT_TEXT("__","adc_TEMP_HOT");
             GETDATAT_TEXT("__","adc_TEMP_COLD");
             GETDATAT_TEXT("__","adc_PELLET_ISACTIVE");
             GETDATAT_TEXT("__","adc_FAN_ISACTIVE");
             GETDATAT_TEXT("__","adc_FAN_BOOST");
 
-        }, 5000);
+        }, 1300);
     </script>
 </body>
 </html>
