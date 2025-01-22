@@ -145,7 +145,7 @@ const char index_html[] PROGMEM = R"rawliteral(
         <div class="adc-value">Water Temp. Output: <span id="adc_TEMP_HOT">0</span>C > Return: <span id="adc_TEMP_COLD">0</span></div>
         <div class="adc-value">Fire: <span id="adc_TEMP_HOT">50</span>%  Fuel: <span id="adc_TEMP_COLD">60</span>% FUELD [ <span id="adc_TEMP_COLD">YES</span> ]</div>
         
-        <div class="adc-value">Burner: <span id="adc_BURNER_STATE">?</span> Pellet-Push: <span id="adc_PELLET_PUSH"></span>? Fan-Spin <span id="adc_FAN_SPIN">?</span> Burner-Boost <span id="adc_BURNER_BOOST">?</span></div>
+        <div class="adc-value">Burner: <span id="adc_BURNER_STATE" class="activeButtons"></span> Pellet-Push: <span id="adc_PELLET_PUSH" class="activeButtons"></span> Fan-Spin <span id="adc_FAN_SPIN" class="activeButtons">?</span> Burner-Boost <span id="adc_BURNER_BOOST" class="activeButtons">?</span></div>
 
 
         <div class="adc-value">
@@ -154,13 +154,14 @@ const char index_html[] PROGMEM = R"rawliteral(
             <button class="button style= margin-top: 30px;"  onclick="toggleRequiredTemp_Minus()">-<br></button>
         </div>
         
-            <button class="button" class="off" onclick="toggleBurner(this)">Burner OFF</button>
+            <!-- <button class="button" class="off" onclick="toggleBurner(this)">Burner OFF</button> -->
+            <button class="button btn_update" class="off" onclick="toggleBurner()">Burner</button>
             
         <div>
             <p class="adc-value" >Pellet [<span id="adc_PELLET_ISACTIVE">OFF</span>] Fan [<span id="adc_FAN_ISACTIVE">OFF</span>] Boost [<span id="adc_FAN_BOOST">NO</span>]</p>
-            <button class="button_small " onclick="PelletPush()">Pellet Push</button>
-            <button class="button_small " onclick="FanSpin()">Fan Spin</button>
-            <button class="button_small " onclick="BurnerBoost()">Boost</button>
+            <button class="button_small btn_update" onclick="PelletPush()">Pellet Push</button>
+            <button class="button_small btn_update" onclick="FanSpin()">Fan Spin</button>
+            <button class="button_small btn_update" onclick="BurnerBoost()">Boost</button>
         </div>
              <form onsubmit="sendCommand(event)">
              <!-- <label for="command"></label><br> -->
@@ -172,28 +173,113 @@ const char index_html[] PROGMEM = R"rawliteral(
     
     <script>
 
+// function readContent() {
+//     const  divElement = document.querySelector ('#adc_BURNER_STATE');
+//     const  textContent = divElement.textContent;
+
+//     if (divElement.textContent === 'ON') {
+//   // Change the text color to red (or any color you prefer)
+//     divElement.style.color = 'red';
+// }else  {
+//     divElement.style.color = '#282c34';
+
+// }
+
+//     console.log(textContent);
+// }
 
 
-        function toggleBurner(button) {
-                  if (button.classList.contains("off")) {
-                      button.classList.remove("off");
-                      button.classList.add("on");
-                      button.innerText = "Burner ONN";
-                      sendBurnerState("ON");
-                  } else {
-                      button.classList.remove("on");
-                      button.classList.add("off");
-                      button.innerText = "Burner OFF";
-                      sendBurnerState("OFF");
-                  }
-              }
+function readContent() {
+        // Select all span elements with the class 'small'
+        const spanElements = document.querySelectorAll('.activeButtons');
+        const buttonElements = document.querySelectorAll('.btn_update');
 
-              function sendBurnerState(state) {
-                  fetch(`/burner?state=${state}`)
-                      .then(response => response.text())
-                      .then(data => console.log("ESP32 Response:", data))
-                      .catch(error => console.error("Error:", error));
-              }
+        var valueBot =  0;
+
+        // console.log("spanElements lenght: " + spanElements.length);
+        // console.log("buttonElements lenght: " + buttonElements.length);
+
+        // Loop through the NodeList using a for loop
+        for (let i = 0; i < spanElements.length; i++) {
+        // Check if the text content is 'YES'
+        const style = window.getComputedStyle(spanElements[i]);    
+
+        if (spanElements[i].textContent === 'ON' || spanElements[i].textContent > 0 ) {
+            // Add the CSS class to change the color
+            // spanElements[i].classList.add('yes-color');
+            spanElements[i].style.color = 'red';
+            buttonElements[i].style.color = 'red';
+            // console.log ("Cnahnging a colors of buttons and texts : " + [i] + " valueBot: "+ valueBot);
+            valueBot = valueBot + 1;
+            
+
+        }else{
+            valueBot = valueBot -1;
+            spanElements[i].style.color = 'blue';
+            buttonElements[i].style.color = 'blue';
+
+            // console.log ("Cnahnging a colors of buttons and texts FALSE : " + [i] + " valueBot: "+ valueBot);
+
+
+        }
+    }
+
+
+
+
+    for (let i = 0; i < spanElements.length; i++) {
+        // Check if the text content is 'YES'
+        const style = window.getComputedStyle(spanElements[i]);    
+
+        if (spanElements[i].textContent === 'ON' || spanElements[i].textContent > 0 ) {
+            // Add the CSS class to change the color
+            // spanElements[i].classList.add('yes-color');
+            buttonElements[i].style.color = 'red';
+            
+
+        }else{
+            valueBot = valueBot -1;
+            buttonElements[i].style.color = 'blue';
+
+        }
+    }
+
+}
+
+    // else if (spanElements[i].textContent === 'OFF' || spanElements[i].textContent <= 0 )
+    //         spanElements[i].style.color = 'blue';
+
+    //         // Check if the background color is red
+    //             if (style.backgroundColor === 'rgb(0,0, 255)') {
+    //             console.log('Button with red background found:', buttonElements[i].textContent);
+    //              buttonElements[i].style.color = 'orange';
+    //             }
+            
+    //         console.log ("Cnahnging a colors of buttons and texts : " + [i]);
+
+       
+    //     }
+
+        // function toggleBurner(button) {
+        //           if (button.classList.contains("off")) {
+        //               button.classList.remove("off");
+        //               button.classList.add("on");
+        //               button.innerText = "Burner ONN";
+        //               sendBurnerState("ON");
+        //           } else {
+        //               button.classList.remove("on");
+        //               button.classList.add("off");
+        //               button.innerText = "Burner OFF";
+        //               sendBurnerState("OFF");
+        //           }
+        //       }
+
+        //       function sendBurnerState(state) {
+        //           fetch(`/burner?state=${state}`)
+        //               .then(response => response.text())
+        //               .then(data => console.log("ESP32 Response:", data))
+        //               .catch(error => console.error("Error:", error));
+        //       }
 
 
 
@@ -215,6 +301,18 @@ const char index_html[] PROGMEM = R"rawliteral(
 
 
 /////////////////////
+
+
+function toggleBurner() {
+            var xhttp = new XMLHttpRequest();
+            // Here you can add the code to toggle the LED.
+            // For demonstration, we just log to the console.
+            
+            // alert('LED toggled');  // Showing an alert for visual feedback
+            xhttp.open("GET", "__btn_BURNER_TURNON", true);
+            xhttp.send();
+        }
+
         function PelletPush() {
             var xhttp = new XMLHttpRequest();
             // Here you can add the code to toggle the LED.
@@ -365,12 +463,12 @@ const char index_html[] PROGMEM = R"rawliteral(
             GETDATAT_TEXT("__","adc_FAN_SPIN");
             GETDATAT_TEXT("__","adc_BURNER_BOOST");
             
-            GETDATAT_TEXT("__","adc_BURNER_STATE");
             GETDATAT_TEXT("__","adc_TEMP_HOT");
             GETDATAT_TEXT("__","adc_TEMP_COLD");
             GETDATAT_TEXT("__","adc_PELLET_ISACTIVE");
             GETDATAT_TEXT("__","adc_FAN_ISACTIVE");
             GETDATAT_TEXT("__","adc_FAN_BOOST");
+            readContent();
 
         }, 1300);
     </script>

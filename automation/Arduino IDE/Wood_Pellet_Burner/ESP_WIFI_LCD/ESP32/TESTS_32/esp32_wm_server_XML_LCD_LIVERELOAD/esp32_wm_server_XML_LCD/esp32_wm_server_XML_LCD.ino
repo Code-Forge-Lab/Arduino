@@ -12,6 +12,7 @@
 int WaterTempRequired = 35;
 int WaterTempOut = 0;
 int WaterTempIn = 0;
+bool BurnerTurnOn = false;
 bool BurnerBoost = false;
 bool PelletPush = false;
 bool FanSpin = false;
@@ -109,8 +110,7 @@ void setup() {
   });
   
 
-
-  server.on("/__adc_BURNER_STATE", HTTP_GET, [](AsyncWebServerRequest * request) {request->send(200, "text/html", String((burnerState)));});
+  server.on("/__adc_BURNER_STATE", HTTP_GET, [](AsyncWebServerRequest * request) {request->send(200, "text/html", String((BurnerTurnOn)));});
   server.on("/__adc_PELLET_PUSH", HTTP_GET, [](AsyncWebServerRequest * request) {request->send(200, "text/html", String((PelletPush)));});
   server.on("/__adc_FAN_SPIN", HTTP_GET, [](AsyncWebServerRequest * request) {request->send(200, "text/html", String((FanSpin)));});
   server.on("/__adc_BURNER_BOOST", HTTP_GET, [](AsyncWebServerRequest * request) {request->send(200, "text/html", String((BurnerBoost)));});
@@ -152,6 +152,11 @@ void setup() {
 
 
 /// Others Buttons
+server.on("/__btn_BURNER_TURNON", HTTP_GET, [](AsyncWebServerRequest * request) {
+    BurnerTurnOn = !BurnerTurnOn;
+    request->send(200, "text/html", "");
+  });
+
 server.on("/__btn_PELLET_PUSH", HTTP_GET, [](AsyncWebServerRequest * request) {
     PelletPush = !PelletPush;
     request->send(200, "text/html", "");
@@ -165,7 +170,7 @@ server.on("/__btn_FAN_SPIN", HTTP_GET, [](AsyncWebServerRequest * request) {
 
 
   
-server.on("/__btn_BURNER_PUSH", HTTP_GET, [](AsyncWebServerRequest * request) {
+server.on("/__btn_BURNER_PUSH", HTTP_GET, [](AsyncWebServerRequest * request) {  
     BurnerBoost = !BurnerBoost;
     request->send(200, "text/html", "");
   });
@@ -209,16 +214,16 @@ server.on("/__btn_BURNER_PUSH", HTTP_GET, [](AsyncWebServerRequest * request) {
 
 
 
-   // Handle the burner state request
-  server.on("/burner", HTTP_GET, [](AsyncWebServerRequest *request) {
-    if (request->hasParam("state")) {
-      burnerState = request->getParam("state")->value();
-      Serial.println("Burner State: " + burnerState);
-      request->send(200, "text/plain", burnerState); //"Burner State Updated to " + 
-    } else {
-      request->send(400, "text/plain", "Missing state parameter");
-    }
-  });
+  //  // Handle the burner state request
+  // server.on("/burner", HTTP_GET, [](AsyncWebServerRequest *request) {
+  //   if (request->hasParam("state")) {
+  //     burnerState = request->getParam("state")->value();
+  //     Serial.println("Burner State: " + burnerState);
+  //     request->send(200, "text/plain", burnerState); //"Burner State Updated to " + 
+  //   } else {
+  //     request->send(400, "text/plain", "Missing state parameter");
+  //   }
+  // });
 
 
   // Endpoint to check if a refresh is needed
